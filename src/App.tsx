@@ -1,13 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <div data-w-id="db172560-d6e6-6664-779a-9023116127d6" data-animation="default" data-collapse="none" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-3 w-nav">
+      <div  data-animation="default" data-collapse="none" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-3 w-nav">
         <div className="container w-container">
-          <a href="#" className="brand w-nav-brand"><img src="images/Hiro-logo.png" loading="lazy" alt="" className="image-2" /></a>
+          <a href="#" className="brand w-nav-brand"><img src="images/bando_full_green.png" loading="lazy" alt="" className="image-2" /></a>
           <nav role="navigation" className="w-nav-menu">
             <a href="#email-2" className="button w-button">Empieza Hoy</a>
           </nav>
@@ -15,7 +14,7 @@ function App() {
       </div>
       <div className="div-block-7">
         <img src="images/Background.png" loading="lazy" sizes="100vw"  alt="" className="image" />
-        <section data-w-id="80bdf09c-8717-da77-0936-cad1f0328df8" className="section">
+        <section  className="section">
           <div className="w-layout-blockcontainer container-3 w-container">
             <div className="div-block-5">
               <p className="paragraph">control, Seguridad y simpleza</p><img src="images/Model-Tank.png" loading="lazy" alt="" className="image-5" /><img src="images/Model-Cone.png" loading="lazy" alt="" className="image-4" /><img src="images/Model-Sphere.png" loading="lazy" alt="" className="image-7 /" /><img src="images/Vector-2.png" loading="lazy" alt="" className="image-8" /><img src="images/2D-Shape.png" loading="lazy" sizes="(max-width: 479px) 100vw, (max-width: 767px) 200px, 250px" alt="" className="image-6" />
@@ -25,7 +24,7 @@ function App() {
             </div>
           </div>
         </section>
-        <section data-w-id="0c0acfaa-d4de-952c-18cb-0e9cc3800510" className="section hidden">
+        <section  className="section hidden">
           <div className="w-layout-blockcontainer container-7 w-container">
             <div className="div-block horizontal">
               <h1 className="heading-2">Controla tus critpos y explora la web3 con seguridad</h1>
@@ -33,7 +32,7 @@ function App() {
             </div>
           </div>
         </section>
-        <section data-w-id="fdcba4aa-de42-76d1-efaf-e664dbfe9730" className="section white">
+        <section  className="section white">
           <div className="w-layout-blockcontainer container-4 w-container">
             <div className="div-block horizontal">
               <div className="div-block-2">
@@ -44,7 +43,7 @@ function App() {
             </div>
           </div>
         </section>
-        <section data-w-id="ac10fa6e-3e2d-6f8f-8bd9-c6770f5f9675" className="section first">
+        <section  className="section first">
           <div className="w-layout-blockcontainer container-6 w-container">
             <div className="div-block horizontal">
               <div className="div-block-2">
@@ -70,7 +69,7 @@ function App() {
             </div>
           </div>
         </section>
-        <section data-w-id="41944441-acf4-66f0-e8cb-3d628a63d855" className="section white">
+        <section  className="section white">
           <div className="w-layout-blockcontainer container-5 w-container">
             <div className="div-block horizontal">
               <div className="div-block-2 centered">
@@ -120,23 +119,23 @@ function App() {
                 <p className="paragraph-5">Nuestro equipo está formado por personas apasionadas y con experiencia en la industria cripto desde 2016. Tenemos un gran compromiso por transformar la manera en que las personas controlan y son dueñxs de sus finanzas. </p>
               </div>
               <div className="div-block-4">
-                <div id="w-node-_475b5c64-8172-2596-6bce-50188fabe99b-bee46153"><img src="images/Abraham-Cobos.jpeg" loading="lazy" id="w-node-_9c9eaf1a-4ab5-19f7-8163-f7f525329df7-bee46153" sizes="(max-width: 479px) 100vw, (max-width: 767px) 35vw, (max-width: 991px) 22vw, 200px" alt="" className="image-3" />
-                  <h1 id="w-node-_9dae4a26-6808-4782-c47e-99b3dfc81d26-bee46153" className="heading-3">Abraham Cobos</h1>
+                <div ><img src="images/Abraham-Cobos.jpeg" loading="lazy"  sizes="(max-width: 479px) 100vw, (max-width: 767px) 35vw, (max-width: 991px) 22vw, 200px" alt="" className="image-3" />
+                  <h1  className="heading-3">Abraham Cobos</h1>
                   <p className="paragraph-5 left center-mobile">Co-founder: Producto</p>
                   <div className="div-block-9">
                     <a href="https://www.linkedin.com/in/abrahamcobos/" target="_blank" className="w-inline-block"><img src="images/Vector_1.png" loading="lazy" alt="" className="image-74" /></a>
                     <a href="https://twitter.com/abrahamcr" target="_blank" className="w-inline-block"><img src="images/Vector-1.png" loading="lazy" alt="" className="image-75" /></a>
                   </div>
                 </div>
-                <div id="w-node-_32f9f944-3ef7-3b83-a808-a9a8cb0b9f79-bee46153"><img src="images/Luis-Gabriel.jpeg" loading="lazy" id="w-node-_32f9f944-3ef7-3b83-a808-a9a8cb0b9f7a-bee46153" alt="" className="image-3" />
-                  <h1 id="w-node-_32f9f944-3ef7-3b83-a808-a9a8cb0b9f7b-bee46153" className="heading-3">Luis Gabriel</h1>
+                <div ><img src="images/Luis-Gabriel.jpeg" loading="lazy"  alt="" className="image-3" />
+                  <h1  className="heading-3">Luis Gabriel</h1>
                   <p className="paragraph-5 left center-mobile">Co-founder: Tech</p>
                   <div className="div-block-9">
                     <a href="https://www.linkedin.com/in/luis-gabriel-bb154691/" target="_blank" className="w-inline-block"><img src="images/Vector_1.png" loading="lazy" alt="" className="image-74" /></a>
                   </div>
                 </div>
-                <div id="w-node-ea006ffe-c4d0-b3e8-9838-096c833caa39-bee46153"><img src="images/Eduardo-Rios.jpeg" loading="lazy" id="w-node-ea006ffe-c4d0-b3e8-9838-096c833caa3a-bee46153" sizes="(max-width: 479px) 100vw, (max-width: 767px) 35vw, (max-width: 991px) 22vw, 200px" alt="" className="image-3" />
-                  <h1 id="w-node-ea006ffe-c4d0-b3e8-9838-096c833caa3b-bee46153" className="heading-3">Eduardo Rios</h1>
+                <div><img src="images/Eduardo-Rios.jpeg" loading="lazy" id="w-node-ea006ffe-c4d0-b3e8-9838-096c833caa3a-bee46153" sizes="(max-width: 479px) 100vw, (max-width: 767px) 35vw, (max-width: 991px) 22vw, 200px" alt="" className="image-3" />
+                  <h1 className="heading-3">Eduardo Rios</h1>
                   <p className="paragraph-5 left center-mobile">Co-founder: Partnerships</p>
                   <div className="div-block-9">
                     <a href="https://www.linkedin.com/in/eduardo-g-ba5569198/" target="_blank" className="w-inline-block"><img src="images/Vector_1.png" loading="lazy" alt="" className="image-74" /></a>
@@ -148,7 +147,7 @@ function App() {
           </div>
         </section>
       </div>
-      <section id="registro" data-w-id="cad27378-b507-6394-4174-f98219900e41" className="registro">
+      <section id="registro"  className="registro">
         <div className="frame-12717">
           <div className="frame-12716">
             <div className="gana-acceso">Obtén acceso</div>
