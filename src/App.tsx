@@ -1,14 +1,57 @@
-import React from 'react';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 import './App.css';
+import { Magic } from "magic-sdk"
+
+type MagicContextType = {
+  magic: Magic | null
+}
+
+const MagicContext = createContext<MagicContextType>({
+  magic: null,
+})
+
+export const useMagic = () => useContext(MagicContext)
 
 function App() {
+  const [magic, setMagic] = useState<Magic | null>(null)
+  useEffect(() => {
+    const magic = new Magic("pk_live_F27F714902BB9325" || "", {
+      network: {
+        rpcUrl: "https://rpc2.sepolia.org/",
+        chainId: 11155111,
+      },
+    })
+    setMagic(magic)
+  }, [])
+
+  // Assumes you've initialized a `Magic` instance with a Dedicated Wallet API Key
+  const login = async (emailAddress: any, showUI: any) => {
+    try {
+      if (magic) {
+        const did = await magic.auth.loginWithEmailOTP({ email: emailAddress, showUI: showUI});
+        console.log(`DID Token: ${did}`);
+        const userInfo = await magic.user.getInfo();
+        console.log(`UserInfo: ${userInfo.email}`);
+      }
+      // Handle user information as needed
+    } catch {
+      // Handle errors if required!
+    }
+  }
   return (
     <div className="App">
       <div  data-animation="default" data-collapse="none" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-3 w-nav">
         <div className="container w-container">
           <a href="#" className="brand w-nav-brand"><img src="images/bando_full_green.png" loading="lazy" alt="" className="image-2" /></a>
           <nav role="navigation" className="w-nav-menu">
-            <a href="#email-2" className="button w-button">Empieza Hoy</a>
+            <a href="#" className="button w-button" onClick={(event: React.MouseEvent<HTMLAnchorElement>) => login("guayabas@bando.cool", true)}>Empieza Hoy</a>
           </nav>
         </div>
       </div>
