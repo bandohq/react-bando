@@ -1,4 +1,3 @@
-import Helmet from 'react-helmet';
 import LandingSplash from '@components/LandingSplash';
 
 import './App.css';
@@ -6,9 +5,6 @@ import './App.css';
 function App() {
   return (
     <>
-      <Helmet>
-        <script src="/js/webflow.js" type="text/javascript"></script>
-      </Helmet>
       <div className="App">
         <header
           data-animation="default"
@@ -37,8 +33,8 @@ function App() {
               <div className="div-block horizontal">
                 <h1 className="heading-2">Controla tus critpos y explora la web3 con seguridad</h1>
                 <p className="paragraph-4 hidden">
-                  Bando es tu puerta a la web3 como debe ser: tus llaves, tu cripto, con bajos costos
-                  de transacción y con la conexión a DeFi que buscas.
+                  Bando es tu puerta a la web3 como debe ser: tus llaves, tu cripto, con bajos
+                  costos de transacción y con la conexión a DeFi que buscas.
                 </p>
               </div>
             </div>
@@ -163,7 +159,13 @@ function App() {
                 <div className="div-block-3 spacing">
                   <img src="images/Model-Cone.png" loading="lazy" alt="" className="image-68" />
                   <img src="images/Vector-10.png" loading="lazy" alt="" className="image-69" />
-                  <img src="images/Swap.png" loading="lazy" width="250" alt="" className="image-59" />
+                  <img
+                    src="images/Swap.png"
+                    loading="lazy"
+                    width="250"
+                    alt=""
+                    className="image-59"
+                  />
                 </div>
               </div>
             </div>
@@ -291,8 +293,8 @@ function App() {
                   <h1 className="h3">Conoce al equipo</h1>
                   <p className="paragraph-5">
                     Nuestro equipo está formado por personas apasionadas y con experiencia en la
-                    industria cripto desde 2016. Tenemos un gran compromiso por transformar la manera
-                    en que las personas controlan y son dueñxs de sus finanzas.{' '}
+                    industria cripto desde 2016. Tenemos un gran compromiso por transformar la
+                    manera en que las personas controlan y son dueñxs de sus finanzas.{' '}
                   </p>
                 </div>
                 <div className="div-block-4">
@@ -380,9 +382,9 @@ function App() {
             <div className="frame-12716">
               <div className="gana-acceso">Obtén acceso</div>
               <div className="text-white">
-                Bando es tu puerta a la web 3 como debe ser: tus llaves, tus criptomonedas; con bajos
-                costos de transacción y con las opciones que buscas para tener todo el control sobre
-                tus activos
+                Bando es tu puerta a la web 3 como debe ser: tus llaves, tus criptomonedas; con
+                bajos costos de transacción y con las opciones que buscas para tener todo el control
+                sobre tus activos
               </div>
             </div>
             <div className="div-block-8">
@@ -440,7 +442,8 @@ function App() {
                 </form>
                 <div className="success-message-2 w-form-done">
                   <div className="title">
-                    Muchas gracias por registrarte. Te notificaremos a tu mail cuando hayan novedades.
+                    Muchas gracias por registrarte. Te notificaremos a tu mail cuando hayan
+                    novedades.
                   </div>
                 </div>
                 <div className="error-message w-form-fail">
