@@ -22,7 +22,7 @@ export const useMagic = () => useContext(MagicContext)
 function App() {
   const [magic, setMagic] = useState<Magic | null>(null)
   useEffect(() => {
-    const magic = new Magic("pk_live_F27F714902BB9325" || "", {
+    const magic = new Magic("pk_live_4997CCD632B0BDF5" || "", {
       network: {
         rpcUrl: "https://rpc2.sepolia.org/",
         chainId: 11155111,
