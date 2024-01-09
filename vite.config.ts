@@ -1,6 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 
 import path from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -28,7 +27,6 @@ export default ({ mode }) => {
     plugins: [
       react(),
       tsconfigPaths(),
-      vanillaExtractPlugin(),
       check({ typescript: true }),
       env('all'),
       createHtmlPlugin({
