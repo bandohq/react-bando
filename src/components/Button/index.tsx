@@ -13,7 +13,7 @@ const BandoButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
   '&.rounded': { borderRadius: '24px' },
   '&:hover': {
     backgroundColor: theme.palette.primary.main,
-    backgroundImage: 'linear-gradient(rgb(0 0 0/40%) 0 0)',
+    backgroundImage: 'linear-gradient(rgb(0 0 0/20%) 0 0)',
     boxShadow: 'none',
   },
 }));
