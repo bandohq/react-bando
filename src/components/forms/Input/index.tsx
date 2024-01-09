@@ -12,8 +12,8 @@ export type InputProps = InputBaseProps & {
 };
 
 export const FormControl = styled(FormControlBase)(({ theme }) => ({
-  width: '100%',
   display: 'flex',
+  width: 'auto',
   '& label': {
     fontSize: '16px',
     lineHeight: 'normal',
@@ -51,6 +51,14 @@ export const TextFieldInput = styled(InputBase)(({ theme }) => ({
       boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
       borderColor: theme.palette.primary.main,
       borderRadius: 4,
+    },
+  },
+  '&.no-border': {
+    '& .MuiInputBase-input, & .MuiSelect-select': {
+      border: 'none !important',
+      padding: 0,
+      marginRight: theme.spacing(1),
+      fontSize: 'inherit',
     },
   },
   '&.Mui-disabled  .MuiInputBase-input, &.Mui-disabled  .MuiSelect-select': {

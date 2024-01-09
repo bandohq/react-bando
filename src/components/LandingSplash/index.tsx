@@ -2,8 +2,9 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import Box, { BoxProps } from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import BoxContainer from '@components/BoxContainer';
+import Jumbotron, { GridBox } from './Jumbotron';
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
@@ -11,7 +12,14 @@ import Currency from '../../assets/currency.svg';
 import Usdt from '../../assets/usdt.svg';
 import Arbitrum from '../../assets/arbitrum.svg';
 
-const ContainerBox = styled('section')(({ theme }) => ({
+const Hr = styled('hr')(({ theme }) => ({
+  backgroundColor: theme.palette.ink.i300,
+  height: 1,
+  width: '100%',
+  border: 0,
+}));
+
+const LandingContainer = styled('section')(({ theme }) => ({
   flexGrow: 1,
   display: 'flex',
   height: '100vh',
@@ -23,67 +31,6 @@ const ContainerBox = styled('section')(({ theme }) => ({
   margin: '0 auto',
   paddingBottom: '84px',
   '& .MuiGrid2-container': { width: '100%' },
-  [theme.breakpoints.down('sm')]: {
-    marginTop: '72px',
-  },
-}));
-
-const GridBox = styled(Box)<BoxProps>(({ theme }) => ({
-  flexGrow: 1,
-  display: 'flex',
-  position: 'relative',
-  height: '100vh',
-  width: '100%',
-  justifySelf: 'center',
-  justifyContent: 'center',
-  alignItems: 'center',
-  '& img.tank': {
-    width: '108px',
-    position: 'absolute',
-    top: 'auto',
-    bottom: '32%',
-    left: '6%',
-    right: 'auto',
-  },
-  '& img.arrow': {
-    width: '360px',
-    position: 'absolute',
-    top: 'auto',
-    bottom: '15%',
-    left: 'auto',
-    right: '25%',
-  },
-  '& img.scribble': {
-    width: '160px',
-    position: 'absolute',
-    top: '30%',
-    bottom: 'auto',
-    left: '24%',
-    right: 'auto',
-  },
-  '& img.cone': {
-    width: '108px',
-    position: 'absolute',
-    top: '25%',
-    bottom: 'auto',
-    left: 'auto',
-    right: '13%',
-  },
-  [theme.breakpoints.down('sm')]: {
-    height: 'auto',
-    '& img.tank': {
-      display: 'none',
-    },
-    '& img.arrow': {
-      display: 'none',
-    },
-    '& img.scribble': {
-      display: 'none',
-    },
-    '& img.cone': {
-      display: 'none',
-    },
-  },
 }));
 
 const CurrencyImg = styled('img')(({ theme }) => ({
@@ -95,44 +42,40 @@ const CurrencyImg = styled('img')(({ theme }) => ({
   height: 37,
 }));
 
-const H1 = styled(Typography)(({ theme }) => ({
-  fontFamily: 'DM Sans',
-  fontWeight: 'bold',
-  fontSize: '40px !important',
-  textTransform: 'uppercase',
-  color: theme.palette.primary.main,
-  [theme.breakpoints.down('sm')]: {
-    paddingTop: theme.spacing(8),
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-  },
-}));
-
-const BoxTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: '500',
-  fontSize: '1.5rem !important',
-  color: theme.palette.ink.i900,
-}));
-
 export default function LandingSplash() {
   return (
-    <ContainerBox>
+    <LandingContainer>
       <Grid container spacing={2}>
         <Grid md={6} xs={12}>
-          <GridBox>
-            <H1 variant="h1">TU Lugar SEGURO, SENCILLO Y ENTENDIBLE EN LA WEB3</H1>
-            <img src="images/Model-Tank.png" loading="lazy" alt="" className="tank" />
-            <img src="images/Model-Cone.png" loading="lazy" alt="" className="cone" />
-            <img src="images/Vector-2.png" loading="lazy" alt="" className="scribble" />
-            <img src="images/2D-Shape.png" loading="lazy" alt="" className="arrow" />
-          </GridBox>
+          <Jumbotron />
         </Grid>
         <Grid md={6} xs={12}>
           <GridBox>
             <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
               <Grid container spacing={2} sx={{ margin: 0 }}>
                 <Grid xs={12}>
-                  <BoxTitle variant="h3">Deposita MXN</BoxTitle>
+                  <Select
+                    defaultValue={'deposit'}
+                    fullWidth={false}
+                    mantainLabel={false}
+                    className="no-border"
+                    sx={{
+                      width: 'fit-content',
+                      fontWeight: '500',
+                      fontSize: '1.5rem !important',
+                      color: 'palette.ink.i900',
+                    }}
+                    items={[
+                      {
+                        label: 'Deposita MXN',
+                        value: 'deposit',
+                      },
+                      {
+                        label: 'Retira MXN',
+                        value: 'withdraw',
+                      },
+                    ]}
+                  />
                 </Grid>
 
                 <Grid md={8} sm={6} xs={7}>
@@ -193,6 +136,15 @@ export default function LandingSplash() {
                   />
                 </Grid>
                 <Grid xs={12}>
+                  <Hr sx={{ marginBottom: 2 }} />
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography variant="body2">Comisión de depósito</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                      2 USDT
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid xs={12}>
                   <BandoButton
                     variant="contained"
                     fullWidth
@@ -206,6 +158,6 @@ export default function LandingSplash() {
           </GridBox>
         </Grid>
       </Grid>
-    </ContainerBox>
+    </LandingContainer>
   );
 }
