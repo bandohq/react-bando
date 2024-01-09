@@ -11,7 +11,7 @@ import Currency from '../../assets/currency.svg';
 import Usdt from '../../assets/usdt.svg';
 import Arbitrum from '../../assets/arbitrum.svg';
 
-const ContainerBox = styled(Box)<BoxProps>(({ theme }) => ({
+const ContainerBox = styled('section')(({ theme }) => ({
   flexGrow: 1,
   display: 'flex',
   height: '100vh',

@@ -5,8 +5,7 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      <div className="div-block-7">
-        <img src="images/Background.png" loading="lazy" sizes="100vw" alt="" className="image" />
+      <div className="landing-page">
         <LandingSplash />
         <section className="section hidden">
           <div className="w-layout-blockcontainer container-7 w-container">
