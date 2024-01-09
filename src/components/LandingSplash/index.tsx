@@ -33,7 +33,7 @@ const LandingContainer = styled('section')(({ theme }) => ({
   '& .MuiGrid2-container': { width: '100%' },
 }));
 
-const CurrencyImg = styled('img')(({ theme }) => ({
+export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
   marginBottom: '-10px',
   padding: 0,

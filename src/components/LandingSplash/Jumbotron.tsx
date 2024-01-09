@@ -3,17 +3,20 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 const H1 = styled(Typography)(({ theme }) => ({
-  fontFamily: 'DM Sans',
+  fontFamily: 'Bueno',
   fontWeight: 'bold',
-  fontSize: '40px !important',
+  lineHeight: 'normal',
+  fontSize: '80px !important',
   textTransform: 'uppercase',
-  color: theme.palette.primary.main,
+  textAlign: 'center',
+  color: theme.palette.secondary.main,
   [theme.breakpoints.down('md')]: {
     paddingTop: 0,
+    fontSize: '64px !important',
+    lineHeight: 'normal',
     paddingBottom: theme.spacing(4),
     paddingLeft: theme.spacing(8),
     paddingRight: theme.spacing(8),
-    textAlign: 'center',
   },
   [theme.breakpoints.down('sm')]: {
     paddingTop: theme.spacing(8),
@@ -35,7 +38,7 @@ export const GridBox = styled(Box)<BoxProps>(({ theme }) => ({
     width: '108px',
     position: 'absolute',
     top: 'auto',
-    bottom: '32%',
+    bottom: '18%',
     left: '6%',
     right: 'auto',
   },
@@ -43,28 +46,27 @@ export const GridBox = styled(Box)<BoxProps>(({ theme }) => ({
     width: '360px',
     position: 'absolute',
     top: 'auto',
-    bottom: '15%',
+    bottom: '2%',
     left: 'auto',
-    right: '25%',
+    right: '5%',
   },
   '& img.scribble': {
     width: '160px',
     position: 'absolute',
-    top: '30%',
+    top: '18%',
     bottom: 'auto',
-    left: '24%',
+    left: '10%',
     right: 'auto',
   },
   '& img.cone': {
     width: '108px',
     position: 'absolute',
-    top: '25%',
+    top: '20%',
     bottom: 'auto',
     left: 'auto',
-    right: '13%',
+    right: '10%',
   },
-  [theme.breakpoints.down('md')]: {
-    height: 'auto',
+  [theme.breakpoints.down('lg')]: {
     '& img.tank': {
       display: 'none',
     },
@@ -78,16 +80,41 @@ export const GridBox = styled(Box)<BoxProps>(({ theme }) => ({
       display: 'none',
     },
   },
+  [theme.breakpoints.down('md')]: {
+    height: 'auto',
+  },
+}));
+
+const JumbotronContainer = styled(GridBox)(({ theme }) => ({
+  flexDirection: 'column',
+  paddingBottom: 6,
+  [theme.breakpoints.down('md')]: {
+    marginTop: theme.spacing(6),
+    paddingTop: theme.spacing(6),
+    paddingBottom: theme.spacing(2),
+  },
 }));
 
 export default function Jumbotron() {
   return (
-    <GridBox>
-      <H1 variant="h1">TU Lugar SEGURO, SENCILLO Y ENTENDIBLE EN LA WEB3</H1>
+    <JumbotronContainer>
+      <H1 variant="h1">Intercambia entre MXN y cripto en segundos</H1>
+      <Typography
+        variant="body1"
+        sx={{
+          fontSize: '20px !important',
+          textAlign: 'center',
+          maxWidth: '587px',
+          margin: '0 auto',
+        }}
+      >
+        Con Bando entra y sal del mundo cripto en segundos con SPEI. Puedes depositar o retirar a tu
+        wallet en las redes de Ethereum, Arbitrum, Optimism y muchas más.{' '}
+      </Typography>
       <img src="images/Model-Tank.png" loading="lazy" alt="" className="tank" />
       <img src="images/Model-Cone.png" loading="lazy" alt="" className="cone" />
       <img src="images/Vector-2.png" loading="lazy" alt="" className="scribble" />
       <img src="images/2D-Shape.png" loading="lazy" alt="" className="arrow" />
-    </GridBox>
+    </JumbotronContainer>
   );
 }

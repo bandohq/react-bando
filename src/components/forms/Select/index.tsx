@@ -9,7 +9,7 @@ import CaretDown from '../../../assets/caret-down.svg';
 export type SelectProps = SelectBaseProps & {
   mantainLabel?: boolean;
   helpText?: ReactNode;
-  items?: {
+  items: {
     label: string;
     value: string | number;
     startComponent?: ReactNode;
@@ -40,7 +40,7 @@ export default function Select({
   label,
   helpText = '',
   mantainLabel = true,
-  items = [],
+  items,
   ...props
 }: SelectProps) {
   return (
@@ -52,11 +52,16 @@ export default function Select({
       )}
       <SelectBase
         input={<TextFieldInput />}
+        aria-label={`container-${props.name}`}
         IconComponent={() => <CaretImg src={CaretDown} />}
         {...props}
       >
         {items.map((item) => (
-          <MenuItem key={`select-menuItem-${item.label}-${item.value}`} value={item.value}>
+          <MenuItem
+            key={`select-menuItem-${item.label}-${item.value}`}
+            value={item.value}
+            aria-label={item.label}
+          >
             <>
               {item.startComponent}
               {item.label}

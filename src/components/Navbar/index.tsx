@@ -1,8 +1,8 @@
 import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-
-import BandoButton from '@components/Button';
 import { useCallback, useEffect, useState } from 'react';
+
+// import BandoButton from '@components/Button';
 
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -58,8 +58,6 @@ export default function Navbar() {
     };
   }, [handleScroll]);
 
-  console.log({ isOnTop });
-
   return (
     <NavbarContainer
       data-animation="default"
@@ -68,16 +66,17 @@ export default function Navbar() {
       data-easing="ease"
       data-easing2="ease"
       className={isOnTop ? '' : 'scrolled'}
+      aria-label={isOnTop ? 'scrollTop' : 'scrolled'}
     >
       <div className="navbar-box">
         <a href="/" className="navbar-brand">
-          <img src="images/bando_full_green.png" loading="lazy" alt="" />
+          <img src="images/bando_full_green.png" loading="lazy" alt="" aria-label="Bando logo" />
         </a>
-        <nav role="navigation" className="navbar-menu">
+        {/* <nav role="navigation" className="navbar-menu">
           <BandoButton variant="contained" href="#email-2" className="rounded">
             Empieza Hoy
           </BandoButton>
-        </nav>
+        </nav> */}
       </div>
     </NavbarContainer>
   );

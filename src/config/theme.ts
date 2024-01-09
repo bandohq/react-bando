@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import { responsiveFontSizes } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
@@ -8,6 +9,7 @@ const theme = createTheme({
       dark: '#393F44',
       contrastText: '#FFFFFF',
     },
+    secondary: { main: '#5CC9AB' },
     ink: {
       i900: '#212121',
       i700: '#393F44',
@@ -42,4 +44,4 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+export default responsiveFontSizes(theme);
