@@ -1,9 +1,12 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import TestProvider from '@helpers/TestProvider';
+import App from 'App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('App', () => {
+  it('should render App component without crashing', () => {
+    render(<App />, { wrapper: TestProvider });
+    expect(
+      screen.getAllByText(/Con Bando entra y sal del mundo cripto en segundos con SPEI/i),
+    ).toHaveLength(1);
+  });
 });

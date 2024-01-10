@@ -1485,91 +1485,91 @@
 
 @font-face {
   font-family: 'TWK Everett';
-  src: url('../fonts/TWKEverett-Extrabold-web.ttf') format('truetype');
+  src: url('/fonts/TWKEverett-Extrabold-web.ttf') format('truetype');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Bueno';
-  src: url('../fonts/Bueno-Light.ttf') format('truetype'), url('../fonts/Bueno-Light.otf') format('opentype');
+  src: url('/fonts/Bueno-Light.ttf') format('truetype'), url('/fonts/Bueno-Light.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Bueno';
-  src: url('../fonts/Bueno-Bold.ttf') format('truetype');
+  src: url('/fonts/Bueno-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Bueno';
-  src: url('../fonts/Bueno-Black.ttf') format('truetype');
+  src: url('/fonts/Bueno-Black.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'TWK Everett';
-  src: url('../fonts/TWKEverett-Thin.otf') format('opentype');
+  src: url('/fonts/TWKEverett-Thin.otf') format('opentype');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'TWK Everett';
-  src: url('../fonts/TWKEverett-UltralightItalic.otf') format('opentype');
+  src: url('/fonts/TWKEverett-UltralightItalic.otf') format('opentype');
   font-weight: 200;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'TWK Everett';
-  src: url('../fonts/TWKEverett-Bold.otf') format('opentype');
+  src: url('/fonts/TWKEverett-Bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'TWK Everett';
-  src: url('../fonts/TWKEverett-Regular.otf') format('opentype'), url('../fonts/TWKEverett-Super.otf') format('opentype');
+  src: url('/fonts/TWKEverett-Regular.otf') format('opentype'), url('/fonts/TWKEverett-Super.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'TWK Everett';
-  src: url('../fonts/TWKEverett-Light.otf') format('opentype');
+  src: url('/fonts/TWKEverett-Light.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'TWK Everett';
-  src: url('../fonts/TWKEverett-LightItalic.otf') format('opentype');
+  src: url('/fonts/TWKEverett-LightItalic.otf') format('opentype');
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'TWK Everett';
-  src: url('../fonts/TWKEverett-Medium.otf') format('opentype');
+  src: url('/fonts/TWKEverett-Medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Bueno';
-  src: url('../fonts/Bueno-Regular.otf') format('opentype');
+  src: url('/fonts/Bueno-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Bueno';
-  src: url('../fonts/Bueno-Medium.otf') format('opentype');
+  src: url('/fonts/Bueno-Medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;

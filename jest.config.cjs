@@ -1,0 +1,58 @@
+const defaultCoverage = {
+  branches: 80,
+  functions: 95,
+  lines: 95,
+  statements: 95,
+};
+
+module.exports = {
+  roots: ['<rootDir>/src'],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    '**/*.{js,jsx,ts,tsx}',
+    '!**/*.d.ts',
+    '!__mocks__/**',
+    '!.next/**',
+    '!coverage/**',
+    '!.eslintrc.js',
+    '!jest/**',
+    '!src/helpers/**',
+  ],
+  coverageThreshold: {
+    global: defaultCoverage,
+    'src/components/**': defaultCoverage,
+    // 'src/hooks/**': defaultCoverage,
+    // 'src/store/**': defaultCoverage,
+    // 'src/layouts/**': defaultCoverage,
+    // 'src/pages/**': defaultCoverage,
+    // 'src/config/**': defaultCoverage,
+  },
+  setupFiles: ['fake-indexeddb/auto'],
+  setupFilesAfterEnv: ['jest-extended/all', './jest/setupTests.ts'],
+  testEnvironment: 'jsdom',
+  transform: {
+    '^.+\\.(ts|js|tsx|jsx|mjs)$': ['@swc/jest'],
+    '^.+\\.svg$': '<rootDir>/jest/svgTransformer.ts',
+  },
+  transformIgnorePatterns: [
+    '[/\\\\]node_modules[/\\\\](?!(@uppy|nanoid|preact|exifr|camelize-ts)).+\\.(js|jsx|mjs|cjs|ts|tsx)$',
+    '^.+\\.module\\.(css|sass|scss)$',
+  ],
+  modulePaths: ['<rootDir>/src'],
+  moduleNameMapper: {
+    '^.+\\.(css|scss)$': '<rootDir>/jest/CSSStub.ts',
+    '@config/(.*)': '<rootDir>/src/config/$1',
+    '@pages/(.*)': '<rootDir>/src/pages/$1',
+    '@layouts/(.*)': '<rootDir>/src/layouts/$1',
+    '@components/(.*)': '<rootDir>/src/components/$1',
+    '@translations/(.*)': '<rootDir>/src/translations/$1',
+    '@assets/(.*)': '<rootDir>/src/assets/$1',
+    '@styles/(.*)': '<rootDir>/src/styles/$1',
+    '@hooks/(.*)': '<rootDir>/src/hooks/$1',
+    '@store/(.*)': '<rootDir>/src/store/$1',
+    '@helpers/(.*)': '<rootDir>/src/helpers/$1',
+  },
+  moduleFileExtensions: ['tsx', 'ts', 'js', 'json', 'jsx', 'node'],
+  watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
+  resetMocks: true,
+};
