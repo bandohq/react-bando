@@ -20,6 +20,13 @@ import Usdt from '../../../assets/usdt.svg';
 
 import useQuote from '@hooks/useQuote';
 
+const FormTitle = styled(Typography)(({ theme }) => ({
+  width: 'fit-content',
+  fontWeight: '500',
+  fontSize: '1.5rem !important',
+  color: theme.palette.ink.i900,
+}));
+
 const Hr = styled('hr')(({ theme }) => ({
   backgroundColor: theme.palette.ink.i300,
   height: 1,
@@ -46,14 +53,14 @@ export default function GetQuoteForm() {
   });
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
-  const baseAmount = watch('baseAmount');
 
   const { isMutating, data, getQuote } = useQuote();
 
-  const fetchQuote = useCallback(
-    async (formValues: RequestQuoteArgs) => getQuote(formValues).catch(() => null),
-    [getQuote],
-  );
+  const fetchQuote = async (formValues: RequestQuoteArgs) => {
+    console.log('hey');
+    const rsp = await getQuote(formValues).catch(() => null);
+    console.log({ rsp });
+  };
 
   const changeCurrencyType = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,9 +70,8 @@ export default function GetQuoteForm() {
         event.target.name === 'baseCurrency' ? 'quoteCurrency' : 'baseCurrency';
 
       setValue(alternateField, alternateValue);
-      if (baseAmount > 0) handleSubmit(fetchQuote)();
     },
-    [fetchQuote, baseAmount, setValue, handleSubmit],
+    [setValue],
   );
 
   return (
@@ -73,25 +79,18 @@ export default function GetQuoteForm() {
       <form onSubmit={handleSubmit(fetchQuote)}>
         <Grid container spacing={2} sx={{ margin: 0 }}>
           <Grid xs={12}>
+            <FormTitle>Deposita MXN o Cripto</FormTitle>
+          </Grid>
+
+          <Grid xs={12}>
             <Select
-              defaultValue={'deposit'}
-              fullWidth={false}
-              mantainLabel={false}
-              className="no-border"
-              sx={{
-                width: 'fit-content',
-                fontWeight: '500',
-                fontSize: '1.5rem !important',
-                color: 'palette.ink.i900',
-              }}
+              defaultValue={'arbitrum'}
+              label="Red a recibir"
               items={[
                 {
-                  label: 'Deposita MXN',
-                  value: 'deposit',
-                },
-                {
-                  label: 'Retira MXN',
-                  value: 'withdraw',
+                  label: 'Arbitrum',
+                  value: 'arbitrum',
+                  startComponent: <CurrencyImg src={Arbitrum} />,
                 },
               ]}
             />
@@ -163,19 +162,7 @@ export default function GetQuoteForm() {
               error={!!formState.errors.quoteCurrency?.message}
             />
           </Grid>
-          <Grid xs={12}>
-            <Select
-              defaultValue={'arbitrum'}
-              label="Red a recibir"
-              items={[
-                {
-                  label: 'Arbitrum',
-                  value: 'arbitrum',
-                  startComponent: <CurrencyImg src={Arbitrum} />,
-                },
-              ]}
-            />
-          </Grid>
+
           <Grid xs={12}>
             <Hr sx={{ marginBottom: 2 }} />
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

@@ -1,4 +1,4 @@
-import { within, render, screen, waitFor } from '@testing-library/react';
+import { act, within, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import wrapper from '@helpers/TestProvider';
 
@@ -7,7 +7,6 @@ import axios from 'axios';
 jest.mock('axios');
 
 import GetQuoteForm from '.';
-import { act } from 'react-dom/test-utils';
 
 describe('GetQuoteForm', () => {
   beforeEach(() => {
