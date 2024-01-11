@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ForwardedRef, ReactNode, forwardRef } from 'react';
 import { Box } from '@mui/material';
 import FormControlBase from '@mui/material/FormControl';
 import InputBase, { InputBaseProps } from '@mui/material/InputBase';
@@ -53,6 +53,14 @@ export const TextFieldInput = styled(InputBase)(({ theme }) => ({
       borderRadius: 4,
     },
   },
+  '&.Mui-error .MuiInputBase-input, &.Mui-error .MuiSelect-select': {
+    borderColor: theme.palette.error.main,
+    '&:focus': {
+      boxShadow: `${alpha(theme.palette.error.main, 0.25)} 0 0 0 0.2rem`,
+      borderColor: theme.palette.error.main,
+      borderRadius: 4,
+    },
+  },
   '&.no-border': {
     '& .MuiInputBase-input, & .MuiSelect-select': {
       border: 'none !important',
@@ -76,22 +84,26 @@ export const HelpText = styled(Box)(({ theme }) => ({
   marginTop: 4,
 }));
 
-export default function Input({
-  label,
-  helpText = '',
-  mantainLabel = true,
-  fullWidth = true,
-  ...props
-}: InputProps) {
+const Input = forwardRef((inputProps: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
+  const { label, helpText = '', mantainLabel = true, fullWidth = true, ...props } = inputProps;
+  const labelText = props.id ?? props.name;
+
   return (
     <FormControl variant="standard">
-      {(!!label || mantainLabel) && (
-        <InputLabel shrink htmlFor={props.id} aria-label={props.id}>
+      {!!label && mantainLabel && (
+        <InputLabel shrink htmlFor={props.id} id={labelText} aria-label={label}>
           {label}
         </InputLabel>
       )}
-      <TextFieldInput fullWidth={fullWidth} {...props} />
+      <TextFieldInput
+        fullWidth={fullWidth}
+        {...props}
+        ref={ref}
+        inputProps={{ ...props.inputProps, 'aria-label': labelText }}
+      />
       {!!helpText && <HelpText>{helpText}</HelpText>}
     </FormControl>
   );
-}
+});
+
+export default Input;

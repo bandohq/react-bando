@@ -2,8 +2,6 @@ import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
 
-// import BandoButton from '@components/Button';
-
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
   backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -72,11 +70,6 @@ export default function Navbar() {
         <a href="/" className="navbar-brand">
           <img src="images/bando_full_green.png" loading="lazy" alt="" aria-label="Bando logo" />
         </a>
-        {/* <nav role="navigation" className="navbar-menu">
-          <BandoButton variant="contained" href="#email-2" className="rounded">
-            Empieza Hoy
-          </BandoButton>
-        </nav> */}
       </div>
     </NavbarContainer>
   );

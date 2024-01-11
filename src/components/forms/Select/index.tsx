@@ -1,5 +1,5 @@
 import SelectBase, { SelectProps as SelectBaseProps } from '@mui/material/Select';
-import { ReactNode } from 'react';
+import { ForwardedRef, ReactNode, forwardRef } from 'react';
 import { styled } from '@mui/material/styles';
 
 import { TextFieldInput, InputLabel, FormControl, HelpText } from '@components/forms/Input';
@@ -36,23 +36,21 @@ const CaretImg = styled('img')(() => ({
   flexShrink: 0,
 }));
 
-export default function Select({
-  label,
-  helpText = '',
-  mantainLabel = true,
-  items,
-  ...props
-}: SelectProps) {
+const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
+  const { label, helpText = '', mantainLabel = true, items, ...props } = selectProps;
+  const labelText = props.id ?? props.name;
+
   return (
     <FormControl variant="standard">
       {(!!label || mantainLabel) && (
-        <InputLabel shrink htmlFor={props.id} aria-label={props.id}>
+        <InputLabel shrink htmlFor={props.id} id={labelText}>
           {label}
         </InputLabel>
       )}
       <SelectBase
+        ref={ref}
         input={<TextFieldInput />}
-        aria-label={`container-${props.name}`}
+        inputProps={{ ...props.inputProps, 'aria-label': labelText }}
         IconComponent={() => <CaretImg src={CaretDown} />}
         {...props}
       >
@@ -73,4 +71,6 @@ export default function Select({
       {!!helpText && <HelpText>{helpText}</HelpText>}
     </FormControl>
   );
-}
+});
+
+export default Select;

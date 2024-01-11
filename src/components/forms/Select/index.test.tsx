@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import wrapper from '@helpers/TestProvider';
 
 import Select from '.';
-import { CurrencyImg } from '@components/LandingSplash';
+import { CurrencyImg } from '../GetQuoteForm';
 import Currency from '../../../assets/currency.svg';
 
 const items = [

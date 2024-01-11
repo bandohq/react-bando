@@ -17,15 +17,16 @@ module.exports = {
     '!.eslintrc.js',
     '!jest/**',
     '!src/helpers/**',
+    '!src/config/axios.ts',
   ],
   coverageThreshold: {
     global: defaultCoverage,
     'src/components/**': defaultCoverage,
-    // 'src/hooks/**': defaultCoverage,
+    'src/hooks/**': defaultCoverage,
     // 'src/store/**': defaultCoverage,
     // 'src/layouts/**': defaultCoverage,
     // 'src/pages/**': defaultCoverage,
-    // 'src/config/**': defaultCoverage,
+    'src/config/**': defaultCoverage,
   },
   setupFiles: ['fake-indexeddb/auto'],
   setupFilesAfterEnv: ['jest-extended/all', './jest/setupTests.ts'],
@@ -55,4 +56,7 @@ module.exports = {
   moduleFileExtensions: ['tsx', 'ts', 'js', 'json', 'jsx', 'node'],
   watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
   resetMocks: true,
+  testEnvironmentOptions: {
+    customExportConditions: [''],
+  },
 };
