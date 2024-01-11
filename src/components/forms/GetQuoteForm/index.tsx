@@ -56,11 +56,7 @@ export default function GetQuoteForm() {
 
   const { isMutating, data, getQuote } = useQuote();
 
-  const fetchQuote = async (formValues: RequestQuoteArgs) => {
-    console.log('hey');
-    const rsp = await getQuote(formValues).catch(() => null);
-    console.log({ rsp });
-  };
+  const fetchQuote = async (formValues: RequestQuoteArgs) => getQuote(formValues).catch(() => null);
 
   const changeCurrencyType = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
