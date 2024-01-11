@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import BoxContainer from '@components/BoxContainer';
 import { styled } from '@mui/material/styles';
+import { useCallback } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,7 +19,6 @@ import Arbitrum from '../../../assets/arbitrum.svg';
 import Usdt from '../../../assets/usdt.svg';
 
 import useQuote from '@hooks/useQuote';
-import { useCallback } from 'react';
 
 const Hr = styled('hr')(({ theme }) => ({
   backgroundColor: theme.palette.ink.i300,
@@ -51,7 +51,7 @@ export default function GetQuoteForm() {
   const { isMutating, data, getQuote } = useQuote();
 
   const fetchQuote = useCallback(
-    (formValues: RequestQuoteArgs) => getQuote(formValues),
+    async (formValues: RequestQuoteArgs) => getQuote(formValues).catch(() => null),
     [getQuote],
   );
 
@@ -65,7 +65,7 @@ export default function GetQuoteForm() {
       setValue(alternateField, alternateValue);
       if (baseAmount > 0) handleSubmit(fetchQuote)();
     },
-    [baseAmount, fetchQuote, handleSubmit, setValue],
+    [fetchQuote, baseAmount, setValue, handleSubmit],
   );
 
   return (
@@ -105,7 +105,6 @@ export default function GetQuoteForm() {
                 if (event.key === '.') event.preventDefault();
               }}
               {...register('baseAmount')}
-              onBlur={handleSubmit(fetchQuote)}
               disabled={isMutating}
               error={!!formState.errors.baseAmount?.message}
             />

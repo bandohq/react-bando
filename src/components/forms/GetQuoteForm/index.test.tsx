@@ -82,10 +82,11 @@ describe('GetQuoteForm', () => {
 
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
     const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
+    const submitBtn = screen.getByRole('button', { name: 'Depositar' });
     await userEvent.type(baseAmountInput, '1000');
 
     act(() => {
-      userEvent.click(quoteAmountInput);
+      userEvent.click(submitBtn);
     });
 
     await waitFor(() => {
