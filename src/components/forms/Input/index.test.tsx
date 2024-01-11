@@ -35,11 +35,20 @@ describe('Input', () => {
   });
 
   it('mantainLabel should hide label element when false', async () => {
-    render(<Input id="textInput" type="text" placeholder="textInput" mantainLabel={false} />, {
-      wrapper,
-    });
+    render(
+      <Input
+        id="textInput"
+        type="text"
+        placeholder="textInput"
+        label="LabelText"
+        mantainLabel={false}
+      />,
+      {
+        wrapper,
+      },
+    );
 
-    expect(() => screen.getByLabelText('textInput')).toThrow();
+    expect(() => screen.getByText('LabelText')).toThrow();
   });
 
   describe('HelpText component', () => {

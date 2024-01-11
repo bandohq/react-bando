@@ -4,6 +4,8 @@ import { ThemeProvider } from '@mui/material';
 
 import App from './App.tsx';
 import theme from '@config/theme.ts';
+
+import '@config/axios';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
