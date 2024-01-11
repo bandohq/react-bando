@@ -8,7 +8,6 @@ import 'jest-localstorage-mock';
 
 import { TextEncoder, TextDecoder } from 'util';
 import { Response } from 'cross-fetch';
-import 'url';
 
 process.env.API = 'https://api.com';
 process.env.AUTH_COOKIE_NAME = 'bando_test';

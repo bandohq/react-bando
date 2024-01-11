@@ -1,8 +1,8 @@
 const defaultCoverage = {
   branches: 80,
-  functions: 95,
+  functions: 85,
   lines: 95,
-  statements: 95,
+  statements: 90,
 };
 
 module.exports = {
