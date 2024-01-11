@@ -18,6 +18,7 @@ import Arbitrum from '../../../assets/arbitrum.svg';
 import Usdt from '../../../assets/usdt.svg';
 
 import useQuote from '@hooks/useQuote';
+import { useCallback } from 'react';
 
 const Hr = styled('hr')(({ theme }) => ({
   backgroundColor: theme.palette.ink.i300,
@@ -45,21 +46,27 @@ export default function GetQuoteForm() {
   });
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
+  const baseAmount = watch('baseAmount');
 
   const { isMutating, data, getQuote } = useQuote();
 
-  const changeCurrencyType = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    const alternateValue = value === 'MXN' ? 'USDC' : 'MXN';
-    const alternateField = event.target.name === 'baseCurrency' ? 'quoteCurrency' : 'baseCurrency';
+  const fetchQuote = useCallback(
+    (formValues: RequestQuoteArgs) => getQuote(formValues),
+    [getQuote],
+  );
 
-    setValue(alternateField, alternateValue);
-    handleSubmit(fetchQuote)();
-  };
+  const changeCurrencyType = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      const alternateValue = value === 'MXN' ? 'USDC' : 'MXN';
+      const alternateField =
+        event.target.name === 'baseCurrency' ? 'quoteCurrency' : 'baseCurrency';
 
-  const fetchQuote = (formValues: RequestQuoteArgs) => {
-    getQuote(formValues);
-  };
+      setValue(alternateField, alternateValue);
+      if (baseAmount > 0) handleSubmit(fetchQuote)();
+    },
+    [baseAmount, fetchQuote, handleSubmit, setValue],
+  );
 
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
