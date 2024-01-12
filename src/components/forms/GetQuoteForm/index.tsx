@@ -3,29 +3,23 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import BoxContainer from '@components/BoxContainer';
 import { styled } from '@mui/material/styles';
-import { useCallback } from 'react';
+import { ChangeEvent, useCallback, useRef } from 'react';
+import debounce from 'lodash/debounce';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RequestQuoteArgs } from '@hooks/useQuote/requests';
-import schema from './schema';
+import schema, { GetQuoteFormValues } from './schema';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
-
-import Currency from '../../../assets/currency.svg';
 import Arbitrum from '../../../assets/arbitrum.svg';
-import Usdt from '../../../assets/usdt.svg';
 
 import useQuote from '@hooks/useQuote';
+import { sendCurrency, depositCurrency } from '@config/constants/currencies';
 
-const FormTitle = styled(Typography)(({ theme }) => ({
-  width: 'fit-content',
-  fontWeight: '500',
-  fontSize: '1.5rem !important',
-  color: theme.palette.ink.i900,
-}));
+const REQUEST_DEBOUNCE = 250;
 
 const Hr = styled('hr')(({ theme }) => ({
   backgroundColor: theme.palette.ink.i300,
@@ -44,38 +38,77 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 }));
 
 export default function GetQuoteForm() {
-  const { register, handleSubmit, setValue, watch, formState } = useForm<RequestQuoteArgs>({
+  const { data, getQuote } = useQuote();
+  const { register, handleSubmit, setValue, watch, formState } = useForm<GetQuoteFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
       quoteCurrency: 'USDC',
       baseCurrency: 'MXN',
+      operationType: 'deposit',
     },
   });
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
+  const operationType = watch('operationType');
+  const baseAmount = watch('baseAmount');
 
-  const { isMutating, data, getQuote } = useQuote();
+  const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
+  const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
+  const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
 
-  const fetchQuote = async (formValues: RequestQuoteArgs) => getQuote(formValues).catch(() => null);
-
-  const changeCurrencyType = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      const alternateValue = value === 'MXN' ? 'USDC' : 'MXN';
-      const alternateField =
-        event.target.name === 'baseCurrency' ? 'quoteCurrency' : 'baseCurrency';
-
-      setValue(alternateField, alternateValue);
-    },
-    [setValue],
+  const fetchQuote = useCallback(
+    async (formValues: RequestQuoteArgs) => getQuote(formValues).catch(() => null),
+    [getQuote],
   );
+
+  const getQuoteOnSelectChange = useCallback(() => {
+    if (baseAmount > 0) handleSubmit(fetchQuote)();
+  }, [baseAmount, fetchQuote, handleSubmit]);
+
+  const onChangeOperationType = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target;
+    const depositCurrencyItms = value === 'deposit' ? sendCurrency : depositCurrency;
+    const sendCurrencyItms = value === 'deposit' ? depositCurrency : sendCurrency;
+    setValue('baseCurrency', depositCurrencyItms[0].value);
+    setValue('quoteCurrency', sendCurrencyItms[0].value);
+    getQuoteOnSelectChange();
+  };
+
+  const debouncedQuantityChange = useRef(
+    debounce(handleSubmit(fetchQuote), REQUEST_DEBOUNCE, { leading: true }),
+  );
+  const onQuantityChange = () => {
+    debouncedQuantityChange.current();
+  };
 
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
       <form onSubmit={handleSubmit(fetchQuote)}>
         <Grid container spacing={2} sx={{ margin: 0 }}>
           <Grid xs={12}>
-            <FormTitle>Deposita MXN o Cripto</FormTitle>
+            <Select
+              defaultValue={'deposit'}
+              fullWidth={false}
+              mantainLabel={false}
+              className="no-border"
+              sx={{
+                width: 'fit-content',
+                fontWeight: '500',
+                fontSize: '1.5rem !important',
+                color: 'palette.ink.i900',
+              }}
+              items={[
+                {
+                  label: `Deposita ${operationCurrency}`,
+                  value: 'deposit',
+                },
+                {
+                  label: `Retira ${operationCurrency}`,
+                  value: 'withdraw',
+                },
+              ]}
+              {...register('operationType', { onChange: onChangeOperationType })}
+            />
           </Grid>
 
           <Grid xs={12}>
@@ -99,28 +132,15 @@ export default function GetQuoteForm() {
               onKeyDown={(event) => {
                 if (event.key === '.') event.preventDefault();
               }}
-              {...register('baseAmount')}
-              disabled={isMutating}
+              {...register('baseAmount', { onChange: onQuantityChange })}
               error={!!formState.errors.baseAmount?.message}
             />
           </Grid>
           <Grid md={4} sm={6} xs={5}>
             <Select
-              items={[
-                {
-                  label: 'MXN',
-                  value: 'MXN',
-                  startComponent: <CurrencyImg src={Currency} />,
-                },
-                {
-                  label: 'USDC',
-                  value: 'USDC',
-                  startComponent: <CurrencyImg src={Usdt} />,
-                },
-              ]}
+              items={depositCurrencyItems}
               value={baseCurrency}
-              {...register('baseCurrency', { onChange: changeCurrencyType })}
-              disabled={isMutating}
+              {...register('baseCurrency')}
               error={!!formState.errors.baseCurrency?.message}
             />
           </Grid>
@@ -140,21 +160,9 @@ export default function GetQuoteForm() {
           </Grid>
           <Grid md={4} sm={6} xs={5}>
             <Select
-              items={[
-                {
-                  label: 'MXN',
-                  value: 'MXN',
-                  startComponent: <CurrencyImg src={Currency} />,
-                },
-                {
-                  label: 'USDC',
-                  value: 'USDC',
-                  startComponent: <CurrencyImg src={Usdt} />,
-                },
-              ]}
+              items={sendCurrencyItems}
               value={quoteCurrency}
-              {...register('quoteCurrency', { onChange: changeCurrencyType })}
-              disabled={isMutating}
+              {...register('quoteCurrency')}
               error={!!formState.errors.quoteCurrency?.message}
             />
           </Grid>
