@@ -18,6 +18,7 @@ import Arbitrum from '../../../assets/arbitrum.svg';
 
 import useQuote from '@hooks/useQuote';
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const REQUEST_DEBOUNCE = 250;
 
@@ -38,7 +39,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 }));
 
 export default function GetQuoteForm() {
-  const { data, getQuote } = useQuote();
+  const { isMutating, data, getQuote } = useQuote();
   const { register, handleSubmit, setValue, watch, formState } = useForm<GetQuoteFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -153,7 +154,10 @@ export default function GetQuoteForm() {
               helpText={
                 <>
                   Tipo de cambio ({baseCurrency}/{quoteCurrency}):
-                  <strong>{data?.quoteRateInverse ?? 0}</strong>
+                  {isMutating && (
+                    <CircularProgress size={15} sx={{ marginLeft: 1, color: '#686F73' }} />
+                  )}
+                  {!isMutating && <strong>{data?.quoteRateInverse ?? 0}</strong>}
                 </>
               }
               disabled
@@ -184,7 +188,7 @@ export default function GetQuoteForm() {
               fullWidth
               sx={{ padding: '16px 8px', fontWeight: 'bold' }}
             >
-              Depositar
+              Continuar
             </BandoButton>
           </Grid>
         </Grid>
