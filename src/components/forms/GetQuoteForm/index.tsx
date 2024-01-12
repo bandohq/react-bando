@@ -153,11 +153,12 @@ export default function GetQuoteForm() {
               value={data?.quoteAmount ?? 0}
               helpText={
                 <>
-                  Tipo de cambio ({baseCurrency}/{quoteCurrency}):
-                  {isMutating && (
+                  Tipo de cambio ({baseCurrency}/{quoteCurrency}):&nbsp;
+                  {isMutating ? (
                     <CircularProgress size={15} sx={{ marginLeft: 1, color: 'palette.ink.i500' }} />
+                  ) : (
+                    <strong>{data?.quoteRateInverse ?? 0}</strong>
                   )}
-                  {!isMutating && <strong>{data?.quoteRateInverse ?? 0}</strong>}
                 </>
               }
               disabled

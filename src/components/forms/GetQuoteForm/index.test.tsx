@@ -29,9 +29,8 @@ describe('GetQuoteForm', () => {
     render(<GetQuoteForm />, { wrapper });
     screen.getByText('Recibes');
     screen.getByText('Envias');
-    screen.getByText('Tipo de cambio (USDT/MXN):');
-    screen.getByText('Tipo de cambio (USDT/MXN):');
-    screen.getByText('Depositar');
+    screen.getByText('Tipo de cambio (MXN/USDC):');
+    screen.getByText('Continuar');
   });
 
   it('should change the value of the input and remove dots', async () => {
@@ -78,7 +77,7 @@ describe('GetQuoteForm', () => {
 
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
     const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
-    const submitBtn = screen.getByRole('button', { name: 'Depositar' });
+    const submitBtn = screen.getByRole('button', { name: 'Continuar' });
     await userEvent.type(baseAmountInput, '1000');
 
     act(() => {
