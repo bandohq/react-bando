@@ -46,7 +46,7 @@ describe('GetQuoteForm', () => {
     expect(input.value).toBe('50075');
   });
 
-  it('changing value on operationType also changes the value in naseCurrency and quoteCurrency', async () => {
+  it('changing value on operationType also changes the value in baseCurrency and quoteCurrency', async () => {
     const { container } = render(<GetQuoteForm />, { wrapper });
 
     const [operationType] = screen.getAllByRole('combobox');
