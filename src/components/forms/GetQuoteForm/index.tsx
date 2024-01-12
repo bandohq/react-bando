@@ -155,7 +155,7 @@ export default function GetQuoteForm() {
                 <>
                   Tipo de cambio ({baseCurrency}/{quoteCurrency}):
                   {isMutating && (
-                    <CircularProgress size={15} sx={{ marginLeft: 1, color: '#686F73' }} />
+                    <CircularProgress size={15} sx={{ marginLeft: 1, color: 'palette.ink.i500' }} />
                   )}
                   {!isMutating && <strong>{data?.quoteRateInverse ?? 0}</strong>}
                 </>
