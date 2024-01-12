@@ -152,7 +152,8 @@ export default function GetQuoteForm() {
               value={data?.quoteAmount ?? 0}
               helpText={
                 <>
-                  Tipo de cambio (USDT/MXN): <strong>16.83</strong>
+                  Tipo de cambio ({baseCurrency}/{quoteCurrency}):
+                  <strong>{data?.quoteRateInverse ?? 0}</strong>
                 </>
               }
               disabled

@@ -10,7 +10,7 @@ function App() {
         <section className="section hidden">
           <div className="w-layout-blockcontainer container-7 w-container">
             <div className="div-block horizontal">
-              <h1 className="heading-2">Controla tus critpos y explora la web3 con seguridad</h1>
+              <h1 className="heading-2">Controla tus criptos y explora la web3 con seguridad</h1>
               <p className="paragraph-4 hidden">
                 Bando es tu puerta a la web3 como debe ser: tus llaves, tu cripto, con bajos costos
                 de transacción y con la conexión a DeFi que buscas.
