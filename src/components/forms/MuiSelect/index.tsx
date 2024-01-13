@@ -33,6 +33,7 @@ export type MuiSelectProps = TextFieldProps & CustomSelectProps;
 const MuiSelect = forwardRef((inputProps: MuiSelectProps, ref: ForwardedRef<HTMLInputElement>) => {
   const { mantainLabel = true, fullWidth = true, className, items, ...props } = inputProps;
   const classNames = mantainLabel ? 'label-top' : '';
+  const labelText = props.id ?? props.name;
 
   return (
     <TextFieldBase
@@ -40,6 +41,8 @@ const MuiSelect = forwardRef((inputProps: MuiSelectProps, ref: ForwardedRef<HTML
       ref={ref}
       fullWidth={fullWidth}
       {...props}
+      InputLabelProps={{ htmlFor: props.id, id: labelText }}
+      InputProps={{ 'aria-label': labelText }}
       SelectProps={{
         IconComponent: () => <CaretImg src={CaretDown} />,
       }}
