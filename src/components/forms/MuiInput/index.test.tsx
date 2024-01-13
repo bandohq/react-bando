@@ -7,7 +7,14 @@ import MuiInput from '.';
 describe('MuiInput', () => {
   it('should render input with label', async () => {
     render(<MuiInput label="Recibes" id="moneyReceived" type="number" disabled />, { wrapper });
-    screen.getByLabelText('Recibes');
+    screen.getByLabelText('moneyReceived');
+  });
+
+  it('should render input with label and be identifiebla by name', async () => {
+    render(<MuiInput label="Recibes" name="moneyReceived" />, {
+      wrapper,
+    });
+    screen.getByLabelText('moneyReceived');
   });
 
   it('should change the value of the input', async () => {

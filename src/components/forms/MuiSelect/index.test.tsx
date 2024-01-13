@@ -27,6 +27,13 @@ describe('MuiSelect', () => {
     screen.getByLabelText('moneyReceived');
   });
 
+  it('should render select with label and be identifiebla by name', async () => {
+    render(<MuiSelect label="Recibes" name="moneyReceived" defaultValue="mxn" items={items} />, {
+      wrapper,
+    });
+    screen.getByLabelText('moneyReceived');
+  });
+
   it('changes value from select', async () => {
     const { container } = render(
       <MuiSelect

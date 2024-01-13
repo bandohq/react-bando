@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles';
 import CaretDown from '../../../assets/caret-down.svg';
 import inputStyles from '../MuiInput/styles';
 
-export const TextFieldBase = styled(TextField)<TextFieldProps>(() => inputStyles);
+const TextFieldBase = styled(TextField)<TextFieldProps>(() => inputStyles);
 const MenuItem = styled(MenuItemBase)(() => ({
   fontSize: '16px !important',
   padding: '16px',
