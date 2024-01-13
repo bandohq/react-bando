@@ -19,6 +19,8 @@ describe('useQuote', () => {
         quote_amount: '58.47',
         is_expired: false,
         expires_at: '2024-01-10T23:06:08.388000Z',
+        quote_rate: '5.05',
+        quote_rate_reciprocal: '16.85',
       },
     });
   });
@@ -38,6 +40,8 @@ describe('useQuote', () => {
         isExpired: false,
         quoteAmount: 58.47,
         quoteCurrency: 'USDC',
+        quoteRate: 5.05,
+        quoteRateInverse: 16.85,
       });
     });
   });

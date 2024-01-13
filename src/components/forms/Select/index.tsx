@@ -6,7 +6,7 @@ import { TextFieldInput, InputLabel, FormControl, HelpText } from '@components/f
 import MenuItemBase from '@mui/material/MenuItem';
 import CaretDown from '../../../assets/caret-down.svg';
 
-export type SelectProps = SelectBaseProps & {
+export type CustomSelectProps = {
   mantainLabel?: boolean;
   helpText?: ReactNode;
   items: {
@@ -16,6 +16,7 @@ export type SelectProps = SelectBaseProps & {
     endComponent?: ReactNode;
   }[];
 };
+export type SelectProps = SelectBaseProps & CustomSelectProps;
 
 const MenuItem = styled(MenuItemBase)(() => ({
   fontSize: '16px !important',

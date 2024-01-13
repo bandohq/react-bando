@@ -79,9 +79,11 @@ export const TextFieldInput = styled(InputBase)(({ theme }) => ({
 }));
 
 export const HelpText = styled(Box)(({ theme }) => ({
+  display: 'flex',
   color: theme.palette.ink.i500,
   fontSize: '14px',
   marginTop: 4,
+  alignItems: 'center',
 }));
 
 const Input = forwardRef((inputProps: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
