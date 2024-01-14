@@ -1,7 +1,7 @@
 import LandingSplash from '@components/LandingSplash';
 import Navbar from '@components/Navbar';
 
-function App() {
+export default function Landing() {
   return (
     <div className="App">
       <Navbar />
@@ -440,5 +440,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

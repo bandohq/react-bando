@@ -5,7 +5,7 @@ import Jumbotron, { GridBox } from './Jumbotron';
 
 import GetQuoteForm from '@components/forms/GetQuoteForm';
 
-const LandingContainer = styled('section')(({ theme }) => ({
+const Container = styled('section')(({ theme }) => ({
   flexGrow: 1,
   display: 'flex',
   height: '100vh',
@@ -21,7 +21,7 @@ const LandingContainer = styled('section')(({ theme }) => ({
 
 export default function LandingSplash() {
   return (
-    <LandingContainer>
+    <Container>
       <Grid container spacing={2}>
         <Grid md={6} xs={12}>
           <Jumbotron />
@@ -32,6 +32,6 @@ export default function LandingSplash() {
           </GridBox>
         </Grid>
       </Grid>
-    </LandingContainer>
+    </Container>
   );
 }
