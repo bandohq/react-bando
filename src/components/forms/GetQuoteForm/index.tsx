@@ -61,12 +61,14 @@ export default function GetQuoteForm() {
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
   const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
 
+  const debouncedRequest = (formValues: RequestQuoteArgs) => getQuote(formValues).catch(() => null);
+
   const fetchQuote = useCallback(
     async (formValues: RequestQuoteArgs) => {
       try {
         const quote = await getQuote(formValues).catch(() => null);
         localStorage.setItem(env.rampDataLocalStorage, JSON.stringify(quote));
-        // return navigate('/ramp');
+        return navigate('/ramp');
       } catch {
         // TODO: Handle error
       }
@@ -88,8 +90,9 @@ export default function GetQuoteForm() {
   };
 
   const debouncedQuantityChange = useRef(
-    debounce(handleSubmit(fetchQuote), REQUEST_DEBOUNCE, { leading: true }),
+    debounce(handleSubmit(debouncedRequest), REQUEST_DEBOUNCE, { leading: true }),
   );
+
   const onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.value = event.target.value.replace(/[^0-9.]/g, '');
     const { value } = event.target;

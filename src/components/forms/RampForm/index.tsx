@@ -14,7 +14,6 @@ import { Quote } from '@hooks/useQuote/requests';
 export default function RampForm() {
   const { user } = useUser();
   const quote = JSON.parse(localStorage.getItem(env.rampDataLocalStorage) ?? '') as Quote;
-  console.log({ quote });
 
   if (user && quote) {
     return (
