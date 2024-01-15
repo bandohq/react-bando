@@ -34,6 +34,14 @@ export const TextFieldInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
     marginTop: theme.spacing(3.5),
   },
+  '&.rounded': {
+    '& .MuiInputBase-input, & .MuiSelect-select': {
+      borderRadius: '100px',
+      '&:focus': {
+        borderRadius: '100px',
+      },
+    },
+  },
   '& .MuiInputBase-input, & .MuiSelect-select': {
     borderRadius: 4,
     fontSize: '16px',

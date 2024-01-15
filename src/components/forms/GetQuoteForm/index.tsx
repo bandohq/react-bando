@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import BoxContainer from '@components/BoxContainer';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, useCallback, useRef } from 'react';
@@ -20,6 +21,7 @@ import Arbitrum from '../../../assets/arbitrum.svg';
 
 import useQuote from '@hooks/useQuote';
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
+import env from '@config/env';
 
 const REQUEST_DEBOUNCE = 250;
 
@@ -40,6 +42,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 }));
 
 export default function GetQuoteForm() {
+  const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
   const { register, handleSubmit, setValue, watch, formState } = useForm<GetQuoteFormValues>({
     resolver: yupResolver(schema),
@@ -61,12 +64,14 @@ export default function GetQuoteForm() {
   const fetchQuote = useCallback(
     async (formValues: RequestQuoteArgs) => {
       try {
-        await getQuote(formValues).catch(() => null);
+        const quote = await getQuote(formValues).catch(() => null);
+        localStorage.setItem(env.rampDataLocalStorage, JSON.stringify(quote));
+        return navigate('/ramp');
       } catch {
         // TODO: Handle error
       }
     },
-    [getQuote],
+    [getQuote, navigate],
   );
 
   const getQuoteOnSelectChange = useCallback(() => {
