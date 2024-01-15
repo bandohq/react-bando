@@ -92,6 +92,9 @@ export const HelpText = styled(Box)(({ theme }) => ({
   fontSize: '14px',
   marginTop: 4,
   alignItems: 'center',
+  '&.error': {
+    color: theme.palette.error.main,
+  },
 }));
 
 const Input = forwardRef((inputProps: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
@@ -108,10 +111,10 @@ const Input = forwardRef((inputProps: InputProps, ref: ForwardedRef<HTMLInputEle
       <TextFieldInput
         fullWidth={fullWidth}
         {...props}
-        ref={ref}
         inputProps={{ ...props.inputProps, 'aria-label': labelText }}
+        ref={ref}
       />
-      {!!helpText && <HelpText>{helpText}</HelpText>}
+      {!!helpText && <HelpText className={props.error ? 'error' : ''}>{helpText}</HelpText>}
     </FormControl>
   );
 });
