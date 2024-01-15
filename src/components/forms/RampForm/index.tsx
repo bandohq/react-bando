@@ -1,16 +1,19 @@
 import BoxContainer from '@components/BoxContainer';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
-import Arbitrum from '../../../assets/arbitrum.svg';
+import Polygon from '../../../assets/polygon.png';
+import Ethereum from '../../../assets/ethereum.png';
 import ArrowDown from '../../../assets/ArrowDown.svg';
+import RampTitle, { CircularButton as ArrowButton } from './RampTitle';
 
 import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
+import useTransaction from '@hooks/useTransaction';
 
 import { styled } from '@mui/material/styles';
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
@@ -22,12 +25,7 @@ import env from '@config/env';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { ConfirmRampFormValues } from './schema';
-
-const ArrowButton = styled(Button)(() => ({
-  borderRadius: '50%',
-  aspectRatio: '1/1',
-  width: 'fit-content',
-}));
+import { useState } from 'react';
 
 const Rate = styled(Typography)(({ theme }) => ({
   fontSize: `${theme.typography.pxToRem(28)} !important`,
@@ -50,10 +48,21 @@ const Network = styled(Typography)(({ theme }) => ({
   lineHeight: 'normal',
 }));
 
+const networkImg = {
+  POLYGON: Polygon,
+  ETHEREUM: Ethereum,
+};
+
 export default function RampForm() {
-  const quote = JSON.parse(localStorage.getItem(env.rampDataLocalStorage) ?? '') as Quote;
+  const [success, setSuccess] = useState(false);
+  const { quote, network } = JSON.parse(localStorage.getItem(env.rampDataLocalStorage) ?? '') as {
+    quote: Quote;
+    network: string;
+  };
   const { user } = useUser();
-  const { postRecipient } = useRecipient();
+  const { postRecipient, isMutating: isRecipientMutating } = useRecipient();
+  const { postTransaction, isMutating: isTransactionMutation } = useTransaction();
+  const isLoading = isRecipientMutating || isTransactionMutation;
 
   const { register, handleSubmit, formState } = useForm<ConfirmRampFormValues>({
     resolver: yupResolver(schema),
@@ -64,17 +73,32 @@ export default function RampForm() {
   });
 
   const onSubmit = async (formValues: ConfirmRampFormValues) => {
+    setSuccess(false);
     console.log({
+      network,
       email: user?.email ?? '',
       asset: quote.quoteCurrency,
       address: formValues.address,
     });
-    const rsp = await postRecipient({
-      email: user?.email ?? '',
-      asset: quote.quoteCurrency,
-      address: formValues.address,
-    });
-    console.log({ rsp });
+    try {
+      const rsp = await postRecipient({
+        network,
+        email: user?.email ?? '',
+        asset: quote.quoteCurrency,
+        address: formValues.address,
+      });
+      console.log({ rsp });
+
+      const transaction = await postTransaction({
+        ...quote,
+        email: user?.email ?? '',
+      });
+      setSuccess(true);
+
+      console.log({ transaction, success });
+    } catch (err) {
+      console.log({ err });
+    }
   };
 
   if (user && quote) {
@@ -82,9 +106,7 @@ export default function RampForm() {
       <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2} sx={{ margin: 0 }}>
-            <Grid xs={12}>
-              <Typography variant="body1">Confirma</Typography>
-            </Grid>
+            <RampTitle />
           </Grid>
 
           <Grid
@@ -147,7 +169,13 @@ export default function RampForm() {
             >
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right' }}>
-                Arbitrum <img alt="Arbitrum" src={Arbitrum} width={18} height={18} />
+                Arbitrum{' '}
+                <img
+                  alt="Arbitrum"
+                  src={networkImg[network as keyof typeof networkImg]}
+                  width={18}
+                  height={18}
+                />
               </Network>
             </Grid>
           </Grid>
@@ -168,8 +196,10 @@ export default function RampForm() {
                 type="submit"
                 variant="contained"
                 fullWidth
+                disabled={isLoading}
                 sx={{ padding: '16px 8px', fontWeight: 'bold' }}
               >
+                {isLoading && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
                 Confirmar
               </BandoButton>
             </Grid>

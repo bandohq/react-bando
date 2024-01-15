@@ -16,7 +16,7 @@ type PostRecipientRequest = (
 export const postRecipient: PostRecipientRequest = (endpoint, { arg }) =>
   axios.post(endpoint, {
     account_type: 'WALLET_ACCOUNT',
-    email: arg.email,
+    // email: arg.email,
     data: {
       asset: arg.asset,
       network: (arg.network ?? 'arbitrum').toUpperCase(),

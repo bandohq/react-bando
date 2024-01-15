@@ -11,13 +11,11 @@ import debounce from 'lodash/debounce';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { RequestQuoteArgs } from '@hooks/useQuote/requests';
 import schema, { GetQuoteFormValues } from './schema';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
-//import Arbitrum from '../../../assets/arbitrum.svg';
 import Polygon from '../../../assets/polygon.png';
 import Ethereum from '../../../assets/ethereum.png';
 
@@ -63,13 +61,26 @@ export default function GetQuoteForm() {
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
   const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
 
-  const debouncedRequest = (formValues: RequestQuoteArgs) => getQuote(formValues).catch(() => null);
+  const debouncedRequest = (formValues: GetQuoteFormValues) =>
+    getQuote({
+      baseAmount: formValues.baseAmount,
+      baseCurrency: formValues.baseCurrency,
+      quoteCurrency: formValues.quoteCurrency,
+    }).catch(() => null);
 
   const fetchQuote = useCallback(
-    async (formValues: RequestQuoteArgs) => {
+    async (formValues: GetQuoteFormValues) => {
       try {
-        const quote = await getQuote(formValues).catch(() => null);
-        localStorage.setItem(env.rampDataLocalStorage, JSON.stringify(quote));
+        const quote = await getQuote({
+          baseAmount: formValues.baseAmount,
+          baseCurrency: formValues.baseCurrency,
+          quoteCurrency: formValues.quoteCurrency,
+        }).catch(() => null);
+
+        localStorage.setItem(
+          env.rampDataLocalStorage,
+          JSON.stringify({ quote, network: formValues.network }),
+        );
         return navigate('/ramp');
       } catch {
         // TODO: Handle error
@@ -151,6 +162,7 @@ export default function GetQuoteForm() {
                   startComponent: <CurrencyImg src={Ethereum} />,
                 },
               ]}
+              {...register('network')}
             />
           </Grid>
 
