@@ -17,7 +17,9 @@ import schema, { GetQuoteFormValues } from './schema';
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
-import Arbitrum from '../../../assets/arbitrum.svg';
+//import Arbitrum from '../../../assets/arbitrum.svg';
+import Polygon from '../../../assets/polygon.png';
+import Ethereum from '../../../assets/ethereum.png';
 
 import useQuote from '@hooks/useQuote';
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
@@ -135,13 +137,18 @@ export default function GetQuoteForm() {
 
           <Grid xs={12}>
             <Select
-              defaultValue={'arbitrum'}
+              defaultValue={'POLYGON'}
               label="Red a recibir"
               items={[
                 {
-                  label: 'Arbitrum',
-                  value: 'arbitrum',
-                  startComponent: <CurrencyImg src={Arbitrum} />,
+                  label: 'Polygon',
+                  value: 'POLYGON',
+                  startComponent: <CurrencyImg src={Polygon} />,
+                },
+                {
+                  label: 'Ethereum',
+                  value: 'ERC20',
+                  startComponent: <CurrencyImg src={Ethereum} />,
                 },
               ]}
             />
