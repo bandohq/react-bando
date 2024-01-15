@@ -1,29 +1,40 @@
-import { magic } from '@config/magicLink';
+import { useState } from 'react';
 import useSWRMutation from 'swr/mutation';
+import useMagic from '@hooks/useMagic';
+
+import Cookies from 'js-cookie';
 import endpoints from '@config/endpoints';
 import { postAuthentication } from './requests';
+import env from '@config/env';
 
 export default function useMagicLinkAuth() {
+  const [isAuthenticatingMagicLink, setIsAuthenticatingMagicLink] = useState(false);
+  const { magic } = useMagic();
   const { trigger, isMutating, data, error } = useSWRMutation(
     endpoints.postAuth,
     postAuthentication,
   );
 
   const login = async ({ email = '' }) => {
+    setIsAuthenticatingMagicLink(true);
     try {
       if (magic) {
         const did = await magic.auth.loginWithEmailOTP({ email, showUI: true });
-        console.log(`DID Token: ${did}`);
         const userInfo = await magic.user.getInfo();
-        console.log(`UserInfo: ${userInfo.email}`);
 
         const rsp = await trigger({ username: userInfo.email ?? '', password: did ?? '' });
-        console.log({ rsp });
+        Cookies.set(env.authCookieName, rsp.token);
       }
-    } catch {
-      // Handle errors if required!
+    } finally {
+      setIsAuthenticatingMagicLink(false);
     }
   };
 
-  return { login, isMutating, data, error };
+  return {
+    magic,
+    login,
+    data,
+    error,
+    isMutating: isMutating || isAuthenticatingMagicLink,
+  };
 }

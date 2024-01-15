@@ -1,3 +1,6 @@
+import { useOutlet } from 'react-router-dom';
+
 export default function ExposedWrapper() {
-  return null;
+  const outlet = useOutlet();
+  return <>{outlet}</>;
 }

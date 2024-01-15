@@ -3,8 +3,8 @@ const authCookieName = process.env.AUTH_COOKIE_NAME || '';
 
 const magicLink = {
   secret: process.env.MAGIC_LINK_SECRET || '',
-  rpcUrl: process.env.MAGIC_LINK_RPC_URL || '',
-  chainID: parseInt(process.env.MAGIC_LINK_CHAIN_ID || '1', 10),
+  rpcUrl: process.env.MAGIC_LINK_RPC_URL || '<https://rpc2.sepolia.org/>',
+  chainID: parseInt(process.env.MAGIC_LINK_CHAIN_ID || '11155111', 10),
 };
 
 export default { api, authCookieName, magicLink };

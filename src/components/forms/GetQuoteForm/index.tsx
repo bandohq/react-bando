@@ -2,6 +2,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import BoxContainer from '@components/BoxContainer';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, useCallback, useRef } from 'react';
 import debounce from 'lodash/debounce';
@@ -18,7 +20,6 @@ import Arbitrum from '../../../assets/arbitrum.svg';
 
 import useQuote from '@hooks/useQuote';
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const REQUEST_DEBOUNCE = 250;
 
@@ -58,7 +59,13 @@ export default function GetQuoteForm() {
   const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
 
   const fetchQuote = useCallback(
-    async (formValues: RequestQuoteArgs) => getQuote(formValues).catch(() => null),
+    async (formValues: RequestQuoteArgs) => {
+      try {
+        await getQuote(formValues).catch(() => null);
+      } catch {
+        // TODO: Handle error
+      }
+    },
     [getQuote],
   );
 

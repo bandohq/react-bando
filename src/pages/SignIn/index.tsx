@@ -1,14 +1,14 @@
-import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Unstable_Grid2';
-import ExposedLayout from '@layouts/ExposedLayout';
+import ColumnLayout from '@layouts/ColumnLayout';
 import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 
 import MuiInput from '@components/forms/MuiInput';
 import BandoButton from '@components/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { RequestQuoteArgs } from '@hooks/useQuote/requests';
 import schema, { SignInFormValues } from './schema';
 
 import useMagicLinkAuth from '@hooks/useMagicLinkAuth';
@@ -22,7 +22,8 @@ export const Title = styled(Typography)(({ theme }) => ({
 }));
 
 export default function SignIn() {
-  const { login } = useMagicLinkAuth();
+  const navigate = useNavigate();
+  const { login, isMutating } = useMagicLinkAuth();
   const { register, handleSubmit } = useForm<SignInFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -31,13 +32,16 @@ export default function SignIn() {
   });
 
   const onSubmit = async (data: SignInFormValues) => {
-    console.log(data);
-    const dataRsp = await login(data);
-    console.log({ dataRsp });
+    try {
+      await login(data);
+      navigate('/kyc');
+    } catch {
+      // TODO: handle error
+    }
   };
 
   return (
-    <ExposedLayout
+    <ColumnLayout
       leftContent={
         <form onSubmit={handleSubmit(onSubmit)}>
           <Title variant="h3">Verifica tus datos</Title>
@@ -53,9 +57,11 @@ export default function SignIn() {
           <BandoButton
             type="submit"
             variant="contained"
+            disabled={isMutating}
             fullWidth
             sx={{ padding: '16px 8px', fontWeight: 'bold', mt: 3 }}
           >
+            {isMutating && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
             Verificar
           </BandoButton>
         </form>

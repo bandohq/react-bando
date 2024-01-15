@@ -1,9 +1,13 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
+export type PostAuthenticationResponse = {
+  refresh: string;
+  token: string;
+};
 type PostAuthenticationRequest = (
   endpoint: string,
   data: { arg: { username: string; password: string } },
-) => Promise<AxiosResponse>;
+) => Promise<PostAuthenticationResponse>;
 export const postAuthentication: PostAuthenticationRequest = (
   endpoint,
   { arg: { username, password } },

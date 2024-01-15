@@ -1,12 +1,11 @@
 import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 import { ReactNode } from 'react';
 import Navbar from '@components/Navbar';
 
 const TOP_PADDING = '78px';
 
-const LayoutContainer = styled('div')(({ theme }) => ({
+const LayoutContainer = styled('div')(() => ({
   width: '100%',
   height: 'auto',
   minHeight: '100vh',
@@ -16,25 +15,18 @@ const LayoutContainer = styled('div')(({ theme }) => ({
   backgroundSize: 'cover',
 }));
 
-const Container = styled('div')(({ theme }) => ({
+const Container = styled('div')(() => ({
   width: '100%',
-  // maxWidth: theme.breakpoints.values.xl,
   margin: '0 auto',
   height: 'auto',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'stretch',
-
-  // background: "url('/images/Background.png')",
-  // backgroundRepeat: 'no-repeat',
-  // backgroundAttachment: 'fixed',
-  // backgroundSize: 'cover',
 }));
 
-const ContentContainer = styled(Box)(({ theme }) => ({
+const ContentContainer = styled(Box)(() => ({
   display: 'flex',
   width: '100%',
-  // gap: theme.spacing(2),
 }));
 
 const LeftGrid = styled(Box)(({ theme }) => ({
@@ -70,7 +62,7 @@ export type ExposedLayoutProps = {
   leftContent?: ReactNode;
 };
 
-export default function ExposedLayout({ rightContent, leftContent }: ExposedLayoutProps) {
+export default function ColumnLayout({ rightContent, leftContent }: ExposedLayoutProps) {
   return (
     <LayoutContainer>
       <Navbar fullWidth />
