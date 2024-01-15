@@ -5,7 +5,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
-import Arbitrum from '../../../assets/arbitrum.svg';
 import useUser from '@hooks/useUser';
 
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';

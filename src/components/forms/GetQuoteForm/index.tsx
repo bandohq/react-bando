@@ -66,7 +66,7 @@ export default function GetQuoteForm() {
       try {
         const quote = await getQuote(formValues).catch(() => null);
         localStorage.setItem(env.rampDataLocalStorage, JSON.stringify(quote));
-        return navigate('/ramp');
+        // return navigate('/ramp');
       } catch {
         // TODO: Handle error
       }
@@ -90,7 +90,12 @@ export default function GetQuoteForm() {
   const debouncedQuantityChange = useRef(
     debounce(handleSubmit(fetchQuote), REQUEST_DEBOUNCE, { leading: true }),
   );
-  const onQuantityChange = () => {
+  const onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const idx = value.indexOf('.');
+    if (idx > -1) {
+      event.target.value = value.indexOf('.') >= 0 ? value.slice(0, idx + 3) : value;
+    }
     debouncedQuantityChange.current();
   };
 
@@ -142,9 +147,15 @@ export default function GetQuoteForm() {
             <Input
               label="Envias"
               type="number"
-              onKeyDown={(event) => {
-                if (event.key === '.') event.preventDefault();
-              }}
+              // onKeyDown={(event) => {
+              //   const targetVaue = e.value;
+              //   event.value =
+              //     targetVaue.indexOf('.') >= 0
+              //       ? targetVaue.slice(0, t.indexOf('.') + 3)
+              //       : targetVaue;
+              //   // if (event.key === '.') event.preventDefault();
+              // }}
+              inputProps={{ pattern: '^d*(.d{0,2})?$' }}
               {...register('baseAmount', { onChange: onQuantityChange })}
               error={!!formState.errors.baseAmount?.message}
             />
