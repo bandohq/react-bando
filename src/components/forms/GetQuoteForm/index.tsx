@@ -91,6 +91,7 @@ export default function GetQuoteForm() {
     debounce(handleSubmit(fetchQuote), REQUEST_DEBOUNCE, { leading: true }),
   );
   const onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.value = event.target.value.replace(/[^0-9.]/g, '');
     const { value } = event.target;
     const idx = value.indexOf('.');
     if (idx > -1) {
@@ -146,16 +147,8 @@ export default function GetQuoteForm() {
           <Grid md={8} sm={6} xs={7}>
             <Input
               label="Envias"
-              type="number"
-              // onKeyDown={(event) => {
-              //   const targetVaue = e.value;
-              //   event.value =
-              //     targetVaue.indexOf('.') >= 0
-              //       ? targetVaue.slice(0, t.indexOf('.') + 3)
-              //       : targetVaue;
-              //   // if (event.key === '.') event.preventDefault();
-              // }}
-              inputProps={{ pattern: '^d*(.d{0,2})?$' }}
+              type="text"
+              inputMode="numeric"
               {...register('baseAmount', { onChange: onQuantityChange })}
               error={!!formState.errors.baseAmount?.message}
             />
