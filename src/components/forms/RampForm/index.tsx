@@ -5,21 +5,22 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
-import Polygon from '../../../assets/polygon.png';
-import Ethereum from '../../../assets/ethereum.png';
 import ArrowDown from '../../../assets/ArrowDown.svg';
 import RampTitle, { CircularButton as ArrowButton } from './RampTitle';
+
+import CurrencyPill from './CurrencyPill';
 
 import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
 import useTransaction from '@hooks/useTransaction';
 
 import { styled } from '@mui/material/styles';
-import { currencyImg } from '@config/constants/currencies';
 import { Quote } from '@hooks/useQuote/requests';
 import { Hr } from '../GetQuoteForm';
+
 import theme from '@config/theme';
 import env from '@config/env';
+import { networkImg } from '@config/constants/currencies';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -47,27 +48,6 @@ const Network = styled(Typography)(({ theme }) => ({
   lineHeight: 'normal',
 }));
 
-const CurrencyPill = styled('div')(({ theme }) => ({
-  borderRadius: '100px',
-  fontSize: theme.typography.pxToRem(20),
-  border: `1px solid ${theme.palette.ink.i300}`,
-  color: theme.palette.ink.i900,
-  textAlign: 'left',
-  width: 'fit-content',
-  lineHeight: 'normal',
-  padding: theme.spacing(2),
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontFamily: 'TWK Everett',
-  fontWeight: 'bold',
-}));
-
-const networkImg = {
-  POLYGON: Polygon,
-  ETHEREUM: Ethereum,
-};
-
 export default function RampForm() {
   const [success, setSuccess] = useState(false);
   const { quote, network } = JSON.parse(localStorage.getItem(env.rampDataLocalStorage) ?? '') as {
@@ -89,12 +69,7 @@ export default function RampForm() {
 
   const onSubmit = async (formValues: ConfirmRampFormValues) => {
     setSuccess(false);
-    console.log({
-      network,
-      email: user?.email ?? '',
-      asset: quote.quoteCurrency,
-      address: formValues.address,
-    });
+
     try {
       const rsp = await postRecipient({
         network,
@@ -135,9 +110,7 @@ export default function RampForm() {
             }}
           >
             <Grid md={4} sm={6} xs={7}>
-              <CurrencyPill sx={{ fontWeight: 'normal' }}>
-                {currencyImg[quote.baseCurrency as keyof typeof currencyImg]} {quote.baseCurrency}
-              </CurrencyPill>
+              <CurrencyPill currency={quote.baseCurrency} />
             </Grid>
             <Grid md={8} sm={6} xs={5}>
               <Rate variant="body1">$ {quote.baseAmount}</Rate>
@@ -159,9 +132,7 @@ export default function RampForm() {
             </Grid>
 
             <Grid md={4} sm={6} xs={7}>
-              <CurrencyPill>
-                {currencyImg[quote.quoteCurrency as keyof typeof currencyImg]} {quote.quoteCurrency}
-              </CurrencyPill>
+              <CurrencyPill currency={quote.quoteCurrency} />
             </Grid>
             <Grid md={8} sm={6} xs={5}>
               <Rate variant="body1">$ {quote.quoteAmount}</Rate>
