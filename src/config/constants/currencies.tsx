@@ -1,5 +1,8 @@
 import Currency from '../../assets/currency.svg';
-import Usdt from '../../assets/usdt.svg';
+import Usdc from '../../assets/image-58_1.png';
+import Polygon from '../../assets/polygon.png';
+import Ethereum from '../../assets/ethereum.png';
+
 import CurrencyImg from '@components/CurrencyImg';
 
 export const sendCurrency = [
@@ -14,11 +17,31 @@ export const depositCurrency = [
   {
     label: 'USDC',
     value: 'USDC',
-    startComponent: <CurrencyImg src={Usdt} />,
+    startComponent: <CurrencyImg src={Usdc} />,
   },
 ];
 
+export const currencyImg = {
+  USDC: <CurrencyImg src={Usdc} />,
+  MXN: <CurrencyImg src={Currency} />,
+};
+
+export const currencyToken = {
+  ARBITRUM: 'ARB',
+  POLYGON: 'MATIC',
+  MXN: 'MXN',
+  USDC: 'USDC',
+};
+
+export const networkImg = {
+  POLYGON: Polygon,
+  ETHEREUM: Ethereum,
+};
+
 export default {
+  networkImg,
+  currencyImg,
   sendCurrency,
   depositCurrency,
+  currencyToken,
 };

@@ -29,7 +29,8 @@ export const GridBox = styled(Box)<BoxProps>(({ theme }) => ({
   flexGrow: 1,
   display: 'flex',
   position: 'relative',
-  height: '100vh',
+  height: 'auto',
+  minHeight: '100vh',
   width: '100%',
   justifySelf: 'center',
   justifyContent: 'center',
@@ -81,15 +82,16 @@ export const GridBox = styled(Box)<BoxProps>(({ theme }) => ({
     },
   },
   [theme.breakpoints.down('md')]: {
-    height: 'auto',
+    minHeight: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 
 const JumbotronContainer = styled(GridBox)(({ theme }) => ({
   flexDirection: 'column',
-  paddingBottom: 6,
+  margin: '0 auto',
   [theme.breakpoints.down('md')]: {
-    marginTop: theme.spacing(6),
     paddingTop: theme.spacing(6),
     paddingBottom: theme.spacing(2),
   },

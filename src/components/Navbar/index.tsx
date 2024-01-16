@@ -1,6 +1,7 @@
 import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
+import Logo from '../../assets/logo-bando.svg';
 
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -23,6 +24,9 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    '&.full-width': {
+      maxWidth: '100%',
+    },
   },
   '& .navbar-brand': {
     height: '100%',
@@ -30,15 +34,16 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
     textDecoration: 'none',
   },
   '& img': {
-    maxWidth: '100%',
-    width: '120px',
+    width: '100%',
+    maxWidth: '184px',
+    height: 'auto',
     verticalAlign: 'middle',
     display: 'inline-block',
   },
   '& .navbar-menu': {},
 }));
 
-export default function Navbar() {
+export default function Navbar({ fullWidth = false }) {
   const [isOnTop, setIsOnTop] = useState(true);
 
   const handleScroll = useCallback(() => {
@@ -66,9 +71,9 @@ export default function Navbar() {
       className={isOnTop ? '' : 'scrolled'}
       aria-label={isOnTop ? 'scrollTop' : 'scrolled'}
     >
-      <div className="navbar-box">
+      <div className={fullWidth ? 'navbar-box full-width' : 'navbar-box'}>
         <a href="/" className="navbar-brand">
-          <img src="images/bando_full_green.png" loading="lazy" alt="" aria-label="Bando logo" />
+          <img src={Logo} loading="lazy" alt="" aria-label="Bando logo" />
         </a>
       </div>
     </NavbarContainer>

@@ -2,27 +2,30 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import BoxContainer from '@components/BoxContainer';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
+
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, useCallback, useRef } from 'react';
 import debounce from 'lodash/debounce';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { RequestQuoteArgs } from '@hooks/useQuote/requests';
 import schema, { GetQuoteFormValues } from './schema';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
-import Arbitrum from '../../../assets/arbitrum.svg';
+import Polygon from '../../../assets/polygon.png';
+import Ethereum from '../../../assets/ethereum.png';
 
 import useQuote from '@hooks/useQuote';
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
-import CircularProgress from '@mui/material/CircularProgress';
+import env from '@config/env';
 
 const REQUEST_DEBOUNCE = 250;
 
-const Hr = styled('hr')(({ theme }) => ({
+export const Hr = styled('hr')(({ theme }) => ({
   backgroundColor: theme.palette.ink.i300,
   height: 1,
   width: '100%',
@@ -39,6 +42,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 }));
 
 export default function GetQuoteForm() {
+  const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
   const { register, handleSubmit, setValue, watch, formState } = useForm<GetQuoteFormValues>({
     resolver: yupResolver(schema),
@@ -57,9 +61,32 @@ export default function GetQuoteForm() {
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
   const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
 
+  const debouncedRequest = (formValues: GetQuoteFormValues) =>
+    getQuote({
+      baseAmount: formValues.baseAmount,
+      baseCurrency: formValues.baseCurrency,
+      quoteCurrency: formValues.quoteCurrency,
+    }).catch(() => null);
+
   const fetchQuote = useCallback(
-    async (formValues: RequestQuoteArgs) => getQuote(formValues).catch(() => null),
-    [getQuote],
+    async (formValues: GetQuoteFormValues) => {
+      try {
+        const quote = await getQuote({
+          baseAmount: formValues.baseAmount,
+          baseCurrency: formValues.baseCurrency,
+          quoteCurrency: formValues.quoteCurrency,
+        }).catch(() => null);
+
+        localStorage.setItem(
+          env.rampDataLocalStorage,
+          JSON.stringify({ quote, network: formValues.network }),
+        );
+        return navigate('/ramp');
+      } catch {
+        // TODO: Handle error
+      }
+    },
+    [getQuote, navigate],
   );
 
   const getQuoteOnSelectChange = useCallback(() => {
@@ -76,9 +103,16 @@ export default function GetQuoteForm() {
   };
 
   const debouncedQuantityChange = useRef(
-    debounce(handleSubmit(fetchQuote), REQUEST_DEBOUNCE, { leading: true }),
+    debounce(handleSubmit(debouncedRequest), REQUEST_DEBOUNCE, { leading: true }),
   );
-  const onQuantityChange = () => {
+
+  const onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.value = event.target.value.replace(/[^0-9.]/g, '');
+    const { value } = event.target;
+    const idx = value.indexOf('.');
+    if (idx > -1) {
+      event.target.value = value.indexOf('.') >= 0 ? value.slice(0, idx + 3) : value;
+    }
     debouncedQuantityChange.current();
   };
 
@@ -114,25 +148,29 @@ export default function GetQuoteForm() {
 
           <Grid xs={12}>
             <Select
-              defaultValue={'arbitrum'}
+              defaultValue={'POLYGON'}
               label="Red a recibir"
               items={[
                 {
-                  label: 'Arbitrum',
-                  value: 'arbitrum',
-                  startComponent: <CurrencyImg src={Arbitrum} />,
+                  label: 'Polygon',
+                  value: 'POLYGON',
+                  startComponent: <CurrencyImg src={Polygon} />,
+                },
+                {
+                  label: 'Ethereum',
+                  value: 'ERC20',
+                  startComponent: <CurrencyImg src={Ethereum} />,
                 },
               ]}
+              {...register('network')}
             />
           </Grid>
 
           <Grid md={8} sm={6} xs={7}>
             <Input
               label="Envias"
-              type="number"
-              onKeyDown={(event) => {
-                if (event.key === '.') event.preventDefault();
-              }}
+              type="text"
+              inputMode="numeric"
               {...register('baseAmount', { onChange: onQuantityChange })}
               error={!!formState.errors.baseAmount?.message}
             />

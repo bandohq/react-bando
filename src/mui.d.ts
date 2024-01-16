@@ -6,6 +6,7 @@ declare module '@mui/material/styles' {
     ink: {
       i900: string;
       i700: string;
+      i600: string;
       i500: string;
       i300: string;
       i200: string;
@@ -18,6 +19,7 @@ declare module '@mui/material/styles' {
     ink: {
       i900: string;
       i700: string;
+      i600: string;
       i500: string;
       i300: string;
       i200: string;

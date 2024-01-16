@@ -9,9 +9,32 @@
     <link href="/css/webflow.css" rel="stylesheet" type="text/css">
     <link href="/css/hirocoool.webflow.css" rel="stylesheet" type="text/css">
 
+    <link rel="preload" as="font" href="/fonts/Bueno-Light.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/Bueno-Bold.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/Bueno-Black.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/TWKEverett-Extrabold-web.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/TWKEverett-Thin.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/TWKEverett-UltralightItalic.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/TWKEverett-Bold.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/TWKEverett-Regular.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/TWKEverett-Light.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/TWKEverett-LightItalic.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/TWKEverett-Medium.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/Bueno-Regular.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" as="font" href="/fonts/Bueno-Medium.otf" as="font" type="font/otf" crossorigin>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100;0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,300;1,9..40,400&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100;0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,300;1,9..40,400&display=swap">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%- title %></title>
     <meta name="description" content="<%- description%>" />
+    <script type="text/javascript">
+      window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=document.createElement("script");r.type="text/javascript",r.async=!0,r.src="https://cdn.heapanalytics.com/js/heap-"+e+".js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(r,a);for(var n=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],o=0;o<p.length;o++)heap[p[o]]=n(p[o])};
+      heap.load("%VITE_HEAP_ID%");
+    </script>
   </head>
   <body>
     <div id="root"></div>

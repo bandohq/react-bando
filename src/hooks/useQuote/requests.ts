@@ -8,6 +8,7 @@ export type RequestQuoteArgs = {
 
 export type Quote = RequestQuoteArgs & {
   id: number;
+  quoteRate: number;
   quoteAmount: number;
   quoteRateInverse: number;
   isExpired: boolean;

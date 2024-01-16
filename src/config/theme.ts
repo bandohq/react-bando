@@ -13,6 +13,7 @@ const theme = createTheme({
     ink: {
       i900: '#212121',
       i700: '#393F44',
+      i600: '#3D3D3D',
       i500: '#686F73',
       i300: '#BFC3C7',
       i200: '#E6E7E9',
@@ -30,6 +31,7 @@ const theme = createTheme({
     },
   },
   typography: {
+    htmlFontSize: 16,
     fontSize: 16,
     fontFamily: [
       'TWK Everett',

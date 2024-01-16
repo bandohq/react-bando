@@ -36,6 +36,7 @@ export default ({ mode }) => {
           data: {
             title: envVars.VITE_APP_TITLE,
             description: envVars.VITE_APP_DESCRIPTION,
+            heapId: envVars.VITE_HEAP_ID,
           },
         },
       }),

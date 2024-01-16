@@ -34,6 +34,14 @@ export const TextFieldInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
     marginTop: theme.spacing(3.5),
   },
+  '&.rounded': {
+    '& .MuiInputBase-input, & .MuiSelect-select': {
+      borderRadius: '100px',
+      '&:focus': {
+        borderRadius: '100px',
+      },
+    },
+  },
   '& .MuiInputBase-input, & .MuiSelect-select': {
     borderRadius: 4,
     fontSize: '16px',
@@ -84,6 +92,9 @@ export const HelpText = styled(Box)(({ theme }) => ({
   fontSize: '14px',
   marginTop: 4,
   alignItems: 'center',
+  '&.error': {
+    color: theme.palette.error.main,
+  },
 }));
 
 const Input = forwardRef((inputProps: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
@@ -100,10 +111,10 @@ const Input = forwardRef((inputProps: InputProps, ref: ForwardedRef<HTMLInputEle
       <TextFieldInput
         fullWidth={fullWidth}
         {...props}
-        ref={ref}
         inputProps={{ ...props.inputProps, 'aria-label': labelText }}
+        ref={ref}
       />
-      {!!helpText && <HelpText>{helpText}</HelpText>}
+      {!!helpText && <HelpText className={props.error ? 'error' : ''}>{helpText}</HelpText>}
     </FormControl>
   );
 });

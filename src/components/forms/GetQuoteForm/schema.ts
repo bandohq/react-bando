@@ -5,6 +5,7 @@ export type GetQuoteFormValues = {
   quoteCurrency: string;
   baseCurrency: string;
   operationType: 'deposit' | 'withdraw';
+  network: string;
 };
 
 const schema = yup.object().shape({
@@ -12,6 +13,7 @@ const schema = yup.object().shape({
   quoteCurrency: yup.string().required(),
   baseCurrency: yup.string().required(),
   operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
+  network: yup.string().required(),
 });
 
 export default schema;
