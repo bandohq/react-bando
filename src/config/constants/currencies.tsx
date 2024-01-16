@@ -1,5 +1,6 @@
 import Currency from '../../assets/currency.svg';
 import Usdc from '../../assets/image-58_1.png';
+import Usdt from '../../assets/usdt.svg';
 import Polygon from '../../assets/polygon.png';
 import Ethereum from '../../assets/ethereum.png';
 
@@ -11,6 +12,16 @@ export const sendCurrency = [
     value: 'MXN',
     startComponent: <CurrencyImg src={Currency} />,
   },
+  {
+    label: 'CO (muy pronto)',
+    value: 'CO',
+    startComponent: <CurrencyImg src={Currency} />,
+  },
+  {
+    label: 'ARS (muy pronto)',
+    value: 'ARS',
+    startComponent: <CurrencyImg src={Currency} />,
+  },
 ];
 
 export const depositCurrency = [
@@ -18,6 +29,11 @@ export const depositCurrency = [
     label: 'USDC',
     value: 'USDC',
     startComponent: <CurrencyImg src={Usdc} />,
+  },
+  {
+    label: 'USDT',
+    value: 'USDT',
+    startComponent: <CurrencyImg src={Usdt} />,
   },
 ];
 
