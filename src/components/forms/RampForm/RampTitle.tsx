@@ -39,7 +39,7 @@ export default function RampTitle({ success = false }) {
           mb: 1,
         }}
       >
-        {success ? 'Transacción exitosa' : 'Confirma'}
+        {success ? 'Transacción en proceso' : 'Confirma'}
       </Typography>
 
       <CircularButton onClick={closeRamp}>
