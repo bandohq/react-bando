@@ -48,6 +48,13 @@ const Network = styled(Typography)(({ theme }) => ({
   lineHeight: 'normal',
 }));
 
+const GridRow = styled(Grid)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+}));
+
 export default function RampForm() {
   const [success, setSuccess] = useState(false);
   const { quote, network } = JSON.parse(localStorage.getItem(env.rampDataLocalStorage) ?? '') as {
@@ -56,7 +63,7 @@ export default function RampForm() {
   };
   const { user } = useUser();
   const { postRecipient, isMutating: isRecipientMutating } = useRecipient();
-  const { postTransaction, isMutating: isTransactionMutation } = useTransaction();
+  const { data, postTransaction, isMutating: isTransactionMutation } = useTransaction();
   const isLoading = isRecipientMutating || isTransactionMutation;
 
   const { register, handleSubmit, formState } = useForm<ConfirmRampFormValues>({
@@ -95,7 +102,7 @@ export default function RampForm() {
       <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2} sx={{ margin: 0 }}>
-            <RampTitle />
+            <RampTitle success={success} />
           </Grid>
 
           <Grid
@@ -109,81 +116,108 @@ export default function RampForm() {
               padding: 2,
             }}
           >
-            <Grid md={4} sm={6} xs={7}>
-              <CurrencyPill currency={quote.baseCurrency} />
-            </Grid>
-            <Grid md={8} sm={6} xs={5}>
-              <Rate variant="body1">$ {quote.baseAmount}</Rate>
-              <Amount variant="body2">$ {quote.quoteRate}</Amount>
-            </Grid>
-            <Grid xs={12} sx={{ position: 'relative' }}>
-              <Hr sx={{ marginBottom: 2 }} />
-              <ArrowButton
-                sx={{
-                  position: 'absolute',
-                  margin: '0 auto',
-                  top: '-12px',
-                  left: 'calc(50% - 29px)',
-                  pointerEvents: 'none',
-                }}
-              >
-                <img src={ArrowDown} alt="" width={42} height={42} />
-              </ArrowButton>
-            </Grid>
+            {success ? (
+              <>
+                <GridRow xs={12}>
+                  <Network variant="body2">Banco:</Network>
+                  <Network variant="body2" sx={{ textAlign: 'right' }}>
+                    {data?.cashinDetails.bank}
+                  </Network>
+                </GridRow>
+                <GridRow xs={12}>
+                  <Network variant="body2">Nombre:</Network>
+                  <Network variant="body2" sx={{ textAlign: 'right' }}>
+                    {data?.cashinDetails.beneficiary}
+                  </Network>
+                </GridRow>
+                <GridRow xs={12}>
+                  <Network variant="body2">CLABE:</Network>
+                  <Network variant="body2" sx={{ textAlign: 'right' }}>
+                    {data?.cashinDetails.clabe}
+                  </Network>
+                </GridRow>
+                <GridRow xs={12}>
+                  <Network variant="body2">Concepto:</Network>
+                  <Network variant="body2" sx={{ textAlign: 'right' }}>
+                    {data?.cashinDetails.concepto}
+                  </Network>
+                </GridRow>
+              </>
+            ) : (
+              <>
+                <Grid md={4} sm={6} xs={7}>
+                  <CurrencyPill currency={quote.baseCurrency} />
+                </Grid>
+                <Grid md={8} sm={6} xs={5}>
+                  <Rate variant="body1">$ {quote.baseAmount}</Rate>
+                  <Amount variant="body2">$ {quote.quoteRate}</Amount>
+                </Grid>
+                <Grid xs={12} sx={{ position: 'relative' }}>
+                  <Hr sx={{ marginBottom: 2 }} />
+                  <ArrowButton
+                    sx={{
+                      position: 'absolute',
+                      margin: '0 auto',
+                      top: '-12px',
+                      left: 'calc(50% - 29px)',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    <img src={ArrowDown} alt="" width={42} height={42} />
+                  </ArrowButton>
+                </Grid>
 
-            <Grid md={4} sm={6} xs={7}>
-              <CurrencyPill currency={quote.quoteCurrency} />
-            </Grid>
-            <Grid md={8} sm={6} xs={5}>
-              <Rate variant="body1">$ {quote.quoteAmount}</Rate>
-              <Amount variant="body2">$ {quote.quoteRateInverse}</Amount>
-            </Grid>
-            <Grid
-              xs={12}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Network variant="body2">Red:</Network>
-              <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                {network.toLowerCase()}{' '}
-                <img
-                  alt="Network"
-                  src={networkImg[network as keyof typeof networkImg]}
-                  width={18}
-                  height={18}
+                <Grid md={4} sm={6} xs={7}>
+                  <CurrencyPill currency={quote.quoteCurrency} />
+                </Grid>
+                <Grid md={8} sm={6} xs={5}>
+                  <Rate variant="body1">$ {quote.quoteAmount}</Rate>
+                  <Amount variant="body2">$ {quote.quoteRateInverse}</Amount>
+                </Grid>
+                <GridRow xs={12}>
+                  <Network variant="body2">Red:</Network>
+                  <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
+                    {network.toLowerCase()}{' '}
+                    <img
+                      alt="Network"
+                      src={networkImg[network as keyof typeof networkImg]}
+                      width={18}
+                      height={18}
+                    />
+                  </Network>
+                </GridRow>
+              </>
+            )}
+          </Grid>
+
+          {!success && (
+            <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
+              <Grid xs={12}>
+                <Input
+                  label="Recibes en esta dirección"
+                  type="text"
+                  {...register('address')}
+                  error={!!formState.errors.address?.message}
+                  helpText={formState.errors.address?.message ?? undefined}
                 />
-              </Network>
-            </Grid>
-          </Grid>
+              </Grid>
 
-          <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
-            <Grid xs={12}>
-              <Input
-                label="Recibes en esta dirección"
-                type="text"
-                {...register('address')}
-                error={!!formState.errors.address?.message}
-                helpText={formState.errors.address?.message ?? undefined}
-              />
+              <Grid xs={12}>
+                <BandoButton
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  disabled={isLoading}
+                  sx={{ padding: '16px 8px', fontWeight: 'bold' }}
+                >
+                  {isLoading && (
+                    <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />
+                  )}
+                  Confirmar
+                </BandoButton>
+              </Grid>
             </Grid>
-
-            <Grid xs={12}>
-              <BandoButton
-                type="submit"
-                variant="contained"
-                fullWidth
-                disabled={isLoading}
-                sx={{ padding: '16px 8px', fontWeight: 'bold' }}
-              >
-                {isLoading && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
-                Confirmar
-              </BandoButton>
-            </Grid>
-          </Grid>
+          )}
         </form>
       </BoxContainer>
     );
