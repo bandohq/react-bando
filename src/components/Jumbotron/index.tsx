@@ -100,7 +100,7 @@ const JumbotronContainer = styled(GridBox)(({ theme }) => ({
 export default function Jumbotron() {
   return (
     <JumbotronContainer>
-      <H1 variant="h1">Intercambia entre MXN y cripto en segundos</H1>
+      <H1 variant="h1">Intercambia entre MXN y cripto en un SPEI</H1>
       <Typography
         variant="body1"
         sx={{

@@ -158,7 +158,7 @@ export default function GetQuoteForm() {
                 },
                 {
                   label: 'Ethereum',
-                  value: 'ERC20',
+                  value: 'ETHEREUM',
                   startComponent: <CurrencyImg src={Ethereum} />,
                 },
               ]}
