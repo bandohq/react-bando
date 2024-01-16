@@ -48,6 +48,13 @@ const Network = styled(Typography)(({ theme }) => ({
   lineHeight: 'normal',
 }));
 
+const GridRow = styled(Grid)(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+}));
+
 export default function RampForm() {
   const [success, setSuccess] = useState(false);
   const { quote, network } = JSON.parse(localStorage.getItem(env.rampDataLocalStorage) ?? '') as {
@@ -56,7 +63,7 @@ export default function RampForm() {
   };
   const { user } = useUser();
   const { postRecipient, isMutating: isRecipientMutating } = useRecipient();
-  const { postTransaction, isMutating: isTransactionMutation } = useTransaction();
+  const { data, postTransaction, isMutating: isTransactionMutation } = useTransaction();
   const isLoading = isRecipientMutating || isTransactionMutation;
 
   const { register, handleSubmit, formState } = useForm<ConfirmRampFormValues>({
@@ -95,7 +102,7 @@ export default function RampForm() {
       <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2} sx={{ margin: 0 }}>
-            <RampTitle />
+            <RampTitle success={success} />
           </Grid>
 
           <Grid
@@ -138,15 +145,7 @@ export default function RampForm() {
               <Rate variant="body1">$ {quote.quoteAmount}</Rate>
               <Amount variant="body2">$ {quote.quoteRateInverse}</Amount>
             </Grid>
-            <Grid
-              xs={12}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
+            <GridRow xs={12}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
                 {network.toLowerCase()}{' '}
@@ -157,33 +156,77 @@ export default function RampForm() {
                   height={18}
                 />
               </Network>
-            </Grid>
+            </GridRow>
           </Grid>
 
-          <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
-            <Grid xs={12}>
-              <Input
-                label="Recibes en esta dirección"
-                type="text"
-                {...register('address')}
-                error={!!formState.errors.address?.message}
-                helpText={formState.errors.address?.message ?? undefined}
-              />
-            </Grid>
+          {!success ? (
+            <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
+              <Grid xs={12}>
+                <Input
+                  label="Recibes en esta dirección"
+                  type="text"
+                  {...register('address')}
+                  error={!!formState.errors.address?.message}
+                  helpText={formState.errors.address?.message ?? undefined}
+                />
+              </Grid>
 
-            <Grid xs={12}>
-              <BandoButton
-                type="submit"
-                variant="contained"
-                fullWidth
-                disabled={isLoading}
-                sx={{ padding: '16px 8px', fontWeight: 'bold' }}
-              >
-                {isLoading && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
-                Confirmar
-              </BandoButton>
+              <Grid xs={12}>
+                <BandoButton
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  disabled={isLoading}
+                  sx={{ padding: '16px 8px', fontWeight: 'bold' }}
+                >
+                  {isLoading && (
+                    <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />
+                  )}
+                  Confirmar
+                </BandoButton>
+              </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container spacing={2} sx={{ mx: 0, my: 1, padding: 1 }}>
+              <GridRow xs={12}>
+                <Typography variant="h6" sx={{ color: '#40B494' }}>
+                  Deposita tu MXN a esta cuenta.
+                </Typography>
+              </GridRow>
+              <GridRow xs={12}>
+                <Network variant="body2" sx={{ fontWeight: 'bold' }}>
+                  Banco:
+                </Network>
+                <Network variant="body2" sx={{ textAlign: 'right' }}>
+                  {data?.cashinDetails.bank}
+                </Network>
+              </GridRow>
+              <GridRow xs={12}>
+                <Network variant="body2" sx={{ fontWeight: 'bold' }}>
+                  Nombre:
+                </Network>
+                <Network variant="body2" sx={{ textAlign: 'right' }}>
+                  {data?.cashinDetails.beneficiary}
+                </Network>
+              </GridRow>
+              <GridRow xs={12}>
+                <Network variant="body2" sx={{ fontWeight: 'bold' }}>
+                  CLABE:
+                </Network>
+                <Network variant="body2" sx={{ textAlign: 'right' }}>
+                  {data?.cashinDetails.clabe}
+                </Network>
+              </GridRow>
+              <GridRow xs={12}>
+                <Network variant="body2" sx={{ fontWeight: 'bold' }}>
+                  Concepto:
+                </Network>
+                <Network variant="body2" sx={{ textAlign: 'right' }}>
+                  {data?.cashinDetails.concepto}
+                </Network>
+              </GridRow>
+            </Grid>
+          )}
         </form>
       </BoxContainer>
     );

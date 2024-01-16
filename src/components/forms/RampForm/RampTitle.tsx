@@ -13,7 +13,7 @@ export const CircularButton = styled(Button)(() => ({
   minWidth: 'fit-content',
 }));
 
-export default function RampTitle() {
+export default function RampTitle({ success = false }) {
   const navigate = useNavigate();
 
   const closeRamp = () => {
@@ -39,7 +39,7 @@ export default function RampTitle() {
           mb: 1,
         }}
       >
-        Confirma
+        {success ? 'Transacción exitosa' : 'Confirma'}
       </Typography>
 
       <CircularButton onClick={closeRamp}>
