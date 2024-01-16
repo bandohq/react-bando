@@ -48,7 +48,7 @@ const Network = styled(Typography)(({ theme }) => ({
   lineHeight: 'normal',
 }));
 
-const GridRow = styled(Grid)(({ theme }) => ({
+const GridRow = styled(Grid)(() => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -116,81 +116,50 @@ export default function RampForm() {
               padding: 2,
             }}
           >
-            {success ? (
-              <>
-                <GridRow xs={12}>
-                  <Network variant="body2">Banco:</Network>
-                  <Network variant="body2" sx={{ textAlign: 'right' }}>
-                    {data?.cashinDetails.bank}
-                  </Network>
-                </GridRow>
-                <GridRow xs={12}>
-                  <Network variant="body2">Nombre:</Network>
-                  <Network variant="body2" sx={{ textAlign: 'right' }}>
-                    {data?.cashinDetails.beneficiary}
-                  </Network>
-                </GridRow>
-                <GridRow xs={12}>
-                  <Network variant="body2">CLABE:</Network>
-                  <Network variant="body2" sx={{ textAlign: 'right' }}>
-                    {data?.cashinDetails.clabe}
-                  </Network>
-                </GridRow>
-                <GridRow xs={12}>
-                  <Network variant="body2">Concepto:</Network>
-                  <Network variant="body2" sx={{ textAlign: 'right' }}>
-                    {data?.cashinDetails.concepto}
-                  </Network>
-                </GridRow>
-              </>
-            ) : (
-              <>
-                <Grid md={4} sm={6} xs={7}>
-                  <CurrencyPill currency={quote.baseCurrency} />
-                </Grid>
-                <Grid md={8} sm={6} xs={5}>
-                  <Rate variant="body1">$ {quote.baseAmount}</Rate>
-                  <Amount variant="body2">$ {quote.quoteRate}</Amount>
-                </Grid>
-                <Grid xs={12} sx={{ position: 'relative' }}>
-                  <Hr sx={{ marginBottom: 2 }} />
-                  <ArrowButton
-                    sx={{
-                      position: 'absolute',
-                      margin: '0 auto',
-                      top: '-12px',
-                      left: 'calc(50% - 29px)',
-                      pointerEvents: 'none',
-                    }}
-                  >
-                    <img src={ArrowDown} alt="" width={42} height={42} />
-                  </ArrowButton>
-                </Grid>
+            <Grid md={4} sm={6} xs={7}>
+              <CurrencyPill currency={quote.baseCurrency} />
+            </Grid>
+            <Grid md={8} sm={6} xs={5}>
+              <Rate variant="body1">$ {quote.baseAmount}</Rate>
+              <Amount variant="body2">$ {quote.quoteRate}</Amount>
+            </Grid>
+            <Grid xs={12} sx={{ position: 'relative' }}>
+              <Hr sx={{ marginBottom: 2 }} />
+              <ArrowButton
+                sx={{
+                  position: 'absolute',
+                  margin: '0 auto',
+                  top: '-12px',
+                  left: 'calc(50% - 29px)',
+                  pointerEvents: 'none',
+                }}
+              >
+                <img src={ArrowDown} alt="" width={42} height={42} />
+              </ArrowButton>
+            </Grid>
 
-                <Grid md={4} sm={6} xs={7}>
-                  <CurrencyPill currency={quote.quoteCurrency} />
-                </Grid>
-                <Grid md={8} sm={6} xs={5}>
-                  <Rate variant="body1">$ {quote.quoteAmount}</Rate>
-                  <Amount variant="body2">$ {quote.quoteRateInverse}</Amount>
-                </Grid>
-                <GridRow xs={12}>
-                  <Network variant="body2">Red:</Network>
-                  <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                    {network.toLowerCase()}{' '}
-                    <img
-                      alt="Network"
-                      src={networkImg[network as keyof typeof networkImg]}
-                      width={18}
-                      height={18}
-                    />
-                  </Network>
-                </GridRow>
-              </>
-            )}
+            <Grid md={4} sm={6} xs={7}>
+              <CurrencyPill currency={quote.quoteCurrency} />
+            </Grid>
+            <Grid md={8} sm={6} xs={5}>
+              <Rate variant="body1">$ {quote.quoteAmount}</Rate>
+              <Amount variant="body2">$ {quote.quoteRateInverse}</Amount>
+            </Grid>
+            <GridRow xs={12}>
+              <Network variant="body2">Red:</Network>
+              <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
+                {network.toLowerCase()}{' '}
+                <img
+                  alt="Network"
+                  src={networkImg[network as keyof typeof networkImg]}
+                  width={18}
+                  height={18}
+                />
+              </Network>
+            </GridRow>
           </Grid>
 
-          {!success && (
+          {!success ? (
             <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
               <Grid xs={12}>
                 <Input
@@ -216,6 +185,46 @@ export default function RampForm() {
                   Confirmar
                 </BandoButton>
               </Grid>
+            </Grid>
+          ) : (
+            <Grid container spacing={2} sx={{ mx: 0, my: 1, padding: 1 }}>
+              <GridRow xs={12}>
+                <Typography variant="h6" sx={{ color: '#40B494' }}>
+                  Deposita tu MXN a esta cuenta.
+                </Typography>
+              </GridRow>
+              <GridRow xs={12}>
+                <Network variant="body2" sx={{ fontWeight: 'bold' }}>
+                  Banco:
+                </Network>
+                <Network variant="body2" sx={{ textAlign: 'right' }}>
+                  {data?.cashinDetails.bank}
+                </Network>
+              </GridRow>
+              <GridRow xs={12}>
+                <Network variant="body2" sx={{ fontWeight: 'bold' }}>
+                  Nombre:
+                </Network>
+                <Network variant="body2" sx={{ textAlign: 'right' }}>
+                  {data?.cashinDetails.beneficiary}
+                </Network>
+              </GridRow>
+              <GridRow xs={12}>
+                <Network variant="body2" sx={{ fontWeight: 'bold' }}>
+                  CLABE:
+                </Network>
+                <Network variant="body2" sx={{ textAlign: 'right' }}>
+                  {data?.cashinDetails.clabe}
+                </Network>
+              </GridRow>
+              <GridRow xs={12}>
+                <Network variant="body2" sx={{ fontWeight: 'bold' }}>
+                  Concepto:
+                </Network>
+                <Network variant="body2" sx={{ textAlign: 'right' }}>
+                  {data?.cashinDetails.concepto}
+                </Network>
+              </GridRow>
             </Grid>
           )}
         </form>
