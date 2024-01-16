@@ -5,7 +5,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
-import Select from '@components/forms/Select';
 import Polygon from '../../../assets/polygon.png';
 import Ethereum from '../../../assets/ethereum.png';
 import ArrowDown from '../../../assets/ArrowDown.svg';
@@ -16,7 +15,7 @@ import useRecipient from '@hooks/useRecipient';
 import useTransaction from '@hooks/useTransaction';
 
 import { styled } from '@mui/material/styles';
-import { sendCurrency, depositCurrency } from '@config/constants/currencies';
+import { currencyImg } from '@config/constants/currencies';
 import { Quote } from '@hooks/useQuote/requests';
 import { Hr } from '../GetQuoteForm';
 import theme from '@config/theme';
@@ -46,6 +45,22 @@ const Network = styled(Typography)(({ theme }) => ({
   textAlign: 'left',
   width: 'fit-content',
   lineHeight: 'normal',
+}));
+
+const CurrencyPill = styled('div')(({ theme }) => ({
+  borderRadius: '100px',
+  fontSize: theme.typography.pxToRem(20),
+  border: `1px solid ${theme.palette.ink.i300}`,
+  color: theme.palette.ink.i900,
+  textAlign: 'left',
+  width: 'fit-content',
+  lineHeight: 'normal',
+  padding: theme.spacing(2),
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontFamily: 'TWK Everett',
+  fontWeight: 'bold',
 }));
 
 const networkImg = {
@@ -87,7 +102,6 @@ export default function RampForm() {
         asset: quote.quoteCurrency,
         address: formValues.address,
       });
-      console.log({ rsp });
 
       const transaction = await postTransaction({
         ...quote,
@@ -95,7 +109,7 @@ export default function RampForm() {
       });
       setSuccess(true);
 
-      console.log({ transaction, success });
+      console.log({ rsp, transaction, success });
     } catch (err) {
       console.log({ err });
     }
@@ -121,15 +135,12 @@ export default function RampForm() {
             }}
           >
             <Grid md={4} sm={6} xs={7}>
-              <Select
-                className="rounded"
-                items={sendCurrency}
-                value={quote.baseCurrency}
-                mantainLabel={false}
-              />
+              <CurrencyPill sx={{ fontWeight: 'normal' }}>
+                {currencyImg[quote.baseCurrency as keyof typeof currencyImg]} {quote.baseCurrency}
+              </CurrencyPill>
             </Grid>
             <Grid md={8} sm={6} xs={5}>
-              <Rate variant="body1">{quote.baseAmount}</Rate>
+              <Rate variant="body1">$ {quote.baseAmount}</Rate>
               <Amount variant="body2">$ {quote.quoteRate}</Amount>
             </Grid>
             <Grid xs={12} sx={{ position: 'relative' }}>
@@ -139,7 +150,8 @@ export default function RampForm() {
                   position: 'absolute',
                   margin: '0 auto',
                   top: '-12px',
-                  left: 'calc(50% - 32px)',
+                  left: 'calc(50% - 29px)',
+                  pointerEvents: 'none',
                 }}
               >
                 <img src={ArrowDown} alt="" width={42} height={42} />
@@ -147,15 +159,12 @@ export default function RampForm() {
             </Grid>
 
             <Grid md={4} sm={6} xs={7}>
-              <Select
-                value={quote.quoteCurrency}
-                className="rounded"
-                items={depositCurrency}
-                mantainLabel={false}
-              />
+              <CurrencyPill>
+                {currencyImg[quote.quoteCurrency as keyof typeof currencyImg]} {quote.quoteCurrency}
+              </CurrencyPill>
             </Grid>
             <Grid md={8} sm={6} xs={5}>
-              <Rate variant="body1">{quote.quoteAmount}</Rate>
+              <Rate variant="body1">$ {quote.quoteAmount}</Rate>
               <Amount variant="body2">$ {quote.quoteRateInverse}</Amount>
             </Grid>
             <Grid
@@ -168,10 +177,10 @@ export default function RampForm() {
               }}
             >
               <Network variant="body2">Red:</Network>
-              <Network variant="body2" sx={{ textAlign: 'right' }}>
-                Arbitrum{' '}
+              <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
+                {network.toLowerCase()}{' '}
                 <img
-                  alt="Arbitrum"
+                  alt="Network"
                   src={networkImg[network as keyof typeof networkImg]}
                   width={18}
                   height={18}
@@ -183,11 +192,11 @@ export default function RampForm() {
           <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
             <Grid xs={12}>
               <Input
-                label="Recibes en esta red"
+                label="Recibes en esta dirección"
                 type="text"
                 {...register('address')}
                 error={!!formState.errors.address?.message}
-                helpText={formState.errors.address?.message || undefined}
+                helpText={formState.errors.address?.message ?? undefined}
               />
             </Grid>
 
