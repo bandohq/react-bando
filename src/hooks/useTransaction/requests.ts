@@ -2,7 +2,8 @@ import axios from 'axios';
 import { RequestQuoteArgs } from '@hooks/useQuote/requests';
 
 export type PostTransactionArgs = RequestQuoteArgs & {
-  email: string;
+  accountAddress: string;
+  accountNetwork: string;
 };
 
 export type Transaction = {
@@ -11,6 +12,8 @@ export type Transaction = {
   status: string;
   baseAmount: number;
   quoteAmount: number;
+  baseCurrency: string;
+  quoteCurrency: string;
   rate: number;
   fee: number;
   cashInNetwork: string;
@@ -33,6 +36,8 @@ export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
   axios
     .post(endpoint, {
       account_type: 'WALLET_ACCOUNT',
+      account_address: String(arg.accountAddress),
+      account_network: String(arg.accountNetwork),
       cash_in_type: 'SPEI',
       quote: {
         base_amount: String(arg.baseAmount),
@@ -46,6 +51,8 @@ export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
       status: data.status,
       baseAmount: parseFloat(data.base_amount),
       quoteAmount: parseFloat(data.quote_amount),
+      baseCurrency: data.base_currency,
+      quoteCurrency: data.quote_currency,
       rate: parseFloat(data.rate),
       fee: parseFloat(data.fee),
       cashInNetwork: data.cash_in_network,
