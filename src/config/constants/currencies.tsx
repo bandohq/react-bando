@@ -39,6 +39,7 @@ export const depositCurrency = [
 
 export const currencyImg = {
   USDC: <CurrencyImg src={Usdc} />,
+  USDT: <CurrencyImg src={Usdt} />,
   MXN: <CurrencyImg src={Currency} />,
 };
 
