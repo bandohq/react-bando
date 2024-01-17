@@ -189,7 +189,8 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               <div className="punto-1">
                 <div className="wallet">
                   <div className="title no-margin">
-                    1. Cuenta inteligente de custodia propia sin riesgo a perder acceso a tus activos
+                    1. Cuenta inteligente de custodia propia sin riesgo a perder acceso a tus
+                    activos
                   </div>
                   <div className="error-c53ab069-2c51-c73c-3405-774b31ae58bf">
                     Si pierdes acceso a tu cuenta, Bando te ayudará a obtenerlo de nuevo gracias a
