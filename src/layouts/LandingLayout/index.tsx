@@ -39,9 +39,9 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
         <section className="section hidden">
           <div className="w-layout-blockcontainer container-7 w-container">
             <div className="div-block horizontal">
-              <h1 className="heading-2">Controla tus criptos y explora la web3 con seguridad</h1>
+              <h1 className="heading-2">Controla tus criptos y explora con seguridad</h1>
               <p className="paragraph-4 hidden">
-                Bando es tu puerta a la web3 como debe ser: tus llaves, tu cripto, con bajos costos
+                Bando es tu puerta a cripto como debe ser: tus llaves, tus tokens, con bajos costos
                 de transacción y con la conexión a DeFi que buscas.
               </p>
             </div>
@@ -57,7 +57,7 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
                 </h1>
                 <p className="paragraph-5">
                   Deposita con pesos o tu moneda local, y obtén criptomonedas directamente en tu
-                  wallet
+                  wallet preferida o en tu cuenta inteligente Bando.
                 </p>
               </div>
               <div className="div-block-3 spacing">
@@ -81,7 +81,7 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
                 <div className="frame-12738">
                   <div className="frame-12743">
                     <div className="frame-12742">
-                      <div className="text-3">Ethereum</div>
+                      <div className="text-3">ETH</div>
                       <div className="text-4">3.8%</div>
                     </div>
                     <img
@@ -183,17 +183,18 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               className="vectors-wrapper-3"
             />
             <div className="como-funciona">
-              <div className="text-8">¿Cómo funciona?</div>
+              <div className="text-8">Muy Pronto</div>
             </div>
             <div className="c-mo-hacerlo">
               <div className="punto-1">
                 <div className="wallet">
                   <div className="title no-margin">
-                    1. Wallet de custodia propia sin riesgo a perder acceso a tus activos
+                    1. Cuenta inteligente de custodia propia sin riesgo a perder acceso a tus
+                    activos
                   </div>
                   <div className="error-c53ab069-2c51-c73c-3405-774b31ae58bf">
-                    Si pierdes acceso a tu wallet, Bando te ayudará a obtenerlo de nuevo gracias a
-                    nuestra tecnología, Bando NUNCA tiene control de tu wallet o de tus activos
+                    Si pierdes acceso a tu cuenta, Bando te ayudará a obtenerlo de nuevo gracias a
+                    nuestra tecnología, Bando NUNCA tiene control de tu cuenta o de tus activos
                   </div>
                   <img
                     src="images/Safe.png"
@@ -251,7 +252,7 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               <div className="punto-1">
                 <div className="wallet">
                   <div className="title no-margin">
-                    3. Accede a las mejores oportunidades en la web3
+                    3. Accede a las mejores oportunidades en cripto
                   </div>
                   <div className="error-c53ab069-2c51-c73c-3405-774b31ae58bf">
                     Conexión directa con los mejores protocolos descentralizados para que compres,
@@ -379,90 +380,13 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
           </div>
         </section>
       </div>
-      <section id="registro" className="registro">
-        <div className="frame-12717">
-          <div className="frame-12716">
-            <div className="gana-acceso">Obtén acceso</div>
-            <div className="text-white">
-              Bando es tu puerta a la web 3 como debe ser: tus llaves, tus criptomonedas; con bajos
-              costos de transacción y con las opciones que buscas para tener todo el control sobre
-              tus activos
-            </div>
-          </div>
-          <div className="div-block-8">
-            <div className="launchlist-form w-form">
-              <form
-                id="wf-form-Registration-Form"
-                name="wf-form-Registration-Form"
-                data-name="Registration Form"
-                action="https://getlaunchlist.com/s/rQOS2W"
-                method="post"
-                className="mintear"
-                data-wf-page-id="64e4baed2d1e0cb4bee46153"
-                data-wf-element-id="1d4c628a-a01f-4038-64b2-4c19ea52c521"
-              >
-                <div className="title">Únete a la lista de espera...</div>
-                <div className="subtitle">
-                  Déjanos tu correo y te contactaremos cuando puedas probar Bando
-                </div>
-                <div className="div-block-6">
-                  <label className="text-6">Email</label>
-                  <input
-                    type="email"
-                    className="input w-input"
-                    name="email"
-                    data-name="email"
-                    placeholder=""
-                    id="email-2"
-                  />
-                </div>
-                <div className="div-block-6">
-                  <label className="text-6">Dirección de tu wallet (opcional)</label>
-                  <input
-                    type="text"
-                    className="input w-input"
-                    name="address"
-                    data-name="address"
-                    placeholder=""
-                    id="address"
-                  />
-                </div>
-                <div className="w-embed">
-                  <div
-                    className="g-recaptcha"
-                    data-sitekey="6LcULg0oAAAAAGl97kylxFtWx0yE60jusgSNoT8k"
-                    data-callback="enableBtn"
-                  ></div>
-                </div>
-                <input
-                  type="submit"
-                  value="Empieza hoy"
-                  data-wait="Please wait..."
-                  id="waitlistSubmit"
-                  className="button-submission w-button"
-                />
-              </form>
-              <div className="success-message-2 w-form-done">
-                <div className="title">
-                  Muchas gracias por registrarte. Te notificaremos a tu mail cuando hayan novedades.
-                </div>
-              </div>
-              <div className="error-message w-form-fail">
-                <div className="title error">
-                  ¡Ups! Ocurrio un problema al enviar el formulario. Intentalo de nuevo.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       <section className="footer">
         <div className="frame-12718">
-          <a href="https://twitter.com/hiro_cool_" className="button-2 w-button">
-            TWITTER
+          <a href="https://twitter.com/bando_cool_" className="button-2 w-button">
+            X
           </a>
           <a href="mailto:ab@hiro.cool" className="button-2 w-button">
-            Contacto: ab@hiro.cool
+            Contacto: hola@bando.cool
           </a>
         </div>
       </section>
