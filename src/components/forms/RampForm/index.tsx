@@ -87,7 +87,8 @@ export default function RampForm() {
 
       const transaction = await postTransaction({
         ...quote,
-        email: user?.email ?? '',
+        accountAddress: formValues.address,
+        accountNetwork: network,
       });
       setSuccess(true);
 
