@@ -5,6 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
+import ErrorBox from '@components/forms/ErrorBox';
 import ArrowDown from '../../../assets/ArrowDown.svg';
 import RampTitle, { CircularButton as ArrowButton } from './RampTitle';
 
@@ -26,6 +27,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { ConfirmRampFormValues } from './schema';
 import { useState } from 'react';
+import { AxiosError } from 'axios';
 
 const Rate = styled(Typography)(({ theme }) => ({
   fontSize: `${theme.typography.pxToRem(28)} !important`,
@@ -57,6 +59,8 @@ const GridRow = styled(Grid)(() => ({
 
 export default function RampForm() {
   const [success, setSuccess] = useState(false);
+  const [recipientError, setRecipientError] = useState(false);
+  const [forbiddenError, setForbiddenError] = useState(false);
   const { quote, network } = JSON.parse(localStorage.getItem(env.rampDataLocalStorage) ?? '') as {
     quote: Quote;
     network: string;
@@ -76,26 +80,32 @@ export default function RampForm() {
 
   const onSubmit = async (formValues: ConfirmRampFormValues) => {
     setSuccess(false);
+    setRecipientError(false);
+    setForbiddenError(false);
 
     try {
-      const rsp = await postRecipient({
+      await postRecipient({
         network,
         email: user?.email ?? '',
         asset: quote.quoteCurrency,
         address: formValues.address,
       });
-
-      const transaction = await postTransaction({
-        ...quote,
-        accountAddress: formValues.address,
-        accountNetwork: network,
-      });
-      setSuccess(true);
-
-      console.log({ rsp, transaction, success });
     } catch (err) {
-      console.log({ err });
+      if ((err as AxiosError).response?.status === 403) {
+        setForbiddenError(true);
+        return;
+      }
+      setRecipientError(true);
+      return;
     }
+
+    await postTransaction({
+      ...quote,
+      accountAddress: formValues.address,
+      accountNetwork: network,
+    });
+
+    setSuccess(true);
   };
 
   if (user && quote) {
@@ -122,7 +132,6 @@ export default function RampForm() {
             </Grid>
             <Grid md={8} sm={6} xs={5}>
               <Rate variant="body1">$ {quote.baseAmount}</Rate>
-              <Amount variant="body2">$ {quote.quoteRate}</Amount>
             </Grid>
             <Grid xs={12} sx={{ position: 'relative' }}>
               <Hr sx={{ marginBottom: 2 }} />
@@ -170,8 +179,16 @@ export default function RampForm() {
                   error={!!formState.errors.address?.message}
                   helpText={formState.errors.address?.message ?? undefined}
                 />
+                {recipientError && (
+                  <ErrorBox>Esta cuenta ha sido rechazada por Bando. Intenta con otra.</ErrorBox>
+                )}
+                {forbiddenError && (
+                  <ErrorBox>
+                    Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía
+                    un correo a hola@bando.cool
+                  </ErrorBox>
+                )}
               </Grid>
-
               <Grid xs={12}>
                 <BandoButton
                   type="submit"
