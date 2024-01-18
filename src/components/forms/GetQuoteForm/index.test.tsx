@@ -1,17 +1,50 @@
-import { act, within, render, screen, waitFor } from '@testing-library/react';
+import { within, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useNavigate } from 'react-router-dom';
+
 import wrapper from '@helpers/TestProvider';
 import debouce from 'lodash/debounce';
 import axios from 'axios';
 
 jest.mock('axios');
 jest.mock('lodash/debounce');
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
+jest.mock('@config/constants/currencies', () => ({
+  ...jest.requireActual('@config/constants/currencies'),
+  sendCurrency: [
+    {
+      label: 'MXN',
+      value: 'MXN',
+    },
+    {
+      label: 'USD',
+      value: 'USD',
+    },
+  ],
+  depositCurrency: [
+    {
+      label: 'USDC',
+      value: 'USDC',
+    },
+    {
+      label: 'USDT',
+      value: 'USDT',
+    },
+  ],
+}));
 
 import GetQuoteForm from '.';
 
 describe('GetQuoteForm', () => {
+  const navigate = jest.fn();
+
   beforeEach(() => {
+    (useNavigate as jest.Mock).mockReturnValue(navigate);
     (debouce as jest.Mock).mockImplementation((fn) => fn);
+
     (axios.post as jest.Mock).mockResolvedValue({
       data: {
         id: 46,
@@ -33,16 +66,28 @@ describe('GetQuoteForm', () => {
     screen.getByText('Continuar');
   });
 
-  it('should change the value of the input and remove dots', async () => {
+  it('should change the value of the input and keep only two decimals, anmd remove letters', async () => {
     render(<GetQuoteForm />, { wrapper });
 
     const input = screen.getByLabelText('baseAmount') as HTMLInputElement;
     await userEvent.type(input, '100');
     expect(input.value).toBe('100');
 
+    await userEvent.type(input, '{backspace}');
+    await userEvent.type(input, '{backspace}');
+    expect(input.value).toBe('1');
+
     await userEvent.clear(input);
-    await userEvent.type(input, '500.75');
-    expect(input.value).toBe('50075');
+    await userEvent.type(input, '500.755555');
+    expect(input.value).toBe('500.75');
+
+    await userEvent.type(input, '{backspace}');
+    await userEvent.type(input, '{backspace}');
+    expect(input.value).toBe('500.');
+
+    await userEvent.clear(input);
+    await userEvent.type(input, 'abcd600.234');
+    expect(input.value).toBe('600.23');
   });
 
   it('changing value on operationType also changes the value in baseCurrency and quoteCurrency', async () => {
@@ -72,7 +117,55 @@ describe('GetQuoteForm', () => {
     });
   });
 
-  it('should make a request for a quote when submiting form', async () => {
+  it('should not request a quote when changing currencies unless the base amount has value', async () => {
+    render(<GetQuoteForm />, { wrapper });
+
+    const selects = screen.getAllByRole('combobox');
+    const baseCurrency = selects[2];
+    const quoteCurrency = selects[3];
+
+    await userEvent.click(baseCurrency);
+    const options = screen.getAllByRole('option');
+    await userEvent.click(options[1]);
+
+    await waitFor(() => {
+      expect(axios.post).not.toHaveBeenCalled();
+    });
+
+    const input = screen.getByLabelText('baseAmount') as HTMLInputElement;
+    await userEvent.type(input, '10');
+    expect(input.value).toBe('10');
+
+    await userEvent.click(baseCurrency);
+    const options1 = screen.getAllByRole('option');
+    await userEvent.click(options1[0]);
+
+    await waitFor(() => {
+      expect(axios.post).toHaveBeenLastCalledWith('/api/v1/ramps/quote/', {
+        base_amount: '10',
+        base_currency: 'MXN',
+        quote_currency: 'USDC',
+      });
+    });
+
+    await userEvent.click(baseCurrency);
+    const options2 = screen.getAllByRole('option');
+    await userEvent.click(options2[1]);
+
+    await userEvent.click(quoteCurrency);
+    const options3 = screen.getAllByRole('option');
+    await userEvent.click(options3[1]);
+
+    await waitFor(() => {
+      expect(axios.post).toHaveBeenLastCalledWith('/api/v1/ramps/quote/', {
+        base_amount: '10',
+        base_currency: 'USD',
+        quote_currency: 'USDT',
+      });
+    });
+  });
+
+  it('should make a request for a quote when submiting form and save data in localstorage', async () => {
     render(<GetQuoteForm />, { wrapper });
 
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
@@ -80,12 +173,33 @@ describe('GetQuoteForm', () => {
     const submitBtn = screen.getByRole('button', { name: 'Continuar' });
     await userEvent.type(baseAmountInput, '1000');
 
-    act(() => {
-      userEvent.click(submitBtn);
-    });
+    userEvent.click(submitBtn);
 
     await waitFor(() => {
       expect(quoteAmountInput.value).toBe('58.47');
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'bando_ramp_data',
+        '{"quote":{"id":46,"baseCurrency":"MXN","baseAmount":1000,"quoteCurrency":"USDC","quoteAmount":58.47,"quoteRate":null,"quoteRateInverse":null,"isExpired":false,"expiresAt":"2024-01-10T23:06:08.388000Z"},"network":"POLYGON"}',
+      );
+      expect(navigate).toHaveBeenCalledWith('/ramp');
+    });
+  });
+
+  it('should handle an error when backend fails', async () => {
+    (axios.post as jest.Mock).mockRejectedValue({});
+    render(<GetQuoteForm />, { wrapper });
+
+    const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
+    const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
+    const submitBtn = screen.getByRole('button', { name: 'Continuar' });
+    await userEvent.type(baseAmountInput, '1000');
+
+    userEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(quoteAmountInput.value).toBe('0');
+      expect(localStorage.setItem).not.toHaveBeenCalledWith();
+      expect(navigate).not.toHaveBeenCalledWith('/ramp');
     });
   });
 

@@ -16,6 +16,8 @@ import schema, { GetQuoteFormValues } from './schema';
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
+import Hr from '@components/Hr';
+
 import Polygon from '../../../assets/polygon.png';
 import Ethereum from '../../../assets/ethereum.png';
 
@@ -24,13 +26,6 @@ import { sendCurrency, depositCurrency } from '@config/constants/currencies';
 import env from '@config/env';
 
 const REQUEST_DEBOUNCE = 250;
-
-export const Hr = styled('hr')(({ theme }) => ({
-  backgroundColor: theme.palette.ink.i300,
-  height: 1,
-  width: '100%',
-  border: 0,
-}));
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
@@ -61,12 +56,15 @@ export default function GetQuoteForm() {
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
   const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
 
-  const debouncedRequest = (formValues: GetQuoteFormValues) =>
-    getQuote({
-      baseAmount: formValues.baseAmount,
-      baseCurrency: formValues.baseCurrency,
-      quoteCurrency: formValues.quoteCurrency,
-    }).catch(() => null);
+  const debouncedRequest = useCallback(
+    (formValues: GetQuoteFormValues) =>
+      getQuote({
+        baseAmount: formValues.baseAmount,
+        baseCurrency: formValues.baseCurrency,
+        quoteCurrency: formValues.quoteCurrency,
+      }).catch(() => null),
+    [getQuote],
+  );
 
   const fetchQuote = useCallback(
     async (formValues: GetQuoteFormValues) => {
@@ -75,7 +73,7 @@ export default function GetQuoteForm() {
           baseAmount: formValues.baseAmount,
           baseCurrency: formValues.baseCurrency,
           quoteCurrency: formValues.quoteCurrency,
-        }).catch(() => null);
+        });
 
         localStorage.setItem(
           env.rampDataLocalStorage,
@@ -89,9 +87,13 @@ export default function GetQuoteForm() {
     [getQuote, navigate],
   );
 
-  const getQuoteOnSelectChange = useCallback(() => {
-    if (baseAmount > 0) handleSubmit(fetchQuote)();
-  }, [baseAmount, fetchQuote, handleSubmit]);
+  const debouncedQuoteRequest = useRef(
+    debounce(handleSubmit(debouncedRequest), REQUEST_DEBOUNCE, { leading: true }),
+  );
+
+  const onChangeCurrencySelects = useCallback(() => {
+    if (baseAmount > 0) handleSubmit(debouncedRequest)();
+  }, [baseAmount, debouncedRequest, handleSubmit]);
 
   const onChangeOperationType = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
@@ -99,21 +101,15 @@ export default function GetQuoteForm() {
     const sendCurrencyItms = value === 'deposit' ? depositCurrency : sendCurrency;
     setValue('baseCurrency', depositCurrencyItms[0].value);
     setValue('quoteCurrency', sendCurrencyItms[0].value);
-    getQuoteOnSelectChange();
   };
-
-  const debouncedQuantityChange = useRef(
-    debounce(handleSubmit(debouncedRequest), REQUEST_DEBOUNCE, { leading: true }),
-  );
 
   const onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.value = event.target.value.replace(/[^0-9.]/g, '');
     const { value } = event.target;
     const idx = value.indexOf('.');
-    if (idx > -1) {
-      event.target.value = value.indexOf('.') >= 0 ? value.slice(0, idx + 3) : value;
-    }
-    debouncedQuantityChange.current();
+
+    event.target.value = idx >= 0 ? value.slice(0, idx + 3) : value;
+    debouncedQuoteRequest.current();
   };
 
   return (
@@ -179,7 +175,7 @@ export default function GetQuoteForm() {
             <Select
               items={depositCurrencyItems}
               value={baseCurrency}
-              {...register('baseCurrency')}
+              {...register('baseCurrency', { onChange: onChangeCurrencySelects })}
               error={!!formState.errors.baseCurrency?.message}
             />
           </Grid>
@@ -193,7 +189,11 @@ export default function GetQuoteForm() {
                 <>
                   Tipo de cambio ({baseCurrency}/{quoteCurrency}):&nbsp;
                   {isMutating ? (
-                    <CircularProgress size={15} sx={{ marginLeft: 1, color: 'palette.ink.i500' }} />
+                    <CircularProgress
+                      size={15}
+                      sx={{ marginLeft: 1, color: 'palette.ink.i500' }}
+                      aria-label="submitting"
+                    />
                   ) : (
                     <strong>{data?.quoteRateInverse ?? 0}</strong>
                   )}
@@ -206,7 +206,7 @@ export default function GetQuoteForm() {
             <Select
               items={sendCurrencyItems}
               value={quoteCurrency}
-              {...register('quoteCurrency')}
+              {...register('quoteCurrency', { onChange: onChangeCurrencySelects })}
               error={!!formState.errors.quoteCurrency?.message}
             />
           </Grid>

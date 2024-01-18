@@ -44,7 +44,10 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
   };
 
   const setUserData = useCallback(
-    (userData: Partial<User>) => setUser((prevUser) => ({ ...prevUser, ...userData })),
+    (userData: Partial<User>) => {
+      console.log({ userData });
+      return setUser((prevUser) => ({ ...prevUser, ...userData }));
+    },
     [setUser],
   );
 
@@ -60,6 +63,8 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
       }
     }
   }, [magic, setIsLoading, setUserData, setDataLoaded]);
+
+  console.log({ provUser: user });
 
   useEffect(() => {
     fetchUser();

@@ -1,23 +1,26 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import schema, { ConfirmRampFormValues } from './schema';
+
 import BoxContainer from '@components/BoxContainer';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import Hr from '@components/Hr';
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import ErrorBox from '@components/forms/ErrorBox';
 import ArrowDown from '../../../assets/ArrowDown.svg';
-import RampTitle, { CircularButton as ArrowButton } from './RampTitle';
-
 import CurrencyPill from './CurrencyPill';
+import RampTitle, { CircularButton as ArrowButton } from './RampTitle';
+import { styled } from '@mui/material/styles';
 
 import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
 import useTransaction from '@hooks/useTransaction';
-
-import { styled } from '@mui/material/styles';
 import { Quote } from '@hooks/useQuote/requests';
-import { Hr } from '../GetQuoteForm';
 
 import theme from '@config/theme';
 import env from '@config/env';
@@ -107,6 +110,8 @@ export default function RampForm() {
 
     setSuccess(true);
   };
+
+  console.log({ user, quote });
 
   if (user && quote) {
     return (
@@ -198,7 +203,11 @@ export default function RampForm() {
                   sx={{ padding: '16px 8px', fontWeight: 'bold' }}
                 >
                   {isLoading && (
-                    <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />
+                    <CircularProgress
+                      size={16}
+                      sx={{ mr: 1, ml: -2, color: '#fff' }}
+                      aria-label="submitting"
+                    />
                   )}
                   Confirmar
                 </BandoButton>
