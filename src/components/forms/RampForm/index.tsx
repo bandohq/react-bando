@@ -14,6 +14,7 @@ import Input from '@components/forms/Input';
 import ErrorBox from '@components/forms/ErrorBox';
 import ArrowDown from '../../../assets/ArrowDown.svg';
 import CurrencyPill from './CurrencyPill';
+import { AxiosError } from 'axios';
 import RampTitle, { CircularButton as ArrowButton } from './RampTitle';
 import { styled } from '@mui/material/styles';
 
@@ -25,12 +26,6 @@ import { Quote } from '@hooks/useQuote/requests';
 import theme from '@config/theme';
 import env from '@config/env';
 import { networkImg } from '@config/constants/currencies';
-
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import schema, { ConfirmRampFormValues } from './schema';
-import { useState } from 'react';
-import { AxiosError } from 'axios';
 
 const Rate = styled(Typography)(({ theme }) => ({
   fontSize: `${theme.typography.pxToRem(28)} !important`,
