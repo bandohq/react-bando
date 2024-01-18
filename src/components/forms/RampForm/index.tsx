@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { ConfirmRampFormValues } from './schema';
+import { AxiosError } from 'axios';
 
 import BoxContainer from '@components/BoxContainer';
 import Typography from '@mui/material/Typography';
@@ -14,7 +15,6 @@ import Input from '@components/forms/Input';
 import ErrorBox from '@components/forms/ErrorBox';
 import ArrowDown from '../../../assets/ArrowDown.svg';
 import CurrencyPill from './CurrencyPill';
-import { AxiosError } from 'axios';
 import RampTitle, { CircularButton as ArrowButton } from './RampTitle';
 import { styled } from '@mui/material/styles';
 
