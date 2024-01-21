@@ -21,6 +21,7 @@ export type SelectProps = SelectBaseProps & CustomSelectProps;
 export const MenuItem = styled(MenuItemBase)(() => ({
   fontSize: '16px !important',
   padding: '16px',
+  textOverflow: 'ellipsis',
 }));
 
 export const CaretImg = styled('img')(() => ({

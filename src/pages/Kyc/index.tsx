@@ -1,18 +1,21 @@
 import ColumnLayout from '@layouts/ColumnLayout';
 import Grid from '@mui/material/Unstable_Grid2';
 import MuiInput from '@components/forms/MuiInput';
+import MuiSelect from '@components/forms/MuiSelect';
+import MuiPhoneInput from '@components/forms/MuiInput/MuiPhoneInput';
+import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
+
 import BandoButton from '@components/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Title } from '@pages/SignIn';
 
-import MuiPhoneInput from '@components/forms/MuiInput/MuiPhoneInput';
 import { toUpperCase, checkNumberLength } from '@helpers/inputs';
-import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
 
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { KycFormValues } from './schema';
 
-import { Title } from '@pages/SignIn';
+import { identificationOptions, Identifications } from '@config/constants/identification';
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function Kyc() {
@@ -21,6 +24,11 @@ export default function Kyc() {
     mode: 'onBlur',
     defaultValues: {
       phone: '',
+      type: 'PERSON',
+      document: {
+        country: 'MX',
+        type: Identifications.NATIONAL_IDENTITY_CARD,
+      },
     },
   });
 
@@ -70,17 +78,17 @@ export default function Kyc() {
                 type="text"
                 sx={{ my: 2 }}
                 InputLabelProps={{ shrink: true }}
-                {...register('rfc', {
+                {...register('nationalIdNumber', {
                   onChange: (e) => {
                     toUpperCase(e);
                     checkNumberLength(e, 13);
                   },
                 })}
-                error={!!formState.errors.rfc?.message}
-                helperText={formState.errors.rfc?.message}
+                error={!!formState.errors.nationalIdNumber?.message}
+                helperText={formState.errors.nationalIdNumber?.message}
               />
             </Grid>
-            <Grid md={12}>
+            <Grid md={12} sx={{ my: 2, mt: 1 }}>
               <Controller
                 control={control}
                 name="address.label"
@@ -104,13 +112,25 @@ export default function Kyc() {
                 )}
               />
             </Grid>
-            <Grid md={12}>
-              <BandoButton
-                type="submit"
-                variant="contained"
-                fullWidth
-                sx={{ padding: '16px 8px', fontWeight: 'bold', mt: 3 }}
-              >
+            <Grid md={4}>
+              <MuiSelect
+                defaultValue={Identifications.NATIONAL_IDENTITY_CARD}
+                {...register('document.type')}
+                items={identificationOptions}
+                label="Identificación"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid md={8}>
+              <MuiInput
+                label="Número"
+                type="text"
+                InputLabelProps={{ shrink: true }}
+                {...register('document.number')}
+              />
+            </Grid>
+            <Grid md={12} sx={{ mt: 2 }}>
+              <BandoButton type="submit" variant="contained" fullWidth>
                 {false && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
                 Verificar
               </BandoButton>
