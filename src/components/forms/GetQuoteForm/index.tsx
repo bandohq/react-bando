@@ -128,6 +128,7 @@ export default function GetQuoteForm() {
                 fontSize: '1.5rem !important',
                 color: 'palette.ink.i900',
               }}
+              {...register('operationType', { onChange: onChangeOperationType })}
               items={[
                 {
                   label: `Deposita ${operationCurrency}`,
@@ -138,7 +139,6 @@ export default function GetQuoteForm() {
                   value: 'withdraw',
                 },
               ]}
-              {...register('operationType', { onChange: onChangeOperationType })}
             />
           </Grid>
 
