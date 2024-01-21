@@ -1,61 +1,164 @@
-import usePlacesAutocomplete from 'use-places-autocomplete';
-import useOnclickOutside from 'react-cool-onclickoutside';
-import { ChangeEvent } from 'react';
+import usePlacesAutocomplete, { getDetails } from 'use-places-autocomplete';
+import { MouseEvent } from 'react';
 
-export default function PlacesAutocomplete() {
-  const {
-    ready,
-    value,
-    suggestions: { status, data },
-    setValue,
-    clearSuggestions,
-  } = usePlacesAutocomplete({
-    callbackName: 'YOUR_CALLBACK_NAME',
-    requestOptions: {
-      /* Define search scope here */
-    },
+import Box from '@mui/material/Box';
+import Autocomplete from '@mui/material/Autocomplete';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import MuiInput, { MuiInputProps } from '../MuiInput';
+import parse from 'autosuggest-highlight/parse';
+import CaretDown from '../../../assets/caret-down.svg';
+import { styled } from '@mui/material/styles';
+
+const ArrowCont = styled('span')(() => ({
+  width: '28px',
+  height: '28px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const ArrowImg = styled('img')(({ theme }) => ({
+  width: '18px',
+  height: '10px',
+  color: theme.palette.ink.i300,
+}));
+
+interface MainTextMatchedSubstrings {
+  offset: number;
+  length: number;
+}
+interface StructuredFormatting {
+  main_text: string;
+  secondary_text: string;
+  main_text_matched_substrings?: readonly MainTextMatchedSubstrings[];
+}
+interface PlaceType {
+  description: string;
+  structured_formatting: StructuredFormatting;
+  place_id: string;
+}
+
+type AddressParts = {
+  street: string;
+  city: string;
+  zip: string;
+  country: string;
+};
+type PlacesAutocompleteProps = MuiInputProps & {
+  setInputValue: (value: string, address?: AddressParts) => void;
+  noOptionsText: string;
+};
+
+type AddressResults = {
+  address_components: {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }[];
+};
+
+export default function PlacesAutocomplete({
+  setInputValue,
+  noOptionsText,
+  ...props
+}: PlacesAutocompleteProps) {
+  const { ready, suggestions, clearSuggestions, setValue } = usePlacesAutocomplete({
+    requestOptions: {},
     debounce: 300,
   });
-  const ref = useOnclickOutside(() => {
-    clearSuggestions();
-  });
 
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    // Update the keyword of the input element
-    setValue(e.target.value);
-  };
-
-  const handleSelect =
-    ({ description }: { description: string }) =>
-    () => {
-      setValue(description, false);
-      clearSuggestions();
-    };
-
-  const renderSuggestions = () =>
-    data.map((suggestion) => {
-      const {
-        place_id,
-        structured_formatting: { main_text, secondary_text },
-      } = suggestion;
-
-      return (
-        <li key={place_id} onClick={handleSelect(suggestion)}>
-          <strong>{main_text}</strong> <small>{secondary_text}</small>
-        </li>
-      );
-    });
+  if (!ready) return null;
 
   return (
-    <div ref={ref}>
-      <input
-        value={value}
-        onChange={handleInput}
-        disabled={!ready}
-        placeholder="Where are you going?"
-      />
-      {/* We can use the "status" to decide whether we should display the dropdown or not */}
-      {status === 'OK' && <ul>{renderSuggestions()}</ul>}
-    </div>
+    <Autocomplete
+      id="google-map-demo"
+      sx={{ width: '100%' }}
+      getOptionLabel={(option: PlaceType) =>
+        typeof option === 'string' ? option : option.description
+      }
+      filterOptions={(x) => x}
+      options={suggestions.data}
+      autoComplete
+      includeInputInList
+      filterSelectedOptions
+      value={props.value as PlaceType}
+      isOptionEqualToValue={(option) => option?.description === (props.value as unknown as string)}
+      noOptionsText={noOptionsText}
+      onInputChange={(_, newInputValue) => {
+        setValue(newInputValue);
+        setInputValue(newInputValue);
+      }}
+      popupIcon={
+        <ArrowCont>
+          <ArrowImg src={CaretDown} />
+        </ArrowCont>
+      }
+      renderInput={(params) => <MuiInput {...params} label={props.label} autoComplete="off" />}
+      renderOption={(optionProps, option) => {
+        const opt = option as PlaceType;
+        const matches = opt?.structured_formatting?.main_text_matched_substrings || [];
+
+        const parts = parse(
+          opt?.structured_formatting?.main_text,
+          matches.map((match: MainTextMatchedSubstrings) => [
+            match?.offset,
+            match?.offset + match?.length,
+          ]),
+        );
+
+        const onClick = (e: MouseEvent<HTMLLIElement>) => {
+          optionProps?.onClick?.(e);
+
+          getDetails({ placeId: opt.place_id }).then((results: AddressResults) => {
+            const addressParts = results.address_components;
+            const streetRoute =
+              addressParts.find((result) => result.types.includes('route'))?.long_name ?? '';
+            const streetNumber =
+              addressParts.find((result) => result.types.includes('street_number'))?.long_name ??
+              '';
+            const city =
+              addressParts.find((result) => result.types.includes('locality'))?.long_name ?? '';
+            const zip =
+              addressParts.find((result) => result.types.includes('postal_code'))?.long_name ?? '';
+            const country =
+              addressParts.find((result) => result.types.includes('country'))?.short_name ?? '';
+            const street = [streetRoute, streetNumber].join(' ');
+
+            setInputValue(opt.description, {
+              street,
+              city,
+              zip,
+              country,
+            });
+
+            clearSuggestions();
+          });
+        };
+
+        const liOptions = { ...optionProps, onClick };
+
+        return (
+          <li {...liOptions}>
+            <Grid container alignItems="center">
+              <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
+                {parts.map((part, index) => (
+                  <Box
+                    key={index}
+                    component="span"
+                    sx={{ fontWeight: part.highlight ? 'bold' : 'regular' }}
+                  >
+                    {part.text}
+                  </Box>
+                ))}
+                <Typography variant="body2" color="text.secondary">
+                  {opt?.structured_formatting?.secondary_text}
+                </Typography>
+              </Grid>
+            </Grid>
+          </li>
+        );
+      }}
+    />
   );
 }

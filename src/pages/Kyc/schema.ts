@@ -6,7 +6,13 @@ export type KycFormValues = {
   lastName: string;
   phone: string;
   rfc: string;
-  address: string;
+  address: {
+    label: string;
+    street: string;
+    city: string;
+    zip: string;
+    country: string;
+  };
 };
 
 const schema = yup.object().shape({
@@ -14,7 +20,13 @@ const schema = yup.object().shape({
   lastName: yup.string().required(),
   phone: yup.string().required(),
   rfc: yup.string().required('RFC es requerido').matches(rfcRegex, 'RFC Inválido'),
-  address: yup.string().required(),
+  address: yup.object().shape({
+    label: yup.string().required(),
+    street: yup.string().required(),
+    city: yup.string().required(),
+    zip: yup.string().required(),
+    country: yup.string().required(),
+  }),
 });
 
 export default schema;

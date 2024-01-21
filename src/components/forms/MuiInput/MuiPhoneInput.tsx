@@ -13,14 +13,14 @@ import { Ref } from 'react';
 
 type MuiPhoneProps = PhoneInputProps & MuiInputProps;
 
-export const MuiPhone = ({
+export default function MuiPhoneInput({
   value,
   onChange,
   defaultCountry,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   forceDialCode,
   ...restProps
-}: MuiPhoneProps) => {
+}: MuiPhoneProps) {
   const { inputValue, handlePhoneValueChange, inputRef, country, setCountry } = usePhoneInput({
     defaultCountry,
     value,
@@ -98,4 +98,4 @@ export const MuiPhone = ({
       ref={ref}
     />
   );
-};
+}

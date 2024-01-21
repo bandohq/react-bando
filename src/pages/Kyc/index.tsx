@@ -4,7 +4,7 @@ import MuiInput from '@components/forms/MuiInput';
 import BandoButton from '@components/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { MuiPhone } from '@components/forms/MuiInput/TelephoneInput';
+import MuiPhoneInput from '@components/forms/MuiInput/MuiPhoneInput';
 import { toUpperCase, checkNumberLength } from '@helpers/inputs';
 import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
 
@@ -16,7 +16,7 @@ import { Title } from '@pages/SignIn';
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function Kyc() {
-  const { register, control, formState, handleSubmit } = useForm<KycFormValues>({
+  const { register, control, formState, handleSubmit, setValue } = useForm<KycFormValues>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
@@ -35,7 +35,6 @@ export default function Kyc() {
                 label="Nombres"
                 type="text"
                 sx={{ my: 2 }}
-                mantainLabel={false}
                 InputLabelProps={{ shrink: true }}
                 {...register('firstName')}
               />
@@ -45,7 +44,6 @@ export default function Kyc() {
                 label="Apellidos"
                 type="text"
                 sx={{ my: 2 }}
-                mantainLabel={false}
                 InputLabelProps={{ shrink: true }}
                 {...register('lastName')}
               />
@@ -55,7 +53,7 @@ export default function Kyc() {
                 control={control}
                 name="phone"
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <MuiPhone
+                  <MuiPhoneInput
                     defaultCountry={DEFAULT_PHONE_COUNTRY}
                     label="Número"
                     value={value}
@@ -71,7 +69,6 @@ export default function Kyc() {
                 label="RFC"
                 type="text"
                 sx={{ my: 2 }}
-                mantainLabel={false}
                 InputLabelProps={{ shrink: true }}
                 {...register('rfc', {
                   onChange: (e) => {
@@ -84,15 +81,28 @@ export default function Kyc() {
               />
             </Grid>
             <Grid md={12}>
-              <PlacesAutocomplete />
-              {/* <MuiInput
-                label="Dirección"
-                type="text"
-                sx={{ my: 2 }}
-                mantainLabel={false}
-                InputLabelProps={{ shrink: true }}
-                {...register('address')}
-              /> */}
+              <Controller
+                control={control}
+                name="address.label"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <PlacesAutocomplete
+                    label="Dirección"
+                    noOptionsText="No se encontro la dirección"
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    setInputValue={(val, address) => {
+                      setValue('address.label', val);
+                      if (address) {
+                        setValue('address.street', address.street);
+                        setValue('address.city', address.city);
+                        setValue('address.zip', address.zip);
+                        setValue('address.country', address.country);
+                      }
+                    }}
+                  />
+                )}
+              />
             </Grid>
             <Grid md={12}>
               <BandoButton
