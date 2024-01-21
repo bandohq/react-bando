@@ -93,6 +93,7 @@ export const MuiPhone = ({
           </InputAdornment>
         ),
       }}
+      mantainLabel={false}
       {...restProps}
       ref={ref}
     />

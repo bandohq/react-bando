@@ -6,8 +6,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { MuiPhone } from '@components/forms/MuiInput/TelephoneInput';
 import { toUpperCase, checkNumberLength } from '@helpers/inputs';
+import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
 
-import usePlaceAutocomplete from '@hooks/usePlaceAutocomplete';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { KycFormValues } from './schema';
@@ -16,8 +16,6 @@ import { Title } from '@pages/SignIn';
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function Kyc() {
-  // const { data, isLoading } =
-  usePlaceAutocomplete({ input: 'Barlovento Residencial' });
   const { register, control, formState, handleSubmit } = useForm<KycFormValues>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
@@ -86,14 +84,15 @@ export default function Kyc() {
               />
             </Grid>
             <Grid md={12}>
-              <MuiInput
+              <PlacesAutocomplete />
+              {/* <MuiInput
                 label="Dirección"
                 type="text"
                 sx={{ my: 2 }}
                 mantainLabel={false}
                 InputLabelProps={{ shrink: true }}
                 {...register('address')}
-              />
+              /> */}
             </Grid>
             <Grid md={12}>
               <BandoButton
