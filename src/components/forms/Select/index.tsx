@@ -18,12 +18,12 @@ export type CustomSelectProps = {
 };
 export type SelectProps = SelectBaseProps & CustomSelectProps;
 
-const MenuItem = styled(MenuItemBase)(() => ({
+export const MenuItem = styled(MenuItemBase)(() => ({
   fontSize: '16px !important',
   padding: '16px',
 }));
 
-const CaretImg = styled('img')(() => ({
+export const CaretImg = styled('img')(() => ({
   userSelect: 'none',
   width: '18px',
   height: '10px',

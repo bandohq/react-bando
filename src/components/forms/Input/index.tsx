@@ -83,7 +83,12 @@ export const TextFieldInput = styled(InputBase)(({ theme }) => ({
       cursor: 'not-allowed',
     },
   },
-  '& .MuiSelect-select': { paddingRight: '32px !important' },
+  '& .MuiSelect-select': {
+    paddingRight: '32px !important',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  },
 }));
 
 export const HelpText = styled(Box)(({ theme }) => ({

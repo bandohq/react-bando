@@ -44,7 +44,9 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
   };
 
   const setUserData = useCallback(
-    (userData: Partial<User>) => setUser((prevUser) => ({ ...prevUser, ...userData })),
+    (userData: Partial<User>) => {
+      return setUser((prevUser) => ({ ...prevUser, ...userData }));
+    },
     [setUser],
   );
 

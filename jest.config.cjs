@@ -41,7 +41,7 @@ module.exports = {
   ],
   modulePaths: ['<rootDir>/src'],
   moduleNameMapper: {
-    '^.+\\.(css|scss)$': '<rootDir>/jest/CSSStub.ts',
+    '^.+\\.(css|scss|png)$': '<rootDir>/jest/CSSStub.ts',
     '@config/(.*)': '<rootDir>/src/config/$1',
     '@pages/(.*)': '<rootDir>/src/pages/$1',
     '@layouts/(.*)': '<rootDir>/src/layouts/$1',

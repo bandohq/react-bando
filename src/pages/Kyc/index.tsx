@@ -1,15 +1,6 @@
 import ColumnLayout from '@layouts/ColumnLayout';
-import { Title } from '@pages/SignIn';
+import KycForm from '@components/forms/KycForm';
 
 export default function Kyc() {
-  return (
-    <ColumnLayout
-      leftContent={
-        <>
-          <Title variant="h3">asdasd</Title>
-          <p>hey</p>
-        </>
-      }
-    />
-  );
+  return <ColumnLayout leftContent={<KycForm />} alignTop />;
 }

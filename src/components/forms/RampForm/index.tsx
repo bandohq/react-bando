@@ -1,33 +1,32 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import schema, { ConfirmRampFormValues } from './schema';
+import { AxiosError } from 'axios';
+
 import BoxContainer from '@components/BoxContainer';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import Hr from '@components/Hr';
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import ErrorBox from '@components/forms/ErrorBox';
 import ArrowDown from '../../../assets/ArrowDown.svg';
-import RampTitle, { CircularButton as ArrowButton } from './RampTitle';
-
 import CurrencyPill from './CurrencyPill';
+import RampTitle, { CircularButton as ArrowButton } from './RampTitle';
+import { styled } from '@mui/material/styles';
 
 import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
 import useTransaction from '@hooks/useTransaction';
-
-import { styled } from '@mui/material/styles';
 import { Quote } from '@hooks/useQuote/requests';
-import { Hr } from '../GetQuoteForm';
 
 import theme from '@config/theme';
 import env from '@config/env';
 import { networkImg } from '@config/constants/currencies';
-
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import schema, { ConfirmRampFormValues } from './schema';
-import { useState } from 'react';
-import { AxiosError } from 'axios';
 
 const Rate = styled(Typography)(({ theme }) => ({
   fontSize: `${theme.typography.pxToRem(28)} !important`,
@@ -57,7 +56,11 @@ const GridRow = styled(Grid)(() => ({
   alignItems: 'center',
 }));
 
-export default function RampForm() {
+type RampFormProps = {
+  noContainer?: boolean;
+};
+
+export default function RampForm({ noContainer = false }: RampFormProps) {
   const [success, setSuccess] = useState(false);
   const [recipientError, setRecipientError] = useState(false);
   const [forbiddenError, setForbiddenError] = useState(false);
@@ -69,6 +72,7 @@ export default function RampForm() {
   const { postRecipient, isMutating: isRecipientMutating } = useRecipient();
   const { data, postTransaction, isMutating: isTransactionMutation } = useTransaction();
   const isLoading = isRecipientMutating || isTransactionMutation;
+  const FormContainer = noContainer ? Box : BoxContainer;
 
   const { register, handleSubmit, formState } = useForm<ConfirmRampFormValues>({
     resolver: yupResolver(schema),
@@ -110,10 +114,10 @@ export default function RampForm() {
 
   if (user && quote) {
     return (
-      <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
+      <FormContainer sx={{ width: '100%', maxWidth: '600px' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2} sx={{ margin: 0 }}>
-            <RampTitle success={success} />
+            <RampTitle success={success} noArrow={noContainer} />
           </Grid>
 
           <Grid
@@ -198,7 +202,11 @@ export default function RampForm() {
                   sx={{ padding: '16px 8px', fontWeight: 'bold' }}
                 >
                   {isLoading && (
-                    <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />
+                    <CircularProgress
+                      size={16}
+                      sx={{ mr: 1, ml: -2, color: '#fff' }}
+                      aria-label="submitting"
+                    />
                   )}
                   Confirmar
                 </BandoButton>
@@ -246,7 +254,7 @@ export default function RampForm() {
             </Grid>
           )}
         </form>
-      </BoxContainer>
+      </FormContainer>
     );
   }
   return null;

@@ -30,3 +30,19 @@ code {
   background-attachment: fixed;
   background-size: cover;
 }
+
+.PhoneInput {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  gap: 16px;
+
+  & > div:first-child {
+    width: 30%;
+  }
+
+  & > div:last-child {
+    width: 70%;
+  }
+}

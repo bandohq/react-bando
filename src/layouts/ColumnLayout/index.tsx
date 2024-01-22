@@ -60,15 +60,22 @@ const RightGrid = styled(Box)(({ theme }) => ({
 export type ExposedLayoutProps = {
   rightContent?: ReactNode;
   leftContent?: ReactNode;
+  alignTop?: boolean;
 };
 
-export default function ColumnLayout({ rightContent, leftContent }: ExposedLayoutProps) {
+export default function ColumnLayout({
+  rightContent,
+  leftContent,
+  alignTop = false,
+}: ExposedLayoutProps) {
+  const leftSideSx = alignTop ? { justifyContent: 'flex-start' } : {};
+
   return (
     <LayoutContainer>
       <Navbar fullWidth />
       <Container>
         <ContentContainer>
-          <LeftGrid>{leftContent}</LeftGrid>
+          <LeftGrid sx={leftSideSx}>{leftContent}</LeftGrid>
           <RightGrid>{rightContent}</RightGrid>
         </ContentContainer>
       </Container>

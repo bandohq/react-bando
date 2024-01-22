@@ -8,7 +8,6 @@ export type PostRecipientArgs = {
   network?: string;
 };
 
-// export type Recipient = any;
 type PostRecipientRequest = (
   endpoint: string,
   data: { arg: PostRecipientArgs },
@@ -16,7 +15,6 @@ type PostRecipientRequest = (
 export const postRecipient: PostRecipientRequest = (endpoint, { arg }) =>
   axios.post(endpoint, {
     account_type: 'WALLET_ACCOUNT',
-    // email: arg.email,
     data: {
       asset: arg.asset,
       network: (arg.network ?? 'arbitrum').toUpperCase(),
@@ -24,4 +22,3 @@ export const postRecipient: PostRecipientRequest = (endpoint, { arg }) =>
       address: arg.address,
     },
   });
-// .then(({ data }) => data);

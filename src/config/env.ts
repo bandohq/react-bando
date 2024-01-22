@@ -1,6 +1,7 @@
 const api = process.env.API || '';
 const authCookieName = process.env.AUTH_COOKIE_NAME || '';
 const rampDataLocalStorage = 'bando_ramp_data';
+const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY ?? '';
 
 const magicLink = {
   secret: process.env.MAGIC_LINK_SECRET || '',
@@ -8,4 +9,4 @@ const magicLink = {
   chainID: parseInt(process.env.MAGIC_LINK_CHAIN_ID || '11155111', 10),
 };
 
-export default { api, authCookieName, magicLink, rampDataLocalStorage };
+export default { api, authCookieName, magicLink, rampDataLocalStorage, googleMapsApiKey };

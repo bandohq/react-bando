@@ -31,7 +31,7 @@ const CaretImg = styled('img')(() => ({
 export type MuiSelectProps = TextFieldProps & CustomSelectProps;
 
 const MuiSelect = forwardRef((inputProps: MuiSelectProps, ref: ForwardedRef<HTMLInputElement>) => {
-  const { mantainLabel = true, fullWidth = true, className, items, ...props } = inputProps;
+  const { mantainLabel = false, fullWidth = true, className, items, ...props } = inputProps;
   const classNames = mantainLabel ? 'label-top' : '';
   const labelText = props.id ?? props.name;
 

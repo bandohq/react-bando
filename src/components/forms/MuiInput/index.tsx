@@ -10,7 +10,7 @@ export type MuiInputProps = TextFieldProps & {
 };
 
 const MuiInput = forwardRef((inputProps: MuiInputProps, ref: ForwardedRef<HTMLInputElement>) => {
-  const { mantainLabel = true, fullWidth = true, className, ...props } = inputProps;
+  const { mantainLabel = false, fullWidth = true, className, ...props } = inputProps;
   const classNames = mantainLabel ? 'label-top' : '';
   const labelText = props.id ?? props.name;
 

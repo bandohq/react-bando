@@ -13,7 +13,7 @@ export const CircularButton = styled(Button)(() => ({
   minWidth: 'fit-content',
 }));
 
-export default function RampTitle({ success = false }) {
+export default function RampTitle({ success = false, noArrow = false }) {
   const navigate = useNavigate();
 
   const closeRamp = () => {
@@ -42,9 +42,11 @@ export default function RampTitle({ success = false }) {
         {success ? 'Transacción en proceso' : 'Confirma'}
       </Typography>
 
-      <CircularButton onClick={closeRamp}>
-        <img src={Cross} alt="" width={16} height={16} />
-      </CircularButton>
+      {!noArrow && (
+        <CircularButton onClick={closeRamp}>
+          <img src={Cross} alt="" width={16} height={16} />
+        </CircularButton>
+      )}
     </Grid>
   );
 }

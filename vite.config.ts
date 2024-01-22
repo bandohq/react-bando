@@ -37,6 +37,7 @@ export default ({ mode }) => {
             title: envVars.VITE_APP_TITLE,
             description: envVars.VITE_APP_DESCRIPTION,
             heapId: envVars.VITE_HEAP_ID,
+            googleMapsApiKey: envVars.VITE_GOOGLE_MAPS_API_KEY,
           },
         },
       }),
