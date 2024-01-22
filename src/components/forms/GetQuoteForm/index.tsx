@@ -22,6 +22,7 @@ import Polygon from '../../../assets/polygon.png';
 import Ethereum from '../../../assets/ethereum.png';
 
 import useQuote from '@hooks/useQuote';
+import useUser from '@hooks/useUser';
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
 import env from '@config/env';
 
@@ -39,6 +40,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 export default function GetQuoteForm() {
   const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
+  const { user } = useUser();
   const { register, handleSubmit, setValue, watch, formState } = useForm<GetQuoteFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -66,6 +68,8 @@ export default function GetQuoteForm() {
     [getQuote],
   );
 
+  console.log({ user });
+
   const fetchQuote = useCallback(
     async (formValues: GetQuoteFormValues) => {
       try {
@@ -79,6 +83,7 @@ export default function GetQuoteForm() {
           env.rampDataLocalStorage,
           JSON.stringify({ quote, network: formValues.network }),
         );
+        if (!user?.kycLevel && user?.email) return navigate('/kyc');
         return navigate('/ramp');
       } catch {
         // TODO: Handle error

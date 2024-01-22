@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 
 import BoxContainer from '@components/BoxContainer';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -55,7 +56,11 @@ const GridRow = styled(Grid)(() => ({
   alignItems: 'center',
 }));
 
-export default function RampForm() {
+type RampFormProps = {
+  noContainer?: boolean;
+};
+
+export default function RampForm({ noContainer = false }: RampFormProps) {
   const [success, setSuccess] = useState(false);
   const [recipientError, setRecipientError] = useState(false);
   const [forbiddenError, setForbiddenError] = useState(false);
@@ -67,6 +72,7 @@ export default function RampForm() {
   const { postRecipient, isMutating: isRecipientMutating } = useRecipient();
   const { data, postTransaction, isMutating: isTransactionMutation } = useTransaction();
   const isLoading = isRecipientMutating || isTransactionMutation;
+  const FormContainer = noContainer ? Box : BoxContainer;
 
   const { register, handleSubmit, formState } = useForm<ConfirmRampFormValues>({
     resolver: yupResolver(schema),
@@ -106,14 +112,12 @@ export default function RampForm() {
     setSuccess(true);
   };
 
-  console.log({ user, quote });
-
   if (user && quote) {
     return (
-      <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
+      <FormContainer sx={{ width: '100%', maxWidth: '600px' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2} sx={{ margin: 0 }}>
-            <RampTitle success={success} />
+            <RampTitle success={success} noArrow={noContainer} />
           </Grid>
 
           <Grid
@@ -250,7 +254,7 @@ export default function RampForm() {
             </Grid>
           )}
         </form>
-      </BoxContainer>
+      </FormContainer>
     );
   }
   return null;

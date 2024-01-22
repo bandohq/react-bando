@@ -88,7 +88,6 @@ export const TextFieldInput = styled(InputBase)(({ theme }) => ({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    width: '40px',
   },
 }));
 

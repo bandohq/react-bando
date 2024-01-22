@@ -1,14 +1,15 @@
-import useSWR from 'swr';
-// import { getPlacesRequest } from './requests';
+import useSWRMutation from 'swr/mutation';
 
-export default function usePlaceAutocomplete({ input = '' }) {
-  // const { data, isLoading, error } = useSWR('/maps/api/place/autocomplete/json', (url) =>
-  //   getPlacesRequest(url, { arg: input }),
-  // );
+import { postUserKyc } from './requests';
+import endpoints from '@config/endpoints';
+
+export default function useKyc() {
+  const { trigger, isMutating, data, error } = useSWRMutation(endpoints.userKyc, postUserKyc);
 
   return {
-    // data,
-    // error,
-    // isLoading,
+    postUserKyc: trigger,
+    isMutating,
+    data,
+    error,
   };
 }

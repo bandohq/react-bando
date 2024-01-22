@@ -1,11 +1,44 @@
 import axios, { AxiosResponse } from 'axios';
-import env from '@config/env';
 
-type GetPlacesRequest = (endpoint: string, data: { arg: string }) => Promise<AxiosResponse>;
-export const getPlacesRequest: GetPlacesRequest = (endpoint, { arg: input }) =>
-  axios.get(endpoint, {
-    params: { input, key: env.googleMapsApiKey },
-    baseURL: 'https://maps.googleapis.com',
-    withCredentials: false,
-    headers: { Authorization: undefined },
+type PostUserKycArgs = {
+  email: string;
+  type: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  dateOfBirth?: string;
+  address: {
+    street: string;
+    city: string;
+    zip: string;
+    country: string;
+  };
+  nationalIdNumber: string;
+  document: {
+    type: string;
+    number: string;
+    country: string;
+  };
+};
+type PostUserKycRequest = (
+  endpoint: string,
+  data: { arg: PostUserKycArgs },
+) => Promise<AxiosResponse>;
+
+export const postUserKyc: PostUserKycRequest = (endpoint, { arg }) =>
+  axios.post(endpoint, {
+    type: arg.type,
+    email: arg.email,
+    first_name: arg.firstName,
+    last_name: arg.lastName,
+    phone: arg.phone,
+    date_of_birth: arg.dateOfBirth ?? '1990-12-14',
+    address: {
+      street: arg.address.street,
+      city: arg.address.city,
+      zip: arg.address.zip,
+      country: arg.address.country,
+    },
+    national_id_number: arg.nationalIdNumber,
+    document: arg.document,
   });
