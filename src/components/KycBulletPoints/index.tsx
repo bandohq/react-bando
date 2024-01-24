@@ -4,14 +4,14 @@ import KycBg from '../../assets/kycBg.svg';
 import CheckGreen from '../../assets/CheckGreen.svg';
 import { styled } from '@mui/material/styles';
 
-const KycBgImg = styled('img')(({ theme }) => ({
+const KycBgImg = styled('img')(() => ({
   width: '80%',
   height: 'auto',
   margin: '5% auto 0',
   display: 'block',
 }));
 
-const Container = styled('div')(({ theme }) => ({
+const Container = styled('div')(() => ({
   width: '100%',
   alignSelf: 'flex-start',
   height: '100%',
