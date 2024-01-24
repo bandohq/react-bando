@@ -5,6 +5,7 @@ declare module '@mui/material/styles' {
   interface Palette {
     ink: {
       i900: string;
+      i800: string;
       i700: string;
       i600: string;
       i500: string;
@@ -18,6 +19,7 @@ declare module '@mui/material/styles' {
   interface PaletteOptions {
     ink: {
       i900: string;
+      i800: string;
       i700: string;
       i600: string;
       i500: string;

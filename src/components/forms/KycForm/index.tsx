@@ -55,30 +55,31 @@ export default function KycForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Title variant="h3">Verifica tus datos</Title>
       <Grid container spacing={1} sx={{ margin: 0 }}>
-        <Grid md={6}>
+        <Grid md={6} xs={12}>
           <MuiInput
             label="Nombres"
             type="text"
-            sx={{ my: 2 }}
+            sx={{ mt: 2 }}
             InputLabelProps={{ shrink: true }}
             {...register('firstName')}
           />
         </Grid>
-        <Grid md={6}>
+        <Grid md={6} xs={12}>
           <MuiInput
             label="Apellidos"
             type="text"
-            sx={{ my: 2 }}
+            sx={{ mt: 2 }}
             InputLabelProps={{ shrink: true }}
             {...register('lastName')}
           />
         </Grid>
-        <Grid md={12}>
+        <Grid md={12} xs={12}>
           <Controller
             control={control}
             name="phone"
             render={({ field: { onChange, onBlur, value } }) => (
               <MuiPhoneInput
+                sx={{ mt: 2 }}
                 defaultCountry={DEFAULT_PHONE_COUNTRY}
                 label="Número"
                 value={value}
@@ -89,11 +90,11 @@ export default function KycForm() {
             )}
           />
         </Grid>
-        <Grid md={12}>
+        <Grid md={12} xs={12}>
           <MuiInput
             label="RFC"
             type="text"
-            sx={{ my: 2 }}
+            sx={{ mt: 2 }}
             InputLabelProps={{ shrink: true }}
             {...register('nationalIdNumber', {
               onChange: (e) => {
@@ -105,7 +106,7 @@ export default function KycForm() {
             helperText={formState.errors.nationalIdNumber?.message}
           />
         </Grid>
-        <Grid md={12} sx={{ my: 2, mt: 1 }}>
+        <Grid md={12} xs={12} sx={{ mt: 2 }}>
           <Controller
             control={control}
             name="address.label"
@@ -129,8 +130,9 @@ export default function KycForm() {
             )}
           />
         </Grid>
-        <Grid md={4}>
+        <Grid md={4} xs={12}>
           <MuiSelect
+            sx={{ mt: 2 }}
             defaultValue={Identifications.NATIONAL_IDENTITY_CARD}
             {...register('document.type')}
             items={identificationOptions}
@@ -138,8 +140,9 @@ export default function KycForm() {
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
-        <Grid md={8}>
+        <Grid md={8} xs={12}>
           <MuiInput
+            sx={{ mt: 2 }}
             label="Número"
             type="text"
             InputLabelProps={{ shrink: true }}

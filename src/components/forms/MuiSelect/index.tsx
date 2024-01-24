@@ -5,7 +5,7 @@ import MenuItemBase from '@mui/material/MenuItem';
 
 import { ForwardedRef, forwardRef } from 'react';
 import { styled } from '@mui/material/styles';
-import CaretDown from '../../../assets/caret-down.svg';
+import CaretDown from '../../../assets/CaretDown.svg';
 import inputStyles from '../MuiInput/styles';
 
 const TextFieldBase = styled(TextField)<TextFieldProps>(() => inputStyles);

@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import MuiInput, { MuiInputProps } from '../MuiInput';
 import parse from 'autosuggest-highlight/parse';
-import CaretDown from '../../../assets/caret-down.svg';
+import CaretDown from '../../../assets/CaretDown.svg';
 import { styled } from '@mui/material/styles';
 
 const ArrowCont = styled('span')(() => ({
