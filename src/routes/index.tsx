@@ -15,7 +15,9 @@ const router = createBrowserRouter(
       <Route path="/" element={<ProtectedWrapper />}>
         <Route path="kyc" element={<Kyc />} />
         <Route path="ramp" element={<Ramp />} />
+        <Route path="ramp/:txnId" element={<Ramp />} />
         <Route path="kyc/ramp" element={<ProtectedRamp />} />
+        <Route path="kyc/ramp/:txnId" element={<ProtectedRamp />} />
       </Route>
       <Route path="/" element={<ExposedWrapper />}>
         <Route index element={<Landing />} />
