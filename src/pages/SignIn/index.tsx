@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import MuiInput from '@components/forms/MuiInput';
 import BandoButton from '@components/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import getStorageQuote from '@helpers/getStorageQuote';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,6 +24,7 @@ export const Title = styled(Typography)(({ theme }) => ({
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const storageQuote = getStorageQuote();
   const { login, isMutating } = useMagicLinkAuth();
   const { register, handleSubmit } = useForm<SignInFormValues>({
     resolver: yupResolver(schema),
@@ -33,8 +35,12 @@ export default function SignIn() {
 
   const onSubmit = async (data: SignInFormValues) => {
     try {
-      await login(data);
-      navigate('/kyc');
+      const rsp = await login(data);
+      if ((rsp?.kycLevel ?? 0) > 0) {
+        if (storageQuote.quote?.baseAmount) return navigate('/');
+        return navigate('/kyc/ramp');
+      }
+      return navigate('/kyc');
     } catch {
       // TODO: handle error
     }

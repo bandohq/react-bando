@@ -85,6 +85,7 @@ export default function GetQuoteForm() {
             operationType: formValues.operationType,
           }),
         );
+        if (!user?.email && !user?.id) return navigate('/signin');
         if (!user?.kycLevel && user?.email) return navigate('/kyc');
         return navigate('/ramp');
       } catch {

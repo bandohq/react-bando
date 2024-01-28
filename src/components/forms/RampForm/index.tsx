@@ -22,12 +22,12 @@ import { styled } from '@mui/material/styles';
 import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
 import useTransaction from '@hooks/useTransaction';
-import { Quote } from '@hooks/useQuote/requests';
+import getStorageQuote from '@helpers/getStorageQuote';
 
 import theme from '@config/theme';
-import env from '@config/env';
 import { networkImg } from '@config/constants/currencies';
 import { checkNumberLength, allowOnlyNumbers } from '@helpers/inputs';
+import { Quote } from '@hooks/useQuote/requests';
 
 const Rate = styled(Typography)(({ theme }) => ({
   fontSize: `${theme.typography.pxToRem(28)} !important`,
@@ -65,15 +65,8 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
   const [success, setSuccess] = useState(false);
   const [recipientError, setRecipientError] = useState(false);
   const [forbiddenError, setForbiddenError] = useState(false);
-  const {
-    quote,
-    network,
-    operationType: opType,
-  } = JSON.parse(localStorage.getItem(env.rampDataLocalStorage) ?? '') as {
-    quote: Quote;
-    network: string;
-    operationType: 'deposit' | 'withdraw';
-  };
+  const { quote, network = '', operationType: opType } = getStorageQuote();
+
   const { user } = useUser();
   const { postRecipient, isMutating: isRecipientMutating } = useRecipient();
   const { data, postTransaction, isMutating: isTransactionMutation } = useTransaction();
@@ -97,9 +90,9 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
 
     try {
       await postRecipient({
-        network,
+        network: network ?? '',
         email: user?.email ?? '',
-        asset: quote.quoteCurrency,
+        asset: quote?.quoteCurrency ?? '',
         address: formValues?.address ?? '',
         firstName: formValues?.firstName ?? '',
         lastName: formValues?.lastName ?? '',
@@ -115,9 +108,9 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
     }
 
     await postTransaction({
-      ...quote,
+      ...(quote as Quote),
       accountAddress: formValues?.address ?? '',
-      accountNetwork: network,
+      accountNetwork: network ?? '',
     });
 
     setSuccess(true);
@@ -177,7 +170,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
             <GridRow xs={12}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                {network.toLowerCase()}{' '}
+                {network?.toLowerCase()}{' '}
                 <img
                   alt="Network"
                   src={networkImg[network as keyof typeof networkImg]}
