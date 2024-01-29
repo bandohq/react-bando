@@ -33,15 +33,11 @@ const schema = yup.object().shape({
     then: (schema) => schema.required(),
     otherwise: (schema) => schema.optional(),
   }),
-  clabe: yup
-    .string()
-    .min(18)
-    .max(18)
-    .when(['operationType'], {
-      is: 'withdraw',
-      then: (schema) => schema.required(),
-      otherwise: (schema) => schema.optional(),
-    }),
+  clabe: yup.string().when(['operationType'], {
+    is: 'withdraw',
+    then: (schema) => schema.min(18).max(18).required(),
+    otherwise: (schema) => schema.optional(),
+  }),
 });
 
 export default schema;
