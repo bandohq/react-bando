@@ -5,24 +5,32 @@ import CheckGreen from '../../assets/CheckGreen.svg';
 import { styled } from '@mui/material/styles';
 
 const KycBgImg = styled('img')(() => ({
-  width: '80%',
+  position: 'absolute',
+  width: '601px',
+  maxWidth: '100%',
   height: 'auto',
-  margin: '5% auto 0',
-  display: 'block',
+  margin: '0 auto',
+  bottom: '35%',
+  left: '50%',
+  right: '50%',
+  transform: 'translate(-50%)',
+  zIndex: 200,
 }));
 
 const Container = styled('div')(() => ({
   width: '100%',
-  alignSelf: 'flex-start',
   height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-end',
+  position: 'relative',
 }));
 
 const BulletContainer = styled('div')(({ theme }) => ({
   maxWidth: '480px',
   width: '100%',
-  margin: '0 auto',
-  padding: theme.spacing(2, 0),
-  paddingTop: theme.spacing(3),
+  margin: 'auto auto 5% auto',
+  padding: theme.spacing(3, 0),
 }));
 
 const Title = styled(Typography)(({ theme }) => ({

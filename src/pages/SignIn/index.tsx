@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import MuiInput from '@components/forms/MuiInput';
 import BandoButton from '@components/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import KycBulletPoints from '@components/KycBulletPoints';
 import getStorageQuote from '@helpers/getStorageQuote';
 
 import { useForm } from 'react-hook-form';
@@ -72,7 +73,7 @@ export default function SignIn() {
           </BandoButton>
         </form>
       }
-      rightContent={'right content'}
+      rightContent={<KycBulletPoints />}
     />
   );
 }

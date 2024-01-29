@@ -40,6 +40,7 @@ const LeftGrid = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   backgroundColor: '#fff',
   boxShadow: '4px 0  4px rgb(0 0 0 / 18%)',
+  zIndex: 201,
 
   [theme.breakpoints.down('md')]: {
     maxWidth: '100%',
@@ -49,7 +50,6 @@ const LeftGrid = styled(Box)(({ theme }) => ({
 const RightGrid = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexGrow: 1,
-  // maxWidth: '883px',
   padding: theme.spacing(3),
   paddingTop: TOP_PADDING,
   [theme.breakpoints.down('md')]: {
@@ -76,7 +76,7 @@ export default function ColumnLayout({
       <Container>
         <ContentContainer>
           <LeftGrid sx={leftSideSx}>{leftContent}</LeftGrid>
-          <RightGrid>{rightContent}</RightGrid>
+          <RightGrid className="kyc-page">{rightContent}</RightGrid>
         </ContentContainer>
       </Container>
     </LayoutContainer>
