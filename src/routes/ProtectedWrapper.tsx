@@ -7,7 +7,7 @@ export default function ProtectedWrapper() {
 
   if (isUnauthorized) {
     logoutUser();
-    return <Navigate to="/" replace />;
+    return <Navigate to="/signin" replace />;
   }
 
   return <>{outlet}</>;
