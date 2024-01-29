@@ -1,6 +1,5 @@
-// import { within, render, screen, waitFor } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { useNavigate } from 'react-router-dom';
 import { PropsWithChildren } from 'react';
@@ -21,6 +20,8 @@ jest.mock('react-router-dom', () => ({
 
 import RampForm from '.';
 
+const address = '0x8ba1f109551bd432803012645ac136ddd64dba72';
+
 const wrapper = ({ children }: PropsWithChildren) => (
   <TestProvider>
     <MagicProvider>
@@ -34,13 +35,39 @@ describe('RampForm', () => {
 
   beforeEach(() => {
     (localStorage.getItem as jest.Mock).mockReturnValue(
-      '{"quote":{"id":228,"baseCurrency":"MXN","baseAmount":1000,"quoteCurrency":"USDC","quoteAmount":57.55,"quoteRate":0.06,"quoteRateInverse":17.38,"isExpired":false,"expiresAt":"2024-01-16T22:02:51.960000Z"},"network":"POLYGON"}',
+      '{"quote":{"id":228,"baseCurrency":"MXN","baseAmount":1000,"quoteCurrency":"USDC","quoteAmount":57.55,"quoteRate":0.06,"quoteRateInverse":17.38,"isExpired":false,"expiresAt":"2024-01-16T22:02:51.960000Z"},"network":"POLYGON","operationType":"deposit"}',
     );
     (useNavigate as jest.Mock).mockReturnValue(navigate);
     (debouce as jest.Mock).mockImplementation((fn) => fn);
+    (axios.post as jest.Mock).mockResolvedValueOnce(true).mockResolvedValueOnce({
+      data: {
+        id: 46,
+        transaction_id: 555,
+        status: 'passed',
+        base_amount: 1000,
+        quoteAmount: 5000,
+        base_currency: 'MXN',
+        quote_currency: 'USDC',
+        quote_amount: '58.47',
+        rate: '1',
+        fee: '2',
+        is_expired: false,
+        cash_in_network: 'cash_in_network',
+        provider_status: 'provider_status',
+        end_network: 'end_network',
+        cash_in_details: {
+          network: 'network',
+          bank: 'bank',
+          beneficiary: 'beneficiary',
+          clabe: 'clabe',
+          concepto: 'concepto',
+        },
+      },
+    });
   });
 
   it('should return nothing when there is no user or quote', async () => {
+    (localStorage.getItem as jest.Mock).mockReturnValue('');
     render(<RampForm />, { wrapper });
     expect(() => screen.getByText('MXN')).toThrow();
   });
@@ -62,161 +89,77 @@ describe('RampForm', () => {
       });
     });
 
-    it.only('should render RampForm', async () => {
+    it('should render RampForm', async () => {
       render(<RampForm />, { wrapper });
-      // screen.getByText('MXN');
-      // screen.getByText('USD');
-      // screen.getByText('$ 1000');
-      // screen.getByText('$ 57.55');
+      screen.getByText('MXN');
+      screen.getByText('USDC');
+      screen.getByText('$ 1000');
+      screen.getByText('$ 57.55');
+      screen.getByText('$ 17.38');
     });
   });
 
-  // it('should change the value of the input and keep only two decimals, anmd remove letters', async () => {
-  //   render(<RampForm />, { wrapper });
+  it('should request a recipient and post a transaction and show the cashin details for a deposit', async () => {
+    render(<RampForm />, { wrapper });
 
-  //   const input = screen.getByLabelText('baseAmount') as HTMLInputElement;
-  //   await userEvent.type(input, '100');
-  //   expect(input.value).toBe('100');
+    const addressInput = screen.getByLabelText('address') as HTMLInputElement;
+    const submitBtn = screen.getByRole('button', { name: 'Confirmar' });
+    await userEvent.type(addressInput, address);
 
-  //   await userEvent.type(input, '{backspace}');
-  //   await userEvent.type(input, '{backspace}');
-  //   expect(input.value).toBe('1');
+    await userEvent.click(submitBtn);
 
-  //   await userEvent.clear(input);
-  //   await userEvent.type(input, '500.755555');
-  //   expect(input.value).toBe('500.75');
+    await waitFor(() => {
+      screen.getByText(/Deposita tu MXN a esta cuenta/i);
+      screen.getByText(/Banco:/i);
+      screen.getByText(/Nombre:/i);
+      screen.getByText(/CLABE:/i);
+      screen.getByText(/Concepto:/i);
+    });
+  });
 
-  //   await userEvent.type(input, '{backspace}');
-  //   await userEvent.type(input, '{backspace}');
-  //   expect(input.value).toBe('500.');
+  it('should request a recipient and post a transaction and show the cashin details for a withdraw', async () => {
+    (axios.post as jest.Mock).mockRestore();
+    (localStorage.getItem as jest.Mock).mockReturnValue(
+      '{"quote":{"id":70,"baseCurrency":"USDC","baseAmount":5000,"quoteCurrency":"MXN","quoteAmount":85402.9,"quoteRate":17.08,"quoteRateInverse":0.06,"isExpired":false,"expiresAt":"2024-01-29T21:01:31.472000Z"},"network":"POLYGON","operationType":"withdraw"}',
+    );
+    (axios.post as jest.Mock).mockResolvedValueOnce(true).mockResolvedValueOnce({
+      data: {
+        id: 46,
+        transaction_id: 555,
+        status: 'passed',
+        base_amount: 1000,
+        quoteAmount: 5000,
+        base_currency: 'MXN',
+        quote_currency: 'USDC',
+        quote_amount: '58.47',
+        rate: '1',
+        fee: '2',
+        is_expired: false,
+        cash_in_network: 'cash_in_network',
+        provider_status: 'provider_status',
+        end_network: 'end_network',
+        cash_in_details: {
+          network: 'network',
+          address: 'address',
+        },
+      },
+    });
+    render(<RampForm />, { wrapper });
 
-  //   await userEvent.clear(input);
-  //   await userEvent.type(input, 'abcd600.234');
-  //   expect(input.value).toBe('600.23');
-  // });
+    const clabeInput = screen.getByLabelText('clabe') as HTMLInputElement;
+    const firstNameInput = screen.getByLabelText('firstName') as HTMLInputElement;
+    const lastNameInput = screen.getByLabelText('lastName') as HTMLInputElement;
 
-  // it('changing value on operationType also changes the value in baseCurrency and quoteCurrency', async () => {
-  //   const { container } = render(<RampForm />, { wrapper });
+    const submitBtn = screen.getByRole('button', { name: 'Confirmar' });
+    await userEvent.type(clabeInput, '123456789123456789');
+    await userEvent.type(firstNameInput, 'firstName');
+    await userEvent.type(lastNameInput, 'lastName');
 
-  //   const [operationType] = screen.getAllByRole('combobox');
+    await userEvent.click(submitBtn);
 
-  //   const baseCurrencyInput = within(container).getByDisplayValue('MXN') as HTMLInputElement;
-  //   const quoteCurrencyInput = within(container).getByDisplayValue('USDC') as HTMLInputElement;
-
-  //   await userEvent.click(operationType);
-  //   const options = screen.getAllByRole('option');
-  //   await userEvent.click(options[1]);
-
-  //   await waitFor(() => {
-  //     expect(baseCurrencyInput.value).toBe('USDC');
-  //     expect(quoteCurrencyInput.value).toBe('MXN');
-  //   });
-
-  //   await userEvent.click(operationType);
-  //   const options1 = screen.getAllByRole('option');
-  //   await userEvent.click(options1[0]);
-
-  //   await waitFor(() => {
-  //     expect(baseCurrencyInput.value).toBe('MXN');
-  //     expect(quoteCurrencyInput.value).toBe('USDC');
-  //   });
-  // });
-
-  // it('should not request a quote when changing currencies unless the base amount has value', async () => {
-  //   render(<RampForm />, { wrapper });
-
-  //   const selects = screen.getAllByRole('combobox');
-  //   const baseCurrency = selects[2];
-  //   const quoteCurrency = selects[3];
-
-  //   await userEvent.click(baseCurrency);
-  //   const options = screen.getAllByRole('option');
-  //   await userEvent.click(options[1]);
-
-  //   await waitFor(() => {
-  //     expect(axios.post).not.toHaveBeenCalled();
-  //   });
-
-  //   const input = screen.getByLabelText('baseAmount') as HTMLInputElement;
-  //   await userEvent.type(input, '10');
-  //   expect(input.value).toBe('10');
-
-  //   await userEvent.click(baseCurrency);
-  //   const options1 = screen.getAllByRole('option');
-  //   await userEvent.click(options1[0]);
-
-  //   await waitFor(() => {
-  //     expect(axios.post).toHaveBeenLastCalledWith('/api/v1/ramps/quote/', {
-  //       base_amount: '10',
-  //       base_currency: 'MXN',
-  //       quote_currency: 'USDC',
-  //     });
-  //   });
-
-  //   await userEvent.click(baseCurrency);
-  //   const options2 = screen.getAllByRole('option');
-  //   await userEvent.click(options2[1]);
-
-  //   await userEvent.click(quoteCurrency);
-  //   const options3 = screen.getAllByRole('option');
-  //   await userEvent.click(options3[1]);
-
-  //   await waitFor(() => {
-  //     expect(axios.post).toHaveBeenLastCalledWith('/api/v1/ramps/quote/', {
-  //       base_amount: '10',
-  //       base_currency: 'USD',
-  //       quote_currency: 'USDT',
-  //     });
-  //   });
-  // });
-
-  // it('should make a request for a quote when submiting form and save data in localstorage', async () => {
-  //   render(<RampForm />, { wrapper });
-
-  //   const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
-  //   const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
-  //   const submitBtn = screen.getByRole('button', { name: 'Continuar' });
-  //   await userEvent.type(baseAmountInput, '1000');
-
-  //   userEvent.click(submitBtn);
-
-  //   await waitFor(() => {
-  //     expect(quoteAmountInput.value).toBe('58.47');
-  //     expect(localStorage.setItem).toHaveBeenCalledWith(
-  //       'bando_ramp_data',
-  //       '{"quote":{"id":46,"baseCurrency":"MXN","baseAmount":1000,"quoteCurrency":"USDC","quoteAmount":58.47,"quoteRate":null,"quoteRateInverse":null,"isExpired":false,"expiresAt":"2024-01-10T23:06:08.388000Z"},"network":"POLYGON"}',
-  //     );
-  //     expect(navigate).toHaveBeenCalledWith('/ramp');
-  //   });
-  // });
-
-  // it('should handle an error when backend fails', async () => {
-  //   (axios.post as jest.Mock).mockRejectedValue({});
-  //   render(<RampForm />, { wrapper });
-
-  //   const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
-  //   const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
-  //   const submitBtn = screen.getByRole('button', { name: 'Continuar' });
-  //   await userEvent.type(baseAmountInput, '1000');
-
-  //   userEvent.click(submitBtn);
-
-  //   await waitFor(() => {
-  //     expect(quoteAmountInput.value).toBe('0');
-  //     expect(localStorage.setItem).not.toHaveBeenCalledWith();
-  //     expect(navigate).not.toHaveBeenCalledWith('/ramp');
-  //   });
-  // });
-
-  // it('should make a request for a quote when typing a new value', async () => {
-  //   render(<RampForm />, { wrapper });
-
-  //   const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
-  //   const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
-  //   await userEvent.type(baseAmountInput, '1000');
-
-  //   await waitFor(() => {
-  //     expect(quoteAmountInput.value).toBe('58.47');
-  //   });
-  // });
+    await waitFor(() => {
+      screen.getByText(/Deposita tu MXN a esta dirección en network/i);
+      screen.getByText(/Dirección:/i);
+    });
+  });
 });
