@@ -1,10 +1,11 @@
 import * as yup from 'yup';
+import { OperationType } from '@hooks/useTransaction/requests';
 
 export type GetQuoteFormValues = {
   baseAmount: number;
   quoteCurrency: string;
   baseCurrency: string;
-  operationType: 'deposit' | 'withdraw';
+  operationType: OperationType;
   network: string;
 };
 

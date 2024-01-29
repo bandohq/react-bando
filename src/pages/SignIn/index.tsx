@@ -38,8 +38,8 @@ export default function SignIn() {
     try {
       const rsp = await login(data);
       if ((rsp?.kycLevel ?? 0) > 0) {
-        if (storageQuote.quote?.baseAmount) return navigate('/');
-        return navigate('/kyc/ramp');
+        if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp');
+        return navigate('/');
       }
       return navigate('/kyc');
     } catch {

@@ -86,7 +86,7 @@ export default function GetQuoteForm() {
           }),
         );
         if (!user?.email && !user?.id) return navigate('/signin');
-        if (!user?.kycLevel && user?.email) return navigate('/kyc');
+        if (!user?.kycLevel) return navigate('/kyc');
         return navigate('/ramp');
       } catch {
         // TODO: Handle error

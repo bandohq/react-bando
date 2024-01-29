@@ -1,19 +1,25 @@
 import axios from 'axios';
 import { RequestQuoteArgs } from '@hooks/useQuote/requests';
 
+export type OperationType = 'deposit' | 'withdraw';
 export type PostTransactionArgs = RequestQuoteArgs & {
   accountAddress: string;
   accountNetwork: string;
-  opType: 'deposit' | 'withdraw';
+  operationType: OperationType;
   cashinChain?: string;
 };
 
 export type WithDrawCashinDetailsArgs = {
   network: string;
   address: string;
+  bank: never;
+  beneficiary: never;
+  clabe: never;
+  concepto: never;
 };
 
 export type DepositCashinDetailsArgs = {
+  address: never;
   network: string;
   bank: string;
   beneficiary: string;
@@ -45,9 +51,9 @@ type PostTransactionRequest = (
 export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
   axios
     .post(endpoint, {
-      account_type: arg.opType === 'deposit' ? 'WALLET_ACCOUNT' : 'SPEI',
-      account_network: arg.opType === 'deposit' ? String(arg.accountNetwork) : 'SPEI',
-      cash_in_type: arg.opType === 'deposit' ? 'SPEI' : 'WALLET_ACCOUNT',
+      account_type: arg.operationType === 'deposit' ? 'WALLET_ACCOUNT' : 'SPEI',
+      account_network: arg.operationType === 'deposit' ? String(arg.accountNetwork) : 'SPEI',
+      cash_in_type: arg.operationType === 'deposit' ? 'SPEI' : 'WALLET_ACCOUNT',
       account_address: String(arg.accountAddress),
       quote: {
         base_amount: String(arg.baseAmount),

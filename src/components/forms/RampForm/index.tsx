@@ -109,9 +109,10 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
 
     await postTransaction({
       ...(quote as Quote),
-      accountAddress: formValues?.address ?? '',
+      accountAddress:
+        (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? '',
       accountNetwork: network ?? '',
-      opType: opType as 'deposit' | 'withdraw',
+      operationType: formValues?.operationType ?? '',
       cashinChain: network ?? '',
     });
 
@@ -194,15 +195,6 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                     error={!!formState.errors.address?.message}
                     helpText={formState.errors.address?.message ?? undefined}
                   />
-                  {recipientError && (
-                    <ErrorBox>Esta cuenta ha sido rechazada por Bando. Intenta con otra.</ErrorBox>
-                  )}
-                  {forbiddenError && (
-                    <ErrorBox>
-                      Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía
-                      un correo a hola@bando.cool
-                    </ErrorBox>
-                  )}
                 </Grid>
               ) : (
                 <>
@@ -226,7 +218,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                     <Input
                       label="Clabe"
                       type="text"
-                      {...register('address', {
+                      {...register('clabe', {
                         onChange: (e) => {
                           allowOnlyNumbers(e);
                           checkNumberLength(e, 18);
@@ -236,6 +228,19 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                     />
                   </Grid>
                 </>
+              )}
+              {recipientError && (
+                <Grid xs={12}>
+                  <ErrorBox>Esta cuenta ha sido rechazada por Bando. Intenta con otra.</ErrorBox>
+                </Grid>
+              )}
+              {forbiddenError && (
+                <Grid xs={12}>
+                  <ErrorBox>
+                    Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía
+                    un correo a hola@bando.cool
+                  </ErrorBox>
+                </Grid>
               )}
               <Grid xs={12}>
                 <BandoButton
