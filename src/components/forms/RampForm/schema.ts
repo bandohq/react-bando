@@ -1,8 +1,9 @@
 import * as yup from 'yup';
 import { isAddress } from 'web3-validator';
+import { OperationType } from '@hooks/useTransaction/requests';
 
 export type ConfirmRampFormValues = {
-  operationType: 'deposit' | 'withdraw';
+  operationType: OperationType;
   address?: string;
   firstName?: string;
   lastName?: string;

@@ -1,9 +1,30 @@
 import axios from 'axios';
 import { RequestQuoteArgs } from '@hooks/useQuote/requests';
 
+export type OperationType = 'deposit' | 'withdraw';
 export type PostTransactionArgs = RequestQuoteArgs & {
   accountAddress: string;
   accountNetwork: string;
+  operationType: OperationType;
+  cashinChain?: string;
+};
+
+export type WithDrawCashinDetailsArgs = {
+  network: string;
+  address: string;
+  bank: never;
+  beneficiary: never;
+  clabe: never;
+  concepto: never;
+};
+
+export type DepositCashinDetailsArgs = {
+  address: never;
+  network: string;
+  bank: string;
+  beneficiary: string;
+  clabe: string;
+  concepto: string;
 };
 
 export type Transaction = {
@@ -19,31 +40,27 @@ export type Transaction = {
   cashInNetwork: string;
   endNetwork: string;
   providerStatus: string;
-  cashinDetails: {
-    network: string;
-    bank: string;
-    beneficiary: string;
-    clabe: string;
-    concepto: string;
-  };
+  cashinDetails: WithDrawCashinDetailsArgs | DepositCashinDetailsArgs;
 };
 
 type PostTransactionRequest = (
   endpoint: string,
   data: { arg: PostTransactionArgs },
 ) => Promise<Transaction>;
+
 export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
   axios
     .post(endpoint, {
-      account_type: 'WALLET_ACCOUNT',
+      account_type: arg.operationType === 'deposit' ? 'WALLET_ACCOUNT' : 'SPEI',
+      account_network: arg.operationType === 'deposit' ? String(arg.accountNetwork) : 'SPEI',
+      cash_in_type: arg.operationType === 'deposit' ? 'SPEI' : 'WALLET_ACCOUNT',
       account_address: String(arg.accountAddress),
-      account_network: String(arg.accountNetwork),
-      cash_in_type: 'SPEI',
       quote: {
         base_amount: String(arg.baseAmount),
         base_currency: arg.baseCurrency,
         quote_currency: String(arg.quoteCurrency),
       },
+      cash_in_chain: arg.cashinChain?.toUpperCase() || null,
     })
     .then(({ data }) => ({
       id: data.id,
@@ -58,11 +75,5 @@ export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
       cashInNetwork: data.cash_in_network,
       endNetwork: data.end_network,
       providerStatus: data.provider_status,
-      cashinDetails: {
-        network: data.cashin_details.network,
-        bank: data.cashin_details.Bank,
-        beneficiary: data.cashin_details.Beneficiary,
-        clabe: data.cashin_details.CLABE,
-        concepto: data.cashin_details.concepto,
-      },
+      cashinDetails: data.cash_in_details,
     }));

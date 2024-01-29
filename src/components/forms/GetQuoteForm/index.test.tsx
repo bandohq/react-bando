@@ -1,6 +1,7 @@
 import { within, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useNavigate } from 'react-router-dom';
+import useUser from '@hooks/useUser';
 
 import wrapper from '@helpers/TestProvider';
 import debouce from 'lodash/debounce';
@@ -8,6 +9,8 @@ import axios from 'axios';
 
 jest.mock('axios');
 jest.mock('lodash/debounce');
+jest.mock('@hooks/useUser');
+
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
@@ -43,6 +46,7 @@ describe('GetQuoteForm', () => {
 
   beforeEach(() => {
     (useNavigate as jest.Mock).mockReturnValue(navigate);
+    (useUser as jest.Mock).mockReturnValue({});
     (debouce as jest.Mock).mockImplementation((fn) => fn);
 
     (axios.post as jest.Mock).mockResolvedValue({
@@ -165,7 +169,7 @@ describe('GetQuoteForm', () => {
     });
   });
 
-  it('should make a request for a quote when submiting form and save data in localstorage', async () => {
+  it('should make a request for a quote when submiting form and save data in localstorage and send the user to signin if they are not logged in', async () => {
     render(<GetQuoteForm />, { wrapper });
 
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
@@ -179,8 +183,40 @@ describe('GetQuoteForm', () => {
       expect(quoteAmountInput.value).toBe('58.47');
       expect(localStorage.setItem).toHaveBeenCalledWith(
         'bando_ramp_data',
-        '{"quote":{"id":46,"baseCurrency":"MXN","baseAmount":1000,"quoteCurrency":"USDC","quoteAmount":58.47,"quoteRate":null,"quoteRateInverse":null,"isExpired":false,"expiresAt":"2024-01-10T23:06:08.388000Z"},"network":"POLYGON"}',
+        '{"quote":{"id":46,"baseCurrency":"MXN","baseAmount":1000,"quoteCurrency":"USDC","quoteAmount":58.47,"quoteRate":null,"quoteRateInverse":null,"isExpired":false,"expiresAt":"2024-01-10T23:06:08.388000Z"},"network":"POLYGON","operationType":"deposit"}',
       );
+      expect(navigate).toHaveBeenCalledWith('/signin');
+    });
+  });
+
+  it('should send the user to kyc upon success if they are logged in and have not completed kyc', async () => {
+    (useUser as jest.Mock).mockReturnValue({ user: { email: 'email', kycLevel: 0 } });
+
+    render(<GetQuoteForm />, { wrapper });
+
+    const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
+    const submitBtn = screen.getByRole('button', { name: 'Continuar' });
+    await userEvent.type(baseAmountInput, '1000');
+
+    userEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(navigate).toHaveBeenCalledWith('/kyc');
+    });
+  });
+
+  it('should send the user to ramp upon success if they are logged in', async () => {
+    (useUser as jest.Mock).mockReturnValue({ user: { email: 'email', id: 1, kycLevel: 1 } });
+
+    render(<GetQuoteForm />, { wrapper });
+
+    const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
+    const submitBtn = screen.getByRole('button', { name: 'Continuar' });
+    await userEvent.type(baseAmountInput, '1000');
+
+    userEvent.click(submitBtn);
+
+    await waitFor(() => {
       expect(navigate).toHaveBeenCalledWith('/ramp');
     });
   });

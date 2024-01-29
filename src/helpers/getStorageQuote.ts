@@ -1,10 +1,11 @@
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
+import { OperationType } from '@hooks/useTransaction/requests';
 
 type StorageQuote = {
   quote: Quote | null;
   network: string | null;
-  operationType: 'deposit' | 'withdraw' | null;
+  operationType: OperationType | null;
 };
 
 export default function getStorageQuote() {
@@ -14,7 +15,7 @@ export default function getStorageQuote() {
     ) as {
       quote: Quote;
       network: string;
-      operationType: 'deposit' | 'withdraw';
+      operationType: OperationType;
     };
     return quote;
   } catch {
