@@ -14,6 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { SignInFormValues } from './schema';
 
 import useMagicLinkAuth from '@hooks/useMagicLinkAuth';
+import useUser from '@hooks/useUser';
 
 export const Title = styled(Typography)(({ theme }) => ({
   fontSize: '32px !important',
@@ -27,6 +28,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const storageQuote = getStorageQuote();
   const { login, isMutating } = useMagicLinkAuth();
+  const { refetchUser } = useUser();
   const { register, handleSubmit } = useForm<SignInFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -37,6 +39,7 @@ export default function SignIn() {
   const onSubmit = async (data: SignInFormValues) => {
     try {
       const rsp = await login(data);
+      await refetchUser();
       if ((rsp?.kycLevel ?? 0) > 0) {
         if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp');
         return navigate('/');

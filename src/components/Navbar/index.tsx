@@ -2,6 +2,9 @@ import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
 import Logo from '../../assets/logo-bando.svg';
+import useUser from '@hooks/useUser';
+import { useNavigate } from 'react-router-dom';
+import BandoButton from '@components/Button';
 
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -45,6 +48,13 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
 
 export default function Navbar({ fullWidth = false }) {
   const [isOnTop, setIsOnTop] = useState(true);
+  const { user, logoutUser, isLoginOut } = useUser();
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    await logoutUser();
+    navigate('/');
+  };
 
   const handleScroll = useCallback(() => {
     const isCurrentScropOnTop = window.scrollY === 0;
@@ -75,6 +85,20 @@ export default function Navbar({ fullWidth = false }) {
         <a href="/" className="navbar-brand">
           <img src={Logo} loading="lazy" alt="" aria-label="Bando logo" />
         </a>
+        {!!user?.email && (
+          <nav role="navigation" className="navbar-menu">
+            {user.email}{' '}
+            <BandoButton
+              variant="contained"
+              size="small"
+              onClick={() => logout()}
+              className="rounded"
+              disabled={isLoginOut}
+            >
+              Cerrar sesión
+            </BandoButton>
+          </nav>
+        )}
       </div>
     </NavbarContainer>
   );

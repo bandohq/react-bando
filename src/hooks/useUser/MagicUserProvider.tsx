@@ -20,6 +20,7 @@ export type UserContextType = {
   fetchUser: () => Promise<void>;
   logoutUser: () => Promise<void>;
   setUser: (userData: Partial<User>) => void;
+  resetUser: () => void;
   isLoading: boolean;
   dataLoaded: boolean;
 };
@@ -29,6 +30,7 @@ export const UserContext = createContext<UserContextType>({
   fetchUser: async () => {},
   logoutUser: async () => {},
   setUser: () => {},
+  resetUser: () => {},
   isLoading: false,
   dataLoaded: false,
 });
@@ -50,6 +52,8 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
     [setUser],
   );
 
+  const resetUser = () => setUser({});
+
   const fetchUser = useCallback(async () => {
     if (magic) {
       try {
@@ -69,7 +73,15 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <UserContext.Provider
-      value={{ user, fetchUser, logoutUser, isLoading, dataLoaded, setUser: setUserData }}
+      value={{
+        user,
+        fetchUser,
+        logoutUser,
+        isLoading,
+        dataLoaded,
+        setUser: setUserData,
+        resetUser,
+      }}
     >
       {children}
     </UserContext.Provider>

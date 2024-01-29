@@ -16,6 +16,9 @@ const BandoButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
     backgroundImage: 'linear-gradient(rgb(0 0 0/20%) 0 0)',
     boxShadow: 'none',
   },
+  '&.MuiButton-sizeSmall': {
+    padding: '10px 18px',
+  },
 }));
 
 export default BandoButton;
