@@ -130,7 +130,6 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
           <Grid container spacing={2} sx={{ margin: 0 }}>
             <RampTitle success={success} noArrow={noContainer} />
           </Grid>
-
           <Grid
             container
             spacing={2}
@@ -183,8 +182,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
               </Network>
             </GridRow>
           </Grid>
-
-          {!success ? (
+          {!success && (
             <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
               {operationType === 'deposit' ? (
                 <Grid xs={12}>
@@ -261,11 +259,32 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                 </BandoButton>
               </Grid>
             </Grid>
-          ) : (
+          )}
+
+          {success && !data?.cashinDetails?.clabe && (
             <Grid container spacing={2} sx={{ mx: 0, my: 1, padding: 1 }}>
               <GridRow xs={12}>
                 <Typography variant="h6" sx={{ color: '#40B494' }}>
-                  Deposita tu MXN a esta cuenta.
+                  Deposita tu {data?.baseCurrency} a esta dirección en{' '}
+                  {data?.cashinDetails?.network}.
+                </Typography>
+              </GridRow>
+              <GridRow xs={12}>
+                <Network variant="body2" sx={{ fontWeight: 'bold' }}>
+                  Dirección:
+                </Network>
+                <Network variant="body2" sx={{ textAlign: 'right' }}>
+                  {data?.cashinDetails.address}
+                </Network>
+              </GridRow>
+            </Grid>
+          )}
+
+          {success && !!data?.cashinDetails?.clabe && (
+            <Grid container spacing={2} sx={{ mx: 0, my: 1, padding: 1 }}>
+              <GridRow xs={12}>
+                <Typography variant="h6" sx={{ color: '#40B494' }}>
+                  Deposita tu {data.baseCurrency} a esta cuenta.
                 </Typography>
               </GridRow>
               <GridRow xs={12}>
