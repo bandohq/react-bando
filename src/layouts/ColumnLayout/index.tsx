@@ -39,7 +39,6 @@ const LeftGrid = styled(Box)(({ theme }) => ({
   paddingTop: TOP_PADDING,
   flexDirection: 'column',
   backgroundColor: '#fff',
-  boxShadow: '4px 0  4px rgb(0 0 0 / 18%)',
   zIndex: 201,
 
   [theme.breakpoints.down('md')]: {

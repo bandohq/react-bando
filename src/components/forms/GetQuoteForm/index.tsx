@@ -1,6 +1,4 @@
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import BoxContainer from '@components/BoxContainer';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
@@ -221,12 +219,6 @@ export default function GetQuoteForm() {
 
           <Grid xs={12}>
             <Hr sx={{ marginBottom: 2 }} />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography variant="body2">Comisión de depósito</Typography>
-              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                2 USDT
-              </Typography>
-            </Box>
           </Grid>
           <Grid xs={12}>
             <BandoButton
