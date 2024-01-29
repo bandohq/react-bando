@@ -12,6 +12,7 @@ const theme = createTheme({
     secondary: { main: '#5CC9AB' },
     ink: {
       i900: '#212121',
+      i800: '#3A3E3D',
       i700: '#393F44',
       i600: '#3D3D3D',
       i500: '#686F73',

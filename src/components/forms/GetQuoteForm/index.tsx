@@ -68,8 +68,6 @@ export default function GetQuoteForm() {
     [getQuote],
   );
 
-  console.log({ user });
-
   const fetchQuote = useCallback(
     async (formValues: GetQuoteFormValues) => {
       try {
@@ -81,15 +79,20 @@ export default function GetQuoteForm() {
 
         localStorage.setItem(
           env.rampDataLocalStorage,
-          JSON.stringify({ quote, network: formValues.network }),
+          JSON.stringify({
+            quote,
+            network: formValues.network,
+            operationType: formValues.operationType,
+          }),
         );
+        if (!user?.email && !user?.id) return navigate('/signin');
         if (!user?.kycLevel && user?.email) return navigate('/kyc');
         return navigate('/ramp');
       } catch {
         // TODO: Handle error
       }
     },
-    [getQuote, navigate],
+    [getQuote, navigate, user],
   );
 
   const debouncedQuoteRequest = useRef(

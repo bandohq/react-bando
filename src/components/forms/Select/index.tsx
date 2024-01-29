@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 
 import { TextFieldInput, InputLabel, FormControl, HelpText } from '@components/forms/Input';
 import MenuItemBase from '@mui/material/MenuItem';
-import CaretDown from '../../../assets/caret-down.svg';
+import CaretDown from '../../../assets/CaretDown.svg';
 
 export type CustomSelectProps = {
   mantainLabel?: boolean;

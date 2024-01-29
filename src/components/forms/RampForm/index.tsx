@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { ConfirmRampFormValues } from './schema';
@@ -22,11 +22,12 @@ import { styled } from '@mui/material/styles';
 import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
 import useTransaction from '@hooks/useTransaction';
-import { Quote } from '@hooks/useQuote/requests';
+import getStorageQuote from '@helpers/getStorageQuote';
 
 import theme from '@config/theme';
-import env from '@config/env';
 import { networkImg } from '@config/constants/currencies';
+import { checkNumberLength, allowOnlyNumbers } from '@helpers/inputs';
+import { Quote } from '@hooks/useQuote/requests';
 
 const Rate = styled(Typography)(({ theme }) => ({
   fontSize: `${theme.typography.pxToRem(28)} !important`,
@@ -60,27 +61,27 @@ type RampFormProps = {
   noContainer?: boolean;
 };
 
-export default function RampForm({ noContainer = false }: RampFormProps) {
+export default function RampForm({ noContainer = false }: Readonly<RampFormProps>) {
   const [success, setSuccess] = useState(false);
   const [recipientError, setRecipientError] = useState(false);
   const [forbiddenError, setForbiddenError] = useState(false);
-  const { quote, network } = JSON.parse(localStorage.getItem(env.rampDataLocalStorage) ?? '') as {
-    quote: Quote;
-    network: string;
-  };
+  const { quote, network = '', operationType: opType } = getStorageQuote();
+
   const { user } = useUser();
   const { postRecipient, isMutating: isRecipientMutating } = useRecipient();
   const { data, postTransaction, isMutating: isTransactionMutation } = useTransaction();
   const isLoading = isRecipientMutating || isTransactionMutation;
   const FormContainer = noContainer ? Box : BoxContainer;
 
-  const { register, handleSubmit, formState } = useForm<ConfirmRampFormValues>({
+  const { register, handleSubmit, formState, watch, setValue } = useForm<ConfirmRampFormValues>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
       address: '',
     },
   });
+
+  const operationType = watch('operationType');
 
   const onSubmit = async (formValues: ConfirmRampFormValues) => {
     setSuccess(false);
@@ -89,10 +90,13 @@ export default function RampForm({ noContainer = false }: RampFormProps) {
 
     try {
       await postRecipient({
-        network,
+        network: network ?? '',
         email: user?.email ?? '',
-        asset: quote.quoteCurrency,
-        address: formValues.address,
+        asset: quote?.quoteCurrency ?? '',
+        address: formValues?.address ?? '',
+        firstName: formValues?.firstName ?? '',
+        lastName: formValues?.lastName ?? '',
+        clabe: formValues?.clabe ?? '',
       });
     } catch (err) {
       if ((err as AxiosError).response?.status === 403) {
@@ -104,13 +108,17 @@ export default function RampForm({ noContainer = false }: RampFormProps) {
     }
 
     await postTransaction({
-      ...quote,
-      accountAddress: formValues.address,
-      accountNetwork: network,
+      ...(quote as Quote),
+      accountAddress: formValues?.address ?? '',
+      accountNetwork: network ?? '',
     });
 
     setSuccess(true);
   };
+
+  useEffect(() => {
+    if (opType) setValue('operationType', opType);
+  }, [opType, setValue]);
 
   if (user && quote) {
     return (
@@ -162,7 +170,7 @@ export default function RampForm({ noContainer = false }: RampFormProps) {
             <GridRow xs={12}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                {network.toLowerCase()}{' '}
+                {network?.toLowerCase()}{' '}
                 <img
                   alt="Network"
                   src={networkImg[network as keyof typeof networkImg]}
@@ -175,24 +183,58 @@ export default function RampForm({ noContainer = false }: RampFormProps) {
 
           {!success ? (
             <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
-              <Grid xs={12}>
-                <Input
-                  label="Recibes en esta dirección"
-                  type="text"
-                  {...register('address')}
-                  error={!!formState.errors.address?.message}
-                  helpText={formState.errors.address?.message ?? undefined}
-                />
-                {recipientError && (
-                  <ErrorBox>Esta cuenta ha sido rechazada por Bando. Intenta con otra.</ErrorBox>
-                )}
-                {forbiddenError && (
-                  <ErrorBox>
-                    Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía
-                    un correo a hola@bando.cool
-                  </ErrorBox>
-                )}
-              </Grid>
+              {operationType === 'deposit' ? (
+                <Grid xs={12}>
+                  <Input
+                    label="Recibes en esta dirección"
+                    type="text"
+                    {...register('address')}
+                    error={!!formState.errors.address?.message}
+                    helpText={formState.errors.address?.message ?? undefined}
+                  />
+                  {recipientError && (
+                    <ErrorBox>Esta cuenta ha sido rechazada por Bando. Intenta con otra.</ErrorBox>
+                  )}
+                  {forbiddenError && (
+                    <ErrorBox>
+                      Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía
+                      un correo a hola@bando.cool
+                    </ErrorBox>
+                  )}
+                </Grid>
+              ) : (
+                <>
+                  <Grid md={6}>
+                    <Input
+                      label="Nombres"
+                      type="text"
+                      {...register('firstName')}
+                      error={!!formState.errors.firstName?.message}
+                    />
+                  </Grid>
+                  <Grid md={6}>
+                    <Input
+                      label="Apellidos"
+                      type="text"
+                      {...register('lastName')}
+                      error={!!formState.errors.lastName?.message}
+                    />
+                  </Grid>
+                  <Grid xs={12}>
+                    <Input
+                      label="Clabe"
+                      type="text"
+                      {...register('clabe', {
+                        onChange: (e) => {
+                          allowOnlyNumbers(e);
+                          checkNumberLength(e, 18);
+                        },
+                      })}
+                      error={!!formState.errors.clabe?.message}
+                    />
+                  </Grid>
+                </>
+              )}
               <Grid xs={12}>
                 <BandoButton
                   type="submit"
