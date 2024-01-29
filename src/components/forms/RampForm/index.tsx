@@ -224,7 +224,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                           checkNumberLength(e, 18);
                         },
                       })}
-                      error={!!formState.errors.address?.message}
+                      error={!!formState.errors.clabe?.message}
                     />
                   </Grid>
                 </>
