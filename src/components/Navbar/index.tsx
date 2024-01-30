@@ -1,7 +1,7 @@
 import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
-import Logo from '../../assets/logo-bando.svg';
+import Logo from '../../assets/logo.svg';
 
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -35,7 +35,7 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
   '& img': {
     width: '100%',
-    maxWidth: '184px',
+    maxWidth: '120px',
     height: 'auto',
     verticalAlign: 'middle',
     display: 'inline-block',

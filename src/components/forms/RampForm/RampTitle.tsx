@@ -35,7 +35,7 @@ export default function RampTitle({ success = false, noArrow = false }) {
         variant="body1"
         sx={{
           fontSize: '24px !important',
-          fontFamily: 'DM Sans',
+          fontFamily: 'Kanit',
           mb: 1,
         }}
       >

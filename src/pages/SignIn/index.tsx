@@ -17,7 +17,7 @@ import useMagicLinkAuth from '@hooks/useMagicLinkAuth';
 
 export const Title = styled(Typography)(({ theme }) => ({
   fontSize: '32px !important',
-  fontFamily: 'DM Sans',
+  fontFamily: 'Kanit',
   fontWeight: 700,
   color: theme.palette.ink.i600,
   marginBottom: theme.spacing(2),
