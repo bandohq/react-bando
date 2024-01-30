@@ -38,7 +38,7 @@ const Title = styled(Typography)(({ theme }) => ({
   fontSize: `${theme.typography.pxToRem(22)} !important`,
   lineHeight: '1.3em',
   textAlign: 'center',
-  fontFamily: 'TWK Everett',
+  fontFamily: 'Kanit',
   fontWeight: 'normal',
 }));
 

@@ -13,7 +13,7 @@ const Container = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontFamily: 'TWK Everett',
+  fontFamily: 'Kanit',
   fontWeight: 'bold',
 }));
 
