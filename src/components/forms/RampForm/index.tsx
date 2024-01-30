@@ -261,7 +261,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
             </Grid>
           )}
 
-          {success && !data?.cashinDetails?.clabe && (
+          {success && !data?.cashinDetails?.CLABE && (
             <Grid container spacing={2} sx={{ mx: 0, my: 1, padding: 1 }}>
               <GridRow xs={12}>
                 <Typography variant="h6" sx={{ color: '#40B494' }}>
@@ -280,7 +280,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
             </Grid>
           )}
 
-          {success && !!data?.cashinDetails?.clabe && (
+          {success && !!data?.cashinDetails?.CLABE && (
             <Grid container spacing={2} sx={{ mx: 0, my: 1, padding: 1 }}>
               <GridRow xs={12}>
                 <Typography variant="h6" sx={{ color: '#40B494' }}>
@@ -292,7 +292,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                   Banco:
                 </Network>
                 <Network variant="body2" sx={{ textAlign: 'right' }}>
-                  {data?.cashinDetails.bank}
+                  {data?.cashinDetails.Bank}
                 </Network>
               </GridRow>
               <GridRow xs={12}>
@@ -300,7 +300,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                   Nombre:
                 </Network>
                 <Network variant="body2" sx={{ textAlign: 'right' }}>
-                  {data?.cashinDetails.beneficiary}
+                  {data?.cashinDetails.Beneficiary}
                 </Network>
               </GridRow>
               <GridRow xs={12}>
@@ -308,7 +308,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                   CLABE:
                 </Network>
                 <Network variant="body2" sx={{ textAlign: 'right' }}>
-                  {data?.cashinDetails.clabe}
+                  {data?.cashinDetails.CLABE}
                 </Network>
               </GridRow>
               <GridRow xs={12}>
