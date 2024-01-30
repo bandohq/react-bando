@@ -6,10 +6,10 @@ const BandoButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
   boxShadow: 'none',
   textTransform: 'none',
   padding: '12px 24px',
-  fontSize: '0.875rem',
+  fontSize: '1rem',
   lineHeight: '1.25rem',
-  fontFamily: 'TWK Everett',
-  fontWeight: 'normal',
+  fontFamily: 'Kanit',
+  fontWeight: 'bold',
   '&.rounded': { borderRadius: '24px' },
   '&:hover': {
     backgroundColor: theme.palette.primary.main,

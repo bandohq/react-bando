@@ -1,5 +1,5 @@
 const inputStyles = {
-  fontFamily: 'DM Sans',
+  fontFamily: 'TWK Everett',
   fontSize: 16,
   '& .MuiFormLabel-root': {
     fontFamily: 'inherit',
@@ -9,7 +9,7 @@ const inputStyles = {
     marginTop: 28,
   },
   '& .MuiInputBase-input, & .MuiSelect-select': {
-    fontFamily: 'TWK Everett',
+    fontFamily: 'Kanit',
     fontSize: '16px !important',
     lineHeight: 'normal',
     padding: '17px 16px',
