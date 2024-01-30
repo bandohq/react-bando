@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CaretGreen from '../../assets/CaretGreen.svg';
+import LogoutIcon from '@components/Svgs/Logout';
 
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -39,7 +40,7 @@ export default function UserMenu() {
         sx={{ textTransform: 'none', fontWeight: 400, display: 'flex', gap: 1 }}
       >
         {user?.email}
-        <img src={CaretGreen} alt="open menu" style={{ width: '16px' }} />
+        <LogoutIcon />
       </Button>
       <Menu
         id="basic-menu"
