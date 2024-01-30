@@ -1,0 +1,60 @@
+import useUser from '@hooks/useUser';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import CaretGreen from '../../assets/CaretGreen.svg';
+
+export default function UserMenu() {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const { user, logoutUser: logout, isLoginOut } = useUser();
+  const navigate = useNavigate();
+
+  const logoutUser = async () => {
+    await logout();
+    navigate('/');
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  if (!user?.email) return null;
+  return (
+    <Box>
+      <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+        disabled={isLoginOut}
+        sx={{ textTransform: 'none', fontWeight: 400, display: 'flex', gap: 1 }}
+      >
+        {user?.email}
+        <img src={CaretGreen} alt="open menu" style={{ width: '16px' }} />
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        sx={{ width: '100%' }}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={logoutUser} sx={{ fontSize: '16px !important' }}>
+          Cerrar Sesión
+        </MenuItem>
+      </Menu>
+    </Box>
+  );
+}

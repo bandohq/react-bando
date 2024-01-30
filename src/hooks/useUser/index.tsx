@@ -24,8 +24,9 @@ export default function useUser() {
     try {
       await logout();
 
-      resetUser();
+      localStorage.removeItem(env.rampDataLocalStorage);
       Cookies.remove(env.authCookieName);
+      resetUser();
     } finally {
       setIsLoginOut(false);
     }
