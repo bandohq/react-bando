@@ -12,18 +12,18 @@ export type PostTransactionArgs = RequestQuoteArgs & {
 export type WithDrawCashinDetailsArgs = {
   network: string;
   address: string;
-  bank: never;
-  beneficiary: never;
-  clabe: never;
+  Bank: never;
+  Beneficiary: never;
+  CLABE: never;
   concepto: never;
 };
 
 export type DepositCashinDetailsArgs = {
   address: never;
   network: string;
-  bank: string;
-  beneficiary: string;
-  clabe: string;
+  Bank: string;
+  Beneficiary: string;
+  CLABE: string;
   concepto: string;
 };
 
