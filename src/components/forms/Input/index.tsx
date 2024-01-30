@@ -51,7 +51,7 @@ export const TextFieldInput = styled(InputBase)(({ theme }) => ({
     borderColor: theme.palette.ink.i300,
     padding: theme.spacing(2),
     transition: theme.transitions.create(['border-color', 'background-color', 'box-shadow']),
-    fontFamily: 'TWK Everett',
+    fontFamily: 'Kanit',
     display: 'flex',
     justifyContent: 'start',
     alignItems: 'center',

@@ -35,8 +35,8 @@ const theme = createTheme({
     htmlFontSize: 16,
     fontSize: 16,
     fontFamily: [
+      'Kanit',
       'TWK Everett',
-      'DM Sans',
       '-apple-system',
       'Arial',
       'sans-serif',
