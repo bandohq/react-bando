@@ -1,4 +1,7 @@
-export default function LogoutIcon() {
+import { SVGAttributes } from 'react';
+import { styled } from '@mui/material/styles';
+
+const Logout = (props?: SVGAttributes<SVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,6 +11,7 @@ export default function LogoutIcon() {
       stroke="currentColor"
       strokeWidth={2}
       width={24}
+      {...props}
     >
       <path
         strokeLinecap="round"
@@ -16,4 +20,7 @@ export default function LogoutIcon() {
       />
     </svg>
   );
-}
+};
+
+const LogoutIcon = styled(Logout)(() => ({}));
+export default LogoutIcon;

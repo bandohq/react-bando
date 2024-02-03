@@ -40,7 +40,7 @@ export default function UserMenu() {
         sx={{ textTransform: 'none', fontWeight: 400, display: 'flex', gap: 1 }}
       >
         {user?.email}
-        <LogoutIcon />
+        <img src={CaretGreen} alt="Caret" />
       </Button>
       <Menu
         id="basic-menu"
@@ -52,8 +52,8 @@ export default function UserMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={logoutUser} sx={{ fontSize: '16px !important' }}>
-          Cerrar Sesión
+        <MenuItem onClick={logoutUser} sx={{ fontSize: '16px !important', gap: 1 }}>
+          Cerrar Sesión <LogoutIcon strokeWidth={1.5} sx={{ color: 'inherit' }} />
         </MenuItem>
       </Menu>
     </Box>
