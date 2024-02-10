@@ -1,36 +1,37 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import Cookies from 'js-cookie';
 import env from '@config/env';
 
-import { User, UserContext } from './MagicUserProvider';
+import { User, useMagicUser } from './MagicUserProvider';
 import { getUserData } from './requests';
 import endpoints from '@config/endpoints';
 
 export default function useUser() {
-  const {
-    user,
-    isLoading: isMagicLoading,
-    logoutUser: logout,
-    setUser,
-    resetUser,
-  } = useContext(UserContext);
+  const { user, isLoading: isMagicLoading, logoutUser, setUser, resetUser } = useMagicUser();
   const [isLoginOut, setIsLoginOut] = useState<boolean>(false);
   const { mutate } = useSWRConfig();
-  const { data, isLoading } = useSWR(endpoints.userKyc, getUserData, { revalidateOnFocus: false });
+  const { data, isLoading: isUserLoading } = useSWR(endpoints.userKyc, getUserData, {
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  });
 
-  const logoutUser = async () => {
+  const isLoading = useMemo(() => isMagicLoading || isUserLoading, [isMagicLoading, isUserLoading]);
+  const isUnauthorized = useMemo(() => !isLoading && !data, [isLoading, data]);
+
+  const removeSessionStorage = useCallback(async () => {
     setIsLoginOut(true);
     try {
-      await logout();
-
+      await removeSessionStorage();
       localStorage.removeItem(env.rampDataLocalStorage);
       Cookies.remove(env.authCookieName);
       resetUser();
+    } catch (err) {
+      //
     } finally {
       setIsLoginOut(false);
     }
-  };
+  }, []);
 
   const refetchUser = () => mutate(endpoints.userKyc);
 
@@ -43,10 +44,11 @@ export default function useUser() {
     user,
     isLoginOut,
     logoutUser,
+    removeSessionStorage,
     refetchUser,
     userEmail: user?.email,
-    isLoading: isMagicLoading || isLoading,
+    isLoading,
     isSessionValid: !!data,
-    isUnauthorized: !isLoading && !data,
+    isUnauthorized: isUnauthorized,
   };
 }

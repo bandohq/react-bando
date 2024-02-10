@@ -27,8 +27,10 @@ export const Title = styled(Typography)(({ theme }) => ({
 export default function SignIn() {
   const navigate = useNavigate();
   const storageQuote = getStorageQuote();
+
   const { login, isMutating } = useMagicLinkAuth();
   const { refetchUser } = useUser();
+
   const { register, handleSubmit } = useForm<SignInFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {

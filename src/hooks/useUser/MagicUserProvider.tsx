@@ -1,4 +1,11 @@
-import { PropsWithChildren, createContext, useEffect, useCallback, useState } from 'react';
+import {
+  PropsWithChildren,
+  createContext,
+  useEffect,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import useMagic from '@hooks/useMagic';
 
 export type User = {
@@ -42,7 +49,13 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const logoutUser = async () => {
-    await magic?.user.logout();
+    try {
+      magic?.user.isLoggedIn().then(async (isLoggedIn) => {
+        if (isLoggedIn) await magic?.user?.logout();
+      });
+    } catch {
+      //
+    }
   };
 
   const setUserData = useCallback(
@@ -87,5 +100,7 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
     </UserContext.Provider>
   );
 };
+
+export const useMagicUser = () => useContext(UserContext);
 
 export default MagicUserProvider;

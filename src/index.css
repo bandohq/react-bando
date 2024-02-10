@@ -22,6 +22,12 @@ code {
     monospace;
 }
 
+#root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+}
+
 .landing-page {
   min-height: 100vh;
   width: 100%;

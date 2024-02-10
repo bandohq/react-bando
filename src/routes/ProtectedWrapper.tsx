@@ -1,13 +1,21 @@
-import { useOutlet, Navigate } from 'react-router-dom';
+import { useOutlet, useNavigate } from 'react-router-dom';
 import useUser from '@hooks/useUser';
+import { useEffect } from 'react';
+import SiteSpinner from '@components/SiteSpinner';
 
 export default function ProtectedWrapper() {
   const outlet = useOutlet();
-  const { logoutUser, isUnauthorized } = useUser();
+  const navigate = useNavigate();
+  const { isUnauthorized, isLoading } = useUser();
 
-  if (isUnauthorized) {
-    logoutUser();
-    return <Navigate to="/signin" replace />;
+  useEffect(() => {
+    if (isUnauthorized) {
+      navigate('/signin', { replace: true });
+    }
+  }, [isUnauthorized, navigate]);
+
+  if (isLoading) {
+    return <SiteSpinner />;
   }
 
   return <>{outlet}</>;

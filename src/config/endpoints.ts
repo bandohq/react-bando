@@ -3,5 +3,5 @@ export default {
   postAuth: '/api/v1/authn/did/token/',
   userKyc: '/api/v1/ramps/kyc/user/',
   postRecipient: '/api/v1/ramps/recipient/',
-  postTransaction: '/api/v1/ramps/transaction/',
+  transaction: '/api/v1/ramps/transaction/',
 };
