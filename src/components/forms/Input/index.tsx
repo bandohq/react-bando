@@ -1,5 +1,5 @@
 import { ForwardedRef, ReactNode, forwardRef } from 'react';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 import FormControlBase from '@mui/material/FormControl';
 import InputBase, { InputBaseProps } from '@mui/material/InputBase';
 import InputLabelBase from '@mui/material/InputLabel';

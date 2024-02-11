@@ -2,18 +2,23 @@ import BoxContainer from '@components/BoxContainer';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
+
 import { PropsWithChildren } from 'react';
-import RampTitle, { CircularButton as ArrowButton } from '@components/forms/RampForm/RampTitle';
-import CurrencyPill from '@components/forms/RampForm/CurrencyPill';
 import { Transaction } from '@hooks/useTransaction/requests';
 import { SxProps, styled } from '@mui/material/styles';
+import { networkImg } from '@config/constants/currencies';
+
+import RampTitle, { CircularButton as ArrowButton } from '@components/forms/RampForm/RampTitle';
+import CurrencyPill from '@components/forms/RampForm/CurrencyPill';
 import ArrowDown from '../../assets/ArrowDown.svg';
 import Hr from '@components/Hr';
-import { networkImg } from '@config/constants/currencies';
+import TransactionCopyText, { DetailText } from './TransactionCopyText';
+import StatusCircle from '@components/StatusCircle';
 
 export type TransactionDetailProps = PropsWithChildren & {
   success: boolean;
   noContainer?: boolean;
+  noArrow?: boolean;
   transaction?: Transaction;
   quoteRateInverse?: number;
   network?: string;
@@ -56,13 +61,15 @@ const Network = styled(Typography)(({ theme }) => ({
   lineHeight: 'normal',
 }));
 
-const DetailText = styled(Typography)(({ theme }) => ({
-  fontFamily: 'TWK Everett',
-  fontSize: theme.typography.pxToRem(14),
-  color: theme.palette.ink.i700,
-  textAlign: 'left',
-  width: 'fit-content',
-  lineHeight: 'normal',
+const StatusBadge = styled(Typography)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyItems: 'center',
+  gap: theme.spacing(1),
+  backgroundColor: theme.palette.ink.i100,
+  padding: theme.spacing(1, 2),
+  borderRadius: '100px',
 }));
 
 export default function TransactionDetail({
@@ -71,16 +78,35 @@ export default function TransactionDetail({
   quoteRateInverse,
   success = false,
   noContainer = false,
+  noArrow = false,
   network = '',
   sx,
 }: TransactionDetailProps) {
   const DetailContainer = noContainer ? Box : BoxContainer;
-  console.log({ sx });
+  const depositTitle = transaction?.cashinDetails?.CLABE
+    ? `Deposita ${transaction.baseCurrency} a la cuenta:`
+    : `Deposita tu ${transaction?.baseCurrency} a esta dirección en
+  ${transaction?.cashinDetails?.network}:`;
+
+  const showStatusBadge = ['CASH_IN_REQUESTED', 'CASH_IN_PROCESSING'].includes(
+    transaction?.providerStatus ?? '',
+  );
 
   return (
     <DetailContainer sx={{ width: '100%', maxWidth: '600px', height: 'fit-content', ...sx }}>
-      <Grid container spacing={2} sx={{ margin: 0 }}>
-        <RampTitle success={success} noArrow={noContainer} />
+      <Grid container spacing={2} sx={{ margin: 0, display: 'flex', flexDirection: 'row' }}>
+        <RampTitle
+          success={success}
+          noArrow={noContainer || noArrow}
+          title="Resúmen"
+          leftContent={
+            showStatusBadge && (
+              <StatusBadge variant="body2">
+                Esperando depósito <StatusCircle className="pending" />
+              </StatusBadge>
+            )
+          }
+        />
       </Grid>
       <BorderContainer container spacing={2}>
         <Grid md={4} sm={6} xs={7}>
@@ -131,69 +157,74 @@ export default function TransactionDetail({
           </GridRow>
         )}
       </BorderContainer>
+
       {children}
 
-      {success && !transaction?.cashinDetails?.CLABE && (
-        <Grid container spacing={2} sx={{ mx: 0, my: 1, padding: 1 }}>
-          <GridRow xs={12} sx={{ mb: 0, pb: 0 }}>
-            <Typography variant="h6" sx={{ padding: 0 }}>
-              Deposita tu {transaction?.baseCurrency} a esta dirección en{' '}
-              {transaction?.cashinDetails?.network}.
-            </Typography>
-          </GridRow>
-          <GridRow xs={12}>
-            <DetailText variant="body2" sx={{}}>
-              Dirección:
-            </DetailText>
-            <DetailText variant="body2" sx={{ textAlign: 'right' }}>
-              {transaction?.cashinDetails.address}
-            </DetailText>
-          </GridRow>
-        </Grid>
-      )}
-
-      {success && !!transaction?.cashinDetails?.CLABE && (
+      {success && (
         <>
-          <Grid container spacing={2} sx={{ mx: 0, my: 1, padding: 1 }}>
+          <Grid container spacing={2} sx={{ m: 0, px: 1, py: 0 }}>
             <GridRow xs={12} sx={{ mb: 0, pb: 0 }}>
-              <Typography variant="h6" sx={{ padding: 0 }}>
-                Deposita {transaction.baseCurrency} a la cuenta:
+              <Typography variant="h6" sx={{ padding: 0, mb: 0 }}>
+                {depositTitle}
               </Typography>
             </GridRow>
           </Grid>
           <BorderContainer container spacing={2}>
-            <GridRow xs={12}>
-              <DetailText variant="body2" sx={{}}>
-                Banco:
-              </DetailText>
-              <DetailText variant="body2" sx={{ textAlign: 'right' }}>
-                {transaction?.cashinDetails.Bank}
-              </DetailText>
-            </GridRow>
-            <GridRow xs={12}>
-              <DetailText variant="body2" sx={{}}>
-                Nombre:
-              </DetailText>
-              <DetailText variant="body2" sx={{ textAlign: 'right' }}>
-                {transaction?.cashinDetails.Beneficiary}
-              </DetailText>
-            </GridRow>
-            <GridRow xs={12}>
-              <DetailText variant="body2" sx={{}}>
-                CLABE:
-              </DetailText>
-              <DetailText variant="body2" sx={{ textAlign: 'right' }}>
-                {transaction?.cashinDetails.CLABE}
-              </DetailText>
-            </GridRow>
-            <GridRow xs={12}>
-              <DetailText variant="body2" sx={{}}>
-                Concepto:
-              </DetailText>
-              <DetailText variant="body2" sx={{ textAlign: 'right' }}>
-                {transaction?.cashinDetails.concepto}
-              </DetailText>
-            </GridRow>
+            {!transaction?.cashinDetails?.CLABE ? (
+              <GridRow xs={12}>
+                <DetailText variant="body2" sx={{}}>
+                  Dirección:
+                </DetailText>
+                <TransactionCopyText
+                  variant="body2"
+                  sx={{ textAlign: 'right' }}
+                  text={transaction?.cashinDetails.address ?? ''}
+                />
+              </GridRow>
+            ) : (
+              <>
+                <GridRow xs={12}>
+                  <DetailText variant="body2" sx={{}}>
+                    Banco:
+                  </DetailText>
+                  <TransactionCopyText
+                    variant="body2"
+                    sx={{ textAlign: 'right' }}
+                    text={transaction?.cashinDetails.Bank}
+                  />
+                </GridRow>
+                <GridRow xs={12}>
+                  <DetailText variant="body2" sx={{}}>
+                    Nombre:
+                  </DetailText>
+                  <TransactionCopyText
+                    variant="body2"
+                    sx={{ textAlign: 'right' }}
+                    text={transaction?.cashinDetails.Beneficiary}
+                  />
+                </GridRow>
+                <GridRow xs={12}>
+                  <DetailText variant="body2" sx={{}}>
+                    CLABE:
+                  </DetailText>
+                  <TransactionCopyText
+                    variant="body2"
+                    sx={{ textAlign: 'right' }}
+                    text={transaction?.cashinDetails.CLABE}
+                  />
+                </GridRow>
+                <GridRow xs={12}>
+                  <DetailText variant="body2" sx={{}}>
+                    Concepto:
+                  </DetailText>
+                  <TransactionCopyText
+                    variant="body2"
+                    sx={{ textAlign: 'right' }}
+                    text={transaction?.cashinDetails.concepto}
+                  />
+                </GridRow>
+              </>
+            )}
           </BorderContainer>
         </>
       )}

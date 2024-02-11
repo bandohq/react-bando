@@ -1,10 +1,13 @@
+import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useNavigate } from 'react-router-dom';
-import env from '@config/env';
 import Cross from '../../../assets/Cross.svg';
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
+
+import env from '@config/env';
+import { ReactNode } from 'react';
 
 export const CircularButton = styled(Button)(() => ({
   borderRadius: '50%',
@@ -13,7 +16,18 @@ export const CircularButton = styled(Button)(() => ({
   minWidth: 'fit-content',
 }));
 
-export default function RampTitle({ success = false, noArrow = false }) {
+type RampTitleProps = {
+  title?: string;
+  success?: boolean;
+  noArrow?: boolean;
+  leftContent?: ReactNode;
+};
+export default function RampTitle({
+  leftContent,
+  title = '',
+  success = false,
+  noArrow = false,
+}: RampTitleProps) {
   const navigate = useNavigate();
 
   const closeRamp = () => {
@@ -28,18 +42,20 @@ export default function RampTitle({ success = false, noArrow = false }) {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        justifyItems: 'center',
         alignItems: 'center',
       }}
     >
       <Typography
         variant="body1"
         sx={{
-          fontSize: '24px !important',
+          fontSize: '27px !important',
           fontFamily: 'Kanit',
+          fontWeight: '500',
           mb: 1,
         }}
       >
-        {success ? 'Transacción en proceso' : 'Confirma'}
+        {title || (success ? 'Transacción en proceso' : 'Confirma')}
       </Typography>
 
       {!noArrow && (
@@ -47,6 +63,7 @@ export default function RampTitle({ success = false, noArrow = false }) {
           <img src={Cross} alt="" width={16} height={16} />
         </CircularButton>
       )}
+      {leftContent}
     </Grid>
   );
 }

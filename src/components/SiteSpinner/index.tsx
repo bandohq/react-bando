@@ -8,7 +8,8 @@ const SiteSpinnerContainer = styled(Box)(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  alignSelf: 'center',
+  alignSelf: 'stretch',
+  margin: 'auto',
 }));
 
 export default function SiteSpinner() {

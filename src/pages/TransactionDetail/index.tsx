@@ -9,10 +9,11 @@ export default function TransactionDetail() {
   const { transaction } = useTransaction({ transactionId });
 
   return (
-    <CleanLayout sx={{ width: '100%' }}>
+    <CleanLayout>
       <TransactionDetailComponent
         sx={{ margin: '0 auto' }}
         transaction={transaction as unknown as Transaction}
+        noArrow
         success
       ></TransactionDetailComponent>
     </CleanLayout>
