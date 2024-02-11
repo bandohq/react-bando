@@ -111,7 +111,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
     await postTransaction({
       ...(quote as Quote),
       accountAddress:
-        (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? ''
+        (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? '',
       accountNetwork: network ?? '',
       operationType: formValues?.operationType ?? '',
     });
