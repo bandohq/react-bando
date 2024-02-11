@@ -96,7 +96,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         address: formValues?.address ?? '',
         firstName: formValues?.firstName ?? '',
         lastName: formValues?.lastName ?? '',
-        clabe: formValues?.clabe ?? '',
+        operationType: formValues?.operationType ?? '',
       });
     } catch (err) {
       if ((err as AxiosError).response?.status === 403) {
@@ -109,11 +109,9 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
 
     await postTransaction({
       ...(quote as Quote),
-      accountAddress:
-        (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? '',
+      accountAddress: formValues?.address ?? '',
       accountNetwork: network ?? '',
       operationType: formValues?.operationType ?? '',
-      cashinChain: network ?? '',
     });
 
     setSuccess(true);

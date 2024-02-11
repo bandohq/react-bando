@@ -8,7 +8,7 @@ export type PostRecipientArgs = {
   address?: string;
   firstName?: string;
   lastName?: string;
-  clabe?: string;
+  operationType: string;
 };
 
 type PostRecipientRequest = (
@@ -16,24 +16,27 @@ type PostRecipientRequest = (
   data: { arg: PostRecipientArgs },
 ) => Promise<AxiosResponse>;
 export const postRecipient: PostRecipientRequest = (endpoint, { arg }) => {
-  const payload = arg.address
-    ? {
-        account_type: 'WALLET_ACCOUNT',
-        data: {
-          asset: arg.asset,
-          network: (arg.network ?? 'arbitrum').toUpperCase(),
-          wallet_name: arg.walletName ?? 'test',
-          address: arg.address,
-        },
-      }
-    : {
-        account_type: 'SPEI',
-        data: {
-          clabe: arg.clabe,
-          first_name: arg.firstName,
-          last_name: arg.lastName,
-        },
-      };
+  const payload =
+    arg.operationType === 'deposit'
+      ? {
+          account_type: 'WALLET_ACCOUNT',
+          data: {
+            asset: arg.asset,
+            network: (arg.network ?? 'polygon').toUpperCase(),
+            wallet_name: arg.walletName ?? 'test',
+            address: arg.address,
+          },
+        }
+      : {
+          account_type: 'SPEI',
+          data: {
+            address: arg.address,
+            network: 'SPEI',
+            asset: 'MXN',
+            first_name: arg.firstName,
+            last_name: arg.lastName,
+          },
+        };
 
   return axios.post(endpoint, payload);
 };
