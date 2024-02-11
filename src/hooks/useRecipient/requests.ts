@@ -20,19 +20,19 @@ export const postRecipient: PostRecipientRequest = (endpoint, { arg }) => {
     arg.operationType === 'deposit'
       ? {
           account_type: 'WALLET_ACCOUNT',
+          asset: arg.asset,
+          network: (arg.network ?? 'polygon').toUpperCase(),
+          address: arg.address,
           data: {
-            asset: arg.asset,
-            network: (arg.network ?? 'polygon').toUpperCase(),
             wallet_name: arg.walletName ?? 'test',
-            address: arg.address,
           },
         }
       : {
           account_type: 'SPEI',
+          address: arg.address,
+          network: 'SPEI',
+          asset: 'MXN',
           data: {
-            address: arg.address,
-            network: 'SPEI',
-            asset: 'MXN',
             first_name: arg.firstName,
             last_name: arg.lastName,
           },
