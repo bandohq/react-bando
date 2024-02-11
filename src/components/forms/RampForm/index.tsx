@@ -59,6 +59,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         address: formValues?.address ?? '',
         firstName: formValues?.firstName ?? '',
         lastName: formValues?.lastName ?? '',
+        operationType: formValues?.operationType ?? '',
         clabe: formValues?.clabe ?? '',
       });
     } catch (err) {
@@ -76,7 +77,6 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? '',
       accountNetwork: network ?? '',
       operationType: formValues?.operationType ?? '',
-      cashinChain: network ?? '',
     });
 
     setSuccess(true);

@@ -6,7 +6,6 @@ export type PostTransactionArgs = RequestQuoteArgs & {
   accountAddress: string;
   accountNetwork: string;
   operationType: OperationType;
-  cashinChain?: string;
 };
 
 export type WithDrawCashinDetailsArgs = {
@@ -61,8 +60,8 @@ export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
         base_amount: String(arg.baseAmount),
         base_currency: arg.baseCurrency,
         quote_currency: String(arg.quoteCurrency),
+        network: String(arg.accountNetwork),
       },
-      cash_in_chain: arg.cashinChain?.toUpperCase() || null,
     })
     .then(({ data }) => ({
       id: data.id,

@@ -58,8 +58,8 @@ describe('RampForm', () => {
         cash_in_details: {
           network: 'network',
           bank: 'bank',
-          beneficiary: 'beneficiary',
-          clabe: 'clabe',
+          Beneficiary: 'beneficiary',
+          CLABE: 'clabe',
           concepto: 'concepto',
         },
       },
