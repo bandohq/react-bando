@@ -4,6 +4,7 @@ export type RequestQuoteArgs = {
   baseAmount: number;
   quoteCurrency: string;
   baseCurrency: string;
+  network: string;
 };
 
 export type Quote = RequestQuoteArgs & {
@@ -22,6 +23,7 @@ export const getQuoteRequest: GetQuoteRequest = (endpoint, { arg }) =>
       base_amount: String(arg.baseAmount),
       quote_currency: arg.quoteCurrency,
       base_currency: arg.baseCurrency,
+      network: arg.network,
     })
     .then(({ data }) => ({
       id: data.id,
@@ -33,4 +35,5 @@ export const getQuoteRequest: GetQuoteRequest = (endpoint, { arg }) =>
       quoteRateInverse: parseFloat(data.quote_rate_reciprocal),
       isExpired: data.is_expired,
       expiresAt: data.expires_at,
+      network: data.network,
     }));

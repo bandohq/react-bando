@@ -44,22 +44,22 @@ describe('useTransaction', () => {
       accountAddress: '123456789123456789',
       accountNetwork: 'accountNetwork',
       operationType: 'withdraw',
-      cashinChain: 'cashinChain',
       baseAmount: 1000,
       baseCurrency: 'MXN',
       quoteCurrency: 'USDC',
+      network: 'network',
     });
 
     expect(axios.post).toHaveBeenCalledWith('/api/v1/ramps/transaction/', {
       account_address: '123456789123456789',
       account_network: 'SPEI',
       account_type: 'SPEI',
-      cash_in_chain: 'CASHINCHAIN',
       cash_in_type: 'WALLET_ACCOUNT',
       quote: {
         base_amount: '1000',
         base_currency: 'MXN',
         quote_currency: 'USDC',
+        network: 'accountNetwork',
       },
     });
 
@@ -116,22 +116,22 @@ describe('useTransaction', () => {
       accountAddress: 'accountAddress',
       accountNetwork: 'accountNetwork',
       operationType: 'deposit',
-      cashinChain: 'cashinChain',
       baseAmount: 1000,
       baseCurrency: 'MXN',
       quoteCurrency: 'USDC',
+      network: 'network',
     });
 
     expect(axios.post).toHaveBeenCalledWith('/api/v1/ramps/transaction/', {
       account_address: 'accountAddress',
       account_network: 'accountNetwork',
       account_type: 'WALLET_ACCOUNT',
-      cash_in_chain: 'CASHINCHAIN',
       cash_in_type: 'SPEI',
       quote: {
         base_amount: '1000',
         base_currency: 'MXN',
         quote_currency: 'USDC',
+        network: 'accountNetwork',
       },
     });
 

@@ -149,6 +149,7 @@ describe('GetQuoteForm', () => {
         base_amount: '10',
         base_currency: 'MXN',
         quote_currency: 'USDC',
+        network: 'POLYGON',
       });
     });
 
@@ -165,6 +166,7 @@ describe('GetQuoteForm', () => {
         base_amount: '10',
         base_currency: 'USD',
         quote_currency: 'USDT',
+        network: 'POLYGON',
       });
     });
   });

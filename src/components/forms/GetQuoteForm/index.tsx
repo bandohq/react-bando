@@ -62,6 +62,7 @@ export default function GetQuoteForm() {
         baseAmount: formValues.baseAmount,
         baseCurrency: formValues.baseCurrency,
         quoteCurrency: formValues.quoteCurrency,
+        network: formValues.network,
       }).catch(() => null),
     [getQuote],
   );
@@ -73,6 +74,7 @@ export default function GetQuoteForm() {
           baseAmount: formValues.baseAmount,
           baseCurrency: formValues.baseCurrency,
           quoteCurrency: formValues.quoteCurrency,
+          network: formValues.network,
         });
 
         localStorage.setItem(
