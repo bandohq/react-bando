@@ -49,6 +49,6 @@ export default function useUser() {
     userEmail: user?.email,
     isLoading,
     isSessionValid: !!data,
-    isUnauthorized: isUnauthorized,
+    isUnauthorized,
   };
 }
