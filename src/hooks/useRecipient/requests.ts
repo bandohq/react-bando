@@ -9,6 +9,7 @@ export type PostRecipientArgs = {
   firstName?: string;
   lastName?: string;
   operationType: string;
+  clabe?: string;
 };
 
 type PostRecipientRequest = (
@@ -29,7 +30,7 @@ export const postRecipient: PostRecipientRequest = (endpoint, { arg }) => {
         }
       : {
           account_type: 'SPEI',
-          address: arg.address,
+          address: arg.clabe,
           network: 'SPEI',
           asset: 'MXN',
           data: {

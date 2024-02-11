@@ -97,6 +97,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         firstName: formValues?.firstName ?? '',
         lastName: formValues?.lastName ?? '',
         operationType: formValues?.operationType ?? '',
+        clabe: formValues?.clabe ?? '',
       });
     } catch (err) {
       if ((err as AxiosError).response?.status === 403) {
@@ -214,13 +215,13 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                     <Input
                       label="Clabe"
                       type="text"
-                      {...register('address', {
+                      {...register('clabe', {
                         onChange: (e) => {
                           allowOnlyNumbers(e);
                           checkNumberLength(e, 18);
                         },
                       })}
-                      error={!!formState.errors.address?.message}
+                      error={!!formState.errors.clabe?.message}
                     />
                   </Grid>
                 </>
