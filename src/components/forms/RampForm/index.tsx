@@ -214,13 +214,13 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                     <Input
                       label="Clabe"
                       type="text"
-                      {...register('clabe', {
+                      {...register('address', {
                         onChange: (e) => {
                           allowOnlyNumbers(e);
                           checkNumberLength(e, 18);
                         },
                       })}
-                      error={!!formState.errors.clabe?.message}
+                      error={!!formState.errors.address?.message}
                     />
                   </Grid>
                 </>
