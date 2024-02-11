@@ -19,6 +19,7 @@ export type TransactionDetailProps = PropsWithChildren & {
   success: boolean;
   noContainer?: boolean;
   noArrow?: boolean;
+  showStatusBadge?: boolean;
   transaction?: Transaction;
   quoteRateInverse?: number;
   network?: string;
@@ -79,6 +80,7 @@ export default function TransactionDetail({
   success = false,
   noContainer = false,
   noArrow = false,
+  showStatusBadge = false,
   network = '',
   sx,
 }: TransactionDetailProps) {
@@ -88,7 +90,7 @@ export default function TransactionDetail({
     : `Deposita tu ${transaction?.baseCurrency} a esta dirección en
   ${transaction?.cashinDetails?.network}:`;
 
-  const showStatusBadge = ['CASH_IN_REQUESTED', 'CASH_IN_PROCESSING'].includes(
+  const showBadge = ['CASH_IN_REQUESTED', 'CASH_IN_PROCESSING'].includes(
     transaction?.providerStatus ?? '',
   );
 
@@ -100,7 +102,8 @@ export default function TransactionDetail({
           noArrow={noContainer || noArrow}
           title="Resúmen"
           leftContent={
-            showStatusBadge && (
+            showStatusBadge &&
+            showBadge && (
               <StatusBadge variant="body2">
                 Esperando depósito <StatusCircle className="pending" />
               </StatusBadge>
