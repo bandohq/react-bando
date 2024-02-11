@@ -25,15 +25,16 @@ export const postRecipient: PostRecipientRequest = (endpoint, { arg }) => {
           network: (arg.network ?? 'polygon').toUpperCase(),
           address: arg.address,
           data: {
+            address: arg.address,
             wallet_name: arg.walletName ?? 'test',
           },
         }
       : {
           account_type: 'SPEI',
-          address: arg.clabe,
           network: 'SPEI',
           asset: 'MXN',
           data: {
+            address: arg.clabe,
             first_name: arg.firstName,
             last_name: arg.lastName,
           },
