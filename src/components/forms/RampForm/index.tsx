@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { ConfirmRampFormValues } from './schema';
 import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -14,7 +15,7 @@ import ErrorBox from '@components/forms/ErrorBox';
 import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
 import useTransaction from '@hooks/useTransaction';
-import getStorageQuote from '@helpers/getStorageQuote';
+import getStorageQuote, { deleteStorageQuote } from '@helpers/getStorageQuote';
 
 import { checkNumberLength, allowOnlyNumbers } from '@helpers/inputs';
 import { Quote } from '@hooks/useQuote/requests';
@@ -26,10 +27,10 @@ type RampFormProps = {
 };
 
 export default function RampForm({ noContainer = false }: Readonly<RampFormProps>) {
-  const [success, setSuccess] = useState(false);
   const [recipientError, setRecipientError] = useState(false);
   const [forbiddenError, setForbiddenError] = useState(false);
   const { quote, network = '', operationType: opType } = getStorageQuote();
+  const navigate = useNavigate();
 
   const { user } = useUser();
   const { postRecipient, isMutating: isRecipientMutating } = useRecipient();
@@ -47,7 +48,6 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
   const operationType = watch('operationType');
 
   const onSubmit = async (formValues: ConfirmRampFormValues) => {
-    setSuccess(false);
     setRecipientError(false);
     setForbiddenError(false);
 
@@ -71,15 +71,15 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
       return;
     }
 
-    await postTransaction({
+    const txn = await postTransaction({
       ...(quote as Quote),
       accountAddress:
         (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? '',
       accountNetwork: network ?? '',
       operationType: formValues?.operationType ?? '',
     });
-
-    setSuccess(true);
+    deleteStorageQuote();
+    navigate(`/ramp/${txn?.transactionId}`);
   };
 
   useEffect(() => {
@@ -93,87 +93,85 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
           transaction={data || (quote as unknown as Transaction)}
           noContainer={noContainer}
           quoteRateInverse={quote?.quoteRateInverse}
-          success={success}
           network={network ?? ''}
+          success={false}
         >
-          {!success && (
-            <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
-              {operationType === 'deposit' ? (
-                <Grid xs={12}>
+          <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
+            {operationType === 'deposit' ? (
+              <Grid xs={12}>
+                <Input
+                  label="Recibes en esta dirección"
+                  type="text"
+                  {...register('address')}
+                  error={!!formState.errors.address?.message}
+                  helpText={formState.errors.address?.message ?? undefined}
+                />
+              </Grid>
+            ) : (
+              <>
+                <Grid md={6}>
                   <Input
-                    label="Recibes en esta dirección"
+                    label="Nombres"
                     type="text"
-                    {...register('address')}
-                    error={!!formState.errors.address?.message}
-                    helpText={formState.errors.address?.message ?? undefined}
+                    {...register('firstName')}
+                    error={!!formState.errors.firstName?.message}
                   />
                 </Grid>
-              ) : (
-                <>
-                  <Grid md={6}>
-                    <Input
-                      label="Nombres"
-                      type="text"
-                      {...register('firstName')}
-                      error={!!formState.errors.firstName?.message}
-                    />
-                  </Grid>
-                  <Grid md={6}>
-                    <Input
-                      label="Apellidos"
-                      type="text"
-                      {...register('lastName')}
-                      error={!!formState.errors.lastName?.message}
-                    />
-                  </Grid>
-                  <Grid xs={12}>
-                    <Input
-                      label="Clabe"
-                      type="text"
-                      {...register('clabe', {
-                        onChange: (e) => {
-                          allowOnlyNumbers(e);
-                          checkNumberLength(e, 18);
-                        },
-                      })}
-                      error={!!formState.errors.clabe?.message}
-                    />
-                  </Grid>
-                </>
-              )}
-              {recipientError && (
-                <Grid xs={12}>
-                  <ErrorBox>Esta cuenta ha sido rechazada por Bando. Intenta con otra.</ErrorBox>
+                <Grid md={6}>
+                  <Input
+                    label="Apellidos"
+                    type="text"
+                    {...register('lastName')}
+                    error={!!formState.errors.lastName?.message}
+                  />
                 </Grid>
-              )}
-              {forbiddenError && (
                 <Grid xs={12}>
-                  <ErrorBox>
-                    Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía
-                    un correo a hola@bando.cool
-                  </ErrorBox>
+                  <Input
+                    label="Clabe"
+                    type="text"
+                    {...register('clabe', {
+                      onChange: (e) => {
+                        allowOnlyNumbers(e);
+                        checkNumberLength(e, 18);
+                      },
+                    })}
+                    error={!!formState.errors.clabe?.message}
+                  />
                 </Grid>
-              )}
+              </>
+            )}
+            {recipientError && (
               <Grid xs={12}>
-                <BandoButton
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  disabled={isLoading}
-                  sx={{ padding: '16px 8px', fontWeight: 'bold' }}
-                >
-                  {isLoading && (
-                    <CircularProgress
-                      size={16}
-                      sx={{ mr: 1, ml: -2, color: '#fff' }}
-                      aria-label="submitting"
-                    />
-                  )}
-                  Confirmar
-                </BandoButton>
+                <ErrorBox>Esta cuenta ha sido rechazada por Bando. Intenta con otra.</ErrorBox>
               </Grid>
+            )}
+            {forbiddenError && (
+              <Grid xs={12}>
+                <ErrorBox>
+                  Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía un
+                  correo a hola@bando.cool
+                </ErrorBox>
+              </Grid>
+            )}
+            <Grid xs={12}>
+              <BandoButton
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={isLoading}
+                sx={{ padding: '16px 8px', fontWeight: 'bold' }}
+              >
+                {isLoading && (
+                  <CircularProgress
+                    size={16}
+                    sx={{ mr: 1, ml: -2, color: '#fff' }}
+                    aria-label="submitting"
+                  />
+                )}
+                Confirmar
+              </BandoButton>
             </Grid>
-          )}
+          </Grid>
         </TransactionDetail>
       </form>
     );

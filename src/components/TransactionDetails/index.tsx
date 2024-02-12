@@ -14,6 +14,7 @@ import ArrowDown from '../../assets/ArrowDown.svg';
 import Hr from '@components/Hr';
 import TransactionCopyText, { DetailText } from './TransactionCopyText';
 import StatusCircle from '@components/StatusCircle';
+import formatNumber from '@helpers/formatNumber';
 
 export type TransactionDetailProps = PropsWithChildren & {
   success: boolean;
@@ -119,7 +120,7 @@ export default function TransactionDetail({
           <CurrencyPill currency={transaction?.baseCurrency ?? ''} />
         </Grid>
         <Grid md={8} sm={6} xs={5}>
-          <Rate variant="body1">$ {transaction?.baseAmount}</Rate>
+          <Rate variant="body1">$ {formatNumber(transaction?.baseAmount)}</Rate>
         </Grid>
         <Grid xs={12} sx={{ position: 'relative' }}>
           <Hr sx={{ marginBottom: 2 }} />
@@ -140,12 +141,14 @@ export default function TransactionDetail({
           <CurrencyPill currency={transaction?.quoteCurrency ?? ''} />
         </Grid>
         <Grid md={8} sm={6} xs={5}>
-          <Rate variant="body1">$ {transaction?.quoteAmount}</Rate>
+          <Rate variant="body1" sx={{ textWrap: 'wrap' }}>
+            $ {formatNumber(transaction?.quoteAmount)}
+          </Rate>
         </Grid>
         {!!quoteRateInverse && (
           <GridRow xs={12}>
             <Network variant="body2">Comisión:</Network>
-            <Amount variant="body2">$ {quoteRateInverse}</Amount>
+            <Amount variant="body2">$ {formatNumber(quoteRateInverse)}</Amount>
           </GridRow>
         )}
         {!!networkName && (

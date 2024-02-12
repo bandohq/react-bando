@@ -22,8 +22,9 @@ import Ethereum from '../../../assets/ethereum.png';
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
-import env from '@config/env';
 import { Quote } from '@hooks/useQuote/requests';
+import env from '@config/env';
+import formatNumber from '@helpers/formatNumber';
 
 const REQUEST_DEBOUNCE = 250;
 
@@ -204,7 +205,7 @@ export default function GetQuoteForm() {
               label="Recibes"
               type="number"
               name="quoteAmount"
-              value={data?.quoteAmount ?? 0}
+              value={formatNumber(data?.quoteAmount ?? 0)}
               helpText={
                 <>
                   Tipo de cambio ({baseCurrency}/{quoteCurrency}):&nbsp;

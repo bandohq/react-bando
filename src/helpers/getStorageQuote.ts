@@ -22,3 +22,7 @@ export default function getStorageQuote() {
     return { quote: null, network: null, operationType: null } as StorageQuote;
   }
 }
+
+export const deleteStorageQuote = () => {
+  localStorage.removeItem(env.rampDataLocalStorage);
+};
