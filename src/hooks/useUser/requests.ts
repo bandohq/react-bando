@@ -15,6 +15,7 @@ export const getUserData: GetUserDataRequest = (endpoint) =>
       dateOfBirth: data.date_of_birth,
       phone: data.phone,
       nationalIdNumber: data.national_id_number,
+      email: data.email,
     }))
     .catch((error) => {
       if (error.response.data.success) return Promise.resolve('auth valid');

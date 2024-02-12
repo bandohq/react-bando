@@ -40,12 +40,19 @@ export type Transaction = {
   endNetwork: string;
   providerStatus: string;
   cashinDetails: WithDrawCashinDetailsArgs | DepositCashinDetailsArgs;
+  networkConfig?: {
+    name: string;
+    chainId: string;
+    key: string;
+  };
 };
 
 type PostTransactionRequest = (
   endpoint: string,
   data: { arg: PostTransactionArgs },
 ) => Promise<Transaction>;
+
+type GetTransactionRequest = (endpoint: string, data: { arg: string }) => Promise<Transaction>;
 
 export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
   axios
@@ -75,4 +82,35 @@ export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
       endNetwork: data.end_network,
       providerStatus: data.provider_status,
       cashinDetails: data.cash_in_details,
+      ...(data.network_config && {
+        networkConfig: {
+          name: data.network_config.name,
+          chainId: data.network_config.chain_id,
+          key: data.network_config.key,
+        },
+      }),
     }));
+
+export const getTransaction: GetTransactionRequest = (endpoint) =>
+  axios.get(endpoint).then(({ data }) => ({
+    id: data.id,
+    transactionId: data.transaction_id,
+    status: data.status,
+    baseAmount: parseFloat(data.base_amount),
+    quoteAmount: parseFloat(data.quote_amount),
+    baseCurrency: data.base_currency,
+    quoteCurrency: data.quote_currency,
+    rate: parseFloat(data.rate),
+    fee: parseFloat(data.fee),
+    cashInNetwork: data.cash_in_network,
+    endNetwork: data.end_network,
+    providerStatus: data.provider_status,
+    cashinDetails: data.cash_in_details,
+    ...(data.network_config && {
+      networkConfig: {
+        name: String(data.network_config.name).toUpperCase(),
+        chainId: data.network_config.chain_id,
+        key: data.network_config.key,
+      },
+    }),
+  }));

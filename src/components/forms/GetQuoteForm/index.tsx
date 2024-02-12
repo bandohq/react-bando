@@ -22,7 +22,9 @@ import Ethereum from '../../../assets/ethereum.png';
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
+import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
+import formatNumber from '@helpers/formatNumber';
 
 const REQUEST_DEBOUNCE = 250;
 
@@ -39,14 +41,15 @@ export default function GetQuoteForm() {
   const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
   const { user } = useUser();
-  const { register, handleSubmit, setValue, watch, formState } = useForm<GetQuoteFormValues>({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      quoteCurrency: 'USDC',
-      baseCurrency: 'MXN',
-      operationType: 'deposit',
-    },
-  });
+  const { register, handleSubmit, setValue, watch, formState, getValues } =
+    useForm<GetQuoteFormValues>({
+      resolver: yupResolver(schema),
+      defaultValues: {
+        quoteCurrency: 'USDC',
+        baseCurrency: 'MXN',
+        operationType: 'deposit',
+      },
+    });
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
   const operationType = watch('operationType');
@@ -67,8 +70,28 @@ export default function GetQuoteForm() {
     [getQuote],
   );
 
-  const fetchQuote = useCallback(
+  const navigateForm = useCallback(
+    (quote?: Quote) => {
+      const formValues = getValues();
+      localStorage.setItem(
+        env.rampDataLocalStorage,
+        JSON.stringify({
+          quote: quote ?? data,
+          network: formValues.network,
+          operationType: formValues.operationType,
+        }),
+      );
+
+      if (!user?.email && !user?.id) return navigate('/signin');
+      if (!user?.kycLevel) return navigate('/kyc');
+      return navigate('/ramp');
+    },
+    [data, getValues, navigate, user],
+  );
+
+  const onSubmit = useCallback(
     async (formValues: GetQuoteFormValues) => {
+      if (data?.quoteAmount) return navigateForm();
       try {
         const quote = await getQuote({
           baseAmount: formValues.baseAmount,
@@ -77,22 +100,12 @@ export default function GetQuoteForm() {
           network: formValues.network,
         });
 
-        localStorage.setItem(
-          env.rampDataLocalStorage,
-          JSON.stringify({
-            quote,
-            network: formValues.network,
-            operationType: formValues.operationType,
-          }),
-        );
-        if (!user?.email && !user?.id) return navigate('/signin');
-        if (!user?.kycLevel) return navigate('/kyc');
-        return navigate('/ramp');
+        navigateForm(quote);
       } catch {
         // TODO: Handle error
       }
     },
-    [getQuote, navigate, user],
+    [getQuote, data, navigateForm],
   );
 
   const debouncedQuoteRequest = useRef(
@@ -122,7 +135,7 @@ export default function GetQuoteForm() {
 
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
-      <form onSubmit={handleSubmit(fetchQuote)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2} sx={{ margin: 0 }}>
           <Grid xs={12}>
             <Select
@@ -192,7 +205,7 @@ export default function GetQuoteForm() {
               label="Recibes"
               type="number"
               name="quoteAmount"
-              value={data?.quoteAmount ?? 0}
+              value={formatNumber(data?.quoteAmount ?? 0)}
               helpText={
                 <>
                   Tipo de cambio ({baseCurrency}/{quoteCurrency}):&nbsp;

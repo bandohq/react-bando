@@ -2,6 +2,7 @@ import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
 import Logo from '../../assets/logo.svg';
+import UserMenu from '@components/UserMenu';
 
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -75,6 +76,9 @@ export default function Navbar({ fullWidth = false }) {
         <a href="/" className="navbar-brand">
           <img src={Logo} loading="lazy" alt="" aria-label="Bando logo" />
         </a>
+        <nav role="navigation" className="navbar-menu">
+          <UserMenu />
+        </nav>
       </div>
     </NavbarContainer>
   );

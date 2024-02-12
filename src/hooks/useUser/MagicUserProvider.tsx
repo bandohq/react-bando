@@ -1,4 +1,11 @@
-import { PropsWithChildren, createContext, useEffect, useCallback, useState } from 'react';
+import {
+  PropsWithChildren,
+  createContext,
+  useEffect,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import useMagic from '@hooks/useMagic';
 
 export type User = {
@@ -20,6 +27,7 @@ export type UserContextType = {
   fetchUser: () => Promise<void>;
   logoutUser: () => Promise<void>;
   setUser: (userData: Partial<User>) => void;
+  resetUser: () => void;
   isLoading: boolean;
   dataLoaded: boolean;
 };
@@ -29,6 +37,7 @@ export const UserContext = createContext<UserContextType>({
   fetchUser: async () => {},
   logoutUser: async () => {},
   setUser: () => {},
+  resetUser: () => {},
   isLoading: false,
   dataLoaded: false,
 });
@@ -40,7 +49,13 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const logoutUser = async () => {
-    await magic?.user.logout();
+    try {
+      magic?.user.isLoggedIn().then(async (isLoggedIn) => {
+        if (isLoggedIn) await magic?.user?.logout();
+      });
+    } catch {
+      //
+    }
   };
 
   const setUserData = useCallback(
@@ -49,6 +64,8 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
     },
     [setUser],
   );
+
+  const resetUser = () => setUser({});
 
   const fetchUser = useCallback(async () => {
     if (magic) {
@@ -69,11 +86,22 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <UserContext.Provider
-      value={{ user, fetchUser, logoutUser, isLoading, dataLoaded, setUser: setUserData }}
+      value={{
+        user,
+        fetchUser,
+        logoutUser,
+        isLoading,
+        dataLoaded,
+        setUser: setUserData,
+        resetUser,
+      }}
     >
       {children}
     </UserContext.Provider>
   );
 };
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useMagicUser = () => useContext(UserContext);
 
 export default MagicUserProvider;

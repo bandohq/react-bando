@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { identificationOptions, Identifications } from '@config/constants/identification';
 import { useState } from 'react';
+import getStorageQuote from '@helpers/getStorageQuote';
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function KycForm() {
@@ -29,6 +30,7 @@ export default function KycForm() {
 
   const { user } = useUser();
   const { isMutating, postUserKyc } = useKyc();
+  const storageQuote = getStorageQuote();
   const { register, control, formState, handleSubmit, setValue } = useForm<KycFormValues>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
@@ -45,7 +47,8 @@ export default function KycForm() {
   const onSubmit = async (formValues: KycFormValues) => {
     try {
       await postUserKyc({ ...formValues, email: user?.email as string });
-      navigate('/kyc/ramp');
+      if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp', { replace: true });
+      return navigate('/', { replace: true });
     } catch {
       setError(true);
     }
