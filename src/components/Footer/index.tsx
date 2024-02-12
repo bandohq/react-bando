@@ -62,7 +62,12 @@ export default function Footer() {
             <Typography variant="subtitle1" color="theme.palette.primary.main" gutterBottom>
               SIGUENOS
             </Typography>
-            <IconButton aria-label="Twitter" target='_blank' component="a" href={socialMediaLinks.twitter}>
+            <IconButton
+              aria-label="Twitter"
+              target="_blank"
+              component="a"
+              href={socialMediaLinks.twitter}
+            >
               <XIcon color="inherit" />
             </IconButton>
           </Grid>
