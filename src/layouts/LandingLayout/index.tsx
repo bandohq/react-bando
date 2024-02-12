@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 
 import Jumbotron, { GridBox } from '@components/Jumbotron';
 import { PropsWithChildren } from 'react';
+import Footer from '@components/Footer';
 
 const Container = styled('section')(({ theme }) => ({
   flexGrow: 1,
@@ -290,16 +291,7 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
           </div>
         </section>
       </div>
-      <section className="footer">
-        <div className="frame-12718">
-          <a href="https://twitter.com/bando_cool_" className="button-2 w-button">
-            X
-          </a>
-          <a href="mailto:ab@hiro.cool" className="button-2 w-button">
-            Contacto: hola@bando.cool
-          </a>
-        </div>
-      </section>
+      <Footer />
     </div>
   );
 }
