@@ -13,7 +13,6 @@ const LayoutContainer = styled('div')(() => ({
   backgroundRepeat: 'no-repeat',
   backgroundAttachment: 'fixed',
   backgroundSize: 'cover',
-  padding: theme.spacing(2),
 }));
 
 const Container = styled('div')(() => ({
@@ -22,6 +21,7 @@ const Container = styled('div')(() => ({
   height: 'auto',
   minHeight: '100vh',
   display: 'flex',
+  padding: theme.spacing(2),
   paddingTop: TOP_PADDING,
 }));
 
