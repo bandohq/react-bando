@@ -40,7 +40,7 @@ Al utilizar Bando, usted da su consentimiento a estos términos y a nuestras pol
   return (
     <CleanLayout>
       <MarkDownContainer
-        sx={{ width: '100%', maxWidth: '800px', height: 'fit-content' }}
+        sx={{ width: '100%', maxWidth: '800px', height: 'fit-content', margin: '0 auto' }}
         content={markdown}
       />
     </CleanLayout>
