@@ -8,6 +8,7 @@ import ProtectedRamp from '@pages/ProtectedRamp';
 import ProtectedTransactionDetail from '@pages/ProtectedTransactionDetail';
 import TransactionDetail from '@pages/TransactionDetail';
 import Terms from '@pages/Terms';
+import FAQ from '@pages/FAQ';
 
 import ExposedWrapper from './ExposedWrapper';
 import ProtectedWrapper from './ProtectedWrapper';
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<ExposedWrapper />}>
         <Route index element={<Landing />} />
         <Route path="terms" element={<Terms />} />
+        <Route path="faq" element={<FAQ />} />
         <Route path="signin" element={<SignIn />} />
       </Route>
     </>,
