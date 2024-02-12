@@ -23,6 +23,7 @@ export type TransactionDetailProps = PropsWithChildren & {
   transaction?: Transaction;
   quoteRateInverse?: number;
   network?: string;
+  title?: string;
   sx?: SxProps;
 };
 
@@ -82,9 +83,11 @@ export default function TransactionDetail({
   noArrow = false,
   showStatusBadge = false,
   network = '',
+  title = '',
   sx,
 }: TransactionDetailProps) {
   const DetailContainer = noContainer ? Box : BoxContainer;
+  const networkName = network || transaction?.networkConfig?.name;
   const depositTitle = transaction?.cashinDetails?.CLABE
     ? `Deposita ${transaction.baseCurrency} a la cuenta:`
     : `Deposita tu ${transaction?.baseCurrency} a esta dirección en
@@ -100,7 +103,7 @@ export default function TransactionDetail({
         <RampTitle
           success={success}
           noArrow={noContainer || noArrow}
-          title="Resúmen"
+          title={title}
           leftContent={
             showStatusBadge &&
             showBadge && (
@@ -145,14 +148,14 @@ export default function TransactionDetail({
             <Amount variant="body2">$ {quoteRateInverse}</Amount>
           </GridRow>
         )}
-        {!!network && (
+        {!!networkName && (
           <GridRow xs={12}>
             <Network variant="body2">Red:</Network>
             <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-              {network?.toLowerCase()}{' '}
+              {networkName?.toLowerCase()}{' '}
               <img
                 alt="Network"
-                src={networkImg[network as keyof typeof networkImg]}
+                src={networkImg[networkName as keyof typeof networkImg]}
                 width={18}
                 height={18}
               />

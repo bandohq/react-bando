@@ -31,7 +31,7 @@ export default function useUser() {
     } finally {
       setIsLoginOut(false);
     }
-  }, []);
+  }, [resetUser]);
 
   const refetchUser = () => mutate(endpoints.userKyc);
 

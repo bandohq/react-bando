@@ -40,6 +40,11 @@ export type Transaction = {
   endNetwork: string;
   providerStatus: string;
   cashinDetails: WithDrawCashinDetailsArgs | DepositCashinDetailsArgs;
+  networkConfig?: {
+    name: string;
+    chainId: string;
+    key: string;
+  };
 };
 
 type PostTransactionRequest = (
@@ -77,6 +82,13 @@ export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
       endNetwork: data.end_network,
       providerStatus: data.provider_status,
       cashinDetails: data.cash_in_details,
+      ...(data.network_config && {
+        networkConfig: {
+          name: data.network_config.name,
+          chainId: data.network_config.chain_id,
+          key: data.network_config.key,
+        },
+      }),
     }));
 
 export const getTransaction: GetTransactionRequest = (endpoint) =>
@@ -94,4 +106,11 @@ export const getTransaction: GetTransactionRequest = (endpoint) =>
     endNetwork: data.end_network,
     providerStatus: data.provider_status,
     cashinDetails: data.cash_in_details,
+    ...(data.network_config && {
+      networkConfig: {
+        name: String(data.network_config.name).toUpperCase(),
+        chainId: data.network_config.chain_id,
+        key: data.network_config.key,
+      },
+    }),
   }));

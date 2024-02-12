@@ -15,6 +15,7 @@ export default function ProtectedTransactionDetail() {
         <TransactionDetailComponent
           sx={{ margin: '0 auto' }}
           transaction={transaction as unknown as Transaction}
+          title="Resúmen"
           noArrow
           success
         />
