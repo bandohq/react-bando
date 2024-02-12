@@ -9,7 +9,6 @@ type UseTransactionArgs = {
 };
 
 export default function useTransaction({ transactionId = '' }: UseTransactionArgs) {
-  console.log({ transactionId });
   const { mutate } = useSWRConfig();
 
   const { trigger, isMutating, data, error } = useSWRMutation(

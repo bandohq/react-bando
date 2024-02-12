@@ -34,7 +34,6 @@ export default function RampTitle({
     localStorage.removeItem(env.rampDataLocalStorage);
     navigate('/');
   };
-  console.log({ title });
 
   return (
     <Grid
