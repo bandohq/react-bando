@@ -40,6 +40,9 @@ export default function Footer() {
             <Link href="/faq" color="#000" display="block">
               Preguntas Frecuentes
             </Link>
+            <Link href="https://academy.bando.cool" target="_blank" color="#000" display="block">
+              Bando Academy
+            </Link>
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
             <Typography variant="subtitle1" color="theme.palette.primary.main" gutterBottom>
@@ -51,12 +54,15 @@ export default function Footer() {
             <Link href="/terms" color="#000" display="block">
               Términos y Condiciones
             </Link>
+            <Link href="mailto:hola@bando.cool" color="#000" display="block">
+              Contacto
+            </Link>
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
             <Typography variant="subtitle1" color="theme.palette.primary.main" gutterBottom>
               SIGUENOS
             </Typography>
-            <IconButton aria-label="Twitter" component="a" href={socialMediaLinks.twitter}>
+            <IconButton aria-label="Twitter" target='_blank' component="a" href={socialMediaLinks.twitter}>
               <XIcon color="inherit" />
             </IconButton>
           </Grid>
