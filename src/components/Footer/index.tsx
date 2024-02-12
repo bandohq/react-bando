@@ -34,32 +34,49 @@ export default function Footer() {
             <FooterLogo src={Logo} loading="lazy" alt="" aria-label="Bando footer logo" />
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
-            <Typography variant="subtitle1" color="theme.palette.primary.main" gutterBottom>
+            <Typography
+              variant="subtitle1"
+              sx={{ color: 'primary.main', fontWeight: 700 }}
+              gutterBottom
+            >
               PRODUCTO
             </Typography>
-            <Link href="/faq" color="#000" display="block">
+            <Link href="/faq" sx={{ color: 'ink.i900' }} display="block">
               Preguntas Frecuentes
             </Link>
-            <Link href="https://academy.bando.cool" target="_blank" color="#000" display="block">
+            <Link
+              sx={{ color: 'ink.i900' }}
+              href="https://academy.bando.cool"
+              target="_blank"
+              display="block"
+            >
               Bando Academy
             </Link>
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
-            <Typography variant="subtitle1" color="theme.palette.primary.main" gutterBottom>
+            <Typography
+              variant="subtitle1"
+              sx={{ color: 'primary.main', fontWeight: 700 }}
+              gutterBottom
+            >
               NOSOTROS
             </Typography>
-            <Link href="/terms" color="#000" display="block">
+            <Link href="/terms" sx={{ color: 'ink.i900' }} display="block">
               Política de Privacidad
             </Link>
-            <Link href="/terms" color="#000" display="block">
+            <Link href="/terms" sx={{ color: 'ink.i900' }} display="block">
               Términos y Condiciones
             </Link>
-            <Link href="mailto:hola@bando.cool" color="#000" display="block">
+            <Link href="mailto:hola@bando.cool" sx={{ color: 'ink.i900' }} display="block">
               Contacto
             </Link>
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
-            <Typography variant="subtitle1" color="theme.palette.primary.main" gutterBottom>
+            <Typography
+              variant="subtitle1"
+              sx={{ color: 'primary.main', fontWeight: 700 }}
+              gutterBottom
+            >
               SIGUENOS
             </Typography>
             <IconButton
@@ -72,7 +89,7 @@ export default function Footer() {
             </IconButton>
           </Grid>
         </Grid>
-        <Typography variant="body2" color="text.secondary" align="center" sx={{ pt: 10 }}>
+        <Typography variant="body2" sx={{ color: 'ink.i900', pt: 10 }} align="center">
           © {new Date().getFullYear()} Bando. Todos los derechos reservados.
         </Typography>
       </Container>
