@@ -8,6 +8,7 @@
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
+    "types": ["@testing-library/jest-dom"],
 
     /* Bundler mode */
     "allowJs": true,

@@ -38,7 +38,7 @@ describe('useTransaction', () => {
   });
 
   it('updates values and returns expected data for off ramp', async () => {
-    const { result } = renderHook(useTransaction, { wrapper });
+    const { result } = renderHook(() => useTransaction({ transactionId: '555' }), { wrapper });
 
     const rsp = await result.current.postTransaction({
       accountAddress: '123456789123456789',
@@ -110,7 +110,7 @@ describe('useTransaction', () => {
       },
     });
 
-    const { result } = renderHook(useTransaction, { wrapper });
+    const { result } = renderHook(() => useTransaction({ transactionId: '555' }), { wrapper });
 
     const rsp = await result.current.postTransaction({
       accountAddress: 'accountAddress',
@@ -134,7 +134,6 @@ describe('useTransaction', () => {
         network: 'accountNetwork',
       },
     });
-
     expect(rsp).toStrictEqual({
       baseAmount: 1000,
       baseCurrency: 'MXN',
