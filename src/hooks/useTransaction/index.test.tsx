@@ -134,7 +134,6 @@ describe('useTransaction', () => {
         network: 'accountNetwork',
       },
     });
-    console.log(rsp);
     expect(rsp).toStrictEqual({
       baseAmount: 1000,
       baseCurrency: 'MXN',
