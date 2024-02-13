@@ -1,13 +1,25 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { useNavigate } from 'react-router-dom';
 
 import Navbar from '.';
 import { PropsWithChildren } from 'react';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
 
 const Container = ({ children }: PropsWithChildren) => (
   <div style={{ width: '1500px', height: '2000px' }}>{children}</div>
 );
 
 describe('Navbar', () => {
+  const navigate = jest.fn();
+
+  beforeEach(() => {
+    (useNavigate as jest.Mock).mockReturnValue(navigate);
+  });
+
   it('should render the navbar and change the navbar classname based on the scroll position', async () => {
     render(
       <Container>
