@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { PropsWithChildren } from 'react';
 import Navbar from '@components/Navbar';
+import SimpleFooter from '@components/SimpleFooter';
 import theme from '@config/theme';
 const TOP_PADDING = '78px';
 
@@ -39,6 +40,7 @@ export default function CleanLayout({ children }: CleanLayoutProps) {
       <Container>
         <ContentContainer>{children}</ContentContainer>
       </Container>
+      <SimpleFooter bgColor="transparent" textColor="primary.main" />
     </LayoutContainer>
   );
 }
