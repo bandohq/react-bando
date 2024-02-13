@@ -31,5 +31,4 @@ test('renders Footer component', () => {
   // Assert that the IconButton for Twitter is rendered
   const twitterIconButton = screen.getByLabelText('Twitter');
   expect(twitterIconButton).toBeInTheDocument();
-
 });

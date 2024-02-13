@@ -93,7 +93,7 @@ describe('RampForm', () => {
       render(<RampForm />, { wrapper });
       screen.getByText('MXN');
       screen.getByText('USDC');
-      screen.getByText('$ 1000');
+      screen.getByText('$ 1,000.00');
       screen.getByText('$ 57.55');
       screen.getByText('$ 17.38');
     });
@@ -109,11 +109,7 @@ describe('RampForm', () => {
     await userEvent.click(submitBtn);
 
     await waitFor(() => {
-      screen.getByText(/Deposita tu MXN a esta cuenta/i);
-      screen.getByText(/Banco:/i);
-      screen.getByText(/Nombre:/i);
-      screen.getByText(/CLABE:/i);
-      screen.getByText(/Concepto:/i);
+      expect(navigate).toHaveBeenCalledWith('/ramp/555');
     });
   });
 
@@ -158,8 +154,7 @@ describe('RampForm', () => {
     await userEvent.click(submitBtn);
 
     await waitFor(() => {
-      screen.getByText(/Deposita tu MXN a esta dirección en network/i);
-      screen.getByText(/Dirección:/i);
+      expect(navigate).toHaveBeenCalledWith('/ramp/555');
     });
   });
 });
