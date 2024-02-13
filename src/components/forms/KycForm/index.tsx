@@ -170,24 +170,24 @@ export default function KycForm() {
           />
         </Grid>
         {error && (
-          <Grid md={12} sx={{ mt: 2 }}>
+          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
             <ErrorBox>Ha ocurrido un error.</ErrorBox>
           </Grid>
         )}
         {KYCError.isError && (
-          <Grid md={12} sx={{ mt: 2 }}>
+          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
             <ErrorBox>{KYCError.message}</ErrorBox>
           </Grid>
         )}
         {forbiddenError && (
-          <Grid md={12} sx={{ mt: 2 }}>
+          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
             <ErrorBox>
               Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía un
               correo a hola@bando.cool
             </ErrorBox>
           </Grid>
         )}
-        <Grid md={12} sx={{ mt: 2 }}>
+        <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
           <BandoButton type="submit" variant="contained" disabled={isMutating} fullWidth>
             {isMutating && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
             Verificar
