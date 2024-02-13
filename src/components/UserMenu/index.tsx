@@ -19,6 +19,10 @@ export default function UserMenu() {
     navigate('/');
   };
 
+  const handleLoginClick = async () => {
+    navigate('/signin');
+  };
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -27,7 +31,18 @@ export default function UserMenu() {
     setAnchorEl(null);
   };
 
-  if (!user?.email) return null;
+  if (!user?.email)
+    return (
+      <Box>
+        <Button
+          id="basic-button"
+          onClick={handleLoginClick}
+          sx={{ textTransform: 'none', fontWeight: 700, display: 'flex', gap: 1 }}
+        >
+          Iniciar Sesión
+        </Button>
+      </Box>
+    );
   return (
     <Box>
       <Button
