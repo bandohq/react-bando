@@ -177,7 +177,7 @@ describe('GetQuoteForm', () => {
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
     const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
     const submitBtn = screen.getByRole('button', { name: 'Continuar' });
-    await userEvent.type(baseAmountInput, '1000');
+    await userEvent.type(baseAmountInput, '1000.00');
 
     userEvent.click(submitBtn);
 
@@ -198,7 +198,7 @@ describe('GetQuoteForm', () => {
 
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
     const submitBtn = screen.getByRole('button', { name: 'Continuar' });
-    await userEvent.type(baseAmountInput, '1000');
+    await userEvent.type(baseAmountInput, '1000.00');
 
     userEvent.click(submitBtn);
 
@@ -214,7 +214,7 @@ describe('GetQuoteForm', () => {
 
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
     const submitBtn = screen.getByRole('button', { name: 'Continuar' });
-    await userEvent.type(baseAmountInput, '1000');
+    await userEvent.type(baseAmountInput, '1000.00');
 
     userEvent.click(submitBtn);
 
@@ -230,12 +230,12 @@ describe('GetQuoteForm', () => {
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
     const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
     const submitBtn = screen.getByRole('button', { name: 'Continuar' });
-    await userEvent.type(baseAmountInput, '1000');
+    await userEvent.type(baseAmountInput, '1000.00');
 
     userEvent.click(submitBtn);
 
     await waitFor(() => {
-      expect(quoteAmountInput.value).toBe('0');
+      expect(quoteAmountInput.value).toBe('0.00');
       expect(localStorage.setItem).not.toHaveBeenCalledWith();
       expect(navigate).not.toHaveBeenCalledWith('/ramp');
     });
@@ -246,7 +246,7 @@ describe('GetQuoteForm', () => {
 
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
     const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
-    await userEvent.type(baseAmountInput, '1000');
+    await userEvent.type(baseAmountInput, '1000.00');
 
     await waitFor(() => {
       expect(quoteAmountInput.value).toBe('58.47');
