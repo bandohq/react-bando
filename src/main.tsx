@@ -9,6 +9,7 @@ import router from 'routes/index.tsx';
 import theme from '@config/theme.ts';
 
 import '@config/axios';
+import '@config/sentry';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
