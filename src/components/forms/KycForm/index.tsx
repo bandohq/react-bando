@@ -14,6 +14,7 @@ import { toUpperCase, checkNumberLength } from '@helpers/inputs';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { KycFormValues } from './schema';
+import { AxiosError } from 'axios';
 
 import useKyc from '@hooks/useKyc';
 import useUser from '@hooks/useUser';
@@ -27,6 +28,8 @@ const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function KycForm() {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
+  const [KYCError, setKYCError] = useState({ isError: false, message: '' });
+  const [forbiddenError, setForbiddenError] = useState(false);
 
   const { user } = useUser();
   const { isMutating, postUserKyc } = useKyc();
@@ -49,8 +52,22 @@ export default function KycForm() {
       await postUserKyc({ ...formValues, email: user?.email as string });
       if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp', { replace: true });
       return navigate('/', { replace: true });
-    } catch {
+    } catch (err) {
+      if ((err as AxiosError).response?.status === 403) {
+        setForbiddenError(true);
+        return;
+      }
+      if ((err as AxiosError<{ code: string; error: string }>).response?.data.code) {
+        setKYCError({
+          isError: true,
+          message:
+            (err as AxiosError<{ code: string; error: string }>).response?.data.error ||
+            'Unknown error',
+        });
+        return;
+      }
       setError(true);
+      return;
     }
   };
 
@@ -153,11 +170,24 @@ export default function KycForm() {
           />
         </Grid>
         {error && (
-          <Grid md={12} sx={{ mt: 2 }}>
+          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
             <ErrorBox>Ha ocurrido un error.</ErrorBox>
           </Grid>
         )}
-        <Grid md={12} sx={{ mt: 2 }}>
+        {KYCError.isError && (
+          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
+            <ErrorBox>{KYCError.message}</ErrorBox>
+          </Grid>
+        )}
+        {forbiddenError && (
+          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
+            <ErrorBox>
+              Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía un
+              correo a hola@bando.cool
+            </ErrorBox>
+          </Grid>
+        )}
+        <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
           <BandoButton type="submit" variant="contained" disabled={isMutating} fullWidth>
             {isMutating && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
             Verificar
