@@ -101,7 +101,7 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
                       <div className="text-3">
                         <span style={{ textTransform: 'lowercase', fontSize: '22px' }}>st</span>ETH
                       </div>
-                      <div className="text-4">3.8%</div>
+                      <div className="text-4">3.6%</div>
                     </div>
                     <img
                       src="images/steth-steth-logo.png"
@@ -115,7 +115,7 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
                   <div className="frame-12743">
                     <div className="frame-12742">
                       <div className="text-3">USDM</div>
-                      <div className="text-4">3.2%</div>
+                      <div className="text-4">5%</div>
                     </div>
                     <img
                       src="images/USDM.png"

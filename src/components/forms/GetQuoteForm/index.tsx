@@ -58,7 +58,10 @@ export default function GetQuoteForm() {
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
   const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
-
+  const rateText =
+    operationType === 'deposit'
+      ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
+      : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
   const debouncedRequest = useCallback(
     (formValues: GetQuoteFormValues) =>
       getQuote({
@@ -208,7 +211,6 @@ export default function GetQuoteForm() {
               value={formatNumber(data?.quoteAmount ?? 0)}
               helpText={
                 <>
-                  Tipo de cambio ({baseCurrency}/{quoteCurrency}):&nbsp;
                   {isMutating ? (
                     <CircularProgress
                       size={15}
@@ -216,7 +218,7 @@ export default function GetQuoteForm() {
                       aria-label="submitting"
                     />
                   ) : (
-                    <strong>{data?.quoteRateInverse ?? 0}</strong>
+                    rateText
                   )}
                 </>
               }
