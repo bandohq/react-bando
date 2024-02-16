@@ -23,9 +23,11 @@ export type TransactionDetailProps = PropsWithChildren & {
   showStatusBadge?: boolean;
   transaction?: Transaction;
   quoteRateInverse?: number;
+  quoteRate?: number;
   network?: string;
   title?: string;
   sx?: SxProps;
+  operationType?: string;
 };
 
 const Rate = styled(Typography)(({ theme }) => ({
@@ -38,7 +40,7 @@ const Amount = styled(Typography)(({ theme }) => ({
   fontSize: theme.typography.pxToRem(14),
   fontWeight: 'normal',
   color: theme.palette.ink.i500,
-  textAlign: 'right',
+  textAlign: 'left',
 }));
 
 const GridRow = styled(Grid)(() => ({
@@ -79,6 +81,7 @@ export default function TransactionDetail({
   children,
   transaction,
   quoteRateInverse,
+  quoteRate,
   success = false,
   noContainer = false,
   noArrow = false,
@@ -86,6 +89,7 @@ export default function TransactionDetail({
   network = '',
   title = '',
   sx,
+  operationType,
 }: TransactionDetailProps) {
   const DetailContainer = noContainer ? Box : BoxContainer;
   const networkName = network || transaction?.networkConfig?.name;
@@ -93,6 +97,15 @@ export default function TransactionDetail({
     ? `Deposita ${transaction.baseCurrency} a la cuenta:`
     : `Deposita tu ${transaction?.baseCurrency} a esta dirección en
   ${transaction?.cashinDetails?.network}:`;
+  const rate = operationType === 'deposit' ? quoteRateInverse : quoteRate;
+  const rateText =
+    operationType === 'deposit'
+      ? `1 ${transaction?.quoteCurrency} ≈ ${(
+          <Amount variant="body2">$ {formatNumber(rate)}</Amount>
+        )} ${transaction?.baseCurrency}`
+      : `1 ${transaction?.baseCurrency} ≈ ${(
+          <Amount variant="body2">$ {formatNumber(rate)}</Amount>
+        )} ${transaction?.quoteCurrency}`;
 
   const showBadge = ['CASH_IN_REQUESTED', 'CASH_IN_PROCESSING'].includes(
     transaction?.providerStatus ?? '',
@@ -145,10 +158,9 @@ export default function TransactionDetail({
             $ {formatNumber(transaction?.quoteAmount)}
           </Rate>
         </Grid>
-        {!!quoteRateInverse && (
+        {!!rate && (
           <GridRow xs={12}>
-            <Network variant="body2">Comisión:</Network>
-            <Amount variant="body2">$ {formatNumber(quoteRateInverse)}</Amount>
+            <Network variant="body2">{rateText}</Network>
           </GridRow>
         )}
         {!!networkName && (

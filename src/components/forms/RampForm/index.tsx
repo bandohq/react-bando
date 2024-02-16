@@ -93,8 +93,10 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
           transaction={data || (quote as unknown as Transaction)}
           noContainer={noContainer}
           quoteRateInverse={quote?.quoteRateInverse}
+          quoteRate={quote?.quoteRate}
           network={network ?? ''}
           success={false}
+          operationType={operationType}
         >
           <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
             {operationType === 'deposit' ? (

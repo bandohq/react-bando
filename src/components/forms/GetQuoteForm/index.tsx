@@ -58,7 +58,10 @@ export default function GetQuoteForm() {
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
   const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
-
+  const rateText =
+    operationType === 'deposit'
+      ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
+      : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
   const debouncedRequest = useCallback(
     (formValues: GetQuoteFormValues) =>
       getQuote({
@@ -116,13 +119,17 @@ export default function GetQuoteForm() {
     if (baseAmount > 0) handleSubmit(debouncedRequest)();
   }, [baseAmount, debouncedRequest, handleSubmit]);
 
-  const onChangeOperationType = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
-    const depositCurrencyItms = value === 'deposit' ? sendCurrency : depositCurrency;
-    const sendCurrencyItms = value === 'deposit' ? depositCurrency : sendCurrency;
-    setValue('baseCurrency', depositCurrencyItms[0].value);
-    setValue('quoteCurrency', sendCurrencyItms[0].value);
-  };
+  const onChangeOperationType = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      const { value } = event.target;
+      const depositCurrencyItms = value === 'deposit' ? sendCurrency : depositCurrency;
+      const sendCurrencyItms = value === 'deposit' ? depositCurrency : sendCurrency;
+      setValue('baseCurrency', depositCurrencyItms[0].value);
+      setValue('quoteCurrency', sendCurrencyItms[0].value);
+      if (baseAmount > 0) handleSubmit(debouncedRequest)();
+    },
+    [baseAmount, debouncedRequest, handleSubmit, setValue],
+  );
 
   const onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.value = event.target.value.replace(/[^0-9.]/g, '');
@@ -208,7 +215,6 @@ export default function GetQuoteForm() {
               value={formatNumber(data?.quoteAmount ?? 0)}
               helpText={
                 <>
-                  Tipo de cambio ({baseCurrency}/{quoteCurrency}):&nbsp;
                   {isMutating ? (
                     <CircularProgress
                       size={15}
@@ -216,7 +222,7 @@ export default function GetQuoteForm() {
                       aria-label="submitting"
                     />
                   ) : (
-                    <strong>{data?.quoteRateInverse ?? 0}</strong>
+                    rateText
                   )}
                 </>
               }
