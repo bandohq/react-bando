@@ -187,7 +187,13 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               <div className="div-block-3 spacing">
                 <img src="images/Model-Cone.png" loading="lazy" alt="" className="image-68" />
                 <img src="images/Vector-10.png" loading="lazy" alt="" className="image-69" />
-                <img src="images/swap.png" loading="lazy" width="250" alt="" className="image-59" />
+                <img
+                  src="images/bandoSwap.png"
+                  loading="lazy"
+                  width="250"
+                  alt=""
+                  className="image-59"
+                />
               </div>
             </div>
           </div>
