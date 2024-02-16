@@ -6,20 +6,39 @@ const H1 = styled(Typography)(({ theme }) => ({
   fontFamily: 'Bueno',
   fontWeight: 'bold',
   lineHeight: 'normal',
-  fontSize: '80px !important',
+  fontSize: '70px !important',
   textTransform: 'uppercase',
-  textAlign: 'center',
   color: theme.palette.secondary.main,
   [theme.breakpoints.down('md')]: {
     paddingTop: 0,
     fontSize: '64px !important',
     lineHeight: 'normal',
-    paddingBottom: theme.spacing(4),
+    textAlign: 'center',
+    paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(8),
     paddingRight: theme.spacing(8),
   },
   [theme.breakpoints.down('sm')]: {
-    paddingTop: theme.spacing(8),
+    textAlign: 'center',
+    fontSize: '51px !important',
+    paddingTop: theme.spacing(2),
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+  },
+}));
+
+const P = styled(Typography)(({ theme }) => ({
+  fontFamily: 'Kanit',
+  fontSize: '20px !important',
+  color: theme.palette.ink.i600,
+  [theme.breakpoints.down('md')]: {
+    fontSize: '16px !important',
+    textAlign: 'center',
+    paddingBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(8),
+    paddingRight: theme.spacing(8),
+  },
+  [theme.breakpoints.down('sm')]: {
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
   },
@@ -92,7 +111,7 @@ const JumbotronContainer = styled(GridBox)(({ theme }) => ({
   flexDirection: 'column',
   margin: '0 auto',
   [theme.breakpoints.down('md')]: {
-    paddingTop: theme.spacing(6),
+    paddingTop: theme.spacing(0),
     paddingBottom: theme.spacing(2),
   },
 }));
@@ -101,18 +120,10 @@ export default function Jumbotron() {
   return (
     <JumbotronContainer>
       <H1 variant="h1">Intercambia entre MXN y cripto en un SPEI</H1>
-      <Typography
-        variant="body1"
-        sx={{
-          fontSize: '20px !important',
-          textAlign: 'center',
-          maxWidth: '587px',
-          margin: '0 auto',
-        }}
-      >
-        Con Bando entra y sal del mundo cripto en segundos con SPEI. Puedes depositar o retirar a tu
-        wallet en las redes de Ethereum, Arbitrum, Optimism y muchas más.{' '}
-      </Typography>
+      <P>
+        Con Bando entra y sal del mundo cripto en segundos con SPEI. <br /> Puedes depositar o
+        retirar a tu wallet en las redes de Ethereum, Arbitrum, Optimism y muchas más.{' '}
+      </P>
       <img src="images/Model-Tank.png" loading="lazy" alt="" className="tank" />
       <img src="images/Model-Cone.png" loading="lazy" alt="" className="cone" />
       <img src="images/Vector-2.png" loading="lazy" alt="" className="scribble" />

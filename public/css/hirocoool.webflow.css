@@ -218,7 +218,7 @@
   border-radius: 0;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: normal;
   display: flex;
   position: relative;
   overflow: visible;

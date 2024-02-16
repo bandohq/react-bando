@@ -13,13 +13,17 @@ const Container = styled('section')(({ theme }) => ({
   height: 'auto',
   minHeight: '100vh',
   width: '100%',
-  maxWidth: theme.breakpoints.values.xl,
+  maxWidth: theme.breakpoints.values.lg,
   justifySelf: 'center',
   justifyContent: 'center',
   alignItems: 'center',
   margin: '0 auto',
   paddingBottom: '84px',
   '& .MuiGrid2-container': { width: '100%' },
+  [theme.breakpoints.down('md')]: {
+    minHeight: '77vh',
+    paddingBottom: '0',
+  },
 }));
 
 export default function LandingLayout({ children }: Readonly<PropsWithChildren>) {
@@ -28,15 +32,26 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
       <Navbar />
       <div className="landing-page">
         <Container>
-          <Grid container spacing={2}>
-            <Grid md={6} xs={12}>
+          <Grid container spacing={0}>
+            <Grid
+              md={7}
+              xs={12}
+              sx={{ display: { md: 'block', lg: 'block', sm: 'none', xs: 'none' } }}
+            >
               <Jumbotron />
             </Grid>
-            <Grid md={6} xs={12}>
+            <Grid md={5} xs={12}>
               <GridBox>{children}</GridBox>
             </Grid>
           </Grid>
         </Container>
+        <section>
+          <Grid container spacing={0}>
+            <Grid xs={12} sx={{ display: { md: 'none', lg: 'none', sm: 'block', xs: 'block' } }}>
+              <Jumbotron />
+            </Grid>
+          </Grid>
+        </section>
         <section className="section hidden">
           <div className="w-layout-blockcontainer container-7 w-container">
             <div className="div-block horizontal">
@@ -64,7 +79,7 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               <div className="div-block-3 spacing">
                 <img src="images/Model-Sphere.png" loading="lazy" alt="" className="image-68" />
                 <img src="images/Vector-10.png" loading="lazy" alt="" className="image-69" />
-                <img src="images/ezgif-2-8ea0987634.gif" loading="lazy" width="250" alt="" />
+                <img src="images/ramp.gif" loading="lazy" width="250" alt="" />
               </div>
             </div>
           </div>
@@ -77,30 +92,33 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
                 <p className="paragraph-5">
                   Obtén los rendimientos que esta industria tiene disponibles hoy
                 </p>
+                <h4 style={{ color: 'var(--40b494)', fontWeight: 'bold' }}>¡Muy Pronto!</h4>
               </div>
               <div className="div-block-3">
                 <div className="frame-12738">
                   <div className="frame-12743">
                     <div className="frame-12742">
-                      <div className="text-3">ETH</div>
+                      <div className="text-3">
+                        <span style={{ textTransform: 'lowercase', fontSize: '22px' }}>st</span>ETH
+                      </div>
                       <div className="text-4">3.8%</div>
                     </div>
                     <img
-                      src="images/image-58.png"
+                      src="images/steth-steth-logo.png"
                       loading="lazy"
                       width="82.63195037841797"
                       height="82.21484375"
                       alt=""
-                      className="image-58"
+                      className="steth"
                     />
                   </div>
                   <div className="frame-12743">
                     <div className="frame-12742">
-                      <div className="text-3">USDC</div>
+                      <div className="text-3">USDM</div>
                       <div className="text-4">3.2%</div>
                     </div>
                     <img
-                      src="images/image-58_1.png"
+                      src="images/USDM.png"
                       loading="lazy"
                       width="82.63195037841797"
                       height="82.21484375"
@@ -122,6 +140,7 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
                   Adquiere Ether, USDC y todas las criptos disponibles en el ecosistema con los
                   mejores precios de la industria
                 </p>
+                <h4 style={{ color: 'var(--40b494)', fontWeight: 'bold' }}>¡Muy Pronto!</h4>
                 <div className="frame-12739">
                   <img
                     src="images/Ellipse-2070.png"
@@ -168,7 +187,7 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               <div className="div-block-3 spacing">
                 <img src="images/Model-Cone.png" loading="lazy" alt="" className="image-68" />
                 <img src="images/Vector-10.png" loading="lazy" alt="" className="image-69" />
-                <img src="images/Swap.png" loading="lazy" width="250" alt="" className="image-59" />
+                <img src="images/swap.png" loading="lazy" width="250" alt="" className="image-59" />
               </div>
             </div>
           </div>
