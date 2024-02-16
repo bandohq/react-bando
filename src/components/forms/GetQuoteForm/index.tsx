@@ -119,13 +119,17 @@ export default function GetQuoteForm() {
     if (baseAmount > 0) handleSubmit(debouncedRequest)();
   }, [baseAmount, debouncedRequest, handleSubmit]);
 
-  const onChangeOperationType = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
-    const depositCurrencyItms = value === 'deposit' ? sendCurrency : depositCurrency;
-    const sendCurrencyItms = value === 'deposit' ? depositCurrency : sendCurrency;
-    setValue('baseCurrency', depositCurrencyItms[0].value);
-    setValue('quoteCurrency', sendCurrencyItms[0].value);
-  };
+  const onChangeOperationType = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      const { value } = event.target;
+      const depositCurrencyItms = value === 'deposit' ? sendCurrency : depositCurrency;
+      const sendCurrencyItms = value === 'deposit' ? depositCurrency : sendCurrency;
+      setValue('baseCurrency', depositCurrencyItms[0].value);
+      setValue('quoteCurrency', sendCurrencyItms[0].value);
+      if (baseAmount > 0) handleSubmit(debouncedRequest)();
+    },
+    [baseAmount, debouncedRequest, handleSubmit, setValue],
+  );
 
   const onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.value = event.target.value.replace(/[^0-9.]/g, '');
