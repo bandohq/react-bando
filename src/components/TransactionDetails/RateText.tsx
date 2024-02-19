@@ -22,7 +22,7 @@ export default function RateText({ operationType, transaction, rate = 0 }: RateT
   if (operationType === 'deposit') {
     return (
       <>
-        1 {transaction?.quoteCurrency} ≈ <Amount variant="body2">$ {formatNumber(rate)}</Amount>{' '}
+        1 {transaction?.quoteCurrency} ≈ <Amount variant="body2">${formatNumber(rate)}</Amount>{' '}
         {transaction?.baseCurrency}
       </>
     );
