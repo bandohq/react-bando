@@ -224,6 +224,7 @@ describe('GetQuoteForm', () => {
 
   it('should handle an error when backend fails', async () => {
     (axios.post as jest.Mock).mockRejectedValue({});
+
     render(<GetQuoteForm />, { wrapper });
 
     const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
@@ -249,6 +250,30 @@ describe('GetQuoteForm', () => {
 
     await waitFor(() => {
       expect(quoteAmountInput.value).toBe('58.47');
+    });
+  });
+
+  it('should cround quote amount to two decimals', async () => {
+    (axios.post as jest.Mock).mockResolvedValue({
+      data: {
+        id: 46,
+        base_currency: 'MXN',
+        base_amount: '500000.00',
+        quote_currency: 'USDC',
+        quote_amount: '29056.901316254385',
+        is_expired: false,
+        expires_at: '2024-01-10T23:06:08.388000Z',
+      },
+    });
+
+    render(<GetQuoteForm />, { wrapper });
+
+    const baseAmountInput = screen.getByLabelText('baseAmount') as HTMLInputElement;
+    const quoteAmountInput = screen.getByLabelText('quoteAmount') as HTMLInputElement;
+    await userEvent.type(baseAmountInput, '500000.00');
+
+    await waitFor(() => {
+      expect(quoteAmountInput.value).toBe('29,056.90');
     });
   });
 });
