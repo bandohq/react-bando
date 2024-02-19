@@ -11,6 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import ErrorBox from '@components/forms/ErrorBox';
+import TransactionDetail from '@components/TransactionDetails';
 
 import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
@@ -19,7 +20,6 @@ import getStorageQuote, { deleteStorageQuote } from '@helpers/getStorageQuote';
 
 import { checkNumberLength, allowOnlyNumbers } from '@helpers/inputs';
 import { Quote } from '@hooks/useQuote/requests';
-import TransactionDetail from '@components/TransactionDetails';
 import { Transaction } from '@hooks/useTransaction/requests';
 
 type RampFormProps = {
