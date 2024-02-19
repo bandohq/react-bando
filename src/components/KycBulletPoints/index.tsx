@@ -1,21 +1,8 @@
 import Typography from '@mui/material/Typography';
 
-import KycBg from '../../assets/kycBg.svg';
 import CheckGreen from '../../assets/CheckGreen.svg';
 import { styled } from '@mui/material/styles';
-
-const KycBgImg = styled('img')(() => ({
-  position: 'absolute',
-  width: '601px',
-  maxWidth: '100%',
-  height: 'auto',
-  margin: '0 auto',
-  bottom: '35%',
-  left: '50%',
-  right: '50%',
-  transform: 'translate(-50%)',
-  zIndex: 200,
-}));
+import SimpleFooter from '../SimpleFooter';
 
 const Container = styled('div')(() => ({
   width: '100%',
@@ -29,7 +16,7 @@ const Container = styled('div')(() => ({
 const BulletContainer = styled('div')(({ theme }) => ({
   maxWidth: '480px',
   width: '100%',
-  margin: 'auto auto 5% auto',
+  margin: 'auto',
   padding: theme.spacing(3, 0),
 }));
 
@@ -57,7 +44,6 @@ const BulletList = styled('ul')(({ theme }) => ({
 export default function KycBulletPoints() {
   return (
     <Container>
-      <KycBgImg src={KycBg} />
       <BulletContainer>
         <Title variant="h6">
           La forma más fácil y segura de enviar y recibir cripto a cualquier wallet.{' '}
@@ -70,6 +56,7 @@ export default function KycBulletPoints() {
           <li>Sin gas fees</li>
         </BulletList>
       </BulletContainer>
+      <SimpleFooter bgColor="transparent" textColor="ink.i500" />
     </Container>
   );
 }
