@@ -17,7 +17,7 @@ import useMagicLinkAuth from '@hooks/useMagicLinkAuth';
 import useUser from '@hooks/useUser';
 
 export const Title = styled(Typography)(({ theme }) => ({
-  fontSize: '32px !important',
+  fontSize: '25px !important',
   fontFamily: 'Kanit',
   fontWeight: 700,
   color: theme.palette.ink.i600,
@@ -56,7 +56,7 @@ export default function SignIn() {
     <ColumnLayout
       leftContent={
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Title variant="h3">Verifica tus datos</Title>
+          <Title variant="h3">Verifica tu correo</Title>
           <MuiInput
             label="Email"
             type="email"
