@@ -14,6 +14,7 @@ export default function TransactionDetail() {
         sx={{ margin: '0 auto' }}
         transaction={transaction as unknown as Transaction}
         title="Resúmen"
+        showStatusBadge
         noArrow
         success
       />
