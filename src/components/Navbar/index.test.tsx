@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, BrowserRouter } from 'react-router-dom';
 
 import Navbar from '.';
 import { PropsWithChildren } from 'react';
@@ -10,7 +10,9 @@ jest.mock('react-router-dom', () => ({
 }));
 
 const Container = ({ children }: PropsWithChildren) => (
-  <div style={{ width: '1500px', height: '2000px' }}>{children}</div>
+  <BrowserRouter>
+    <div style={{ width: '1500px', height: '2000px' }}>{children}</div>
+  </BrowserRouter>
 );
 
 describe('Navbar', () => {

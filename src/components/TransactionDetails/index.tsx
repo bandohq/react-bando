@@ -4,17 +4,20 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 
 import { PropsWithChildren } from 'react';
-import { Transaction } from '@hooks/useTransaction/requests';
+import { Transaction, OperationType } from '@hooks/useTransaction/requests';
 import { SxProps, styled } from '@mui/material/styles';
 import { networkImg } from '@config/constants/currencies';
 
 import RampTitle, { CircularButton as ArrowButton } from '@components/forms/RampForm/RampTitle';
+import RateText from './RateText';
 import CurrencyPill from '@components/forms/RampForm/CurrencyPill';
-import ArrowDown from '../../assets/ArrowDown.svg';
 import Hr from '@components/Hr';
 import TransactionCopyText, { DetailText } from './TransactionCopyText';
 import StatusCircle from '@components/StatusCircle';
+import ArrowDown from '../../assets/ArrowDown.svg';
+
 import formatNumber from '@helpers/formatNumber';
+import mapProviderStatus from './mapProviderStatus';
 
 export type TransactionDetailProps = PropsWithChildren & {
   success: boolean;
@@ -27,20 +30,13 @@ export type TransactionDetailProps = PropsWithChildren & {
   network?: string;
   title?: string;
   sx?: SxProps;
-  operationType?: string;
+  operationType?: OperationType;
 };
 
 const Rate = styled(Typography)(({ theme }) => ({
   fontSize: `${theme.typography.pxToRem(28)} !important`,
   fontWeight: '500',
   textAlign: 'right',
-}));
-
-const Amount = styled(Typography)(({ theme }) => ({
-  fontSize: theme.typography.pxToRem(14),
-  fontWeight: 'normal',
-  color: theme.palette.ink.i500,
-  textAlign: 'left',
 }));
 
 const GridRow = styled(Grid)(() => ({
@@ -98,18 +94,8 @@ export default function TransactionDetail({
     : `Deposita tu ${transaction?.baseCurrency} a esta dirección en
   ${transaction?.cashinDetails?.network}:`;
   const rate = operationType === 'deposit' ? quoteRateInverse : quoteRate;
-  const rateText =
-    operationType === 'deposit'
-      ? `1 ${transaction?.quoteCurrency} ≈ ${(
-          <Amount variant="body2">$ {formatNumber(rate)}</Amount>
-        )} ${transaction?.baseCurrency}`
-      : `1 ${transaction?.baseCurrency} ≈ ${(
-          <Amount variant="body2">$ {formatNumber(rate)}</Amount>
-        )} ${transaction?.quoteCurrency}`;
 
-  const showBadge = ['CASH_IN_REQUESTED', 'CASH_IN_PROCESSING'].includes(
-    transaction?.providerStatus ?? '',
-  );
+  const providerStatus = mapProviderStatus(transaction?.providerStatus ?? '');
 
   return (
     <DetailContainer sx={{ width: '100%', maxWidth: '600px', height: 'fit-content', ...sx }}>
@@ -120,9 +106,10 @@ export default function TransactionDetail({
           title={title}
           leftContent={
             showStatusBadge &&
-            showBadge && (
+            providerStatus.text && (
               <StatusBadge variant="body2">
-                Esperando depósito <StatusCircle className="pending" />
+                {providerStatus.text}{' '}
+                {providerStatus.color && <StatusCircle className={providerStatus.color} />}
               </StatusBadge>
             )
           }
@@ -160,7 +147,17 @@ export default function TransactionDetail({
         </Grid>
         {!!rate && (
           <GridRow xs={12}>
-            <Network variant="body2">{rateText}</Network>
+            <Network
+              variant="body2"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <RateText operationType={operationType} transaction={transaction} rate={rate} />
+            </Network>
           </GridRow>
         )}
         {!!networkName && (

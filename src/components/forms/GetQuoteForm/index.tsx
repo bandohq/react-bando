@@ -62,6 +62,7 @@ export default function GetQuoteForm() {
     operationType === 'deposit'
       ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
       : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
+
   const debouncedRequest = useCallback(
     (formValues: GetQuoteFormValues) =>
       getQuote({

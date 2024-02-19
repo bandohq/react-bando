@@ -95,7 +95,7 @@ describe('RampForm', () => {
       screen.getByText('USDC');
       screen.getByText('$ 1,000.00');
       screen.getByText('$ 57.55');
-      screen.getByText('$ 17.38');
+      screen.getByText(/17.38/i);
     });
   });
 
