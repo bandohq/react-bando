@@ -9,18 +9,20 @@ type RateTextProps = {
   rate: number;
 };
 
-const Amount = styled(Typography)(({ theme }) => ({
+export const Amount = styled(Typography)(({ theme }) => ({
   fontSize: theme.typography.pxToRem(14),
   fontWeight: 'normal',
+  lineHeight: 'normal',
   color: theme.palette.ink.i500,
   textAlign: 'left',
+  margin: '0 6px',
 }));
 
 export default function RateText({ operationType, transaction, rate = 0 }: RateTextProps) {
   if (operationType === 'deposit') {
     return (
       <>
-        1 {transaction?.quoteCurrency} ≈ <Amount variant="body2">$ {formatNumber(rate)}</Amount>
+        1 {transaction?.quoteCurrency} ≈ <Amount variant="body2">$ {formatNumber(rate)}</Amount>{' '}
         {transaction?.baseCurrency}
       </>
     );

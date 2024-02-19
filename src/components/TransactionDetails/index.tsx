@@ -147,7 +147,15 @@ export default function TransactionDetail({
         </Grid>
         {!!rate && (
           <GridRow xs={12}>
-            <Network variant="body2">
+            <Network
+              variant="body2"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               <RateText operationType={operationType} transaction={transaction} rate={rate} />
             </Network>
           </GridRow>
