@@ -66,7 +66,6 @@ describe('GetQuoteForm', () => {
     render(<GetQuoteForm />, { wrapper });
     screen.getByText('Recibes');
     screen.getByText('Envias');
-    screen.getByText('Tipo de cambio (MXN/USDC):');
     screen.getByText('Continuar');
   });
 

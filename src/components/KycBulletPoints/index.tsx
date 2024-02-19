@@ -1,6 +1,5 @@
 import Typography from '@mui/material/Typography';
 
-import CheckGreen from '../../assets/CheckGreen.svg';
 import { styled } from '@mui/material/styles';
 import SimpleFooter from '../SimpleFooter';
 
@@ -35,7 +34,7 @@ const BulletList = styled('ul')(({ theme }) => ({
   fontSize: `${theme.typography.pxToRem(14)} !important`,
   paddingTop: theme.spacing(2),
   '& li': {
-    listStyleImage: `url(${CheckGreen})`,
+    listStyleImage: 'url(/images/CheckGreen.svg)',
     padding: theme.spacing(1, 0),
     paddingLeft: theme.spacing(1),
   },
