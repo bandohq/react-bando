@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { useNavigate } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { useNavigate, BrowserRouter } from 'react-router-dom';
 
 import Navbar from '.';
 import { PropsWithChildren } from 'react';
