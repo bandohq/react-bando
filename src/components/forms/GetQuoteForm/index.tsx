@@ -211,7 +211,7 @@ export default function GetQuoteForm() {
           <Grid md={8} sm={6} xs={7}>
             <Input
               label="Recibes"
-              type="number"
+              type="text"
               name="quoteAmount"
               value={formatNumber(data?.quoteAmount ?? 0)}
               helpText={
