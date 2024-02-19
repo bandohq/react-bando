@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import CaretGreen from '../../assets/CaretGreen.svg';
 import LogoutIcon from '@components/Svgs/Logout';
 
@@ -12,6 +12,7 @@ export default function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { user, logoutUser: logout, isLoginOut } = useUser();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const logoutUser = async () => {
@@ -32,17 +33,19 @@ export default function UserMenu() {
   };
 
   if (!user?.email)
-    return (
-      <Box>
-        <Button
-          id="login-button"
-          onClick={handleLoginClick}
-          sx={{ textTransform: 'none', fontWeight: 700, display: 'flex', gap: 1 }}
-        >
-          Iniciar Sesión
-        </Button>
-      </Box>
-    );
+    if (pathname === '/signin') return null;
+    else
+      return (
+        <Box>
+          <Button
+            id="login-button"
+            onClick={handleLoginClick}
+            sx={{ textTransform: 'none', fontWeight: 700, display: 'flex', gap: 1 }}
+          >
+            Iniciar Sesión
+          </Button>
+        </Box>
+      );
   return (
     <Box>
       <Button
