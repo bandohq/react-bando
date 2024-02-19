@@ -1,6 +1,7 @@
 import Box, { BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import { useTranslation, Trans } from 'react-i18next';
 
 const H1 = styled(Typography)(({ theme }) => ({
   fontFamily: 'Bueno',
@@ -117,12 +118,13 @@ const JumbotronContainer = styled(GridBox)(({ theme }) => ({
 }));
 
 export default function Jumbotron() {
+  const { t } = useTranslation('landing');
+
   return (
     <JumbotronContainer>
-      <H1 variant="h1">Intercambia entre MXN y cripto en un SPEI</H1>
+      <H1 variant="h1">{t('mainTitle')}</H1>
       <P>
-        Con Bando entra y sal del mundo cripto en segundos con SPEI. <br /> Puedes depositar o
-        retirar a tu wallet en las redes de Ethereum, Arbitrum, Optimism y muchas más.{' '}
+        <Trans t={t} i18nKey="subtitle" components={{ separator: <br /> }} />
       </P>
       <img src="images/Model-Tank.png" loading="lazy" alt="" className="tank" />
       <img src="images/Model-Cone.png" loading="lazy" alt="" className="cone" />

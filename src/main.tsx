@@ -10,6 +10,7 @@ import theme from '@config/theme.ts';
 
 import '@config/axios';
 import '@config/sentry';
+import './translations';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
