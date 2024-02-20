@@ -4,8 +4,9 @@ import Navbar from '@components/Navbar';
 import { styled } from '@mui/material/styles';
 
 import Jumbotron, { GridBox } from '@components/Jumbotron';
-import { PropsWithChildren } from 'react';
 import Footer from '@components/Footer';
+import { PropsWithChildren } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 
 const Container = styled('section')(({ theme }) => ({
   flexGrow: 1,
@@ -27,6 +28,8 @@ const Container = styled('section')(({ theme }) => ({
 }));
 
 export default function LandingLayout({ children }: Readonly<PropsWithChildren>) {
+  const { t } = useTranslation('landing');
+
   return (
     <div className="App">
       <Navbar />
@@ -55,11 +58,8 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
         <section className="section hidden">
           <div className="w-layout-blockcontainer container-7 w-container">
             <div className="div-block horizontal">
-              <h1 className="heading-2">Controla tus criptos y explora con seguridad</h1>
-              <p className="paragraph-4 hidden">
-                Bando es tu puerta a cripto como debe ser: tus llaves, tus tokens, con bajos costos
-                de transacción y con la conexión a DeFi que buscas.
-              </p>
+              <h1 className="heading-2">{t('section1.title')}</h1>
+              <p className="paragraph-4 hidden">{t('section1.info')}</p>
             </div>
           </div>
         </section>
@@ -68,13 +68,9 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
             <div className="div-block horizontal">
               <div className="div-block-2">
                 <h1 className="h3">
-                  Deposita con pesos, <br />
-                  obtén cripto
+                  <Trans t={t} i18nKey="section2.title" components={{ separator: <br /> }} />
                 </h1>
-                <p className="paragraph-5">
-                  Deposita con pesos o tu moneda local, y obtén criptomonedas directamente en tu
-                  wallet preferida o en tu cuenta inteligente Bando.
-                </p>
+                <p className="paragraph-5">{t('section2.info')}</p>
               </div>
               <div className="div-block-3 spacing">
                 <img src="images/Model-Sphere.png" loading="lazy" alt="" className="image-68" />
@@ -88,10 +84,8 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
           <div className="w-layout-blockcontainer container-6 w-container">
             <div className="div-block horizontal">
               <div className="div-block-2">
-                <h1 className="h3">Pon a trabajar tus criptos por ti</h1>
-                <p className="paragraph-5">
-                  Obtén los rendimientos que esta industria tiene disponibles hoy
-                </p>
+                <h1 className="h3">{t('section3.title')}</h1>
+                <p className="paragraph-5">{t('section3.info')}</p>
                 <h4 style={{ color: 'var(--40b494)', fontWeight: 'bold' }}>¡Muy Pronto!</h4>
               </div>
               <div className="div-block-3">
@@ -99,9 +93,15 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
                   <div className="frame-12743">
                     <div className="frame-12742">
                       <div className="text-3">
-                        <span style={{ textTransform: 'lowercase', fontSize: '22px' }}>st</span>ETH
+                        <Trans
+                          t={t}
+                          i18nKey="coins.eth.title"
+                          components={{
+                            span: <span style={{ textTransform: 'lowercase', fontSize: '22px' }} />,
+                          }}
+                        />
                       </div>
-                      <div className="text-4">3.6%</div>
+                      <div className="text-4">{t('coins.eth.amount')}</div>
                     </div>
                     <img
                       src="images/steth-steth-logo.png"
@@ -114,8 +114,8 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
                   </div>
                   <div className="frame-12743">
                     <div className="frame-12742">
-                      <div className="text-3">USDM</div>
-                      <div className="text-4">5%</div>
+                      <div className="text-3">{t('coins.usdm.title')}</div>
+                      <div className="text-4">{t('coins.usdm.amount')}</div>
                     </div>
                     <img
                       src="images/USDM.png"
@@ -135,12 +135,9 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
           <div className="w-layout-blockcontainer container-5 w-container">
             <div className="div-block horizontal">
               <div className="div-block-2 centered">
-                <h1 className="h3">Accede a más de 800 criptomonedas</h1>
-                <p className="paragraph-5">
-                  Adquiere Ether, USDC y todas las criptos disponibles en el ecosistema con los
-                  mejores precios de la industria
-                </p>
-                <h4 style={{ color: 'var(--40b494)', fontWeight: 'bold' }}>¡Muy Pronto!</h4>
+                <h1 className="h3">{t('section4.title')}</h1>
+                <p className="paragraph-5">{t('section4.info')}</p>
+                <h4 style={{ color: 'var(--40b494)', fontWeight: 'bold' }}>{t('section4.cta')}</h4>
                 <div className="frame-12739">
                   <img
                     src="images/Ellipse-2070.png"
@@ -209,18 +206,14 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               className="vectors-wrapper-3"
             />
             <div className="como-funciona">
-              <div className="text-8">Muy Pronto</div>
+              <div className="text-8">{t('section5.title')}</div>
             </div>
             <div className="c-mo-hacerlo">
               <div className="punto-1">
                 <div className="wallet">
-                  <div className="title no-margin">
-                    1. Cuenta inteligente de custodia propia sin riesgo a perder acceso a tus
-                    activos
-                  </div>
+                  <div className="title no-margin">{t('section5.list.point1.title')}</div>
                   <div className="error-c53ab069-2c51-c73c-3405-774b31ae58bf">
-                    Si pierdes acceso a tu cuenta, Bando te ayudará a obtenerlo de nuevo gracias a
-                    nuestra tecnología, Bando NUNCA tiene control de tu cuenta o de tus activos
+                    {t('section5.list.point1.info')}
                   </div>
                   <img
                     src="images/Safe.png"
@@ -233,12 +226,9 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               </div>
               <div className="punto-1">
                 <div className="wallet">
-                  <div className="title no-margin">
-                    2. Transacciona con las comisiones más baratas
-                  </div>
+                  <div className="title no-margin">{t('section5.list.point2.title')}</div>
                   <div className="error-c53ab069-2c51-c73c-3405-774b31ae58bf">
-                    Integración directa con capas 2 para que tengas la más alta velocidad en tus
-                    transacciones, al menor costo
+                    {t('section5.list.point2.info')}
                   </div>
                   <div className="frame-12747">
                     <img
@@ -277,12 +267,9 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               <img src="images/Model-Cone.png" loading="lazy" alt="" className="image-70" />
               <div className="punto-1">
                 <div className="wallet">
-                  <div className="title no-margin">
-                    3. Accede a las mejores oportunidades en cripto
-                  </div>
+                  <div className="title no-margin">{t('section5.list.point3.title')}</div>
                   <div className="error-c53ab069-2c51-c73c-3405-774b31ae58bf">
-                    Conexión directa con los mejores protocolos descentralizados para que compres,
-                    vendas, pidas préstamos y pongas a tus activos a trabajar
+                    {t('section5.list.point3.info')}
                   </div>
                   <div className="frame-12747">
                     <img
