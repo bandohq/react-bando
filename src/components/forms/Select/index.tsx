@@ -2,7 +2,12 @@ import SelectBase, { SelectProps as SelectBaseProps } from '@mui/material/Select
 import { ForwardedRef, ReactNode, forwardRef } from 'react';
 import { styled } from '@mui/material/styles';
 
-import { TextFieldInput, InputLabel, FormControl, HelpText } from '@components/forms/Input';
+import {
+  TextFieldInput,
+  InputLabel as InputLabelBase,
+  FormControl,
+  HelpText,
+} from '@components/forms/Input';
 import MenuItemBase from '@mui/material/MenuItem';
 import CaretDown from '../../../assets/CaretDown.svg';
 
@@ -23,7 +28,15 @@ export const MenuItem = styled(MenuItemBase)(() => ({
   padding: '16px',
 }));
 
-export const CaretImg = styled('img')(({ theme }) => ({
+export const InputLabel = styled(InputLabelBase)(({ theme }) => ({
+  '& .hide-label': {
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
+  },
+}));
+
+export const CaretImg = styled('img')(() => ({
   userSelect: 'none',
   width: '18px',
   height: '10px',
@@ -35,19 +48,17 @@ export const CaretImg = styled('img')(({ theme }) => ({
   pointerEvents: 'none',
   color: 'rgba(0, 0, 0, 0.54)',
   flexShrink: 0,
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-  },
 }));
 
 const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
   const { label, helpText = '', mantainLabel = true, items, ...props } = selectProps;
   const labelText = props.id ?? props.name;
+  const labelClass = !label && mantainLabel ? 'hide-label' : '';
 
   return (
     <FormControl variant="standard">
       {(!!label || mantainLabel) && (
-        <InputLabel shrink htmlFor={props.id} id={labelText}>
+        <InputLabel shrink htmlFor={props.id} id={labelText} className={labelClass}>
           {label}
         </InputLabel>
       )}
