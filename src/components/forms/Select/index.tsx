@@ -65,7 +65,7 @@ const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelec
             aria-label={item.label}
           >
             {item.startComponent}
-            <span className="currencySelectLabel">{item.label}</span>
+            {item.label}
           </MenuItem>
         ))}
       </SelectBase>
