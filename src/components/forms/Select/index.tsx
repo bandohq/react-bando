@@ -64,8 +64,10 @@ const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelec
             value={item.value}
             aria-label={item.label}
           >
+          <>
             {item.startComponent}
             {item.label}
+          </>
           </MenuItem>
         ))}
       </SelectBase>
