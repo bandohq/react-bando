@@ -23,7 +23,7 @@ export const MenuItem = styled(MenuItemBase)(() => ({
   padding: '16px',
 }));
 
-export const CaretImg = styled('img')(() => ({
+export const CaretImg = styled('img')(({ theme }) => ({
   userSelect: 'none',
   width: '18px',
   height: '10px',
@@ -35,6 +35,9 @@ export const CaretImg = styled('img')(() => ({
   pointerEvents: 'none',
   color: 'rgba(0, 0, 0, 0.54)',
   flexShrink: 0,
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
 }));
 
 const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
@@ -61,11 +64,8 @@ const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelec
             value={item.value}
             aria-label={item.label}
           >
-            <>
-              {item.startComponent}
-              {item.label}
-              {item.endComponent}
-            </>
+            {item.startComponent}
+            <span className="currencySelectLabel">{item.label}</span>
           </MenuItem>
         ))}
       </SelectBase>

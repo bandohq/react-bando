@@ -43,7 +43,11 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
             >
               <Jumbotron />
             </Grid>
-            <Grid md={5} xs={12}>
+            <Grid
+              md={5}
+              xs={12}
+              sx={{ marginTop: { xs: '55px', md: 'auto' }, padding: { xs: '15px' } }}
+            >
               <GridBox>{children}</GridBox>
             </Grid>
           </Grid>
