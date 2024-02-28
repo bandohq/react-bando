@@ -191,7 +191,7 @@ export default function GetQuoteForm() {
             />
           </Grid>
 
-          <Grid md={8} sm={6} xs={7}>
+          <Grid md={8} sm={6} xs={12}>
             <Input
               label="Envias"
               type="text"
@@ -200,7 +200,7 @@ export default function GetQuoteForm() {
               error={!!formState.errors.baseAmount?.message}
             />
           </Grid>
-          <Grid md={4} sm={6} xs={5}>
+          <Grid md={4} sm={6} xs={12}>
             <Select
               items={depositCurrencyItems}
               value={baseCurrency}
@@ -208,7 +208,7 @@ export default function GetQuoteForm() {
               error={!!formState.errors.baseCurrency?.message}
             />
           </Grid>
-          <Grid md={8} sm={6} xs={7}>
+          <Grid md={8} sm={6} xs={12}>
             <Input
               label="Recibes"
               type="text"
@@ -230,7 +230,7 @@ export default function GetQuoteForm() {
               disabled
             />
           </Grid>
-          <Grid md={4} sm={6} xs={5}>
+          <Grid md={4} sm={6} xs={12}>
             <Select
               items={sendCurrencyItems}
               value={quoteCurrency}
