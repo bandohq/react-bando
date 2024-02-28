@@ -11,12 +11,12 @@ import LogoutIcon from '@components/Svgs/Logout';
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { user, logoutUser: logout, isLoginOut } = useUser();
+  const { user, removeSessionStorage, isLoginOut } = useUser();
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const logoutUser = async () => {
-    await logout();
+    await removeSessionStorage();
     navigate('/');
   };
 

@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useState,
+  useMemo,
 } from 'react';
 import useMagic from '@hooks/useMagic';
 
@@ -48,16 +49,6 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
   const [dataLoaded, setDataLoaded] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const logoutUser = async () => {
-    try {
-      magic?.user.isLoggedIn().then(async (isLoggedIn) => {
-        if (isLoggedIn) await magic?.user?.logout();
-      });
-    } catch {
-      //
-    }
-  };
-
   const setUserData = useCallback(
     (userData: Partial<User>) => {
       return setUser((prevUser) => ({ ...prevUser, ...userData }));
@@ -65,7 +56,17 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
     [setUser],
   );
 
-  const resetUser = () => setUser({});
+  const resetUser = useCallback(() => setUser(null), [setUser]);
+
+  const logoutUser = useCallback(async () => {
+    try {
+      magic?.user.isLoggedIn().then(async (isLoggedIn) => {
+        if (isLoggedIn) await magic?.user?.logout();
+      });
+    } catch {
+      //
+    }
+  }, [magic]);
 
   const fetchUser = useCallback(async () => {
     if (magic) {
@@ -82,23 +83,22 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     fetchUser();
-  }, [fetchUser, magic]);
+  }, [fetchUser]);
 
-  return (
-    <UserContext.Provider
-      value={{
-        user,
-        fetchUser,
-        logoutUser,
-        isLoading,
-        dataLoaded,
-        setUser: setUserData,
-        resetUser,
-      }}
-    >
-      {children}
-    </UserContext.Provider>
+  const contextValue = useMemo(
+    () => ({
+      user,
+      fetchUser,
+      logoutUser,
+      isLoading,
+      dataLoaded,
+      setUser: setUserData,
+      resetUser,
+    }),
+    [user, fetchUser, logoutUser, isLoading, dataLoaded, setUserData, resetUser],
   );
+
+  return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components

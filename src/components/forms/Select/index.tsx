@@ -2,7 +2,12 @@ import SelectBase, { SelectProps as SelectBaseProps } from '@mui/material/Select
 import { ForwardedRef, ReactNode, forwardRef } from 'react';
 import { styled } from '@mui/material/styles';
 
-import { TextFieldInput, InputLabel, FormControl, HelpText } from '@components/forms/Input';
+import {
+  TextFieldInput,
+  InputLabel,
+  FormControl as FormControlBase,
+  HelpText,
+} from '@components/forms/Input';
 import MenuItemBase from '@mui/material/MenuItem';
 import CaretDown from '../../../assets/CaretDown.svg';
 
@@ -14,6 +19,7 @@ export type CustomSelectProps = {
     value: string | number;
     startComponent?: ReactNode;
     endComponent?: ReactNode;
+    disabled?: boolean;
   }[];
 };
 export type SelectProps = SelectBaseProps & CustomSelectProps;
@@ -21,6 +27,22 @@ export type SelectProps = SelectBaseProps & CustomSelectProps;
 export const MenuItem = styled(MenuItemBase)(() => ({
   fontSize: '16px !important',
   padding: '16px',
+}));
+
+export const FormControl = styled(FormControlBase)(({ theme }) => ({
+  '&.hide-label': {
+    '& label': {
+      [theme.breakpoints.down('sm')]: {
+        width: 0,
+        height: 0,
+      },
+    },
+    '& .MuiInputBase-root': {
+      [theme.breakpoints.down('sm')]: {
+        marginTop: 0,
+      },
+    },
+  },
 }));
 
 export const CaretImg = styled('img')(() => ({
@@ -40,9 +62,10 @@ export const CaretImg = styled('img')(() => ({
 const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
   const { label, helpText = '', mantainLabel = true, items, ...props } = selectProps;
   const labelText = props.id ?? props.name;
+  const hideLabelClass = !label && mantainLabel ? 'hide-label' : '';
 
   return (
-    <FormControl variant="standard">
+    <FormControl variant="standard" className={hideLabelClass}>
       {(!!label || mantainLabel) && (
         <InputLabel shrink htmlFor={props.id} id={labelText}>
           {label}
@@ -60,11 +83,11 @@ const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelec
             key={`select-menuItem-${item.label}-${item.value}`}
             value={item.value}
             aria-label={item.label}
+            disabled={item.disabled}
           >
             <>
               {item.startComponent}
               {item.label}
-              {item.endComponent}
             </>
           </MenuItem>
         ))}

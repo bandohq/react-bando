@@ -8,7 +8,14 @@ import { getUserData } from './requests';
 import endpoints from '@config/endpoints';
 
 export default function useUser() {
-  const { user, isLoading: isMagicLoading, logoutUser, setUser, resetUser } = useMagicUser();
+  const {
+    user,
+    isLoading: isMagicLoading,
+    logoutUser,
+    setUser,
+    resetUser,
+    fetchUser: fetchMagicUser,
+  } = useMagicUser();
   const [isLoginOut, setIsLoginOut] = useState<boolean>(false);
   const { mutate } = useSWRConfig();
   const { data, isLoading: isUserLoading } = useSWR(endpoints.userKyc, getUserData, {
@@ -19,10 +26,14 @@ export default function useUser() {
   const isLoading = useMemo(() => isMagicLoading || isUserLoading, [isMagicLoading, isUserLoading]);
   const isUnauthorized = useMemo(() => !isLoading && !data, [isLoading, data]);
 
-  const removeSessionStorage = useCallback(async () => {
+  const refetchUser = useCallback(() => {
+    mutate(endpoints.userKyc);
+  }, []);
+
+  const removeSessionStorage = async () => {
     setIsLoginOut(true);
     try {
-      await removeSessionStorage();
+      await logoutUser();
       localStorage.removeItem(env.rampDataLocalStorage);
       Cookies.remove(env.authCookieName);
       resetUser();
@@ -31,17 +42,20 @@ export default function useUser() {
     } finally {
       setIsLoginOut(false);
     }
-  }, [resetUser]);
-
-  const refetchUser = () => mutate(endpoints.userKyc);
+  };
 
   useEffect(() => {
-    const rsp = (typeof data === 'object' ? data : {}) as unknown as User;
-    setUser(rsp);
+    if (data?.email) {
+      const rsp = (typeof data === 'object' ? data : {}) as unknown as User;
+      setUser(rsp);
+    }
   }, [data, setUser]);
 
   return {
     user,
+    setUser,
+    resetUser,
+    fetchMagicUser,
     isLoginOut,
     logoutUser,
     removeSessionStorage,
