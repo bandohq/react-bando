@@ -42,7 +42,6 @@ export default function SignIn() {
     try {
       const rsp = await login(data);
       await fetchMagicUser();
-      // refetchUser()
       await Promise.all([refetchUser(), fetchMagicUser()]);
       if ((rsp?.kycLevel ?? 0) > 0) {
         if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp');
