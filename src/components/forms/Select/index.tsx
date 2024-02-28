@@ -19,6 +19,7 @@ export type CustomSelectProps = {
     value: string | number;
     startComponent?: ReactNode;
     endComponent?: ReactNode;
+    disabled?: boolean;
   }[];
 };
 export type SelectProps = SelectBaseProps & CustomSelectProps;
@@ -32,7 +33,8 @@ export const FormControl = styled(FormControlBase)(({ theme }) => ({
   '&.hide-label': {
     '& label': {
       [theme.breakpoints.down('sm')]: {
-        display: 'none',
+        width: 0,
+        height: 0,
       },
     },
     '& .MuiInputBase-root': {
@@ -81,6 +83,7 @@ const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelec
             key={`select-menuItem-${item.label}-${item.value}`}
             value={item.value}
             aria-label={item.label}
+            disabled={item.disabled}
           >
             <>
               {item.startComponent}

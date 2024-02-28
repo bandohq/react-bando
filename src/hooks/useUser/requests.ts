@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { User } from '@hooks/useUser/MagicUserProvider';
 
-type GetUserDataRequest = (endpoint: string) => Promise<Partial<User> | string | AxiosResponse>;
+type GetUserDataRequest = (endpoint: string) => Promise<Partial<User>>;
 export const getUserData: GetUserDataRequest = (endpoint) =>
   axios
     .get(endpoint)
@@ -18,6 +18,6 @@ export const getUserData: GetUserDataRequest = (endpoint) =>
       email: data.email,
     }))
     .catch((error) => {
-      if (error.response.data.success) return Promise.resolve('auth valid');
-      throw new Error('auth invalid');
+      if (error.response.data.success) return Promise.resolve({ kycLevel: 0 });
+      return Promise.reject(error);
     });

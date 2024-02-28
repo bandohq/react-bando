@@ -16,11 +16,13 @@ export const sendCurrency = [
     label: 'CO (muy pronto)',
     value: 'CO',
     startComponent: <CurrencyImg src={Currency} />,
+    disabled: true,
   },
   {
     label: 'ARS (muy pronto)',
     value: 'ARS',
     startComponent: <CurrencyImg src={Currency} />,
+    disabled: true,
   },
 ];
 

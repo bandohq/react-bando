@@ -29,7 +29,7 @@ export default function SignIn() {
   const storageQuote = getStorageQuote();
 
   const { login, isMutating } = useMagicLinkAuth();
-  const { refetchUser } = useUser();
+  const { refetchUser, fetchMagicUser } = useUser();
 
   const { register, handleSubmit } = useForm<SignInFormValues>({
     resolver: yupResolver(schema),
@@ -41,7 +41,8 @@ export default function SignIn() {
   const onSubmit = async (data: SignInFormValues) => {
     try {
       const rsp = await login(data);
-      await refetchUser();
+      await fetchMagicUser();
+      await Promise.all([refetchUser(), fetchMagicUser()]);
       if ((rsp?.kycLevel ?? 0) > 0) {
         if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp');
         return navigate('/');
