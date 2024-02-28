@@ -4,8 +4,8 @@ import { styled } from '@mui/material/styles';
 
 import {
   TextFieldInput,
-  InputLabel as InputLabelBase,
-  FormControl,
+  InputLabel,
+  FormControl as FormControlBase,
   HelpText,
 } from '@components/forms/Input';
 import MenuItemBase from '@mui/material/MenuItem';
@@ -28,10 +28,17 @@ export const MenuItem = styled(MenuItemBase)(() => ({
   padding: '16px',
 }));
 
-export const InputLabel = styled(InputLabelBase)(({ theme }) => ({
-  '& .hide-label': {
-    [theme.breakpoints.down('md')]: {
-      display: 'none',
+export const FormControl = styled(FormControlBase)(({ theme }) => ({
+  '&.hide-label': {
+    '& label': {
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
+    },
+    '& .MuiInputBase-root': {
+      [theme.breakpoints.down('sm')]: {
+        marginTop: 0,
+      },
     },
   },
 }));
@@ -53,12 +60,12 @@ export const CaretImg = styled('img')(() => ({
 const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
   const { label, helpText = '', mantainLabel = true, items, ...props } = selectProps;
   const labelText = props.id ?? props.name;
-  const labelClass = !label && mantainLabel ? 'hide-label' : '';
+  const hideLabelClass = !label && mantainLabel ? 'hide-label' : '';
 
   return (
-    <FormControl variant="standard">
+    <FormControl variant="standard" className={hideLabelClass}>
       {(!!label || mantainLabel) && (
-        <InputLabel shrink htmlFor={props.id} id={labelText} className={labelClass}>
+        <InputLabel shrink htmlFor={props.id} id={labelText}>
           {label}
         </InputLabel>
       )}
