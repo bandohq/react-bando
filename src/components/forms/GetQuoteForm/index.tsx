@@ -17,7 +17,7 @@ import Select from '@components/forms/Select';
 import Hr from '@components/Hr';
 
 import Polygon from '../../../assets/polygon.png';
-import Ethereum from '../../../assets/ethereum.png';
+//import Ethereum from '../../../assets/ethereum.png';
 
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
@@ -181,11 +181,12 @@ export default function GetQuoteForm() {
                   value: 'POLYGON',
                   startComponent: <CurrencyImg src={Polygon} />,
                 },
+                /* disabled for now
                 {
                   label: 'Ethereum',
                   value: 'ETHEREUM',
                   startComponent: <CurrencyImg src={Ethereum} />,
-                },
+                },*/
               ]}
               {...register('network')}
             />
