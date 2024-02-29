@@ -202,10 +202,7 @@ export default function TransactionDetail({
                   variant="body2"
                   sx={{ textAlign: 'right' }}
                   ellipse
-                  text={
-                    transaction?.cashinDetails.address ??
-                    'x1ABC7154748D1CE5144478CDEB574AE244B939B5'
-                  }
+                  text={transaction?.cashinDetails.address ?? ''}
                 />
               </GridRow>
             ) : (

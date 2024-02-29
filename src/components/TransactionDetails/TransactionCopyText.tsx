@@ -20,8 +20,6 @@ export const DetailText = styled(Typography)(({ theme }) => {
     '&.ellipse': {
       display: 'inline-block',
       paddingTop: theme.spacing(0.7),
-      // flexGrow: 1,
-      // width: '100px',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
