@@ -95,8 +95,6 @@ export default function TransactionDetail({
   ${transaction?.cashinDetails?.network}:`;
   const rate = operationType === 'deposit' ? quoteRateInverse : quoteRate;
   const isOnRamp = operationType === 'deposit';
-  console.log(isOnRamp);
-  console.log(!networkName);
   const providerStatus = mapProviderStatus(transaction?.providerStatus ?? '');
 
   return (
