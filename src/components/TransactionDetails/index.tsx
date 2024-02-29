@@ -39,11 +39,16 @@ const Rate = styled(Typography)(({ theme }) => ({
   textAlign: 'right',
 }));
 
-const GridRow = styled(Grid)(() => ({
+const GridRow = styled(Grid)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
+  '&.sm-column': {
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
+  },
 }));
 
 const BorderContainer = styled(Grid)(({ theme }) => ({
@@ -189,20 +194,21 @@ export default function TransactionDetail({
           </Grid>
           <BorderContainer container spacing={2}>
             {!transaction?.cashinDetails?.CLABE ? (
-              <GridRow xs={12}>
-                <DetailText variant="body2" sx={{}}>
+              <GridRow xs={12} sx={{ gap: 1 }} className="sm-column">
+                <DetailText variant="body2" sx={{ mr: 'auto' }}>
                   Dirección:
                 </DetailText>
                 <TransactionCopyText
                   variant="body2"
                   sx={{ textAlign: 'right' }}
+                  ellipse
                   text={transaction?.cashinDetails.address ?? ''}
                 />
               </GridRow>
             ) : (
               <>
                 <GridRow xs={12}>
-                  <DetailText variant="body2" sx={{}}>
+                  <DetailText variant="body2" sx={{ mr: 1 }}>
                     Banco:
                   </DetailText>
                   <TransactionCopyText
@@ -212,7 +218,7 @@ export default function TransactionDetail({
                   />
                 </GridRow>
                 <GridRow xs={12}>
-                  <DetailText variant="body2" sx={{}}>
+                  <DetailText variant="body2" sx={{ mr: 1 }}>
                     Nombre:
                   </DetailText>
                   <TransactionCopyText
@@ -222,7 +228,7 @@ export default function TransactionDetail({
                   />
                 </GridRow>
                 <GridRow xs={12}>
-                  <DetailText variant="body2" sx={{}}>
+                  <DetailText variant="body2" sx={{ mr: 1 }}>
                     CLABE:
                   </DetailText>
                   <TransactionCopyText
@@ -232,7 +238,7 @@ export default function TransactionDetail({
                   />
                 </GridRow>
                 <GridRow xs={12}>
-                  <DetailText variant="body2" sx={{}}>
+                  <DetailText variant="body2" sx={{ mr: 1 }}>
                     Concepto:
                   </DetailText>
                   <TransactionCopyText
