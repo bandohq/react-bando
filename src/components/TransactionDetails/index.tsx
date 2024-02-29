@@ -94,7 +94,9 @@ export default function TransactionDetail({
     : `Deposita tu ${transaction?.baseCurrency} a esta dirección en
   ${transaction?.cashinDetails?.network}:`;
   const rate = operationType === 'deposit' ? quoteRateInverse : quoteRate;
-
+  const isOnRamp = operationType === 'deposit';
+  console.log(isOnRamp);
+  console.log(!networkName);
   const providerStatus = mapProviderStatus(transaction?.providerStatus ?? '');
 
   return (
@@ -120,8 +122,22 @@ export default function TransactionDetail({
           <CurrencyPill currency={transaction?.baseCurrency ?? ''} />
         </Grid>
         <Grid md={8} sm={6} xs={5}>
-          <Rate variant="body1">$ {formatNumber(transaction?.baseAmount)}</Rate>
+          <Rate variant="body1">${formatNumber(transaction?.baseAmount)}</Rate>
         </Grid>
+        {!!networkName && !isOnRamp && (
+          <GridRow xs={12}>
+            <Network variant="body2">Red:</Network>
+            <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
+              {networkName?.toLowerCase()}{' '}
+              <img
+                alt="Network"
+                src={networkImg[networkName as keyof typeof networkImg]}
+                width={18}
+                height={18}
+              />
+            </Network>
+          </GridRow>
+        )}
         <Grid xs={12} sx={{ position: 'relative' }}>
           <Hr sx={{ marginBottom: 2 }} />
           <ArrowButton
@@ -142,7 +158,7 @@ export default function TransactionDetail({
         </Grid>
         <Grid md={8} sm={6} xs={5}>
           <Rate variant="body1" sx={{ textWrap: 'wrap' }}>
-            $ {formatNumber(transaction?.quoteAmount)}
+            ${formatNumber(transaction?.quoteAmount)}
           </Rate>
         </Grid>
         {!!rate && (
@@ -160,7 +176,7 @@ export default function TransactionDetail({
             </Network>
           </GridRow>
         )}
-        {!!networkName && (
+        {!!networkName && isOnRamp && (
           <GridRow xs={12}>
             <Network variant="body2">Red:</Network>
             <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
@@ -189,13 +205,11 @@ export default function TransactionDetail({
           </Grid>
           <BorderContainer container spacing={2}>
             {!transaction?.cashinDetails?.CLABE ? (
-              <GridRow xs={12}>
-                <DetailText variant="body2" sx={{}}>
-                  Dirección:
-                </DetailText>
+              <GridRow xs={12} sx={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                <DetailText variant="body2">Dirección:</DetailText>
                 <TransactionCopyText
                   variant="body2"
-                  sx={{ textAlign: 'right' }}
+                  sx={{ textAlign: 'right', fontWeight: '700' }}
                   text={transaction?.cashinDetails.address ?? ''}
                 />
               </GridRow>

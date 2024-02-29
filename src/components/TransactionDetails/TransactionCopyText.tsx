@@ -11,10 +11,25 @@ export const DetailText = styled(Typography)(({ theme }) => ({
   fontSize: theme.typography.pxToRem(14),
   color: theme.palette.ink.i700,
   textAlign: 'left',
-  width: 'fit-content',
   lineHeight: 'normal',
   display: 'flex',
   alignItems: 'center',
+  [theme.breakpoints.down('sm')]: {
+    '& .addressText': {
+      maxWidth: '200px',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+    },
+  },
+  [theme.breakpoints.down('xs')]: {
+    '& .addressText': {
+      maxWidth: '100px',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+    },
+  },
 }));
 
 type TransactionCopyTextProps = ComponentProps<typeof DetailText> & {
@@ -24,7 +39,7 @@ type TransactionCopyTextProps = ComponentProps<typeof DetailText> & {
 export default function TransactionCopyText({ text = '', ...props }: TransactionCopyTextProps) {
   return (
     <DetailText {...props}>
-      {text}
+      <span className="addressText">{text}</span>
       <CopyToClipboard text={text}>
         <CircularButton sx={{ ml: 1 }}>
           <img src={CopyImg} alt="" width={16} height={16} />
