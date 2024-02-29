@@ -28,7 +28,7 @@ export default function useUser() {
 
   const refetchUser = useCallback(() => {
     mutate(endpoints.userKyc);
-  }, []);
+  }, [mutate]);
 
   const removeSessionStorage = async () => {
     setIsLoginOut(true);

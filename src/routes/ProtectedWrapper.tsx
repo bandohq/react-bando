@@ -10,7 +10,7 @@ export default function ProtectedWrapper() {
 
   useEffect(() => {
     if (isUnauthorized) {
-      navigate('/signin', { replace: true });
+      // navigate('/signin', { replace: true });
     }
   }, [isUnauthorized, navigate]);
 
