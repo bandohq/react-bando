@@ -24,6 +24,7 @@
     "D": "^1.0.0",
     "autosuggest-highlight": "^3.3.4",
     "axios": "^1.6.5",
+    "date-fns": "^3.3.1",
     "i18next": "^23.9.0",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
