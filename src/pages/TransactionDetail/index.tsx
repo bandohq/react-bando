@@ -1,5 +1,6 @@
 import CleanLayout from '@layouts/CleanLayout';
 import TransactionDetailComponent from '@components/TransactionDetails';
+
 import useTransaction from '@hooks/useTransaction';
 import { useParams } from 'react-router-dom';
 import { Transaction } from '@hooks/useTransaction/requests';

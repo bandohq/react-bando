@@ -1,3 +1,5 @@
+import { bandoAcademy } from '@config/constants/links';
+
 export default {
   title: 'Preguntas Frecuentes',
   q1: {
@@ -22,7 +24,7 @@ export default {
   },
   q6: {
     title: '¿Dónde puedo aprender sobre criptomonedas desde cero?',
-    info: '¡Bando Academy es tu punto de partida ideal! Ofrecemos un curso completo para principiantes sobre criptomonedas en [Bando Academy](https://academy.bando.cool/)',
+    info: `¡Bando Academy es tu punto de partida ideal! Ofrecemos un curso completo para principiantes sobre criptomonedas en [Bando Academy](${bandoAcademy})`,
     info2:
       'Allí, aprenderás todo lo básico, desde qué son las criptomonedas hasta cómo funcionan y cómo puedes comenzar a operar con ellas.',
   },

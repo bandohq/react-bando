@@ -22,7 +22,7 @@ export type CustomSelectProps = {
     disabled?: boolean;
   }[];
 };
-export type SelectProps = SelectBaseProps & CustomSelectProps;
+export type SelectProps = Partial<SelectBaseProps> & CustomSelectProps;
 
 export const MenuItem = styled(MenuItemBase)(() => ({
   fontSize: '16px !important',
