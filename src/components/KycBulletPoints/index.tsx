@@ -1,4 +1,5 @@
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 
 import { styled } from '@mui/material/styles';
 import SimpleFooter from '../SimpleFooter';
@@ -41,18 +42,18 @@ const BulletList = styled('ul')(({ theme }) => ({
 }));
 
 export default function KycBulletPoints() {
+  const { t } = useTranslation('kycPoints');
+  const points = t('points', { returnObjects: true });
+
   return (
     <Container>
       <BulletContainer>
-        <Title variant="h6">
-          La forma más fácil y segura de enviar y recibir cripto a cualquier wallet.{' '}
-        </Title>
+        <Title variant="h6">{t('title')} </Title>
 
         <BulletList>
-          <li>Deposita con SPEI</li>
-          <li>Recibe directo a tu wallet en segundos</li>
-          <li>Elije recibir ETH, USDC, USDT o más tokens</li>
-          <li>Sin gas fees</li>
+          {points.map((point, idx) => (
+            <li key={`kycPOint-${idx}`}>{point}</li>
+          ))}
         </BulletList>
       </BulletContainer>
       <SimpleFooter bgColor="transparent" textColor="ink.i500" />

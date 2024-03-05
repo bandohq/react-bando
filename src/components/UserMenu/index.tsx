@@ -1,18 +1,23 @@
+import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import useUser from '@hooks/useUser';
+
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+
 import CaretGreen from '../../assets/CaretGreen.svg';
 import LogoutIcon from '@components/Svgs/Logout';
 
 export default function UserMenu() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const { t } = useTranslation('userMenu');
   const { user, removeSessionStorage, isLoginOut } = useUser();
   const { pathname } = useLocation();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
   const logoutUser = async () => {
@@ -42,7 +47,7 @@ export default function UserMenu() {
             onClick={handleLoginClick}
             sx={{ textTransform: 'none', fontWeight: 700, display: 'flex', gap: 1 }}
           >
-            Iniciar Sesión
+            {t('signin')}
           </Button>
         </Box>
       );
@@ -71,7 +76,7 @@ export default function UserMenu() {
         }}
       >
         <MenuItem onClick={logoutUser} sx={{ fontSize: '16px !important', gap: 1 }}>
-          Cerrar Sesión <LogoutIcon strokeWidth={1.5} sx={{ color: 'inherit' }} />
+          {t('signout')} <LogoutIcon strokeWidth={1.5} sx={{ color: 'inherit' }} />
         </MenuItem>
       </Menu>
     </Box>

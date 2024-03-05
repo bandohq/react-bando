@@ -1,4 +1,5 @@
 import { Typography, Container } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type SimpleFooterProps = {
   bgColor?: string;
@@ -6,6 +7,8 @@ type SimpleFooterProps = {
 };
 
 export default function SimpleFooter({ bgColor, textColor }: SimpleFooterProps) {
+  const { t } = useTranslation('footer');
+
   return (
     <Container
       maxWidth={false}
@@ -17,7 +20,7 @@ export default function SimpleFooter({ bgColor, textColor }: SimpleFooterProps) 
       }}
     >
       <Typography variant="body2" sx={{ color: textColor, pt: 6 }} align="center">
-        © {new Date().getFullYear()} Bando. Todos los derechos reservados.
+        {t('disclaimer')}
       </Typography>
     </Container>
   );
