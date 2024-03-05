@@ -8,7 +8,7 @@ import ProtectedRamp from '@pages/ProtectedRamp';
 import ProtectedTransactionDetail from '@pages/ProtectedTransactionDetail';
 import TransactionDetail from '@pages/TransactionDetail';
 import Terms from '@pages/Terms';
-import FAQ from '@pages/FAQ';
+import Faq from '@pages/FAQ';
 
 import ExposedWrapper from './ExposedWrapper';
 import ProtectedWrapper from './ProtectedWrapper';
@@ -19,14 +19,14 @@ const router = createBrowserRouter(
       <Route path="/" element={<ProtectedWrapper />}>
         <Route path="kyc" element={<Kyc />} />
         <Route path="ramp" element={<Ramp />} />
-        <Route path="ramp/:txnId" element={<TransactionDetail />} />
+        <Route path="transactions/:txnId" element={<TransactionDetail />} />
         <Route path="kyc/ramp" element={<ProtectedRamp />} />
-        <Route path="kyc/ramp/:txnId" element={<ProtectedTransactionDetail />} />
+        <Route path="kyc/transactions/:txnId" element={<ProtectedTransactionDetail />} />
       </Route>
       <Route path="/" element={<ExposedWrapper />}>
         <Route index element={<Landing />} />
         <Route path="terms" element={<Terms />} />
-        <Route path="faq" element={<FAQ />} />
+        <Route path="faq" element={<Faq />} />
         <Route path="signin" element={<SignIn />} />
       </Route>
     </>,

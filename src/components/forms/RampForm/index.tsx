@@ -79,7 +79,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
       operationType: formValues?.operationType ?? '',
     });
     deleteStorageQuote();
-    navigate(`/ramp/${txn?.transactionId}`);
+    navigate(`/transaction/${txn?.transactionId}`);
   };
 
   useEffect(() => {
