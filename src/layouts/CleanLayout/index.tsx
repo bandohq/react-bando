@@ -29,7 +29,6 @@ const Container = styled('div')(() => ({
 const ContentContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
-
   width: '100%',
 }));
 
