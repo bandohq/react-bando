@@ -16,6 +16,7 @@ export default function TransactionDetail() {
         transaction={transaction as unknown as Transaction}
         title="Resúmen"
         showStatusBadge
+        showFooter
         noArrow
         success
       />

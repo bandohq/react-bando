@@ -3,11 +3,14 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Button from '@mui/material/Button';
 
 import { PropsWithChildren } from 'react';
 import { Transaction, OperationType } from '@hooks/useTransaction/requests';
 import { SxProps, styled } from '@mui/material/styles';
 import { networkImg } from '@config/constants/currencies';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import RampTitle, { CircularButton as ArrowButton } from '@components/forms/RampForm/RampTitle';
 import RateText from './RateText';
@@ -19,6 +22,8 @@ import ArrowDown from '../../assets/ArrowDown.svg';
 
 import formatNumber from '@helpers/formatNumber';
 import mapProviderStatus from './mapProviderStatus';
+import { deleteStorageQuote } from '@helpers/getStorageQuote';
+import { bandoAcademy } from '@config/constants/links';
 
 export type TransactionDetailProps = PropsWithChildren & {
   success: boolean;
@@ -31,6 +36,7 @@ export type TransactionDetailProps = PropsWithChildren & {
   network?: string;
   title?: string;
   sx?: SxProps;
+  showFooter?: boolean;
   operationType?: OperationType;
 };
 
@@ -88,11 +94,15 @@ export default function TransactionDetail({
   noContainer = false,
   noArrow = false,
   showStatusBadge = false,
+  showFooter = false,
   network = '',
   title = '',
   sx,
   operationType,
 }: TransactionDetailProps) {
+  const { t } = useTranslation('transactionDetail');
+
+  const navigate = useNavigate();
   const DetailContainer = noContainer ? Box : BoxContainer;
   const networkName = network || transaction?.networkConfig?.name;
   const depositTitle = transaction?.cashinDetails?.CLABE
@@ -102,6 +112,11 @@ export default function TransactionDetail({
   const rate = operationType === 'deposit' ? quoteRateInverse : quoteRate;
 
   const providerStatus = mapProviderStatus(transaction?.providerStatus ?? '');
+
+  const onNewTransaction = () => {
+    deleteStorageQuote();
+    navigate('/');
+  };
 
   return (
     <>
@@ -198,7 +213,7 @@ export default function TransactionDetail({
               {!transaction?.cashinDetails?.CLABE ? (
                 <GridRow xs={12} sx={{ gap: 1 }} className="sm-column">
                   <DetailText variant="body2" sx={{ mr: 'auto' }}>
-                    Dirección:
+                    {t('address')}
                   </DetailText>
                   <TransactionCopyText
                     variant="body2"
@@ -211,7 +226,7 @@ export default function TransactionDetail({
                 <>
                   <GridRow xs={12}>
                     <DetailText variant="body2" sx={{ mr: 1 }}>
-                      Banco:
+                      {t('bank')}
                     </DetailText>
                     <TransactionCopyText
                       variant="body2"
@@ -221,7 +236,7 @@ export default function TransactionDetail({
                   </GridRow>
                   <GridRow xs={12}>
                     <DetailText variant="body2" sx={{ mr: 1 }}>
-                      Nombre:
+                      {t('name')}
                     </DetailText>
                     <TransactionCopyText
                       variant="body2"
@@ -231,7 +246,7 @@ export default function TransactionDetail({
                   </GridRow>
                   <GridRow xs={12}>
                     <DetailText variant="body2" sx={{ mr: 1 }}>
-                      CLABE:
+                      {t('clabe')}
                     </DetailText>
                     <TransactionCopyText
                       variant="body2"
@@ -241,7 +256,7 @@ export default function TransactionDetail({
                   </GridRow>
                   <GridRow xs={12}>
                     <DetailText variant="body2" sx={{ mr: 1 }}>
-                      Concepto:
+                      {t('concepto')}
                     </DetailText>
                     <TransactionCopyText
                       variant="body2"
@@ -255,9 +270,27 @@ export default function TransactionDetail({
           </>
         )}
       </DetailContainer>
-      <Box sx={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
-        <ArrowBackIcon /> Haz otra transaccion
-      </Box>
+      {showFooter && (
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: '600px',
+            margin: '0 auto',
+            marginTop: 2,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Button sx={{ textTransform: 'none', padding: 0 }} onClick={onNewTransaction}>
+            <ArrowBackIcon /> {t('footer.newTransaction')}
+          </Button>
+
+          <Button sx={{ textTransform: 'none', padding: 0 }} href={bandoAcademy}>
+            {t('footer.academy')}
+          </Button>
+        </Box>
+      )}
     </>
   );
 }

@@ -16,6 +16,7 @@ export default function ProtectedTransactionDetail() {
           sx={{ margin: '0 auto' }}
           transaction={transaction as unknown as Transaction}
           title="Resúmen"
+          showFooter
           noArrow
           success
         />
