@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { ConfirmRampFormValues } from './schema';
@@ -27,9 +28,10 @@ type RampFormProps = {
 };
 
 export default function RampForm({ noContainer = false }: Readonly<RampFormProps>) {
-  const [recipientError, setRecipientError] = useState(false);
-  const [forbiddenError, setForbiddenError] = useState(false);
+  const { t } = useTranslation('ramp');
   const { quote, network = '', operationType: opType } = getStorageQuote();
+
+  const [formError, setFormError] = useState<string>('');
   const navigate = useNavigate();
 
   const { user } = useUser();
@@ -48,8 +50,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
   const operationType = watch('operationType');
 
   const onSubmit = async (formValues: ConfirmRampFormValues) => {
-    setRecipientError(false);
-    setForbiddenError(false);
+    setFormError('');
 
     try {
       await postRecipient({
@@ -64,10 +65,10 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
       });
     } catch (err) {
       if ((err as AxiosError).response?.status === 403) {
-        setForbiddenError(true);
+        setFormError(t('errors.forbidden'));
         return;
       }
-      setRecipientError(true);
+      setFormError(t('errors.recipient'));
       return;
     }
 
@@ -79,7 +80,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
       operationType: formValues?.operationType ?? '',
     });
     deleteStorageQuote();
-    navigate(`/transaction/${txn?.transactionId}`);
+    navigate(`/transactions/${txn?.transactionId}`);
   };
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <TransactionDetail
-          transaction={data || (quote as unknown as Transaction)}
+          transaction={data ?? (quote as unknown as Transaction)}
           noContainer={noContainer}
           quoteRateInverse={quote?.quoteRateInverse}
           quoteRate={quote?.quoteRate}
@@ -102,7 +103,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
             {operationType === 'deposit' ? (
               <Grid xs={12}>
                 <Input
-                  label="Recibes en esta dirección"
+                  label={t('address')}
                   type="text"
                   {...register('address')}
                   error={!!formState.errors.address?.message}
@@ -113,7 +114,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
               <>
                 <Grid md={6}>
                   <Input
-                    label="Nombres"
+                    label={t('name')}
                     type="text"
                     {...register('firstName')}
                     error={!!formState.errors.firstName?.message}
@@ -121,7 +122,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                 </Grid>
                 <Grid md={6}>
                   <Input
-                    label="Apellidos"
+                    label={t('lastName')}
                     type="text"
                     {...register('lastName')}
                     error={!!formState.errors.lastName?.message}
@@ -129,7 +130,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                 </Grid>
                 <Grid xs={12}>
                   <Input
-                    label="Clabe"
+                    label={t('clabe')}
                     type="text"
                     {...register('clabe', {
                       onChange: (e) => {
@@ -142,19 +143,12 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                 </Grid>
               </>
             )}
-            {recipientError && (
+            {!!formError && (
               <Grid xs={12}>
-                <ErrorBox>Esta cuenta ha sido rechazada por Bando. Intenta con otra.</ErrorBox>
+                <ErrorBox>{formError}</ErrorBox>
               </Grid>
             )}
-            {forbiddenError && (
-              <Grid xs={12}>
-                <ErrorBox>
-                  Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía un
-                  correo a hola@bando.cool
-                </ErrorBox>
-              </Grid>
-            )}
+
             <Grid xs={12}>
               <BandoButton
                 type="submit"
@@ -170,7 +164,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                     aria-label="submitting"
                   />
                 )}
-                Confirmar
+                {t('confirm')}
               </BandoButton>
             </Grid>
           </Grid>
