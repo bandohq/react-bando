@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 
 import { PropsWithChildren } from 'react';
 import { Transaction, OperationType } from '@hooks/useTransaction/requests';
-import { SxProps, styled } from '@mui/material/styles';
+import { SxProps, styled, alpha } from '@mui/material/styles';
 import { networkImg } from '@config/constants/currencies';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -84,20 +84,24 @@ const StatusBadge = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(1, 2),
   borderRadius: '100px',
   '&.pending': {
-    backgroundColor: theme.palette.warning.light,
-    color: theme.palette.warning.dark,
+    backgroundColor: `${alpha(theme.palette.warning.light, 0.35)}`,
+    color: theme.palette.ink.i600,
+    border: `1px solid ${theme.palette.warning.light}`,
   },
   '&.error': {
-    backgroundColor: theme.palette.error.light,
-    color: theme.palette.error.dark,
+    backgroundColor: `${alpha(theme.palette.error.light, 0.35)}`,
+    color: theme.palette.ink.i600,
+    border: `1px solid ${theme.palette.error.light}`,
   },
   '&.success': {
-    backgroundColor: theme.palette.success.light,
-    color: theme.palette.success.dark,
+    backgroundColor: `${alpha(theme.palette.success.light, 0.35)}`,
+    color: theme.palette.ink.i600,
+    border: `1px solid ${theme.palette.success.light}`,
   },
   '&.info': {
-    backgroundColor: theme.palette.info.light,
-    color: theme.palette.info.dark,
+    backgroundColor: `${alpha(theme.palette.info.light, 0.35)}`,
+    color: theme.palette.ink.i600,
+    border: `1px solid ${theme.palette.info.light}`,
   },
 }));
 

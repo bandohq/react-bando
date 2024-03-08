@@ -55,24 +55,32 @@ const StatusCircle = styled(Box)(({ theme }) => ({
       animation: 'pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite',
     },
     '&:after': {
-      backgroundColor: `${alpha(theme.palette.warning.light, 0.55)}`,
+      backgroundColor: `${alpha(theme.palette.warning.light, 0.95)}`,
       animation: 'pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite',
     },
   },
   '&.error': {
     '&:before': {
-      backgroundColor: theme.palette.error.dark,
+      display: 'none',
     },
     '&:after': {
-      backgroundColor: `${alpha(theme.palette.error.dark, 0.55)}`,
+      backgroundColor: `${alpha(theme.palette.error.dark, 0.95)}`,
     },
   },
   '&.success': {
     '&:before': {
-      backgroundColor: theme.palette.success.dark,
+      display: 'none',
     },
     '&:after': {
-      backgroundColor: `${alpha(theme.palette.success.dark, 0.55)}`,
+      backgroundColor: `${alpha(theme.palette.success.dark, 0.95)}`,
+    },
+  },
+  '&.info': {
+    '&:before': {
+      display: 'none',
+    },
+    '&:after': {
+      backgroundColor: `${alpha(theme.palette.info.dark, 0.95)}`,
     },
   },
 }));
