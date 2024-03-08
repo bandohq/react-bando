@@ -37,7 +37,9 @@ export default function useTransaction({ transactionId = '' }: UseTransactionArg
   }, [mutate, transactionId]);
 
   const transactionStatus = transaction?.providerStatus ?? '';
-  const isTransactionInProgress = !['COMPLETED', 'FAILED'].includes(transactionStatus);
+  const isTransactionInProgress = !['COMPLETED', 'FAILED', 'EXPIRED', 'CANCELED'].includes(
+    transactionStatus,
+  );
 
   // Effect will refetch transaction every TRANSACTION_CHECK_INTERVAL_SECS seconds
   // until status is either completed or failed

@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 
 import { PropsWithChildren } from 'react';
 import { Transaction, OperationType } from '@hooks/useTransaction/requests';
-import { SxProps, styled } from '@mui/material/styles';
+import { SxProps, styled, alpha } from '@mui/material/styles';
 import { networkImg } from '@config/constants/currencies';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -83,6 +83,26 @@ const StatusBadge = styled(Typography)(({ theme }) => ({
   backgroundColor: theme.palette.ink.i100,
   padding: theme.spacing(1, 2),
   borderRadius: '100px',
+  '&.pending': {
+    backgroundColor: `${alpha(theme.palette.warning.light, 0.35)}`,
+    color: theme.palette.ink.i600,
+    border: `1px solid ${theme.palette.warning.light}`,
+  },
+  '&.error': {
+    backgroundColor: `${alpha(theme.palette.error.light, 0.35)}`,
+    color: theme.palette.ink.i600,
+    border: `1px solid ${theme.palette.error.light}`,
+  },
+  '&.success': {
+    backgroundColor: `${alpha(theme.palette.success.light, 0.35)}`,
+    color: theme.palette.ink.i600,
+    border: `1px solid ${theme.palette.success.light}`,
+  },
+  '&.info': {
+    backgroundColor: `${alpha(theme.palette.info.light, 0.35)}`,
+    color: theme.palette.ink.i600,
+    border: `1px solid ${theme.palette.info.light}`,
+  },
 }));
 
 export default function TransactionDetail({
@@ -129,7 +149,7 @@ export default function TransactionDetail({
             leftContent={
               showStatusBadge &&
               providerStatus.text && (
-                <StatusBadge variant="body2">
+                <StatusBadge className={providerStatus.color} variant="body2">
                   {providerStatus.text}{' '}
                   {providerStatus.color && <StatusCircle className={providerStatus.color} />}
                 </StatusBadge>

@@ -36,7 +36,6 @@ const StatusCircle = styled(Box)(({ theme }) => ({
     marginTop: '-100%',
     borderRadius: '45px',
     backgroundColor: theme.palette.secondary.main,
-    animation: 'pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite',
   },
   '&:after': {
     content: '""',
@@ -49,22 +48,39 @@ const StatusCircle = styled(Box)(({ theme }) => ({
     backgroundColor: `${alpha(theme.palette.primary.main, 0.55)}`,
     borderRadius: '15px',
     boxShadow: '0 0 8px rgba(0,0,0,.3)',
-    animation: 'pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite',
   },
   '&.pending': {
     '&:before': {
       backgroundColor: theme.palette.warning.light,
+      animation: 'pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite',
     },
     '&:after': {
-      backgroundColor: `${alpha(theme.palette.warning.light, 0.55)}`,
+      backgroundColor: `${alpha(theme.palette.warning.light, 0.95)}`,
+      animation: 'pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite',
     },
   },
   '&.error': {
     '&:before': {
-      backgroundColor: theme.palette.error.light,
+      display: 'none',
     },
     '&:after': {
-      backgroundColor: `${alpha(theme.palette.error.light, 0.55)}`,
+      backgroundColor: `${alpha(theme.palette.error.dark, 0.95)}`,
+    },
+  },
+  '&.success': {
+    '&:before': {
+      display: 'none',
+    },
+    '&:after': {
+      backgroundColor: `${alpha(theme.palette.success.dark, 0.95)}`,
+    },
+  },
+  '&.info': {
+    '&:before': {
+      display: 'none',
+    },
+    '&:after': {
+      backgroundColor: `${alpha(theme.palette.info.dark, 0.95)}`,
     },
   },
 }));
