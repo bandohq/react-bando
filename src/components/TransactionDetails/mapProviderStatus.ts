@@ -12,14 +12,27 @@ export default function mapProviderStatus(status: string) {
     case 'CASH_OUT_COMPLETED':
       return {
         text: 'Procesando',
+        color: 'info',
       };
     case 'FAILED':
       return {
         text: 'Fallida ',
+        color: 'error',
+      };
+    case 'EXPIRED':
+      return {
+        text: 'Expirada ',
+        color: 'error',
+      };
+    case 'CANCELED':
+      return {
+        text: 'Cancelada ',
+        color: 'error',
       };
     case 'COMPLETED':
       return {
         text: 'Completada  ',
+        color: 'success',
       };
     case 'CASH_IN_PROCESSING':
     case 'CASH_IN_REQUESTED':

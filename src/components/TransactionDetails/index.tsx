@@ -83,6 +83,22 @@ const StatusBadge = styled(Typography)(({ theme }) => ({
   backgroundColor: theme.palette.ink.i100,
   padding: theme.spacing(1, 2),
   borderRadius: '100px',
+  '&.pending': {
+    backgroundColor: theme.palette.warning.light,
+    color: theme.palette.warning.dark,
+  },
+  '&.error': {
+    backgroundColor: theme.palette.error.light,
+    color: theme.palette.error.dark,
+  },
+  '&.success': {
+    backgroundColor: theme.palette.success.light,
+    color: theme.palette.success.dark,
+  },
+  '&.info': {
+    backgroundColor: theme.palette.info.light,
+    color: theme.palette.info.dark,
+  },
 }));
 
 export default function TransactionDetail({
@@ -129,7 +145,7 @@ export default function TransactionDetail({
             leftContent={
               showStatusBadge &&
               providerStatus.text && (
-                <StatusBadge variant="body2">
+                <StatusBadge className={providerStatus.color} variant="body2">
                   {providerStatus.text}{' '}
                   {providerStatus.color && <StatusCircle className={providerStatus.color} />}
                 </StatusBadge>
