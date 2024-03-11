@@ -15,6 +15,7 @@ export default function mapProviderStatus(status: string) {
         color: 'info',
       };
     case 'FAILED':
+    case 'ERROR':
       return {
         text: 'Fallida ',
         color: 'error',
