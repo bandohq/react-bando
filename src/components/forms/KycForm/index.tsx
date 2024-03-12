@@ -7,7 +7,7 @@ import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
 import ErrorBox from '@components/forms/ErrorBox';
 import BandoButton from '@components/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Title } from '@pages/SignIn';
+import Title from '@components/PageTitle';
 
 import { toUpperCase, checkNumberLength } from '@helpers/inputs';
 
@@ -30,6 +30,7 @@ type KYCError = { code: string; error: string };
 
 export default function KycForm() {
   const navigate = useNavigate();
+  const [error, setError] = useState(false);
   const [kycError, setKycError] = useState({ isError: false, message: '' });
   const [forbiddenError, setForbiddenError] = useState(false);
 
@@ -62,10 +63,7 @@ export default function KycForm() {
         setForbiddenError(true);
         return;
       }
-
-      const errorMsg = errorObject?.response?.data?.error;
-      if (errorObject.response?.data.code) {
-        const isRfcError = errorMsg?.includes('gov_check_mexico_rfc_error');
+      if ((err as AxiosError<{ code: string; error: string }>).response?.data.code) {
         setKycError({
           isError: true,
           message: isRfcError
@@ -177,6 +175,11 @@ export default function KycForm() {
             {...register('document.number')}
           />
         </Grid>
+        {kycError.isError && (
+          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
+            <ErrorBox>Ha ocurrido un error.</ErrorBox>
+          </Grid>
+        )}
         {kycError.isError && (
           <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
             <ErrorBox>{kycError.message}</ErrorBox>

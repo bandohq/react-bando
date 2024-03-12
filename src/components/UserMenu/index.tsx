@@ -75,6 +75,13 @@ export default function UserMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
+        <MenuItem
+          onClick={() => navigate('/transactions')}
+          sx={{ fontSize: '16px !important', gap: 1 }}
+        >
+          {t('viewTxnHistory')}
+        </MenuItem>
+
         <MenuItem onClick={logoutUser} sx={{ fontSize: '16px !important', gap: 1 }}>
           {t('signout')} <LogoutIcon strokeWidth={1.5} sx={{ color: 'inherit' }} />
         </MenuItem>

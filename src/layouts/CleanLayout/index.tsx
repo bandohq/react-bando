@@ -30,6 +30,9 @@ const ContentContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
+  maxWidth: '1200px',
+  margin: '0 auto',
+  padding: 0,
 }));
 
 export type CleanLayoutProps = PropsWithChildren;
