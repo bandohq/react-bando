@@ -6,6 +6,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 
 body {
   margin: 0;
@@ -39,15 +43,6 @@ code {
   background-size: cover;
 }
 
-.kyc-page {
-  /* min-height: 100vh;
-  width: 100%;
-  background: url('/images/bgKyc2.png');
-  background-position: 25% 75%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100% auto; */
-}
 
 
 .PhoneInput {
@@ -69,3 +64,30 @@ code {
 .navbar-box {
   max-width: 1200px !important;
 }
+
+@keyframes inAnimation {
+  0% {
+    opacity: 0;
+    height: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    height: auto;
+    visibility: visible;
+  }
+}
+
+@keyframes outAnimation {
+  0% {
+    opacity: 1;
+    height: auto;
+
+  }
+  100% {
+    opacity: 0;
+    height: 0;
+    visibility: hidden;
+  }
+}
+
