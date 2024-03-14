@@ -116,7 +116,10 @@ export default function TransactionDetail({
             noArrow={noContainer || noArrow}
             title={title}
             leftContent={
-              showStatusBadge && providerStatus.text && <StatusBadge {...providerStatus} />
+              showStatusBadge &&
+              providerStatus.text && (
+                <StatusBadge {...providerStatus} showPulse={providerStatus.color === 'pending'} />
+              )
             }
           />
         </Grid>

@@ -71,6 +71,9 @@ type StatusBadgeProps = Partial<ComponentProps<typeof StatusBadgeContainer>> & {
   color: string;
   text: string;
   hideBeacon?: boolean;
+  showPulse?: boolean;
+  hideShadow?: boolean;
+  variant?: 'default' | 'light';
 };
 
 export default function StatusBadge({
@@ -78,12 +81,22 @@ export default function StatusBadge({
   text,
   statusCircleProps,
   hideBeacon = false,
+  showPulse = false,
+  hideShadow = false,
+  variant = 'default',
   ...props
 }: StatusBadgeProps) {
   return (
     <StatusBadgeContainer {...props} className={`${color} ${props.className}`}>
       <StatusText variant="body2">{text} </StatusText>{' '}
-      {!hideBeacon && color && <BadgeStatusCircle className={color} {...statusCircleProps} />}
+      {!hideBeacon && color && (
+        <BadgeStatusCircle
+          className={`${color} ${props.className} ${variant} ${showPulse ? 'pulse' : ''} ${
+            hideShadow ? 'no-shadow' : ''
+          }`}
+          {...statusCircleProps}
+        />
+      )}
     </StatusBadgeContainer>
   );
 }
