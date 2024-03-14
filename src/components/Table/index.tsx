@@ -1,11 +1,17 @@
-import Table from '@mui/material/Table';
-import TableBodyBase from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-import Box from '@mui/material/Box';
-import ArrowCircleIcon from '@components/Svgs/ArrowCircle';
+import { Fragment, useState } from 'react';
+import { alpha, styled } from '@mui/material/styles';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { format } from 'date-fns';
+
+import Table from '@mui/material/Table';
+import TableContainer from '@mui/material/TableContainer';
+import Box from '@mui/material/Box';
+import CellDetailWithIcon from '@components/Table/CellDetailWithIcon';
+
+import ArrowCircleIconBase from '@components/Svgs/ArrowCircle';
+import StatusBadge from '@components/StatusBadge';
+import mapProviderStatus from '@components/TransactionDetails/mapProviderStatus';
+import { OperationType } from '@hooks/useTransaction/requests';
 
 import formatNumber from '@helpers/formatNumber';
 
@@ -13,159 +19,26 @@ import Usdc from '../../assets/image-58_1.png';
 import Mexico from '../../assets/Mexico-01.svg';
 import Polygon from '../../assets/polygon.png';
 import ArrowDown from '../../assets/ArrowDown.svg';
+import CopyImg from '../../assets/CopyToClipboard.svg';
+import theme from '@config/theme';
+import {
+  TableBody,
+  StyledTableCell,
+  StyledTableRow,
+  RowTextDetail,
+  TableRowDetail,
+  HeaderCell,
+} from './TableComponets';
 
-import { Fragment, useState } from 'react';
-import { styled } from '@mui/material/styles';
-import { OperationType } from '@hooks/useTransaction/requests';
-import mapProviderStatus from '@components/TransactionDetails/mapProviderStatus';
-import StatusBadge from '@components/StatusBadge';
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  verticalAlign: 'middle',
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const TableBody = styled(TableBodyBase)(() => ({
-  overflow: 'hidden',
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  padding: theme.spacing(2, 1),
-  '& td, & th, & td:first-of-type': {
-    border: 'none',
-    borderColor: '#E0E0E0',
-    borderBottom: '1px solid #E0E0E0',
-  },
-
-  '&:nth-of-type(odd)': {},
-  '&:first-of-type td, &:first-of-type th': {},
-  '&:last-child td, &:last-child th': {},
-  '&:hover': {
-    cursor: 'pointer',
-  },
-
-  '&.top-row td, &.bottom-row td': {
-    transition: 'all 270ms ease-in',
-  },
-
-  '&.bottom-row': {
-    opacity: 0,
-    display: 'none',
-    visibility: 'hidden',
-    animation: 'outAnimation 270ms ease-out',
-    animationFillMode: 'forwards',
-    '& td': {
-      borderBottom: '1px solid transparent',
-    },
-  },
-
-  '&.top-row td': {
-    borderTop: '1px solid transparent',
-  },
-
-  '&.top-row td:first-of-type': {
-    borderTopLeftRadius: '8px',
-    borderTop: '1px solid transparent',
-    borderLeft: '1px solid transparent',
-  },
-  '&.top-row td:last-child': {
-    borderTopRightRadius: '8px',
-    borderTop: '1px solid transparent',
-    borderRight: '1px solid transparent',
-  },
-  '&.bottom-row td:first-of-type': {
-    borderBottomLeftRadius: '8px',
-    borderLeft: '1px solid transparent',
-  },
-  '&.bottom-row td:last-child': {
-    borderBottomRightRadius: '8px',
-    borderRight: '1px solid transparent',
-  },
-
-  '&.Mui-selected': {
-    backgroundColor: '#fff',
-
-    '&.bottom-row': {
-      opacity: 1,
-      visibility: 'visible',
-      display: 'table-row',
-      animation: 'inAnimation 250ms ease-out',
-    },
-
-    '&.top-row td': {
-      borderBottom: 'none',
-      borderRight: 'none',
-      borderLeft: 'none',
-      borderColor: 'transparent',
-      borderTop: `1px solid ${theme.palette.info.main}`,
-    },
-    '&.top-row td:first-of-type': {
-      borderRight: 'none',
-      borderBottom: 'none',
-      borderColor: 'transparent',
-      borderTop: `1px solid ${theme.palette.info.main}`,
-      borderLeft: `1px solid ${theme.palette.info.main}`,
-      borderTopLeftRadius: '8px',
-    },
-
-    '&.top-row td:last-child': {
-      borderRight: `1px solid ${theme.palette.info.main}`,
-      borderTopRightRadius: '8px',
-    },
-
-    '&.bottom-row td': {
-      borderTop: 'none',
-      borderColor: 'transparent',
-      borderBottom: `1px solid ${theme.palette.info.main}`,
-    },
-    '&.bottom-row td:first-of-type': {
-      borderRight: 'none',
-      borderTop: 'none',
-      borderColor: 'transparent',
-      borderLeft: `1px solid ${theme.palette.info.main}`,
-      borderBottom: `1px solid ${theme.palette.info.main}`,
-      borderBottomLeftRadius: '8px',
-    },
-    '&.bottom-row td:last-child': {
-      borderRight: `1px solid ${theme.palette.info.main}`,
-      borderBottomRightRadius: '8px',
-    },
-
-    '&:hover': {
-      cursor: 'pointer',
-      backgroundColor: 'inherit',
-    },
-  },
-}));
-
-const RowTextDetail = styled(Box)(({ theme }) => ({
-  fontSize: 14,
-  color: theme.palette.ink.i800,
-  display: 'flex',
-  flexDirection: 'column',
-  '& span': {
-    color: theme.palette.ink.i400,
-    fontSize: 12,
-  },
-}));
-
-const TableRowDetail = styled(RowTextDetail)(() => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  textTransform: 'capitalize',
+const ArrowCircleIcon = styled(ArrowCircleIconBase)(() => ({
+  width: 36,
+  height: 36,
+  marginRight: theme.spacing(0.5),
 }));
 
 const DepositArrow = styled(ArrowCircleIcon)(({ theme }) => ({
   transform: 'rotate(-90deg)',
   color: theme.palette.success.light,
-  width: 32,
-  height: 32,
   '& rect': {
     color: theme.palette.success.light,
     stroke: theme.palette.success.light,
@@ -182,10 +55,25 @@ const CurrencyContainerIcon = styled('span')(() => ({
   aspectRatio: '1/1',
   borderRadius: '50%',
   overflow: 'hidden',
+  position: 'relative',
   '& img': {
     width: 'auto',
     height: '100%',
     objectFit: 'cover',
+  },
+  '&:after': {
+    position: 'absolute',
+    content: '""',
+    backgroundColor: alpha(theme.palette.primary.contrastText, 0.15),
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+  },
+  '&.selected': {
+    '&:after': {
+      backgroundColor: 'transparent',
+    },
   },
 }));
 
@@ -216,20 +104,15 @@ function createData({
     sent:
       operationType === 'deposit'
         ? `$ ${formatNumber(data.sent)}`
-        : `+ ${data.sent} ${data.sentCurrency}`,
+        : `${data.sent} ${data.sentCurrency}`,
     received:
       operationType === 'withdraw'
-        ? `$ ${formatNumber(data.received)}`
-        : `+ ${data.received} ${data.receivedCurrency}`,
+        ? `$ ${formatNumber(data.received)} ${data.receivedCurrency}`
+        : `${data.received} ${data.receivedCurrency}`,
     sentIcon: operationType === 'withdraw' ? Usdc : Mexico,
     receivedIcon: operationType === 'withdraw' ? Mexico : Usdc,
     updatedAt: '2024-03-10 17:40:40.231',
-    operationIcon:
-      operationType === 'withdraw' ? (
-        <ArrowCircleIcon sx={{ width: 32, height: 32 }} />
-      ) : (
-        <DepositArrow />
-      ),
+    operationIcon: operationType === 'withdraw' ? <ArrowCircleIcon /> : <DepositArrow />,
   };
 }
 
@@ -290,77 +173,106 @@ export default function CustomizedTables() {
         aria-label="customized table"
       >
         <TableBody>
+          <StyledTableRow>
+            <HeaderCell colSpan={5}>March 4, 2024</HeaderCell>
+          </StyledTableRow>
           {rows.map((row, idx) => {
             const providerStatus = mapProviderStatus(row.status ?? '');
+            const isRowSelected = idx === selectedRow;
 
             return (
               <Fragment key={`tableRow-${row.id}`}>
                 <StyledTableRow
-                  className="top-row"
+                  className={`top-row ${idx === selectedRow - 1 ? 'no-border' : ''}`}
                   onClick={() => onRowClick(idx)}
-                  aria-checked={idx === selectedRow}
-                  selected={idx === selectedRow}
+                  aria-checked={isRowSelected}
+                  selected={isRowSelected}
                 >
                   <StyledTableCell scope="row">
-                    <TableRowDetail sx={{ gap: 1, width: 120 }}>
-                      {row.operationIcon}
-                      <TableRowDetail sx={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <div>{row.operationType}</div>
-                        <Box sx={{ textTransform: 'none', color: 'ink.i400' }}>
-                          {format(new Date(row.updatedAt), 'KK:m aaa')}
-                        </Box>
-                      </TableRowDetail>
+                    <TableRowDetail>
+                      <CellDetailWithIcon
+                        sx={{ width: 120 }}
+                        mainIcon={row.operationIcon}
+                        subIcon={row.networkIcon}
+                        headerText={row.operationType}
+                        subText={format(new Date(row.updatedAt), 'KK:m aaa')}
+                        network={'network'}
+                      />
                     </TableRowDetail>
                   </StyledTableCell>
-                  <StyledTableCell align="right">
-                    <TableRowDetail sx={{ gap: 1, color: 'success.light' }}>
-                      <CurrencyContainerIcon>
-                        <img alt={row.sentCurrency} src={row.sentIcon} />
-                      </CurrencyContainerIcon>
-                      {row.sent}
+                  <StyledTableCell align="left">
+                    <TableRowDetail>
+                      <CellDetailWithIcon
+                        sx={{ color: 'success.light' }}
+                        headerText={row.sent}
+                        mainIconComp={
+                          <CurrencyContainerIcon className={isRowSelected ? 'selected' : ''}>
+                            <img alt={row.sentCurrency} src={row.sentIcon} />
+                          </CurrencyContainerIcon>
+                        }
+                      />
                     </TableRowDetail>
                   </StyledTableCell>
+
                   <StyledTableCell sx={{ maxWidth: 56 }}>
                     <ArrowIcon src={ArrowDown} />
                   </StyledTableCell>
 
                   <StyledTableCell>
-                    <TableRowDetail sx={{ gap: 1, color: 'ink.i400' }}>
-                      <CurrencyContainerIcon>
-                        <img alt={row.receivedCurrency} src={row.receivedIcon} />
-                      </CurrencyContainerIcon>
-                      {row.received}
+                    <TableRowDetail>
+                      <CellDetailWithIcon
+                        sx={{ color: 'ink.i400' }}
+                        headerText={row.received}
+                        mainIconComp={
+                          <CurrencyContainerIcon className={isRowSelected ? 'selected' : ''}>
+                            <img alt={row.receivedCurrency} src={row.receivedIcon} />
+                          </CurrencyContainerIcon>
+                        }
+                      />
                     </TableRowDetail>
                   </StyledTableCell>
 
                   <StyledTableCell>
-                    <StatusBadge {...providerStatus} sx={{ fontSize: 14 }} className="simple" />
+                    <StatusBadge
+                      {...providerStatus}
+                      sx={{ fontSize: 14 }}
+                      className="simple"
+                      variant={isRowSelected ? 'default' : 'light'}
+                      hideShadow
+                    />
                   </StyledTableCell>
                 </StyledTableRow>
                 <StyledTableRow
                   key={`tableRow-detail-${row.id}`}
                   onClick={() => onRowClick(idx)}
-                  aria-checked={idx === selectedRow}
-                  selected={idx === selectedRow}
-                  className={idx === selectedRow ? 'bottom-row selected' : 'bottom-row'}
+                  aria-checked={isRowSelected}
+                  selected={isRowSelected}
+                  className={isRowSelected ? 'bottom-row selected' : 'bottom-row'}
                 >
-                  <StyledTableCell colSpan={7} sx={{ paddingTop: 0 }}>
+                  <StyledTableCell colSpan={7} sx={{ paddingTop: 1 }}>
                     <Box
                       sx={{
                         width: '100%',
                         display: 'flex',
                         flexDirection: 'row',
-                        gap: 1.5,
+                        gap: 3,
                       }}
                     >
                       <>
                         <RowTextDetail>
-                          <span>Fee</span>
-                          N/A
+                          <span>Fee</span>N/A
                         </RowTextDetail>
                         <RowTextDetail>
-                          <span>Transaction hash</span>
-                          0x3a05...9115
+                          <span>Rate</span>$ 0.16 MXN
+                        </RowTextDetail>
+                        <RowTextDetail onClick={(e) => e.stopPropagation()}>
+                          <span>Cuenta Destino</span>
+                          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                            0x3a05...9115
+                            <CopyToClipboard text={'hash'}>
+                              <img src={CopyImg} alt="" width={16} height={16} />
+                            </CopyToClipboard>
+                          </Box>
                         </RowTextDetail>
                       </>
                     </Box>

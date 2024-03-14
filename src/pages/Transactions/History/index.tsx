@@ -14,7 +14,7 @@ export default function TransactionHistory() {
           padding: 3,
           width: '100%',
           // minHeight: '100%',
-          maxWidth: '764px',
+          maxWidth: '860px',
         }}
       >
         <Typography
