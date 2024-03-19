@@ -9,6 +9,7 @@ declare module '@mui/material/styles' {
       i700: string;
       i600: string;
       i500: string;
+      i400: string;
       i300: string;
       i200: string;
       i100: string;
@@ -23,6 +24,7 @@ declare module '@mui/material/styles' {
       i700: string;
       i600: string;
       i500: string;
+      i400: string;
       i300: string;
       i200: string;
       i100: string;

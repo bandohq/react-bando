@@ -16,6 +16,7 @@ const theme = createTheme({
       i700: '#393F44',
       i600: '#3D3D3D',
       i500: '#686F73',
+      i400: '#9A9A9A',
       i300: '#BFC3C7',
       i200: '#E6E7E9',
       i100: '#F2F2F2',

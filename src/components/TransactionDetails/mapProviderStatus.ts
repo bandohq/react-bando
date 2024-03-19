@@ -43,6 +43,6 @@ export default function mapProviderStatus(status: string) {
         color: 'pending',
       };
     default:
-      return {};
+      return { text: '', color: '' };
   }
 }
