@@ -5,7 +5,7 @@ import useTransaction from '@hooks/useTransaction';
 import { useParams } from 'react-router-dom';
 import { Transaction } from '@hooks/useTransaction/requests';
 
-export default function ProtectedTransactionDetail() {
+export default function TransactionKycDetail() {
   const { txnId: transactionId } = useParams();
   const { transaction } = useTransaction({ transactionId });
 

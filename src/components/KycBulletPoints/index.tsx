@@ -50,9 +50,11 @@ export default function KycBulletPoints() {
       <BulletContainer>
         <Title variant="h6">{t('title')} </Title>
 
-        <BulletList>
+        <BulletList role="list">
           {points.map((point, idx) => (
-            <li key={`kycPOint-${idx}`}>{point}</li>
+            <li role="listitem" key={`kycPoint-${idx}`}>
+              {point}
+            </li>
           ))}
         </BulletList>
       </BulletContainer>

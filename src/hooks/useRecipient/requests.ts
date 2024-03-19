@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { OperationType } from '@hooks/useTransaction/requests';
 
 export type PostRecipientArgs = {
   asset: string;
@@ -8,7 +9,7 @@ export type PostRecipientArgs = {
   address?: string;
   firstName?: string;
   lastName?: string;
-  operationType: string;
+  operationType: OperationType;
   clabe?: string;
 };
 
