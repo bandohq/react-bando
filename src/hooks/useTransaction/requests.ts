@@ -39,7 +39,7 @@ export type Transaction = {
   cashInNetwork: string;
   endNetwork: string;
   providerStatus: string;
-  cashinDetails: WithDrawCashinDetailsArgs | DepositCashinDetailsArgs;
+  cashinDetails?: WithDrawCashinDetailsArgs | DepositCashinDetailsArgs;
   networkConfig?: {
     name: string;
     chainId: string;

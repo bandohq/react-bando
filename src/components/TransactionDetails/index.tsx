@@ -229,64 +229,66 @@ export default function TransactionDetail({
                 </Typography>
               </GridRow>
             </Grid>
-            <BorderContainer container spacing={2}>
-              {!transaction?.cashinDetails?.CLABE ? (
-                <GridRow xs={12} sx={{ gap: 1 }} className="sm-column">
-                  <DetailText variant="body2" sx={{ mr: 'auto' }}>
-                    {t('address')}
-                  </DetailText>
-                  <TransactionCopyText
-                    variant="body2"
-                    sx={{ textAlign: 'right' }}
-                    ellipse
-                    text={transaction?.cashinDetails.address ?? ''}
-                  />
-                </GridRow>
-              ) : (
-                <>
-                  <GridRow xs={12}>
-                    <DetailText variant="body2" sx={{ mr: 1 }}>
-                      {t('bank')}
+            {!!transaction?.cashinDetails && (
+              <BorderContainer container spacing={2}>
+                {!transaction?.cashinDetails?.CLABE ? (
+                  <GridRow xs={12} sx={{ gap: 1 }} className="sm-column">
+                    <DetailText variant="body2" sx={{ mr: 'auto' }}>
+                      {t('address')}
                     </DetailText>
                     <TransactionCopyText
                       variant="body2"
                       sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails.Bank}
+                      ellipse
+                      text={transaction?.cashinDetails?.address ?? ''}
                     />
                   </GridRow>
-                  <GridRow xs={12}>
-                    <DetailText variant="body2" sx={{ mr: 1 }}>
-                      {t('name')}
-                    </DetailText>
-                    <TransactionCopyText
-                      variant="body2"
-                      sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails.Beneficiary}
-                    />
-                  </GridRow>
-                  <GridRow xs={12}>
-                    <DetailText variant="body2" sx={{ mr: 1 }}>
-                      {t('clabe')}
-                    </DetailText>
-                    <TransactionCopyText
-                      variant="body2"
-                      sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails.CLABE}
-                    />
-                  </GridRow>
-                  <GridRow xs={12}>
-                    <DetailText variant="body2" sx={{ mr: 1 }}>
-                      {t('concepto')}
-                    </DetailText>
-                    <TransactionCopyText
-                      variant="body2"
-                      sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails.concepto}
-                    />
-                  </GridRow>
-                </>
-              )}
-            </BorderContainer>
+                ) : (
+                  <>
+                    <GridRow xs={12}>
+                      <DetailText variant="body2" sx={{ mr: 1 }}>
+                        {t('bank')}
+                      </DetailText>
+                      <TransactionCopyText
+                        variant="body2"
+                        sx={{ textAlign: 'right' }}
+                        text={transaction?.cashinDetails?.Bank}
+                      />
+                    </GridRow>
+                    <GridRow xs={12}>
+                      <DetailText variant="body2" sx={{ mr: 1 }}>
+                        {t('name')}
+                      </DetailText>
+                      <TransactionCopyText
+                        variant="body2"
+                        sx={{ textAlign: 'right' }}
+                        text={transaction?.cashinDetails?.Beneficiary}
+                      />
+                    </GridRow>
+                    <GridRow xs={12}>
+                      <DetailText variant="body2" sx={{ mr: 1 }}>
+                        {t('clabe')}
+                      </DetailText>
+                      <TransactionCopyText
+                        variant="body2"
+                        sx={{ textAlign: 'right' }}
+                        text={transaction?.cashinDetails?.CLABE}
+                      />
+                    </GridRow>
+                    <GridRow xs={12}>
+                      <DetailText variant="body2" sx={{ mr: 1 }}>
+                        {t('concepto')}
+                      </DetailText>
+                      <TransactionCopyText
+                        variant="body2"
+                        sx={{ textAlign: 'right' }}
+                        text={transaction?.cashinDetails?.concepto}
+                      />
+                    </GridRow>
+                  </>
+                )}
+              </BorderContainer>
+            )}
           </>
         )}
       </DetailContainer>
