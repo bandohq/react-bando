@@ -186,7 +186,7 @@ export default function TransactionDetail({
 
         {children}
 
-        {success && (
+        {success && !!transaction?.cashinDetails && (
           <>
             <Grid container spacing={2} sx={{ m: 0, px: 1, py: 0 }}>
               <GridRow xs={12} sx={{ mb: 0, pb: 0 }}>
@@ -205,7 +205,7 @@ export default function TransactionDetail({
                     variant="body2"
                     sx={{ textAlign: 'right' }}
                     ellipse
-                    text={transaction?.cashinDetails.address ?? ''}
+                    text={transaction?.cashinDetails?.address ?? ''}
                   />
                 </GridRow>
               ) : (
@@ -217,7 +217,7 @@ export default function TransactionDetail({
                     <TransactionCopyText
                       variant="body2"
                       sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails.Bank}
+                      text={transaction?.cashinDetails?.Bank}
                     />
                   </GridRow>
                   <GridRow xs={12}>
@@ -227,7 +227,7 @@ export default function TransactionDetail({
                     <TransactionCopyText
                       variant="body2"
                       sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails.Beneficiary}
+                      text={transaction?.cashinDetails?.Beneficiary}
                     />
                   </GridRow>
                   <GridRow xs={12}>
@@ -237,7 +237,7 @@ export default function TransactionDetail({
                     <TransactionCopyText
                       variant="body2"
                       sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails.CLABE}
+                      text={transaction?.cashinDetails?.CLABE}
                     />
                   </GridRow>
                   <GridRow xs={12}>
@@ -247,7 +247,7 @@ export default function TransactionDetail({
                     <TransactionCopyText
                       variant="body2"
                       sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails.concepto}
+                      text={transaction?.cashinDetails?.concepto}
                     />
                   </GridRow>
                 </>
