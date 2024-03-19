@@ -14,6 +14,7 @@ export default function mapProviderStatus(status: string) {
         text: 'Procesando',
         color: 'info',
       };
+    case 'REJECTED':
     case 'FAILED':
     case 'ERROR':
       return {
