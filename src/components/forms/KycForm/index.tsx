@@ -30,7 +30,6 @@ type KYCError = { code: string; error: string };
 
 export default function KycForm() {
   const navigate = useNavigate();
-  // const [error, setError] = useState(false);
   const [kycError, setKycError] = useState({ isError: false, message: '' });
   const [forbiddenError, setForbiddenError] = useState(false);
 
