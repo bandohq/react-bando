@@ -25,6 +25,9 @@ import { useState } from 'react';
 import getStorageQuote from '@helpers/getStorageQuote';
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
+
+type KYCError = { code: string; error: string };
+
 export default function KycForm() {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -53,16 +56,20 @@ export default function KycForm() {
       if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp', { replace: true });
       return navigate('/', { replace: true });
     } catch (err) {
-      if ((err as AxiosError).response?.status === 403) {
+      const errorObject = err as AxiosError<KYCError>;
+      if (errorObject.response?.status === 403) {
         setForbiddenError(true);
         return;
       }
-      if ((err as AxiosError<{ code: string; error: string }>).response?.data.code) {
+
+      const errorMsg = errorObject?.response?.data?.error;
+      if (errorObject.response?.data.code) {
+        const isRfcError = errorMsg?.includes('gov_check_mexico_rfc_error');
         setKYCError({
           isError: true,
-          message:
-            (err as AxiosError<{ code: string; error: string }>).response?.data.error ||
-            'Unknown error',
+          message: isRfcError
+            ? 'El RFC proporcionado no es válido'
+            : errorObject.response?.data.error || 'Unknown error',
         });
         return;
       }
