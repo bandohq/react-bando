@@ -30,8 +30,8 @@ type KYCError = { code: string; error: string };
 
 export default function KycForm() {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
-  const [KYCError, setKYCError] = useState({ isError: false, message: '' });
+  // const [error, setError] = useState(false);
+  const [kycError, setKycError] = useState({ isError: false, message: '' });
   const [forbiddenError, setForbiddenError] = useState(false);
 
   const { user } = useUser();
@@ -51,6 +51,8 @@ export default function KycForm() {
   });
 
   const onSubmit = async (formValues: KycFormValues) => {
+    setKycError({ isError: false, message: '' });
+
     try {
       await postUserKyc({ ...formValues, email: user?.email as string });
       if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp', { replace: true });
@@ -65,7 +67,7 @@ export default function KycForm() {
       const errorMsg = errorObject?.response?.data?.error;
       if (errorObject.response?.data.code) {
         const isRfcError = errorMsg?.includes('gov_check_mexico_rfc_error');
-        setKYCError({
+        setKycError({
           isError: true,
           message: isRfcError
             ? 'El RFC proporcionado no es válido'
@@ -73,7 +75,7 @@ export default function KycForm() {
         });
         return;
       }
-      setError(true);
+      setKycError({ isError: true, message: 'Ha ocurrido un error.' });
       return;
     }
   };
@@ -176,14 +178,9 @@ export default function KycForm() {
             {...register('document.number')}
           />
         </Grid>
-        {error && (
+        {kycError.isError && (
           <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
-            <ErrorBox>Ha ocurrido un error.</ErrorBox>
-          </Grid>
-        )}
-        {KYCError.isError && (
-          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
-            <ErrorBox>{KYCError.message}</ErrorBox>
+            <ErrorBox>{kycError.message}</ErrorBox>
           </Grid>
         )}
         {forbiddenError && (
