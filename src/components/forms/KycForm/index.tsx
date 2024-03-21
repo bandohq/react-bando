@@ -25,10 +25,12 @@ import { useState } from 'react';
 import getStorageQuote from '@helpers/getStorageQuote';
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
+
+type KYCError = { code: string; error: string };
+
 export default function KycForm() {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
-  const [KYCError, setKYCError] = useState({ isError: false, message: '' });
+  const [kycError, setKycError] = useState({ isError: false, message: '' });
   const [forbiddenError, setForbiddenError] = useState(false);
 
   const { user } = useUser();
@@ -48,25 +50,31 @@ export default function KycForm() {
   });
 
   const onSubmit = async (formValues: KycFormValues) => {
+    setKycError({ isError: false, message: '' });
+
     try {
       await postUserKyc({ ...formValues, email: user?.email as string });
       if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp', { replace: true });
       return navigate('/', { replace: true });
     } catch (err) {
-      if ((err as AxiosError).response?.status === 403) {
+      const errorObject = err as AxiosError<KYCError>;
+      if (errorObject.response?.status === 403) {
         setForbiddenError(true);
         return;
       }
-      if ((err as AxiosError<{ code: string; error: string }>).response?.data.code) {
-        setKYCError({
+
+      const errorMsg = errorObject?.response?.data?.error;
+      if (errorObject.response?.data.code) {
+        const isRfcError = errorMsg?.includes('gov_check_mexico_rfc_error');
+        setKycError({
           isError: true,
-          message:
-            (err as AxiosError<{ code: string; error: string }>).response?.data.error ||
-            'Unknown error',
+          message: isRfcError
+            ? 'El RFC proporcionado no es válido'
+            : errorObject.response?.data.error || 'Unknown error',
         });
         return;
       }
-      setError(true);
+      setKycError({ isError: true, message: 'Ha ocurrido un error.' });
       return;
     }
   };
@@ -169,14 +177,9 @@ export default function KycForm() {
             {...register('document.number')}
           />
         </Grid>
-        {error && (
+        {kycError.isError && (
           <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
-            <ErrorBox>Ha ocurrido un error.</ErrorBox>
-          </Grid>
-        )}
-        {KYCError.isError && (
-          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
-            <ErrorBox>{KYCError.message}</ErrorBox>
+            <ErrorBox>{kycError.message}</ErrorBox>
           </Grid>
         )}
         {forbiddenError && (

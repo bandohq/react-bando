@@ -51,6 +51,7 @@ type PlacesAutocompleteProps = MuiInputProps & {
 };
 
 type AddressResults = {
+  name: string;
   address_components: {
     long_name: string;
     short_name: string;
@@ -112,6 +113,9 @@ export default function PlacesAutocomplete({
 
           getDetails({ placeId: opt.place_id }).then((results: AddressResults) => {
             const addressParts = results.address_components;
+
+            const streetName = results.name;
+
             const streetRoute =
               addressParts.find((result) => result.types.includes('route'))?.long_name ?? '';
             const streetNumber =
@@ -123,7 +127,7 @@ export default function PlacesAutocomplete({
               addressParts.find((result) => result.types.includes('postal_code'))?.long_name ?? '';
             const country =
               addressParts.find((result) => result.types.includes('country'))?.short_name ?? '';
-            const street = [streetRoute, streetNumber].join(' ');
+            const street = streetRoute ? [streetRoute, streetNumber].join(' ') : streetName;
 
             setInputValue(opt.description, {
               street,
