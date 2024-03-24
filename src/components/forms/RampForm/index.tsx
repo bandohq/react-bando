@@ -72,15 +72,24 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
       return;
     }
 
-    const txn = await postTransaction({
-      ...(quote as Quote),
-      accountAddress:
-        (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? '',
-      accountNetwork: network ?? '',
-      operationType: formValues?.operationType ?? '',
-    });
-    deleteStorageQuote();
-    navigate(`/transactions/${txn?.transactionId}`);
+    try {
+      const txn = await postTransaction({
+        ...(quote as Quote),
+        accountAddress:
+          (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? '',
+        accountNetwork: network ?? '',
+        operationType: formValues?.operationType ?? '',
+      });
+      deleteStorageQuote();
+      navigate(`/transactions/${txn?.transactionId}`);
+    } catch (err) {
+      if ((err as AxiosError).response?.status === 403) {
+        setFormError(t('errors.limit'));
+        return;
+      }
+      setFormError(t('errors.txn'));
+      return;
+    }
   };
 
   useEffect(() => {
