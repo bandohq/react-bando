@@ -14,7 +14,7 @@ export default function TransactionDetail() {
       <TransactionDetailComponent
         sx={{ margin: '0 auto' }}
         transaction={transaction as unknown as Transaction}
-        title="Resúmen"
+        title="Resumen"
         showStatusBadge
         showFooter
         noArrow
