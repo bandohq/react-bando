@@ -67,6 +67,9 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
       if ((err as AxiosError).response?.status === 403) {
         setFormError(t('errors.forbidden'));
         return;
+      } else if ((err as AxiosError).response?.status === 406) {
+        setFormError(t('errors.accountNames'));
+        return;
       }
       setFormError(t('errors.recipient'));
       return;
