@@ -47,16 +47,16 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
     },
   });
 
-  const getErrorMessage = (status?: number) =>  {
+  const getErrorMessage = (status?: number) => {
     switch (status) {
       case 403:
-          return 'errors.forbidden'
+        return 'errors.forbidden';
       case 406:
-        return  'errors.accountNames'
+        return 'errors.accountNames';
       default:
-        return 'errors.recipient'
+        return 'errors.recipient';
     }
-  }
+  };
 
   const operationType = watch('operationType');
 
