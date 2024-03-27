@@ -47,6 +47,17 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
     },
   });
 
+  const getErrorMessage = (status?: number) =>  {
+    switch (status) {
+      case 403:
+          return 'errors.forbidden'
+      case 406:
+        return  'errors.accountNames'
+      default:
+        return 'errors.recipient'
+    }
+  }
+
   const operationType = watch('operationType');
 
   const onSubmit = async (formValues: ConfirmRampFormValues) => {
@@ -63,12 +74,8 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         operationType: formValues?.operationType ?? '',
         clabe: formValues?.clabe ?? '',
       });
-    } catch (err) {
-      if ((err as AxiosError).response?.status === 403) {
-        setFormError(t('errors.forbidden'));
-        return;
-      }
-      setFormError(t('errors.recipient'));
+    } catch (err) { 
+      setFormError(t(getErrorMessage((err as AxiosError).response?.status)));
       return;
     }
 
