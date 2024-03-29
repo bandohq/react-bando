@@ -40,18 +40,6 @@ const StatusBadgeContainer = styled('span')(({ theme }) => ({
     backgroundColor: 'transparent',
     color: theme.palette.ink.i600,
     border: 'none',
-    // '&.pending': {
-    //   color: theme.palette.warning.light,
-    // },
-    // '&.error': {
-    //   color: theme.palette.error.light,
-    // },
-    // '&.success': {
-    //   color: theme.palette.success.light,
-    // },
-    // '&.info': {
-    //   color: theme.palette.info.light,
-    // },
   },
 }));
 
