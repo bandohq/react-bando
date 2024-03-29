@@ -25,9 +25,6 @@ import { useState } from 'react';
 import getStorageQuote from '@helpers/getStorageQuote';
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
-
-type KYCError = { code: string; error: string };
-
 export default function KycForm() {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
@@ -51,28 +48,25 @@ export default function KycForm() {
   });
 
   const onSubmit = async (formValues: KycFormValues) => {
-    setKycError({ isError: false, message: '' });
-
     try {
       await postUserKyc({ ...formValues, email: user?.email as string });
       if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp', { replace: true });
       return navigate('/', { replace: true });
     } catch (err) {
-      const errorObject = err as AxiosError<KYCError>;
-      if (errorObject.response?.status === 403) {
+      if ((err as AxiosError).response?.status === 403) {
         setForbiddenError(true);
         return;
       }
       if ((err as AxiosError<{ code: string; error: string }>).response?.data.code) {
         setKycError({
           isError: true,
-          message: isRfcError
-            ? 'El RFC proporcionado no es válido'
-            : errorObject.response?.data.error || 'Unknown error',
+          message:
+            (err as AxiosError<{ code: string; error: string }>).response?.data.error ||
+            'Unknown error',
         });
         return;
       }
-      setKycError({ isError: true, message: 'Ha ocurrido un error.' });
+      setError(true);
       return;
     }
   };
@@ -175,7 +169,7 @@ export default function KycForm() {
             {...register('document.number')}
           />
         </Grid>
-        {kycError.isError && (
+        {error && (
           <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
             <ErrorBox>Ha ocurrido un error.</ErrorBox>
           </Grid>
