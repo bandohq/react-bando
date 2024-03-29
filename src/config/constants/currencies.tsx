@@ -3,6 +3,7 @@ import Usdc from '../../assets/image-58_1.png';
 import Usdt from '../../assets/usdt.svg';
 import Polygon from '../../assets/polygon.png';
 import Ethereum from '../../assets/ethereum.png';
+import Mexico from '../../assets/Mexico-01.svg';
 
 import CurrencyImg from '@components/CurrencyImg';
 
@@ -43,6 +44,12 @@ export const currencyImg = {
   USDC: <CurrencyImg src={Usdc} />,
   USDT: <CurrencyImg src={Usdt} />,
   MXN: <CurrencyImg src={Currency} />,
+};
+
+export const currencyImgPath = {
+  USDC: Usdc,
+  USDT: Usdt,
+  MXN: Mexico,
 };
 
 export const currencyToken = {

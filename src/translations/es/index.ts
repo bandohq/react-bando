@@ -4,6 +4,7 @@ import transactionDetail from './transactionDetail';
 import kycPoints from './kycPoints';
 import userMenu from './userMenu';
 import ramp from './ramp';
+import transactions from './transactions';
 
 const footer = {
   disclaimer: `© ${new Date().getFullYear()}  Bando. Todos los derechos reservados.`,
@@ -15,6 +16,7 @@ export default {
   faq,
   ramp,
   transactionDetail,
+  transactions,
   kycPoints,
   userMenu,
 };

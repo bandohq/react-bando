@@ -7,11 +7,14 @@ import MagicUserProvider from '@hooks/useUser/MagicUserProvider';
 
 import router from 'routes/index.tsx';
 import theme from '@config/theme.ts';
+import { setupDateLocale } from '@helpers/getUserLanguage';
 
 import '@config/axios';
 import '@config/sentry';
 import './translations';
 import './index.css';
+
+setupDateLocale();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -2,7 +2,7 @@ import CleanLayout from '@layouts/CleanLayout';
 import BoxContainer from '@components/BoxContainer';
 import Typography from '@mui/material/Typography';
 
-import CustomizedTables from '@components/Table';
+import TransactionsTable from '@components/TransactionsTable';
 
 export default function TransactionHistory() {
   return (
@@ -29,7 +29,7 @@ export default function TransactionHistory() {
           Transaction History
         </Typography>
 
-        <CustomizedTables />
+        <TransactionsTable />
       </BoxContainer>
     </CleanLayout>
   );

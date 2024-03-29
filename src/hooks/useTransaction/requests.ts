@@ -45,15 +45,47 @@ export type Transaction = {
     chainId: string;
     key: string;
   };
+  createdAt?: string;
+  updatedAt?: string;
+  operationType?: string;
 };
+
+export type TransactionRequest = Record<string, unknown> & {
+  cash_in_details: WithDrawCashinDetailsArgs | DepositCashinDetailsArgs;
+  network_config: Record<string, unknown>;
+};
+
+export const mapTransactionData = (data: TransactionRequest): Transaction =>
+  ({
+    id: data.id,
+    transactionId: data.transaction_id,
+    status: data.status,
+    baseAmount: parseFloat(data.base_amount as string),
+    quoteAmount: parseFloat(data.quote_amount as string),
+    baseCurrency: data.base_currency,
+    quoteCurrency: data.quote_currency,
+    rate: parseFloat(data.rate as string),
+    fee: parseFloat(data.fee as string),
+    cashInNetwork: data.cash_in_network,
+    endNetwork: data.end_network,
+    operationType: data.direction === 'ON' ? 'deposit' : 'withdraw',
+    providerStatus: data.provider_status,
+    cashinDetails: data.cash_in_details,
+    ...(data.network_config && {
+      networkConfig: {
+        name: String(data.network_config.name).toUpperCase(),
+        chainId: data.network_config.chain_id,
+        key: data.network_config.key,
+      },
+    }),
+    createdAt: data.created_at,
+    updatedAt: data.updated_at,
+  }) as Transaction;
 
 type PostTransactionRequest = (
   endpoint: string,
   data: { arg: PostTransactionArgs },
 ) => Promise<Transaction>;
-
-type GetTransactionRequest = (endpoint: string, data: { arg: string }) => Promise<Transaction>;
-
 export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
   axios
     .post(endpoint, {
@@ -68,49 +100,8 @@ export const postTransaction: PostTransactionRequest = (endpoint, { arg }) =>
         network: String(arg.accountNetwork),
       },
     })
-    .then(({ data }) => ({
-      id: data.id,
-      transactionId: data.transaction_id,
-      status: data.status,
-      baseAmount: parseFloat(data.base_amount),
-      quoteAmount: parseFloat(data.quote_amount),
-      baseCurrency: data.base_currency,
-      quoteCurrency: data.quote_currency,
-      rate: parseFloat(data.rate),
-      fee: parseFloat(data.fee),
-      cashInNetwork: data.cash_in_network,
-      endNetwork: data.end_network,
-      providerStatus: data.provider_status,
-      cashinDetails: data.cash_in_details,
-      ...(data.network_config && {
-        networkConfig: {
-          name: data.network_config.name,
-          chainId: data.network_config.chain_id,
-          key: data.network_config.key,
-        },
-      }),
-    }));
+    .then(({ data }) => mapTransactionData(data));
 
+type GetTransactionRequest = (endpoint: string, data: { arg: string }) => Promise<Transaction>;
 export const getTransaction: GetTransactionRequest = (endpoint) =>
-  axios.get(endpoint).then(({ data }) => ({
-    id: data.id,
-    transactionId: data.transaction_id,
-    status: data.status,
-    baseAmount: parseFloat(data.base_amount),
-    quoteAmount: parseFloat(data.quote_amount),
-    baseCurrency: data.base_currency,
-    quoteCurrency: data.quote_currency,
-    rate: parseFloat(data.rate),
-    fee: parseFloat(data.fee),
-    cashInNetwork: data.cash_in_network,
-    endNetwork: data.end_network,
-    providerStatus: data.provider_status,
-    cashinDetails: data.cash_in_details,
-    ...(data.network_config && {
-      networkConfig: {
-        name: String(data.network_config.name).toUpperCase(),
-        chainId: data.network_config.chain_id,
-        key: data.network_config.key,
-      },
-    }),
-  }));
+  axios.get(endpoint).then(({ data }) => mapTransactionData(data));
