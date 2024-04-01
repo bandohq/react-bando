@@ -201,7 +201,7 @@ export default function TransactionRow({
               </RowTextDetail>
               <RowTextDetail>
                 <span>{t('table.rate')}</span>
-                {formatNumber(row.rate)} USDC
+                {formatNumber(row.quoteRateInverse)} USDC
               </RowTextDetail>
               <RowTextDetail onClick={(e) => e.stopPropagation()}>
                 <span>{t('table.address')}</span>
