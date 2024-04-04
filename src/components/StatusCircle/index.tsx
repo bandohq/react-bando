@@ -21,14 +21,13 @@ const StatusCircle = styled(Box)(({ theme }) => ({
       transform: 'scale(.8)',
     },
   },
-  // transform: 'translateX(-50%) translateY(-50%)',
   width: theme.spacing(2),
   height: theme.spacing(2),
   position: 'relative',
   '&:before': {
     content: '""',
     position: 'relative',
-    display: 'block',
+    display: 'none',
     width: '300%',
     height: '300%',
     boxSizing: 'border-box',
@@ -49,38 +48,72 @@ const StatusCircle = styled(Box)(({ theme }) => ({
     borderRadius: '15px',
     boxShadow: '0 0 8px rgba(0,0,0,.3)',
   },
-  '&.pending': {
+  '&.no-shadow:after': {
+    boxShadow: 'none',
+  },
+  '&.pulse': {
     '&:before': {
-      backgroundColor: theme.palette.warning.light,
+      display: 'block',
       animation: 'pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite',
     },
     '&:after': {
-      backgroundColor: `${alpha(theme.palette.warning.light, 0.95)}`,
       animation: 'pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite',
+    },
+    '&.pending:before': {
+      backgroundColor: theme.palette.warning.light,
+    },
+    '&.error:before': {
+      backgroundColor: theme.palette.error.light,
+    },
+    '&.success:before': {
+      backgroundColor: theme.palette.success.light,
+    },
+    '&.info:before': {
+      backgroundColor: theme.palette.info.light,
+    },
+    '&.light.pending:before': {
+      backgroundColor: `${alpha(theme.palette.warning.light, 0.95)}`,
+    },
+    '&.light.error:before': {
+      backgroundColor: `${alpha(theme.palette.error.light, 0.95)}`,
+    },
+    '&.light.success:before': {
+      backgroundColor: `${alpha(theme.palette.success.light, 0.95)}`,
+    },
+    '&.light.info:before': {
+      backgroundColor: `${alpha(theme.palette.info.light, 0.95)}`,
+    },
+  },
+  '&.pending': {
+    '&:after': {
+      backgroundColor: `${alpha(theme.palette.warning.light, 0.95)}`,
+    },
+    '&.light:after': {
+      backgroundColor: `${alpha(theme.palette.warning.light, 0.85)}`,
     },
   },
   '&.error': {
-    '&:before': {
-      display: 'none',
-    },
     '&:after': {
       backgroundColor: `${alpha(theme.palette.error.dark, 0.95)}`,
     },
+    '&.light:after': {
+      backgroundColor: `${alpha(theme.palette.error.light, 0.92)}`,
+    },
   },
   '&.success': {
-    '&:before': {
-      display: 'none',
-    },
     '&:after': {
       backgroundColor: `${alpha(theme.palette.success.dark, 0.95)}`,
     },
+    '&.light:after': {
+      backgroundColor: `${alpha(theme.palette.success.light, 0.92)}`,
+    },
   },
   '&.info': {
-    '&:before': {
-      display: 'none',
-    },
     '&:after': {
       backgroundColor: `${alpha(theme.palette.info.dark, 0.95)}`,
+    },
+    '&.light:after': {
+      backgroundColor: `${alpha(theme.palette.info.light, 0.92)}`,
     },
   },
 }));

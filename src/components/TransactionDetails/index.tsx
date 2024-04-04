@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 
 import { PropsWithChildren } from 'react';
 import { Transaction, OperationType } from '@hooks/useTransaction/requests';
-import { SxProps, styled, alpha } from '@mui/material/styles';
+import { SxProps, styled } from '@mui/material/styles';
 import { networkImg } from '@config/constants/currencies';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -17,8 +17,8 @@ import RateText from './RateText';
 import CurrencyPill from '@components/forms/RampForm/CurrencyPill';
 import Hr from '@components/Hr';
 import TransactionCopyText, { DetailText } from './TransactionCopyText';
-import StatusCircle from '@components/StatusCircle';
 import ArrowDown from '../../assets/ArrowDown.svg';
+import StatusBadge from '@components/StatusBadge';
 
 import formatNumber from '@helpers/formatNumber';
 import mapProviderStatus from './mapProviderStatus';
@@ -74,37 +74,6 @@ const Network = styled(Typography)(({ theme }) => ({
   lineHeight: 'normal',
 }));
 
-const StatusBadge = styled(Typography)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyItems: 'center',
-  gap: theme.spacing(1),
-  backgroundColor: theme.palette.ink.i100,
-  padding: theme.spacing(1, 2),
-  borderRadius: '100px',
-  '&.pending': {
-    backgroundColor: `${alpha(theme.palette.warning.light, 0.35)}`,
-    color: theme.palette.ink.i600,
-    border: `1px solid ${theme.palette.warning.light}`,
-  },
-  '&.error': {
-    backgroundColor: `${alpha(theme.palette.error.light, 0.35)}`,
-    color: theme.palette.ink.i600,
-    border: `1px solid ${theme.palette.error.light}`,
-  },
-  '&.success': {
-    backgroundColor: `${alpha(theme.palette.success.light, 0.35)}`,
-    color: theme.palette.ink.i600,
-    border: `1px solid ${theme.palette.success.light}`,
-  },
-  '&.info': {
-    backgroundColor: `${alpha(theme.palette.info.light, 0.35)}`,
-    color: theme.palette.ink.i600,
-    border: `1px solid ${theme.palette.info.light}`,
-  },
-}));
-
 export default function TransactionDetail({
   children,
   transaction,
@@ -149,10 +118,7 @@ export default function TransactionDetail({
             leftContent={
               showStatusBadge &&
               providerStatus.text && (
-                <StatusBadge className={providerStatus.color} variant="body2">
-                  {providerStatus.text}{' '}
-                  {providerStatus.color && <StatusCircle className={providerStatus.color} />}
-                </StatusBadge>
+                <StatusBadge {...providerStatus} showPulse={providerStatus.color === 'pending'} />
               )
             }
           />
@@ -232,9 +198,6 @@ export default function TransactionDetail({
             <BorderContainer container spacing={2}>
               {!transaction?.cashinDetails?.CLABE ? (
                 <GridRow xs={12} sx={{ gap: 1 }} className="sm-column">
-                  <DetailText variant="body2" sx={{ mr: 'auto' }}>
-                    {t('address')}
-                  </DetailText>
                   <TransactionCopyText
                     variant="body2"
                     sx={{ textAlign: 'right' }}

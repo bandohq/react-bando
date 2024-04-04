@@ -1,10 +1,9 @@
 import ColumnLayout from '@layouts/ColumnLayout';
-import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 
 import MuiInput from '@components/forms/MuiInput';
 import BandoButton from '@components/Button';
+import PageTitle from '@components/PageTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import KycBulletPoints from '@components/KycBulletPoints';
 import getStorageQuote from '@helpers/getStorageQuote';
@@ -15,14 +14,6 @@ import schema, { SignInFormValues } from './schema';
 
 import useMagicLinkAuth from '@hooks/useMagicLinkAuth';
 import useUser from '@hooks/useUser';
-
-export const Title = styled(Typography)(({ theme }) => ({
-  fontSize: '25px !important',
-  fontFamily: 'Kanit',
-  fontWeight: 700,
-  color: theme.palette.ink.i600,
-  marginBottom: theme.spacing(2),
-}));
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -57,7 +48,7 @@ export default function SignIn() {
     <ColumnLayout
       leftContent={
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Title variant="h3">Verifica tu correo</Title>
+          <PageTitle variant="h3">Verifica tu correo</PageTitle>
           <MuiInput
             label="Email"
             type="email"

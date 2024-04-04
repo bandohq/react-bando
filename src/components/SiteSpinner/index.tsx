@@ -15,7 +15,7 @@ const SiteSpinnerContainer = styled(Box)(() => ({
 export default function SiteSpinner() {
   return (
     <SiteSpinnerContainer>
-      <CircularProgress size={32} />
+      <CircularProgress role="progressbar " size={32} />
     </SiteSpinnerContainer>
   );
 }

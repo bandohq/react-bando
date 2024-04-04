@@ -74,7 +74,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         operationType: formValues?.operationType ?? '',
         clabe: formValues?.clabe ?? '',
       });
-    } catch (err) { 
+    } catch (err) {
       setFormError(t(getErrorMessage((err as AxiosError).response?.status)));
       return;
     }

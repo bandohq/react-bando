@@ -4,4 +4,5 @@ export default {
   userKyc: '/api/v1/ramps/kyc/user/',
   postRecipient: '/api/v1/ramps/recipient/',
   transaction: '/api/v1/ramps/transaction/',
+  transactionHistory: '/api/v1/ramps/transaction/history/',
 };

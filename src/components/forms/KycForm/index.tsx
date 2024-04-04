@@ -7,7 +7,7 @@ import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
 import ErrorBox from '@components/forms/ErrorBox';
 import BandoButton from '@components/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Title } from '@pages/SignIn';
+import Title from '@components/PageTitle';
 
 import { toUpperCase, checkNumberLength } from '@helpers/inputs';
 
@@ -25,13 +25,9 @@ import { useState } from 'react';
 import getStorageQuote from '@helpers/getStorageQuote';
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
-
-type KYCError = { code: string; error: string };
-
 export default function KycForm() {
   const navigate = useNavigate();
-  const [kycError, setKycError] = useState({ isError: false, message: '' });
-  const [forbiddenError, setForbiddenError] = useState(false);
+  const [error, setError] = useState('');
 
   const { user } = useUser();
   const { isMutating, postUserKyc } = useKyc();
@@ -50,31 +46,25 @@ export default function KycForm() {
   });
 
   const onSubmit = async (formValues: KycFormValues) => {
-    setKycError({ isError: false, message: '' });
-
+    setError('');
     try {
       await postUserKyc({ ...formValues, email: user?.email as string });
       if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp', { replace: true });
       return navigate('/', { replace: true });
     } catch (err) {
-      const errorObject = err as AxiosError<KYCError>;
-      if (errorObject.response?.status === 403) {
-        setForbiddenError(true);
+      if ((err as AxiosError).response?.status === 403) {
+        setError(`Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía un
+        correo a hola@bando.cool`);
         return;
       }
-
-      const errorMsg = errorObject?.response?.data?.error;
-      if (errorObject.response?.data.code) {
-        const isRfcError = errorMsg?.includes('gov_check_mexico_rfc_error');
-        setKycError({
-          isError: true,
-          message: isRfcError
-            ? 'El RFC proporcionado no es válido'
-            : errorObject.response?.data.error || 'Unknown error',
-        });
+      if ((err as AxiosError<{ code: string; error: string }>).response?.data.code) {
+        setError(
+          (err as AxiosError<{ code: string; error: string }>).response?.data.error ||
+            'Unknown error',
+        );
         return;
       }
-      setKycError({ isError: true, message: 'Ha ocurrido un error.' });
+      setError('Ha ocurrido un error.');
       return;
     }
   };
@@ -177,19 +167,12 @@ export default function KycForm() {
             {...register('document.number')}
           />
         </Grid>
-        {kycError.isError && (
+        {!!error && (
           <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
-            <ErrorBox>{kycError.message}</ErrorBox>
+            <ErrorBox>{error}</ErrorBox>
           </Grid>
         )}
-        {forbiddenError && (
-          <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
-            <ErrorBox>
-              Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía un
-              correo a hola@bando.cool
-            </ErrorBox>
-          </Grid>
-        )}
+
         <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
           <BandoButton type="submit" variant="contained" disabled={isMutating} fullWidth>
             {isMutating && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}

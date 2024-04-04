@@ -1,39 +1,48 @@
 import '@config/axios';
 import axios from 'axios';
-import { renderHook } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
+import { secondsToMilliseconds } from 'date-fns';
 
 import wrapper from '@helpers/TestProvider';
 
 jest.mock('axios');
+jest.useFakeTimers();
 
 import useTransaction from '.';
+
+const mockTransactionResponse = {
+  id: 46,
+  transaction_id: 555,
+  status: 'passed',
+  base_amount: 1000,
+  base_currency: 'MXN',
+  quote_currency: 'USDC',
+  quote_amount: '58.47',
+  rate: '1',
+  fee: '2',
+  is_expired: false,
+  cash_in_network: 'cash_in_network',
+  provider_status: 'provider_status',
+  end_network: 'end_network',
+  cash_in_details: {
+    network: 'network',
+    bank: 'bank',
+    beneficiary: 'beneficiary',
+    clabe: 'clabe',
+    concepto: 'concepto',
+  },
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+};
 
 describe('useTransaction', () => {
   beforeEach(() => {
     (axios.post as jest.Mock).mockResolvedValue({
-      data: {
-        id: 46,
-        transaction_id: 555,
-        status: 'passed',
-        base_amount: 1000,
-        quoteAmount: 5000,
-        base_currency: 'MXN',
-        quote_currency: 'USDC',
-        quote_amount: '58.47',
-        rate: '1',
-        fee: '2',
-        is_expired: false,
-        cash_in_network: 'cash_in_network',
-        provider_status: 'provider_status',
-        end_network: 'end_network',
-        cash_in_details: {
-          network: 'network',
-          bank: 'bank',
-          beneficiary: 'beneficiary',
-          clabe: 'clabe',
-          concepto: 'concepto',
-        },
-      },
+      data: mockTransactionResponse,
+    });
+
+    (axios.get as jest.Mock).mockResolvedValue({
+      data: mockTransactionResponse,
     });
   });
 
@@ -80,9 +89,13 @@ describe('useTransaction', () => {
       providerStatus: 'provider_status',
       quoteAmount: 58.47,
       quoteCurrency: 'USDC',
+      quoteRateInverse: 1,
       rate: 1,
       status: 'passed',
       transactionId: 555,
+      operationType: 'withdraw',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
     });
   });
 
@@ -107,6 +120,8 @@ describe('useTransaction', () => {
           network: 'network',
           address: 'address',
         },
+        created_at: 'created_at',
+        updated_at: 'updated_at',
       },
     });
 
@@ -134,6 +149,7 @@ describe('useTransaction', () => {
         network: 'accountNetwork',
       },
     });
+
     expect(rsp).toStrictEqual({
       baseAmount: 1000,
       baseCurrency: 'MXN',
@@ -147,10 +163,41 @@ describe('useTransaction', () => {
       id: 46,
       providerStatus: 'provider_status',
       quoteAmount: 58.47,
+      quoteRateInverse: 1,
       quoteCurrency: 'USDC',
       rate: 1,
       status: 'passed',
       transactionId: 555,
+      operationType: 'withdraw',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    });
+  });
+
+  it('should refetch transaction status until it is not in progress', async () => {
+    const intervalSpy = jest.spyOn(global, 'setInterval');
+
+    const { result } = renderHook(() => useTransaction({ transactionId: '555' }), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.transaction?.providerStatus).toBe('provider_status');
+    });
+
+    jest.advanceTimersByTime(secondsToMilliseconds(62));
+
+    await waitFor(() => {
+      expect(intervalSpy).toHaveBeenCalled();
+    });
+
+    (axios.get as jest.Mock).mockResolvedValue({
+      data: { ...mockTransactionResponse, provider_status: 'COMPLETED' },
+    });
+
+    intervalSpy.mockReset();
+    jest.advanceTimersByTime(secondsToMilliseconds(20));
+
+    await waitFor(() => {
+      expect(result.current.transaction?.providerStatus).toBe('COMPLETED');
     });
   });
 });
