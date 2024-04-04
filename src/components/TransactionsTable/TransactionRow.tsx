@@ -83,7 +83,7 @@ function formatAmounts(amount: number, currency: string) {
 function parseDataForRows(txn: Transaction) {
   return {
     ...txn,
-    address: txn.cashinDetails?.address ?? txn.cashinDetails?.CLABE ?? '',
+    address: txn?.recipient ?? '',
     networkIcon: networkImg[txn.networkConfig?.name as keyof typeof networkImg],
     sent: formatAmounts(txn.baseAmount, txn.baseCurrency),
     received: formatAmounts(txn.quoteAmount, txn.quoteCurrency),
@@ -210,7 +210,7 @@ export default function TransactionRow({
                   <>
                     <Tooltip title={row.address} placement="top" arrow>
                       <Box>
-                        {row.cashinDetails?.address ? formatWalletNumber(row.address) : row.address}
+                        {row.address.length > 18 ? formatWalletNumber(row.address) : row.address}
                       </Box>
                     </Tooltip>
                     <Tooltip title={t('table.copied')} placement="top" arrow open={showTooltip}>

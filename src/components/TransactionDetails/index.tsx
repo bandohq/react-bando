@@ -198,9 +198,6 @@ export default function TransactionDetail({
             <BorderContainer container spacing={2}>
               {!transaction?.cashinDetails?.CLABE ? (
                 <GridRow xs={12} sx={{ gap: 1 }} className="sm-column">
-                  <DetailText variant="body2" sx={{ mr: 'auto' }}>
-                    {t('address')}
-                  </DetailText>
                   <TransactionCopyText
                     variant="body2"
                     sx={{ textAlign: 'right' }}

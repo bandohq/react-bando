@@ -49,6 +49,7 @@ export type Transaction = {
   createdAt?: string;
   updatedAt?: string;
   operationType?: string;
+  recipient?: string;
 };
 
 export type TransactionRequest = Record<string, unknown> & {
@@ -80,6 +81,7 @@ export const mapTransactionData = (data: TransactionRequest): Transaction =>
         key: data.network_config.key,
       },
     }),
+    recipient: data.recipient,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   }) as Transaction;
