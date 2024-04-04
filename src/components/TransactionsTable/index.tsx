@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
 import TransactionRow from './TransactionRow';
-import { TableBody, StyledTableRow, HeaderCell } from './TableComponets';
+import { TableBody, StyledTableRow, HeaderCell } from './TableComponents';
 
 import useTransactions from '@hooks/useTransactions';
 

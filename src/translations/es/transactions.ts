@@ -1,4 +1,5 @@
 export default {
+  history: 'Historial de Transacciones',
   table: {
     deposit: 'Deposito',
     withdraw: 'Retiro',

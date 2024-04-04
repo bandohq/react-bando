@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { TableRowDetail, TableRowDetail as Container } from './TableComponets';
+import { TableRowDetail, TableRowDetail as Container } from './TableComponents';
 import { SxProps, styled } from '@mui/material/styles';
 
 type CellDetailWithIconProps = {

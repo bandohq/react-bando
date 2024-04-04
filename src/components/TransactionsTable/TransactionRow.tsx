@@ -17,7 +17,7 @@ import { networkImg, currencyImgPath } from '@config/constants/currencies';
 
 import ArrowDown from '../../assets/ArrowDown.svg';
 import CopyImg from '../../assets/CopyToClipboard.svg';
-import { StyledTableCell, StyledTableRow, RowTextDetail, TableRowDetail } from './TableComponets';
+import { StyledTableCell, StyledTableRow, RowTextDetail, TableRowDetail } from './TableComponents';
 
 import { OperationType, Transaction } from '@hooks/useTransaction/requests';
 import formatWalletNumber from '@helpers/formatWalletNumber';
@@ -195,10 +195,6 @@ export default function TransactionRow({
             }}
           >
             <>
-              <RowTextDetail>
-                <span>{t('table.fee')}</span>
-                {row.fee ? formatNumber(row.fee) : t('table.noFee')}
-              </RowTextDetail>
               <RowTextDetail>
                 <span>{t('table.rate')}</span>
                 {formatNumber(row.quoteRateInverse)} USDC

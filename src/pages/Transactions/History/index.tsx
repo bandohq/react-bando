@@ -3,8 +3,11 @@ import BoxContainer from '@components/BoxContainer';
 import Typography from '@mui/material/Typography';
 
 import TransactionsTable from '@components/TransactionsTable';
+import { useTranslation } from 'react-i18next';
 
 export default function TransactionHistory() {
+  const { t } = useTranslation('transactions');
+
   return (
     <CleanLayout>
       <BoxContainer
@@ -26,7 +29,7 @@ export default function TransactionHistory() {
             mb: 1,
           }}
         >
-          Transaction History
+          {t('history')}
         </Typography>
 
         <TransactionsTable />
