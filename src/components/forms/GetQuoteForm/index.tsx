@@ -2,6 +2,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import BoxContainer from '@components/BoxContainer';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
+import { LiFiWidget, WidgetConfig } from '@lifi/widget';
 
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, useCallback, useRef } from 'react';
@@ -10,6 +11,7 @@ import debounce from 'lodash/debounce';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { GetQuoteFormValues } from './schema';
+import theme from '@config/theme';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
@@ -17,7 +19,7 @@ import Select from '@components/forms/Select';
 import Hr from '@components/Hr';
 
 import Polygon from '../../../assets/polygon.png';
-//import Ethereum from '../../../assets/ethereum.png';
+import Ethereum from '../../../assets/ethereum.png';
 
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
@@ -27,6 +29,34 @@ import env from '@config/env';
 import formatNumber from '@helpers/formatNumber';
 
 const REQUEST_DEBOUNCE = 250;
+
+const widgetConfig: WidgetConfig = {
+  variant: 'wide',
+  subvariant: 'default',
+  appearance: 'light',
+  theme: {
+    ...theme,
+    palette: {
+      ...theme.palette,
+      background: {
+        default: '#ffffff',
+        paper: '#f6f7f9',
+      },
+    },
+    typography: {
+      fontFamily: 'Inter, sans-serif',
+    },
+    containerStyle: {
+      boxShadow: '0px 8px 32px rgba(0, 0, 0, 0.08)',
+      borderRadius: '16px',
+    },
+    shape: {
+      borderRadiusSecondary: 8,
+      borderRadius: 8,
+    },
+  },
+  walletConfig: { async onConnect() {} },
+};
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
@@ -143,8 +173,9 @@ export default function GetQuoteForm() {
 
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
+      <LiFiWidget integrator="Your dApp/company name" config={widgetConfig} />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={2} sx={{ margin: 0 }}>
+        {/* <Grid container spacing={2} sx={{ margin: 0 }}>
           <Grid xs={12}>
             <Select
               defaultValue={'deposit'}
@@ -181,12 +212,12 @@ export default function GetQuoteForm() {
                   value: 'POLYGON',
                   startComponent: <CurrencyImg src={Polygon} />,
                 },
-                /* disabled for now
                 {
                   label: 'Ethereum',
                   value: 'ETHEREUM',
                   startComponent: <CurrencyImg src={Ethereum} />,
-                },*/
+                  hide: true,
+                },
               ]}
               {...register('network')}
             />
@@ -253,7 +284,7 @@ export default function GetQuoteForm() {
               Continuar
             </BandoButton>
           </Grid>
-        </Grid>
+        </Grid> */}
       </form>
     </BoxContainer>
   );
