@@ -90,6 +90,7 @@ export default function Navbar({ fullWidth = false }) {
           <nav role="navigation" className="navbar-menu">
             <UserMenu />
             <BandoButton
+              component="a"
               variant="text"
               size="small"
               className="rounded"
@@ -97,7 +98,7 @@ export default function Navbar({ fullWidth = false }) {
                 py: '0 !important',
                 '&.MuiButton-root:hover': { bgcolor: 'transparent', backgroundImage: 'none' },
               }}
-              href={'https://t.me/+ZUfDxp78dwAwMDcx'}
+              onClick={() => window.open('https://t.me/+ZUfDxp78dwAwMDcx', '_blank')}
             >
               Únete
               <img src={Telegram} loading="lazy" alt="" aria-label="Telegram Logo" />
