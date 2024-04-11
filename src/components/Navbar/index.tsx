@@ -52,10 +52,6 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
       marginLeft: theme.spacing(1),
     },
   },
-  '& .telegram-logo-box': {
-    display: 'flex',
-    flexDirection: 'row',
-  },
 }));
 
 export default function Navbar({ fullWidth = false }) {
@@ -97,7 +93,10 @@ export default function Navbar({ fullWidth = false }) {
               variant="text"
               size="small"
               className="rounded"
-              sx={{ py: '0 !important' }}
+              sx={{
+                py: '0 !important',
+                '&.MuiButton-root:hover': { bgcolor: 'transparent', backgroundImage: 'none' },
+              }}
               href={'https://t.me/+ZUfDxp78dwAwMDcx'}
             >
               Únete
