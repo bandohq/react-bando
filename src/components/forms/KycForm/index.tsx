@@ -130,8 +130,8 @@ export default function KycForm() {
             name="address.label"
             render={({ field: { onChange, onBlur, value } }) => (
               <PlacesAutocomplete
-                label="Dirección"
-                noOptionsText="No se encontro la dirección"
+                label="Domicilio"
+                noOptionsText="No se encontro el domicilio"
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
