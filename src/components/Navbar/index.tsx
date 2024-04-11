@@ -96,7 +96,6 @@ export default function Navbar({ fullWidth = false }) {
               className="rounded"
               sx={{
                 py: '0 !important',
-                '&.MuiButton-root:hover': { bgcolor: 'transparent', backgroundImage: 'none' },
               }}
               onClick={() => window.open('https://t.me/+ZUfDxp78dwAwMDcx', '_blank')}
             >
