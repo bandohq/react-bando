@@ -52,10 +52,6 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
       marginLeft: theme.spacing(1),
     },
   },
-  '& .telegram-logo-box': {
-    display: 'flex',
-    flexDirection: 'row',
-  },
 }));
 
 export default function Navbar({ fullWidth = false }) {
@@ -94,11 +90,14 @@ export default function Navbar({ fullWidth = false }) {
           <nav role="navigation" className="navbar-menu">
             <UserMenu />
             <BandoButton
+              component="a"
               variant="text"
               size="small"
               className="rounded"
-              sx={{ py: '0 !important' }}
-              href={'https://t.me/+ZUfDxp78dwAwMDcx'}
+              sx={{
+                py: '0 !important',
+              }}
+              onClick={() => window.open('https://t.me/+ZUfDxp78dwAwMDcx', '_blank')}
             >
               Únete
               <img src={Telegram} loading="lazy" alt="" aria-label="Telegram Logo" />
