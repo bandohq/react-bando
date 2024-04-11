@@ -2,7 +2,9 @@ import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
 import Logo from '../../assets/logo.svg';
+import Telegram from '../../assets/telegram.svg';
 import UserMenu from '@components/UserMenu';
+import BandoButton from '@components/Button';
 
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -41,7 +43,19 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
     verticalAlign: 'middle',
     display: 'inline-block',
   },
-  '& .navbar-menu': {},
+  '& .navbar-menu': {
+    display: 'flex',
+    alignItems: 'center',
+    '& img': {
+      width: 32,
+      height: 32,
+      marginLeft: theme.spacing(1),
+    },
+  },
+  '& .telegram-logo-box': {
+    display: 'flex',
+    flexDirection: 'row',
+  },
 }));
 
 export default function Navbar({ fullWidth = false }) {
@@ -76,9 +90,21 @@ export default function Navbar({ fullWidth = false }) {
         <a href="/" className="navbar-brand">
           <img src={Logo} loading="lazy" alt="" aria-label="Bando logo" />
         </a>
-        <nav role="navigation" className="navbar-menu">
-          <UserMenu />
-        </nav>
+        <div className="telegram-logo-box">
+          <nav role="navigation" className="navbar-menu">
+            <UserMenu />
+            <BandoButton
+              variant="text"
+              size="small"
+              className="rounded"
+              sx={{ py: '0 !important' }}
+              href={'https://t.me/+ZUfDxp78dwAwMDcx'}
+            >
+              Únete
+              <img src={Telegram} loading="lazy" alt="" aria-label="Telegram Logo" />
+            </BandoButton>
+          </nav>
+        </div>
       </div>
     </NavbarContainer>
   );
