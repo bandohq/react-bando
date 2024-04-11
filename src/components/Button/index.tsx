@@ -11,7 +11,7 @@ const BandoButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
   fontFamily: 'Kanit',
   fontWeight: 'bold',
   '&.rounded': { borderRadius: '24px' },
-  '&:hover': {
+  '&:hover:not(.MuiButton-text)': {
     backgroundColor: theme.palette.primary.main,
     backgroundImage: 'linear-gradient(rgb(0 0 0/20%) 0 0)',
     boxShadow: 'none',
