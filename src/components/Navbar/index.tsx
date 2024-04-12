@@ -46,9 +46,9 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   '& .navbar-menu': {
     display: 'flex',
     alignItems: 'center',
-    '& img': {
-      width: 32,
-      height: 32,
+    '& img.telegram-icon': {
+      width: 30,
+      height: 30,
       marginLeft: theme.spacing(1),
     },
   },
@@ -100,7 +100,13 @@ export default function Navbar({ fullWidth = false }) {
               onClick={() => window.open('https://t.me/+ZUfDxp78dwAwMDcx', '_blank')}
             >
               Únete
-              <img src={Telegram} loading="lazy" alt="" aria-label="Telegram Logo" />
+              <img
+                className="telegram-icon"
+                src={Telegram}
+                loading="lazy"
+                alt=""
+                aria-label="Telegram Logo"
+              />
             </BandoButton>
           </nav>
         </div>
