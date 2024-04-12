@@ -19,19 +19,22 @@ export default function mapProviderStatus(status: string) {
     case 'ERROR':
       return {
         text: 'Fallida ',
-        subtitle: 'Lo sentimos, tu transacción no pudo ser completada. Tu dinero será devuelto a tu cuenta en las próximas horas.',
+        subtitle:
+          'Lo sentimos, tu transacción no pudo ser completada. Tu dinero será devuelto a tu cuenta en las próximas horas.',
         color: 'error',
       };
     case 'EXPIRED':
       return {
         text: 'Expirada ',
-        subtitle: 'No pudimos detectar tu transacción durante 60 mins. Cualquier aclaración, por favor contacta a soporte.',
+        subtitle:
+          'No pudimos detectar tu transacción durante 60 mins. Cualquier aclaración, por favor contacta a soporte.',
         color: 'error',
       };
     case 'CANCELED':
       return {
         text: 'Cancelada ',
-        subtitle: 'Lo sentimos, tu transacción no pudo ser completada. Tu dinero será devuelto a tu cuenta en las próximas horas.',
+        subtitle:
+          'Lo sentimos, tu transacción no pudo ser completada. Tu dinero será devuelto a tu cuenta en las próximas horas.',
         color: 'error',
       };
     case 'COMPLETED':

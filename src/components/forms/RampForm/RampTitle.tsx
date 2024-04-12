@@ -70,7 +70,10 @@ export default function RampTitle({
 
       {subtitle && (
         <Grid xs={12}>
-          <Typography variant="body2" sx={{ fontSize: '13px !important', color: 'palette.ink.i600' }}>
+          <Typography
+            variant="body2"
+            sx={{ fontSize: '13px !important', color: 'palette.ink.i600' }}
+          >
             {subtitle}
           </Typography>
         </Grid>
