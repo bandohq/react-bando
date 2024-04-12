@@ -115,6 +115,7 @@ export default function TransactionDetail({
             success={success}
             noArrow={noContainer || noArrow}
             title={title}
+            subtitle={providerStatus.subtitle || undefined}
             leftContent={
               showStatusBadge &&
               providerStatus.text && (
