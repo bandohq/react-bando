@@ -73,7 +73,7 @@ export const mapTransactionData = (data: TransactionRequest): Transaction =>
     operationType: data.direction === 'ON' ? 'deposit' : 'withdraw',
     providerStatus: data.provider_status,
     cashinDetails: data.cash_in_details,
-    quoteRateInverse: 1 / parseFloat(data.rate as string),
+    quoteRateInverse: parseFloat(data.rate as string),
     ...(data.network_config && {
       networkConfig: {
         name: String(data.network_config.name).toUpperCase(),
