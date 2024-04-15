@@ -2,10 +2,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 import { currencyImgPath, networkImg } from '@config/constants/currencies';
 
-import ButtonBase, { ButtonProps } from '@mui/material/Button';
 import CurrencyInput from 'react-currency-input-field';
 
-import { styled, alpha } from '@mui/material/styles';
 import { CurrencyContainerIcon } from '@components/TransactionsTable/TransactionRow';
 import formatNumber from '@helpers/formatNumber';
 import { TransactionTypeIcon } from '@components/TransactionsTable/CellDetailWithIcon';
@@ -110,7 +108,7 @@ export default function TokensWidget() {
 
       <TokensContainer container spacing={2} sx={{ position: 'relative' }}>
         <Grid xs={12} sm={12} md={12}>
-          <CurrencyTokenButton disabled>
+          <CurrencyTokenButton onClick={() => console.log('btn clicked')}>
             <p>Envías</p>
             <CurrencyAmount>
               <Box sx={{ width: '38px' }}>
@@ -124,6 +122,8 @@ export default function TokensWidget() {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyItems: 'center',
+                  pointerEvents: 'none',
+                  zIndex: 500,
                 }}
               >
                 <CurrencyInput
@@ -132,6 +132,10 @@ export default function TokensWidget() {
                   decimalsLimit={2}
                   placeholder="$0.00"
                   decimalSeparator="."
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                  }}
                 />
                 <span className="currency-amount">MXN</span>
               </Box>
