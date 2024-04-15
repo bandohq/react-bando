@@ -1467,6 +1467,18 @@
   dependencies:
     "@swc/counter" "^0.1.3"
 
+"@tanstack/react-virtual@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.2.1.tgz#58ac9af23ff08b5f05a6dfe6a59deac2f9451508"
+  integrity sha512-i9Nt0ssIh2bSjomJZlr6Iq5usT/9+ewo2/fKHRNk6kjVKS8jrhXbnO8NEawarCuBx/efv0xpoUUKKGxa0cQb4Q==
+  dependencies:
+    "@tanstack/virtual-core" "3.2.1"
+
+"@tanstack/virtual-core@3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.2.1.tgz#b3e4214b8f462054501d80e8777068faa139bd06"
+  integrity sha512-nO0d4vRzsmpBQCJYyClNHPPoUMI4nXNfrm6IcCRL33ncWMoNVpURh9YebEHPw8KrtsP2VSJIHE4gf4XFGk1OGg==
+
 "@testing-library/dom@^9.0.0":
   version "9.3.4"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-9.3.4.tgz#50696ec28376926fec0a1bf87d9dbac5e27f60ce"
@@ -6490,6 +6502,11 @@ react-copy-to-clipboard@^5.1.0:
   dependencies:
     copy-to-clipboard "^3.3.1"
     prop-types "^15.8.1"
+
+react-currency-input-field@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-currency-input-field/-/react-currency-input-field-3.8.0.tgz#8b58d8e37ae00c86f43722bdb4a296d84703b19c"
+  integrity sha512-DKSIjacrvgUDOpuB16b+OVDvp5pbCt+s+RHJgpRZCHNhzg1yBpRUoy4fbnXpeOj0kdbwf5BaXCr2mAtxEujfhg==
 
 react-dom@^18.2.0:
   version "18.2.0"

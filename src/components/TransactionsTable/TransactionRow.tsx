@@ -41,7 +41,7 @@ const DepositArrow = styled(ArrowCircleIcon)(({ theme }) => ({
   },
 }));
 
-const CurrencyContainerIcon = styled('span')(({ theme }) => ({
+export const CurrencyContainerIcon = styled('span')(({ theme }) => ({
   width: 32,
   height: 32,
   aspectRatio: '1/1',
