@@ -35,7 +35,7 @@ export default function useUser() {
     try {
       await logoutUser();
       localStorage.removeItem(env.rampDataLocalStorage);
-      Cookies.remove(env.authCookieName);
+      Cookies.remove(env.authCookieName, { domain: window.location.hostname });
       resetUser();
     } catch (err) {
       //
