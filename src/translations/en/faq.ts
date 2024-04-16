@@ -1,9 +1,9 @@
 import { bandoAcademy } from '@config/constants/links';
 
 export default {
-  title: 'Frequently Ask Questions',
+  title: 'Frequently Asked Questions',
   q1: {
-    title: 'What is bando Bando?',
+    title: 'What is Bando?',
     info: 'Bando is a cryptocurrency platform that provides a simple and secure way for both new and experienced users to buy, sell, and manage their digital assets.',
   },
   q2: {

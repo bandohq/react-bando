@@ -1,5 +1,5 @@
 export default {
-  mainTitle: 'Exchange between MXN y crypto in one SPEI',
+  mainTitle: 'Exchange between MXN and crypto in one SPEI',
   subtitle:
     'With Bando enter and exit the crypto world in seconds with SPE. <separator />. You can deposit or withdraw to your wallet on Ethereum, Arbitrum, Optimism networks, and many more.',
   section1: {
@@ -8,7 +8,7 @@ export default {
   },
   section2: {
     title: 'Deposit pesos, <separator /> get crypto',
-    info: 'Deposita with pesos or your local currency and obtain cryptocurrency directly to your preferred wallet or in your Bando smart account.',
+    info: 'Deposit with pesos or your local currency and obtain cryptocurrency directly to your preferred wallet or in your Bando smart account.',
   },
   section3: {
     title: 'Put your cryptos to work for you.',
@@ -32,7 +32,7 @@ export default {
       },
       point3: {
         title: '3. Access to the best opportunities in crypto',
-        info: 'Conexión directa con los mejores protocolos descentralizados para que compres, vendas, pidas préstamos y pongas a tus activos a trabajar',
+        info: 'Direct connection with the best decentralized protocols so you can buy, sell, borrow, and put your assets to work.',
       },
     },
   },
