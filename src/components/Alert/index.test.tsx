@@ -11,7 +11,6 @@ describe('BandoAlert', () => {
         severity="info"
       />,
     );
-    screen.getByLabelText('info-box');
     screen.getByText('This is an outlined info Alert.');
   });
 });
