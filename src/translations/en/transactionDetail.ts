@@ -8,7 +8,6 @@ export default {
     newTransaction: 'Make another transtacion',
     academy: 'Learn crypto with Bando',
   },
-  speiAlert: 
-    'Make sure the "concepto" field is exactly as shown below. 👇',
-  speiAlertTitle: 'Before you transfer:'
+  speiAlert: 'Make sure the "concepto" field is exactly as shown below. 👇',
+  speiAlertTitle: 'Before you transfer:',
 };

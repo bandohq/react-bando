@@ -8,7 +8,6 @@ export default {
     newTransaction: 'Haz otra transacción',
     academy: 'Aprende cripto con Bando',
   },
-  speiAlert: 
-  'The "concepto" field must be exactly as shown below. Make sure you double check!',
-  speiAlertTitle: 'Antes de transferir:'
+  speiAlert: 'Asegurate de que el campo "concepto" sea exactamente como se muestra aquí debajo 👇',
+  speiAlertTitle: 'Antes de transferir:',
 };
