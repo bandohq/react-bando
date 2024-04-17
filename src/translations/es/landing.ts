@@ -1,7 +1,7 @@
 export default {
   mainTitle: 'Intercambia entre MXN y cripto en un SPEI',
   subtitle:
-    'Con Bando entra y sal del mundo cripto en segundos con SPEI. <separator /> Puedes depositar o retirar a tu wallet en las redes de Ethereum, Arbitrum, Optimism y muchas más.',
+    'Con Bando entra y sal del mundo cripto en segundos con SPEI. <separator /> Puedes depositar o retirar a tu wallet o exchange en la red de Polygon y muy pronto en las redes de Ethereum, Arbitrum, Optimism y muchas más.',
   section1: {
     title: 'Controla tus criptos y explora con seguridad',
     info: 'Bando es tu puerta a cripto como debe ser: tus llaves, tus tokens, con bajos costos de transacción y con la conexión a DeFi que buscas.',
