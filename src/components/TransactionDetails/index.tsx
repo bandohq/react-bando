@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 import RampTitle, { CircularButton as ArrowButton } from '@components/forms/RampForm/RampTitle';
 import RateText from './RateText';
+import BandoAlert from '@components/Alert';
 import CurrencyPill from '@components/forms/RampForm/CurrencyPill';
 import Hr from '@components/Hr';
 import TransactionCopyText, { DetailText } from './TransactionCopyText';
@@ -196,6 +197,9 @@ export default function TransactionDetail({
                 </Typography>
               </GridRow>
             </Grid>
+            {!!transaction?.cashinDetails?.concepto && (
+              <BandoAlert text={t('speiAlert')} title={t('speiAlertTitle')} severity="info" />
+            )}
             <BorderContainer container spacing={2}>
               {!transaction?.cashinDetails?.CLABE ? (
                 <GridRow xs={12} sx={{ gap: 1 }} className="sm-column">
