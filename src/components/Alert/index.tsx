@@ -8,8 +8,7 @@ export type BandoAlertProps = AlertProps & {
 };
 
 const StyledAlert = styled(Alert)<AlertProps>({
-  width: '100%',
-  marginBottom: '10px',
+  margin: '0 8px',
 });
 
 export default function BandoAlert({ title, text, severity, variant }: BandoAlertProps) {

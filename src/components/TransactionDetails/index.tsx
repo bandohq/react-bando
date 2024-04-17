@@ -248,7 +248,7 @@ export default function TransactionDetail({
                     </DetailText>
                     <TransactionCopyText
                       variant="body2"
-                      sx={{ textAlign: 'right' }}
+                      sx={{ textAlign: 'right', color: 'primary.dark', fontWeight: 700 }}
                       text={transaction?.cashinDetails?.concepto}
                     />
                   </GridRow>
