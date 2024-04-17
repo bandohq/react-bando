@@ -69,6 +69,7 @@ export const CurrencyTokenButton = styled(ButtonBase)<ButtonProps>(({ theme }) =
     boxShadow: 'none',
   },
   '&:disabled': { color: theme.palette.ink.i950 },
+  '&.Mui-focusVisible .MuiTouchRipple-root': { display: 'none' },
 }));
 
 export const CurrencyAmount = styled('div')(({ theme }) => ({
