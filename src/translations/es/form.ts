@@ -1,6 +1,7 @@
 export default {
   validation: {
     invalidAmount: 'Invalido',
-    minAmount: 'El monto mínimo es de {{amount}}',
+    onMinAmount: 'El monto mínimo es de $20.00 MXN',
+    offMinAmount: 'El monto mínimo es de $2.00 USD',
   },
 };

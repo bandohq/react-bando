@@ -4,6 +4,7 @@ import FormControlBase from '@mui/material/FormControl';
 import InputBase, { InputBaseProps } from '@mui/material/InputBase';
 import InputLabelBase from '@mui/material/InputLabel';
 import { alpha, styled } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 
 export type InputProps = InputBaseProps & {
   label?: string;
@@ -105,6 +106,7 @@ export const HelpText = styled(Box)(({ theme }) => ({
 const Input = forwardRef((inputProps: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
   const { label, helpText = '', mantainLabel = true, fullWidth = true, ...props } = inputProps;
   const labelText = props.id ?? props.name;
+  const { t } = useTranslation('form');
 
   return (
     <FormControl variant="standard">
@@ -119,7 +121,9 @@ const Input = forwardRef((inputProps: InputProps, ref: ForwardedRef<HTMLInputEle
         inputProps={{ ...props.inputProps, 'aria-label': labelText }}
         ref={ref}
       />
-      {!!helpText && <HelpText className={props.error ? 'error' : ''}>{helpText}</HelpText>}
+      {!!helpText && <HelpText className={props.error ? 'error' : ''}>
+        {typeof helpText === 'string' ? t(helpText as unknown as TemplateStringsArray) : helpText}
+      </HelpText>}
     </FormControl>
   );
 });
