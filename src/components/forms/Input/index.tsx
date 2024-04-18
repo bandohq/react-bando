@@ -121,9 +121,11 @@ const Input = forwardRef((inputProps: InputProps, ref: ForwardedRef<HTMLInputEle
         inputProps={{ ...props.inputProps, 'aria-label': labelText }}
         ref={ref}
       />
-      {!!helpText && <HelpText className={props.error ? 'error' : ''}>
-        {typeof helpText === 'string' ? t(helpText as unknown as TemplateStringsArray) : helpText}
-      </HelpText>}
+      {!!helpText && (
+        <HelpText className={props.error ? 'error' : ''}>
+          {typeof helpText === 'string' ? t(helpText as unknown as TemplateStringsArray) : helpText}
+        </HelpText>
+      )}
     </FormControl>
   );
 });
