@@ -21,7 +21,7 @@ const schema = yup.object().shape({
     })
     .when(['operationType'], {
       is: 'deposit',
-      then: (schema) => schema.max(500000, 'EL monto máximo es de $500,000 MXN'),
+      then: (schema) => schema.max(500000, 'El monto máximo es de $500,000 MXN'),
       otherwise: (schema) => schema.max(10000, 'El monto máximo es de $10,000 USD'),
     })
     .required(),
