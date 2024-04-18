@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, useCallback, useRef } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 import debounce from 'lodash/debounce';
 
 import { useForm } from 'react-hook-form';
@@ -31,6 +31,7 @@ import env from '@config/env';
 import formatNumber from '@helpers/formatNumber';
 
 const REQUEST_DEBOUNCE = 250;
+const DEFAULT_NETWORK_KEY = 'pol';
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
@@ -45,7 +46,7 @@ export default function GetQuoteForm({ enableNewWidget = false }) {
   const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
   const { user } = useUser();
-  const { register, handleSubmit, setValue, watch, formState, getValues } =
+  const { register, handleSubmit, setValue, watch, formState, reset, getValues } =
     useForm<GetQuoteFormValues>({
       resolver: yupResolver(schema),
       defaultValues: {
@@ -62,7 +63,9 @@ export default function GetQuoteForm({ enableNewWidget = false }) {
   const operationType = watch('operationType');
   const baseAmount = watch('baseAmount');
 
-  console.log({ tokens, networks });
+  const defaultNetwork = networks?.find((nwk) => nwk.key === DEFAULT_NETWORK_KEY) ?? networks?.[0];
+
+  console.log({ values: getValues() });
 
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
@@ -149,6 +152,14 @@ export default function GetQuoteForm({ enableNewWidget = false }) {
     event.target.value = idx >= 0 ? value.slice(0, idx + 3) : value;
     debouncedQuoteRequest.current();
   };
+
+  useEffect(() => {
+    if (defaultNetwork && tokens) {
+      reset({
+        networkObj: defaultNetwork,
+      });
+    }
+  }, [networks, tokens, defaultNetwork]);
 
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>

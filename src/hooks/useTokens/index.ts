@@ -1,24 +1,30 @@
 import useSWR, { useSWRConfig } from 'swr';
+import { useCallback } from 'react';
 
 import { getTokens } from './requests';
 import endpoints from '@config/endpoints';
-import { useCallback } from 'react';
+
+const TOKEN_QUERYSTR = '/?all=true';
 
 export default function useTokens({ chainKey = '' }) {
   const { mutate } = useSWRConfig();
-  const { data, ...queryReturn } = useSWR(`${endpoints.tokens}${chainKey}/`, getTokens, {
-    revalidateOnFocus: false,
-  });
+  const { data, ...queryReturn } = useSWR(
+    `${endpoints.tokens}${chainKey}${TOKEN_QUERYSTR}`,
+    getTokens,
+    {
+      revalidateOnFocus: false,
+    },
+  );
 
   const refetchTokens = useCallback(() => {
-    mutate(`${endpoints.tokens}${chainKey}`);
+    mutate(`${endpoints.tokens}${chainKey}${TOKEN_QUERYSTR}`);
   }, [mutate, chainKey]);
 
   return {
     refetchTokens,
     data,
     tokens: data?.tokens,
-    totalPageTokens: data?.tokens?.length ?? 0,
+    totalTokens: data?.tokens?.length ?? 0,
     ...queryReturn,
   };
 }

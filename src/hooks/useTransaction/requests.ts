@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { RequestQuoteArgs } from '@hooks/useQuote/requests';
 
-export type OperationType = 'deposit' | 'withdraw';
+export const OPERATION_TYPES = ['deposit', 'withdraw'] as const;
+export type OperationType = (typeof OPERATION_TYPES)[number];
 export type PostTransactionArgs = RequestQuoteArgs & {
   accountAddress: string;
   accountNetwork: string;
