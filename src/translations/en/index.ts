@@ -5,6 +5,7 @@ import kycPoints from './kycPoints';
 import userMenu from './userMenu';
 import ramp from './ramp';
 import transactions from './transactions';
+import form from './form';
 
 const footer = {
   disclaimer: `© ${new Date().getFullYear()}  Bando. All rights reserved.`,
@@ -19,4 +20,5 @@ export default {
   transactions,
   kycPoints,
   userMenu,
+  form,
 };
