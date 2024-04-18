@@ -24,12 +24,10 @@ type TokensWidgetProps = {
   defaultCurrency?: string;
 };
 
-export default function TokensWidget(
-  {
-    // defaultCurrency = '',
-    // onlyOneCurrency = false,
-  }: TokensWidgetProps,
-) {
+export default function TokensWidget({
+  defaultCurrency = '',
+  // onlyOneCurrency = false,
+}: TokensWidgetProps) {
   const methods = useFormContext<GetQuoteFormValuesV2>();
   const baseCurrency = methods.watch('baseCurrency');
   // const baseAmount = methods.watch('baseAmount');
@@ -54,6 +52,30 @@ export default function TokensWidget(
     methods.setValue('operationType', _reverseOperation);
   };
 
+  const chooseCurrencyComp = (currency?: string) => {
+    return (
+      <>
+        {currency ? (
+          // TODO: Add img when network and token have been picked
+          <>
+            <img alt={'MXN'} src={currencyImgPath.USDC} />
+            <span className="network-img">
+              <img alt="network" src={networkImg.POLYGON} />
+            </span>
+          </>
+        ) : (
+          // TODO: Add drawer component to pick network and token
+          <Box
+            sx={{ padding: 0, pointerEvents: 'auto' }}
+            onClick={() => console.log('pick network')}
+          >
+            <img alt={'MXN'} src={TokenPlaceholder} />{' '}
+          </Box>
+        )}
+      </>
+    );
+  };
+
   return (
     <TokensContainer container spacing={2}>
       <Grid xs={12} sm={12} md={12}>
@@ -65,7 +87,7 @@ export default function TokensWidget(
       <TokensContainer container spacing={2} sx={{ position: 'relative' }}>
         <>
           <Grid xs={12} sm={12} md={12}>
-            <CurrencyTokenButton>
+            <CurrencyTokenButton disabled={baseCurrency === defaultCurrency}>
               <p>Envías</p>
               <CurrencyAmount>
                 <Box sx={{ width: '38px', pointerEvents: 'none' }}>
@@ -76,27 +98,8 @@ export default function TokensWidget(
                         src={currencyImgPath[baseCurrency as keyof typeof currencyImgPath]}
                       />
                     ) : (
-                      <>
-                        {baseCurrency ? (
-                          // TODO: Add img when network and token have been picked
-                          <>
-                            <img alt={'MXN'} src={currencyImgPath.USDC} />
-                            <span className="network-img">
-                              <img alt="network" src={networkImg.POLYGON} />
-                            </span>
-                          </>
-                        ) : (
-                          // TODO: Add drawer component to pick network and token
-                          <CircularButton
-                            sx={{ padding: 0, pointerEvents: 'auto' }}
-                            onClick={() => console.log('pick network')}
-                          >
-                            <img alt={'MXN'} src={TokenPlaceholder} />{' '}
-                          </CircularButton>
-                        )}
-                      </>
+                      chooseCurrencyComp(baseCurrency)
                     )}
-                    {/* <img alt={'MXN'} src={currencyImgPath.MXN} /> */}
                   </TransactionTypeIcon>
                 </Box>
                 <Box
@@ -123,15 +126,24 @@ export default function TokensWidget(
           </Grid>
 
           <Grid xs={12} sm={12} md={12}>
-            <CurrencyTokenButton disabled>
+            <CurrencyTokenButton disabled={quoteCurrency === defaultCurrency}>
               <p>Hacia</p>
               <CurrencyAmount>
                 <Box sx={{ width: '38px' }}>
                   <TransactionTypeIcon>
-                    <img alt={'MXN'} src={currencyImgPath.USDC} />
+                    {/* <img alt={'MXN'} src={currencyImgPath.USDC} />
                     <span className="network-img">
                       <img alt="network" src={networkImg.POLYGON} />
-                    </span>
+                    </span> */}
+
+                    {isDeposit && quoteCurrency ? (
+                      <img
+                        alt={quoteCurrency}
+                        src={currencyImgPath[quoteCurrency as keyof typeof currencyImgPath]}
+                      />
+                    ) : (
+                      chooseCurrencyComp(quoteCurrency)
+                    )}
                   </TransactionTypeIcon>
                 </Box>
                 <Box
