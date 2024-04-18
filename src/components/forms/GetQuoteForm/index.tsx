@@ -23,6 +23,7 @@ import TokensWidget from '@components/TokensWidget';
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
 import useTokens from '@hooks/useTokens';
+import useNetworks from '@hooks/useNetworks';
 
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
 import { Quote } from '@hooks/useQuote/requests';
@@ -53,13 +54,15 @@ export default function GetQuoteForm({ enableNewWidget = false }) {
         operationType: 'deposit',
       },
     });
+
+  const { networks } = useNetworks();
   const { tokens } = useTokens({ chainKey: 'pol' });
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
   const operationType = watch('operationType');
   const baseAmount = watch('baseAmount');
 
-  console.log({ tokens });
+  console.log({ tokens, networks });
 
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;

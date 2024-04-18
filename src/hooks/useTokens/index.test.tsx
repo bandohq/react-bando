@@ -3,159 +3,76 @@ import axios from 'axios';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import wrapper from '@helpers/TestProvider';
+import mockTokensResponse from './mock';
 
 jest.mock('axios');
-jest.useFakeTimers();
 
-import useTransactions from '.';
+import useTokens from '.';
 
-const mockTransactionResponse = {
-  id: 46,
-  transaction_id: 555,
-  status: 'passed',
-  base_amount: 1000,
-  base_currency: 'MXN',
-  quote_currency: 'USDC',
-  quote_amount: '58.47',
-  rate: '1',
-  fee: '2',
-  direction: 'OFF',
-  is_expired: false,
-  cash_in_network: 'cash_in_network',
-  provider_status: 'provider_status',
-  end_network: 'end_network',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  cash_in_details: {
-    network: 'network',
-    bank: 'bank',
-    beneficiary: 'beneficiary',
-    clabe: 'clabe',
-    concepto: 'concepto',
-  },
-};
-
-const mockTransactionList = {
-  '2024-03-01': [mockTransactionResponse, mockTransactionResponse],
-  '2024-03-18': [mockTransactionResponse, mockTransactionResponse],
-};
-
-describe('useTransactions', () => {
+describe('useTokens', () => {
   beforeEach(() => {
     (axios.get as jest.Mock).mockResolvedValue({
-      data: mockTransactionList,
+      data: mockTokensResponse,
     });
   });
 
-  it('gets the transaction list', async () => {
-    const { result } = renderHook(() => useTransactions(), { wrapper });
+  it('gets the tokens list', async () => {
+    const { result } = renderHook(() => useTokens({ chainKey: 'pol' }), { wrapper });
 
-    expect(result.current.transactions).toBeUndefined();
+    expect(result.current.data).toBeUndefined();
+    expect(result.current.totalPageTokens).toBe(0);
 
     await waitFor(() => {
-      expect(result.current.transactions).toStrictEqual({
-        '2024-03-01': [
+      expect(result.current.totalPageTokens).toBe(3);
+      expect(result.current.data).toStrictEqual({
+        count: 1348,
+        next: 'http://localhost:8000/api/v1/ramps/token/pol/?page=2',
+        previous: null,
+        tokens: [
           {
-            baseAmount: 1000,
-            baseCurrency: 'MXN',
-            cashInNetwork: 'cash_in_network',
-            cashinDetails: {
-              bank: 'bank',
-              beneficiary: 'beneficiary',
-              clabe: 'clabe',
-              concepto: 'concepto',
-              network: 'network',
-            },
-            createdAt: 'created_at',
-            endNetwork: 'end_network',
-            fee: 2,
-            id: 46,
-            operationType: 'withdraw',
-            providerStatus: 'provider_status',
-            quoteAmount: 58.47,
-            quoteCurrency: 'USDC',
-            quoteRateInverse: 1,
-            rate: 1,
-            status: 'passed',
-            transactionId: 555,
-            updatedAt: 'updated_at',
+            address: '0x9627a3d6872bE48410fCEce9b1dDD344Bf08c53e',
+            decimals: 2,
+            id: 33065,
+            imageUrl: null,
+            isOfframpActive: false,
+            isOfframpVerified: true,
+            isOnrampActive: false,
+            isOnrampVerified: true,
+            key: 'ACE',
+            maxAllowance: null,
+            minAllowance: null,
+            name: 'MetaTrace Utility Token',
+            symbol: 'ACE',
           },
           {
-            baseAmount: 1000,
-            baseCurrency: 'MXN',
-            cashInNetwork: 'cash_in_network',
-            cashinDetails: {
-              bank: 'bank',
-              beneficiary: 'beneficiary',
-              clabe: 'clabe',
-              concepto: 'concepto',
-              network: 'network',
-            },
-            createdAt: 'created_at',
-            endNetwork: 'end_network',
-            fee: 2,
-            id: 46,
-            operationType: 'withdraw',
-            providerStatus: 'provider_status',
-            quoteAmount: 58.47,
-            quoteCurrency: 'USDC',
-            quoteRateInverse: 1,
-            rate: 1,
-            status: 'passed',
-            transactionId: 555,
-            updatedAt: 'updated_at',
-          },
-        ],
-        '2024-03-18': [
-          {
-            baseAmount: 1000,
-            baseCurrency: 'MXN',
-            cashInNetwork: 'cash_in_network',
-            cashinDetails: {
-              bank: 'bank',
-              beneficiary: 'beneficiary',
-              clabe: 'clabe',
-              concepto: 'concepto',
-              network: 'network',
-            },
-            createdAt: 'created_at',
-            endNetwork: 'end_network',
-            fee: 2,
-            id: 46,
-            operationType: 'withdraw',
-            providerStatus: 'provider_status',
-            quoteAmount: 58.47,
-            quoteCurrency: 'USDC',
-            quoteRateInverse: 1,
-            rate: 1,
-            status: 'passed',
-            transactionId: 555,
-            updatedAt: 'updated_at',
+            address: '0x784665471bB8B945b57A76a9200B109Ee214E789',
+            decimals: 6,
+            id: 33000,
+            imageUrl: null,
+            isOfframpActive: false,
+            isOfframpVerified: true,
+            isOnrampActive: false,
+            isOnrampVerified: true,
+            key: 'KC',
+            maxAllowance: null,
+            minAllowance: null,
+            name: 'Krasnalcoin',
+            symbol: 'KC',
           },
           {
-            baseAmount: 1000,
-            baseCurrency: 'MXN',
-            cashInNetwork: 'cash_in_network',
-            cashinDetails: {
-              bank: 'bank',
-              beneficiary: 'beneficiary',
-              clabe: 'clabe',
-              concepto: 'concepto',
-              network: 'network',
-            },
-            createdAt: 'created_at',
-            endNetwork: 'end_network',
-            fee: 2,
-            id: 46,
-            operationType: 'withdraw',
-            providerStatus: 'provider_status',
-            quoteAmount: 58.47,
-            quoteCurrency: 'USDC',
-            quoteRateInverse: 1,
-            rate: 1,
-            status: 'passed',
-            transactionId: 555,
-            updatedAt: 'updated_at',
+            address: '0xAb9CB20A28f97e189ca0B666B8087803Ad636b3C',
+            decimals: 18,
+            id: 33410,
+            imageUrl: null,
+            isOfframpActive: false,
+            isOfframpVerified: true,
+            isOnrampActive: false,
+            isOnrampVerified: true,
+            key: 'MDUS',
+            maxAllowance: null,
+            minAllowance: null,
+            name: 'Medieus Token',
+            symbol: 'MDUS',
           },
         ],
       });

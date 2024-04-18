@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 
 export default function useTokens({ chainKey = '' }) {
   const { mutate } = useSWRConfig();
-  const { data: tokens, ...queryReturn } = useSWR(`${endpoints.tokens}${chainKey}/`, getTokens, {
+  const { data, ...queryReturn } = useSWR(`${endpoints.tokens}${chainKey}/`, getTokens, {
     revalidateOnFocus: false,
   });
 
@@ -16,7 +16,9 @@ export default function useTokens({ chainKey = '' }) {
 
   return {
     refetchTokens,
-    tokens,
+    data,
+    tokens: data?.tokens,
+    totalPageTokens: data?.tokens?.length ?? 0,
     ...queryReturn,
   };
 }
