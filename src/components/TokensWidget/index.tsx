@@ -2,8 +2,10 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 import { currencyImgPath, networkImg } from '@config/constants/currencies';
 
+import ButtonBase, { ButtonProps } from '@mui/material/Button';
 import CurrencyInput from 'react-currency-input-field';
 
+import { styled, alpha } from '@mui/material/styles';
 import { CurrencyContainerIcon } from '@components/TransactionsTable/TransactionRow';
 import formatNumber from '@helpers/formatNumber';
 import { TransactionTypeIcon } from '@components/TransactionsTable/CellDetailWithIcon';
@@ -17,13 +19,13 @@ const TokensContainer = styled(Grid)(({ theme }) => ({
   display: 'flex',
   margin: 0,
   padding: 0,
-  fontFamily: 'Archivo',
+  fontFamily: 'Kanit',
   '& input.currency-input': {
     border: 'none',
     pointerEvents: 'auto',
     outline: 0,
     backgroundColor: 'transparent',
-    fontFamily: 'Archivo',
+    fontFamily: 'Kanit',
     fontWeight: 'bold',
     fontSize: theme.typography.pxToRem(24),
     lineHeight: 0,
@@ -69,7 +71,7 @@ const CurrencyTokenButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
   borderWidth: '1px',
   borderStyle: 'solid',
   '& p': {
-    fontFamily: 'Archivo',
+    fontFamily: 'Kanit',
     fontWeight: 'bold',
     fontSize: theme.typography.pxToRem(12),
   },
@@ -101,14 +103,14 @@ export default function TokensWidget() {
   return (
     <TokensContainer container spacing={2}>
       <Grid xs={12} sm={12} md={12}>
-        <Title variant="h2" sx={{ fontFamily: 'Archivo', mb: 1, fontSize: 20, color: 'ink.i900' }}>
+        <Title variant="h2" sx={{ fontFamily: 'Kanit', mb: 1, fontSize: 20, color: 'ink.i900' }}>
           Entra al mundo cripto
         </Title>
       </Grid>
 
       <TokensContainer container spacing={2} sx={{ position: 'relative' }}>
         <Grid xs={12} sm={12} md={12}>
-          <CurrencyTokenButton onClick={() => console.log('btn clicked')}>
+          <CurrencyTokenButton disabled>
             <p>Envías</p>
             <CurrencyAmount>
               <Box sx={{ width: '38px' }}>
@@ -122,8 +124,6 @@ export default function TokensWidget() {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyItems: 'center',
-                  pointerEvents: 'none',
-                  zIndex: 500,
                 }}
               >
                 <CurrencyInput
@@ -132,10 +132,6 @@ export default function TokensWidget() {
                   decimalsLimit={2}
                   placeholder="$0.00"
                   decimalSeparator="."
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                  }}
                 />
                 <span className="currency-amount">MXN</span>
               </Box>
