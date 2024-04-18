@@ -41,7 +41,6 @@ const theme = createTheme({
     fontFamily: [
       'Kanit',
       'TWK Everett',
-      'Archivo',
       '-apple-system',
       'Arial',
       'sans-serif',
