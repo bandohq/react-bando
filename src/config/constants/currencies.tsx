@@ -3,7 +3,7 @@ import Usdc from '../../assets/image-58_1.png';
 import Usdt from '../../assets/usdt.svg';
 import Polygon from '../../assets/polygon.png';
 import Ethereum from '../../assets/ethereum.png';
-import Mexico from '../../assets/Mexico-01.svg';
+import Mexico from '../../assets/Mexico.svg';
 
 import CurrencyImg from '@components/CurrencyImg';
 

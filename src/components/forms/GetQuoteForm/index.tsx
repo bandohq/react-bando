@@ -17,10 +17,14 @@ import Select from '@components/forms/Select';
 import Hr from '@components/Hr';
 
 import Polygon from '../../../assets/polygon.png';
-//import Ethereum from '../../../assets/ethereum.png';
+import Ethereum from '../../../assets/ethereum.png';
+import TokensWidget from '@components/TokensWidget';
 
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
+import useTokens from '@hooks/useTokens';
+import useNetworks from '@hooks/useNetworks';
+
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
@@ -37,7 +41,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
   height: 37,
 }));
 
-export default function GetQuoteForm() {
+export default function GetQuoteForm({ enableNewWidget = false }) {
   const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
   const { user } = useUser();
@@ -50,10 +54,15 @@ export default function GetQuoteForm() {
         operationType: 'deposit',
       },
     });
+
+  const { networks } = useNetworks();
+  const { tokens } = useTokens({ chainKey: 'pol' });
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
   const operationType = watch('operationType');
   const baseAmount = watch('baseAmount');
+
+  console.log({ tokens, networks });
 
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
@@ -144,118 +153,122 @@ export default function GetQuoteForm() {
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={2} sx={{ margin: 0 }}>
-          <Grid xs={12}>
-            <Select
-              defaultValue={'deposit'}
-              fullWidth={false}
-              mantainLabel={false}
-              className="no-border"
-              sx={{
-                width: 'fit-content',
-                fontWeight: '500',
-                fontSize: '1.5rem !important',
-                color: 'palette.ink.i900',
-              }}
-              {...register('operationType', { onChange: onChangeOperationType })}
-              items={[
-                {
-                  label: `Deposita ${operationCurrency}`,
-                  value: 'deposit',
-                },
-                {
-                  label: `Retira ${operationCurrency}`,
-                  value: 'withdraw',
-                },
-              ]}
-            />
-          </Grid>
+        {enableNewWidget ? (
+          <TokensWidget />
+        ) : (
+          <Grid container spacing={2} sx={{ margin: 0 }}>
+            <Grid xs={12}>
+              <Select
+                defaultValue={'deposit'}
+                fullWidth={false}
+                mantainLabel={false}
+                className="no-border"
+                sx={{
+                  width: 'fit-content',
+                  fontWeight: '500',
+                  fontSize: '1.5rem !important',
+                  color: 'palette.ink.i900',
+                }}
+                {...register('operationType', { onChange: onChangeOperationType })}
+                items={[
+                  {
+                    label: `Deposita ${operationCurrency}`,
+                    value: 'deposit',
+                  },
+                  {
+                    label: `Retira ${operationCurrency}`,
+                    value: 'withdraw',
+                  },
+                ]}
+              />
+            </Grid>
 
-          <Grid xs={12}>
-            <Select
-              defaultValue={'POLYGON'}
-              label="Red a recibir"
-              items={[
-                {
-                  label: 'Polygon',
-                  value: 'POLYGON',
-                  startComponent: <CurrencyImg src={Polygon} />,
-                },
-                /* disabled for now
-                {
-                  label: 'Ethereum',
-                  value: 'ETHEREUM',
-                  startComponent: <CurrencyImg src={Ethereum} />,
-                },*/
-              ]}
-              {...register('network')}
-            />
-          </Grid>
+            <Grid xs={12}>
+              <Select
+                defaultValue={'POLYGON'}
+                label="Red a recibir"
+                items={[
+                  {
+                    label: 'Polygon',
+                    value: 'POLYGON',
+                    startComponent: <CurrencyImg src={Polygon} />,
+                  },
+                  {
+                    label: 'Ethereum',
+                    value: 'ETHEREUM',
+                    startComponent: <CurrencyImg src={Ethereum} />,
+                    hide: true,
+                  },
+                ]}
+                {...register('network')}
+              />
+            </Grid>
 
-          <Grid md={8} sm={6} xs={12}>
-            <Input
-              label="Envias"
-              type="text"
-              inputMode="numeric"
-              {...register('baseAmount', { onChange: onQuantityChange })}
-              helpText={formState.errors.baseAmount?.message}
-              error={!!formState.errors.baseAmount?.message}
-            />
-          </Grid>
-          <Grid md={4} sm={6} xs={12}>
-            <Select
-              items={depositCurrencyItems}
-              value={baseCurrency}
-              {...register('baseCurrency', { onChange: onChangeCurrencySelects })}
-              error={!!formState.errors.baseCurrency?.message}
-              helpText={formState.errors.baseCurrency?.message}
-            />
-          </Grid>
-          <Grid md={8} sm={6} xs={12}>
-            <Input
-              label="Recibes"
-              type="text"
-              name="quoteAmount"
-              value={formatNumber(data?.quoteAmount ?? 0)}
-              helpText={
-                <>
-                  {isMutating ? (
-                    <CircularProgress
-                      size={15}
-                      sx={{ marginLeft: 1, color: 'palette.ink.i500' }}
-                      aria-label="submitting"
-                    />
-                  ) : (
-                    rateText
-                  )}
-                </>
-              }
-              disabled
-            />
-          </Grid>
-          <Grid md={4} sm={6} xs={12}>
-            <Select
-              items={sendCurrencyItems}
-              value={quoteCurrency}
-              {...register('quoteCurrency', { onChange: onChangeCurrencySelects })}
-              error={!!formState.errors.quoteCurrency?.message}
-            />
-          </Grid>
+            <Grid md={8} sm={6} xs={12}>
+              <Input
+                label="Envias"
+                type="text"
+                inputMode="numeric"
+                {...register('baseAmount', { onChange: onQuantityChange })}
+                helpText={formState.errors.baseAmount?.message}
+                error={!!formState.errors.baseAmount?.message}
+              />
+            </Grid>
+            <Grid md={4} sm={6} xs={12}>
+              <Select
+                items={depositCurrencyItems}
+                value={baseCurrency}
+                {...register('baseCurrency', { onChange: onChangeCurrencySelects })}
+                error={!!formState.errors.baseCurrency?.message}
+                helpText={formState.errors.baseCurrency?.message}
+              />
+            </Grid>
+            <Grid md={8} sm={6} xs={12}>
+              <Input
+                label="Recibes"
+                type="text"
+                name="quoteAmount"
+                value={formatNumber(data?.quoteAmount ?? 0)}
+                helpText={
+                  <>
+                    {isMutating ? (
+                      <CircularProgress
+                        size={15}
+                        sx={{ marginLeft: 1, color: 'palette.ink.i500' }}
+                        aria-label="submitting"
+                      />
+                    ) : (
+                      rateText
+                    )}
+                  </>
+                }
+                disabled
+              />
+            </Grid>
+            <Grid md={4} sm={6} xs={12}>
+              <Select
+                items={sendCurrencyItems}
+                value={quoteCurrency}
+                {...register('quoteCurrency', { onChange: onChangeCurrencySelects })}
+                error={!!formState.errors.quoteCurrency?.message}
+              />
+            </Grid>
 
-          <Grid xs={12}>
-            <Hr sx={{ marginBottom: 2 }} />
+            <Grid xs={12}>
+              <Hr sx={{ marginBottom: 2 }} />
+            </Grid>
+            <Grid xs={12}>
+              <BandoButton
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{ padding: '16px 8px', fontWeight: 'bold' }}
+              >
+                Continuar
+              </BandoButton>
+            </Grid>
           </Grid>
-          <Grid xs={12}>
-            <BandoButton
-              type="submit"
-              variant="contained"
-              fullWidth
-              sx={{ padding: '16px 8px', fontWeight: 'bold' }}
-            >
-              Continuar
-            </BandoButton>
-          </Grid>
-        </Grid>
+        )}
       </form>
     </BoxContainer>
   );

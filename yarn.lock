@@ -986,24 +986,24 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@magic-sdk/commons@^17.5.0":
-  version "17.5.0"
-  resolved "https://registry.yarnpkg.com/@magic-sdk/commons/-/commons-17.5.0.tgz#4f9310936264a610d89b2cbd999f29f6a280ba17"
-  integrity sha512-2KdLT6KTNnToOuTb92a/Ur/zGfV8/M89W+wqrcumcSmdOOyD65C80q2Gd70OF2+HZEOPEfBp8vBTfOGyRSb8fg==
+"@magic-sdk/commons@^18.1.1":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@magic-sdk/commons/-/commons-18.1.1.tgz#36c1dc04f319a333a7c46b8e53b9055d69436a79"
+  integrity sha512-Rcc1M3B+UacYbW8Io46rfMmzx3Z3Q03Ye3cBxYr5CPVP5/8vLHlO0mO/+E2PX8PPAMfshRHkgdql7zStE+njnA==
 
-"@magic-sdk/provider@^21.5.0":
-  version "21.5.0"
-  resolved "https://registry.yarnpkg.com/@magic-sdk/provider/-/provider-21.5.0.tgz#5116c291dc88de89c516c4d3e9dce69024b8c172"
-  integrity sha512-q2UAww4Hv8qDg+GYUqmUhdLPL5lfmYXpD6HN1IMI1HBU/SG2hLMVs/28u+RrCC1GddrqTTDal9GXONd3OHurHA==
+"@magic-sdk/provider@^22.1.1":
+  version "22.1.1"
+  resolved "https://registry.yarnpkg.com/@magic-sdk/provider/-/provider-22.1.1.tgz#3ee2f3b62c240aee034d9fd1e99a2c3261355ad4"
+  integrity sha512-Bc1RdIqh+PyYdpVT8Xnmg0SmJeQunX0kKl2BmPItdWDG5YnQGLS76dKmVMbkCYCwneeVFWeVUwRv5Sr8ppc8ew==
   dependencies:
-    "@magic-sdk/types" "^17.3.0"
+    "@magic-sdk/types" "^18.1.1"
     eventemitter3 "^4.0.4"
     web3-core "1.5.2"
 
-"@magic-sdk/types@^17.3.0":
-  version "17.3.0"
-  resolved "https://registry.yarnpkg.com/@magic-sdk/types/-/types-17.3.0.tgz#66fbcc4d9e31eae7b687059d4111565503179289"
-  integrity sha512-0mTFr1qDJ94pOJkFu1oZ/s2KnV7lHgILvWuFh7fs7ugyn7z9M7euP9g+Bv+kEdZ6ja4QlNi+UR0OryaXowv75w==
+"@magic-sdk/types@^18.1.1":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@magic-sdk/types/-/types-18.1.1.tgz#3bbab822efd6f9dc695a8b8849f556c3db6fd169"
+  integrity sha512-QH6fAujGgSGyvTxMhf98oUlsnutS6M9VcHmFdmOTnCq7iuxa6qeDPIsBTjqnqBrg5qFePhA5WresvcClMp3HJw==
 
 "@mswjs/cookies@^0.2.2":
   version "0.2.2"
@@ -1466,6 +1466,18 @@
   integrity sha512-/JLo/l2JsT/LRd80C3HfbmVpxOAJ11FO2RCEslFrgzLltoP9j8XIbsyDcfCt2WWyX+CM96rBoNM+IToAkFOugg==
   dependencies:
     "@swc/counter" "^0.1.3"
+
+"@tanstack/react-virtual@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.2.1.tgz#58ac9af23ff08b5f05a6dfe6a59deac2f9451508"
+  integrity sha512-i9Nt0ssIh2bSjomJZlr6Iq5usT/9+ewo2/fKHRNk6kjVKS8jrhXbnO8NEawarCuBx/efv0xpoUUKKGxa0cQb4Q==
+  dependencies:
+    "@tanstack/virtual-core" "3.2.1"
+
+"@tanstack/virtual-core@3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.2.1.tgz#b3e4214b8f462054501d80e8777068faa139bd06"
+  integrity sha512-nO0d4vRzsmpBQCJYyClNHPPoUMI4nXNfrm6IcCRL33ncWMoNVpURh9YebEHPw8KrtsP2VSJIHE4gf4XFGk1OGg==
 
 "@testing-library/dom@^9.0.0":
   version "9.3.4"
@@ -5489,14 +5501,14 @@ lz-string@^1.5.0:
   resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.5.0.tgz#c1ab50f77887b712621201ba9fd4e3a6ed099941"
   integrity sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==
 
-magic-sdk@^21.5.0:
-  version "21.5.0"
-  resolved "https://registry.yarnpkg.com/magic-sdk/-/magic-sdk-21.5.0.tgz#7a504a92e277e34889a7dad3a6a057d6f8080bd0"
-  integrity sha512-LNSTJGOO1wtJSwoEnO8ehH3RePdYc3lc0pD+SGZWyY78Ly6CgNE15lILBGJvpdaZjZd6wVqDYOf6Hh+PayuNKg==
+magic-sdk@^22.0.0:
+  version "22.1.1"
+  resolved "https://registry.yarnpkg.com/magic-sdk/-/magic-sdk-22.1.1.tgz#4450a21906f2b3bcc1c276d421a8eeeff2082089"
+  integrity sha512-K9YDI77WcCh47oa5K6TuohpXbw1+lRCvKsTEP5fNGN17V7+nvgUkjjt1geAF4WE4pj1hCjz+FXlWu6wstwW8Uw==
   dependencies:
-    "@magic-sdk/commons" "^17.5.0"
-    "@magic-sdk/provider" "^21.5.0"
-    "@magic-sdk/types" "^17.3.0"
+    "@magic-sdk/commons" "^18.1.1"
+    "@magic-sdk/provider" "^22.1.1"
+    "@magic-sdk/types" "^18.1.1"
     localforage "^1.7.4"
 
 make-dir@^4.0.0:
@@ -6480,6 +6492,11 @@ react-copy-to-clipboard@^5.1.0:
   dependencies:
     copy-to-clipboard "^3.3.1"
     prop-types "^15.8.1"
+
+react-currency-input-field@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-currency-input-field/-/react-currency-input-field-3.8.0.tgz#8b58d8e37ae00c86f43722bdb4a296d84703b19c"
+  integrity sha512-DKSIjacrvgUDOpuB16b+OVDvp5pbCt+s+RHJgpRZCHNhzg1yBpRUoy4fbnXpeOj0kdbwf5BaXCr2mAtxEujfhg==
 
 react-dom@^18.2.0:
   version "18.2.0"
