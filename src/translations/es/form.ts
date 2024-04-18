@@ -1,6 +1,6 @@
 export default {
-    validation: {
-        invalidAmount: "Invalido",
-        minAmount: "El monto mínimo es de {{amount}}",
-    }
+  validation: {
+    invalidAmount: 'Invalido',
+    minAmount: 'El monto mínimo es de {{amount}}',
+  },
 };
