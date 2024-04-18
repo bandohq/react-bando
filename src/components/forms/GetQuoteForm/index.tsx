@@ -198,6 +198,7 @@ export default function GetQuoteForm() {
               type="text"
               inputMode="numeric"
               {...register('baseAmount', { onChange: onQuantityChange })}
+              helpText={formState.errors.baseAmount?.message}
               error={!!formState.errors.baseAmount?.message}
             />
           </Grid>
@@ -207,6 +208,7 @@ export default function GetQuoteForm() {
               value={baseCurrency}
               {...register('baseCurrency', { onChange: onChangeCurrencySelects })}
               error={!!formState.errors.baseCurrency?.message}
+              helpText={formState.errors.baseCurrency?.message}
             />
           </Grid>
           <Grid md={8} sm={6} xs={12}>
