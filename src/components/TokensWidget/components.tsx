@@ -16,7 +16,9 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
     fontFamily: 'Kanit',
     fontWeight: 'bold',
     fontSize: theme.typography.pxToRem(24),
-    lineHeight: 0,
+    lineHeight: theme.typography.pxToRem(24),
+    minHeight: 'auto',
+    height: theme.typography.pxToRem(26),
     margin: 0,
     width: '100%',
     color: theme.palette.ink.i950,
@@ -26,6 +28,14 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
     },
     '&::placeholder': {
       color: theme.palette.ink.i950,
+    },
+  },
+  '& input.currency-input.placeholder': {
+    '&::placeholder': {
+      color: theme.palette.ink.i400,
+      fontFamily: 'TWK Everett',
+      fontWeight: 'normal',
+      fontSize: theme.typography.pxToRem(16),
     },
   },
   '& span.currency-amount': {
@@ -75,9 +85,9 @@ export const CurrencyTokenButton = styled(ButtonBase)<ButtonProps>(({ theme }) =
 export const CurrencyAmount = styled('div')(({ theme }) => ({
   width: '100%',
   display: 'flex',
-  justifyContent: 'flex-start',
+  justifyContent: 'center',
   gap: theme.spacing(2),
-  alignItems: 'flex-start',
+  alignItems: 'center',
   pointerEvents: 'auto',
   '& p': {
     fontFamily: 'TWK Everett',

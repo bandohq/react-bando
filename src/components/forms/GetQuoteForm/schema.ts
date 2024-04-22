@@ -1,12 +1,19 @@
 import * as yup from 'yup';
 import { OperationType } from '@hooks/useTransaction/requests';
+import { Network } from '@hooks/useNetworks/requests';
+import { Token } from '@hooks/useTokens/requests';
 
 export type GetQuoteFormValues = {
+  operationType: OperationType;
   baseAmount: number;
   quoteCurrency: string;
   baseCurrency: string;
-  operationType: OperationType;
   network: string;
+};
+
+export type GetQuoteFormValuesV2 = GetQuoteFormValues & {
+  networkObj: Partial<Network>;
+  tokenObj: Partial<Token>;
 };
 
 const schema = yup.object().shape({
@@ -28,6 +35,11 @@ const schema = yup.object().shape({
   quoteCurrency: yup.string().required(),
   baseCurrency: yup.string().required(),
   network: yup.string().required(),
+});
+
+export const schemaV2 = schema.shape({
+  networkObj: yup.object().required(),
+  tokenObj: yup.object().required(),
 });
 
 export default schema;

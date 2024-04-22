@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-type Network = {
+export type Network = {
   name: string;
   key: string;
   logoUrl: string;

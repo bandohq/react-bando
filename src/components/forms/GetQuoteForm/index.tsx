@@ -22,8 +22,6 @@ import TokensWidget from '@components/TokensWidget';
 
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
-import useTokens from '@hooks/useTokens';
-import useNetworks from '@hooks/useNetworks';
 
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
 import { Quote } from '@hooks/useQuote/requests';
@@ -31,6 +29,7 @@ import env from '@config/env';
 import formatNumber from '@helpers/formatNumber';
 
 const REQUEST_DEBOUNCE = 250;
+const DEFAULT_CURRENCY = 'MXN';
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
@@ -50,19 +49,15 @@ export default function GetQuoteForm({ enableNewWidget = false }) {
       resolver: yupResolver(schema),
       defaultValues: {
         quoteCurrency: 'USDC',
-        baseCurrency: 'MXN',
+        baseCurrency: DEFAULT_CURRENCY,
         operationType: 'deposit',
       },
     });
 
-  const { networks } = useNetworks();
-  const { tokens } = useTokens({ chainKey: 'pol' });
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
   const operationType = watch('operationType');
   const baseAmount = watch('baseAmount');
-
-  console.log({ tokens, networks });
 
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
