@@ -8,6 +8,7 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
   margin: 0,
   padding: 0,
   fontFamily: 'Kanit',
+  position: 'relative',
   '& input.currency-input': {
     border: 'none',
     pointerEvents: 'auto',
@@ -29,6 +30,7 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
     '&::placeholder': {
       color: theme.palette.ink.i950,
     },
+    // '&:disabled': { pointerEvents: 'none' },
   },
   '& input.currency-input.placeholder': {
     '&::placeholder': {
@@ -42,12 +44,16 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
     color: theme.palette.ink.i400,
     fontSize: theme.typography.pxToRem(12),
     lineHeight: theme.typography.pxToRem(14),
-    content: '" "',
+    '&:empty::before': {
+      content: '"-"',
+      color: 'transparent',
+    },
   },
   '& span.currency-rate': {
     color: theme.palette.ink.i500,
     fontSize: theme.typography.pxToRem(10),
     marginTop: theme.spacing(1),
+    lineHeight: theme.typography.pxToRem(20),
   },
 }));
 
@@ -78,7 +84,7 @@ export const CurrencyTokenButton = styled(ButtonBase)<ButtonProps>(({ theme }) =
     backgroundImage: 'linear-gradient(rgb(0 0 0/20%) 0 0)',
     boxShadow: 'none',
   },
-  '&:disabled': { color: theme.palette.ink.i950 },
+  '&:disabled': { color: theme.palette.ink.i950, pointerEvents: 'none' },
   '&.Mui-focusVisible .MuiTouchRipple-root': { display: 'none' },
 }));
 

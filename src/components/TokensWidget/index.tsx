@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 import { GetQuoteFormValuesV2 } from '@components/forms/GetQuoteForm/schema';
 import { currencyImgPathV2 as currencyImgPath } from '@config/constants/currencies';
 // import { useMemo } from 'react';
@@ -13,13 +13,16 @@ import CurrencyInput from 'react-currency-input-field';
 import formatNumber from '@helpers/formatNumber';
 import { TransactionTypeIcon } from '@components/TransactionsTable/CellDetailWithIcon';
 import { CircularButton } from '@components/forms/RampForm/RampTitle';
+
+import DialogDrawer from '@components/DialogDrawer';
 import Title from '@components/PageTitle';
 import UpDownArrow from '../../assets/UpDownArrow.svg';
+
 import { TokensContainer, CurrencyTokenButton, CurrencyAmount } from './components';
 import { OPERATION_TYPES } from '@hooks/useTransaction/requests';
 import TokenPlaceholder from '../../assets/TokenPlaceholder.svg';
 import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 type TokensWidgetProps = {
   onlyOneCurrency?: boolean;
@@ -31,14 +34,16 @@ export default function TokensWidget({
   // onlyOneCurrency = false,
 }: TokensWidgetProps) {
   const methods = useFormContext<GetQuoteFormValuesV2>();
+  const [openSelectDrawer, setOpenSelectDrawer] = useState(false);
+
   const baseCurrency = methods.watch('baseCurrency');
-  // const baseAmount = methods.watch('baseAmount');
+  const baseAmount = methods.watch('baseAmount');
   const quoteCurrency = methods.watch('quoteCurrency');
-  // const operationType = methods.watch('operationType');
+  const operationType = methods.watch('operationType');
   const networkObj = methods.watch('networkObj');
   const tokenObj = methods.watch('tokenObj');
 
-  // const isDeposit = operationType === 'deposit';
+  const isDeposit = operationType === 'deposit';
 
   // const quoteAmount = methods.watch('quoteAmount');
 
@@ -72,15 +77,21 @@ export default function TokensWidget({
       }
       return (
         <Box sx={{ padding: 0 }}>
-          <img alt={'Pick a token'} src={TokenPlaceholder} />{' '}
+          <img alt={'Pick a token'} src={TokenPlaceholder} />
         </Box>
       );
     },
     [networkObj?.logoUrl, tokenObj?.imageUrl],
   );
 
+  console.log({ baseAmount });
+
   return (
     <TokensContainer container spacing={2}>
+      <DialogDrawer
+        open={openSelectDrawer}
+        onClose={() => setOpenSelectDrawer(!openSelectDrawer)}
+      />
       <Grid xs={12} sm={12} md={12}>
         <Title variant="h2" sx={{ fontFamily: 'Kanit', mb: 1, fontSize: 20, color: 'ink.i900' }}>
           Entra al mundo cripto
@@ -90,7 +101,10 @@ export default function TokensWidget({
       <TokensContainer container spacing={2} sx={{ position: 'relative' }}>
         <>
           <Grid xs={12} sm={12} md={12}>
-            <CurrencyTokenButton disabled={baseCurrency === defaultCurrency}>
+            <CurrencyTokenButton
+              disabled={baseCurrency === defaultCurrency}
+              onClick={() => setOpenSelectDrawer(!openSelectDrawer)}
+            >
               <p>Envías</p>
               <CurrencyAmount>
                 <Box sx={{ width: '38px' }}>
@@ -106,22 +120,35 @@ export default function TokensWidget({
                     justifyItems: 'center',
                   }}
                 >
-                  <CurrencyInput
-                    className="currency-input"
-                    intlConfig={{ locale: 'en-US', currency: 'USD' }}
-                    // intlConfig={isDeposit ? { locale: 'en-US', currency: 'USD' } : {}}
-                    decimalsLimit={2}
-                    placeholder="$0.00"
-                    decimalSeparator="."
+                  <Controller
+                    control={methods.control}
+                    name="baseAmount"
+                    render={({ field: { onChange, value } }) => (
+                      <CurrencyInput
+                        className="currency-input"
+                        prefix={isDeposit ? '$' : ''}
+                        decimalsLimit={2}
+                        placeholder={isDeposit ? '$0.00' : '0.00'}
+                        decimalSeparator="."
+                        value={value}
+                        onClick={(e) => e.stopPropagation()}
+                        onValueChange={(value) => {
+                          onChange(value);
+                        }}
+                      />
+                    )}
                   />
-                  <span className="currency-amount">MXN</span>
+                  <span className="currency-amount">{baseCurrency}</span>
                 </Box>
               </CurrencyAmount>
             </CurrencyTokenButton>
           </Grid>
 
           <Grid xs={12} sm={12} md={12}>
-            <CurrencyTokenButton disabled={quoteCurrency === defaultCurrency}>
+            <CurrencyTokenButton
+              disabled={quoteCurrency === defaultCurrency}
+              onClick={() => setOpenSelectDrawer(!openSelectDrawer)}
+            >
               <p>Hacia</p>
               <CurrencyAmount>
                 <Box sx={{ width: '38px' }}>
@@ -141,7 +168,7 @@ export default function TokensWidget({
                     placeholder="Selecciona una red y token"
                     disabled
                   />
-                  <span className="currency-amount">{quoteCurrency ?? '-'}</span>
+                  <span className="currency-amount">{isDeposit ? networkObj?.name : ''}</span>
                 </Box>
               </CurrencyAmount>
             </CurrencyTokenButton>
