@@ -167,9 +167,7 @@ export default function TokensWidget({
           <p>Recibes</p>
           <CurrencyAmount>
             <Box sx={{ width: '38px' }}>
-              <TransactionTypeIcon>
-                {chooseCurrencyComp(quoteCurrency, networkObj, tokenObj)}
-              </TransactionTypeIcon>
+              <TransactionTypeIcon>{chooseCurrencyComp(quoteCurrency)}</TransactionTypeIcon>
             </Box>
             <Box
               sx={{
