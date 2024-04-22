@@ -7,11 +7,14 @@ import networksOnRamp, {
 } from '@config/constants/networks';
 import { sendCurrency } from '@config/constants/currencies';
 
+import { Network } from '@hooks/useNetworks/requests';
+import { Token } from '@hooks/useTokens/requests';
+
 export type GetQuoteFormValues = {
+  operationType: OperationType;
   baseAmount: number;
   quoteCurrency: string;
   baseCurrency: string;
-  operationType: OperationType;
   network: string;
 };
 
@@ -67,6 +70,27 @@ const schema = yup.object().shape({
       then: (schema) => schema.oneOf(networks, 'Por favor selecciona una red válida'),
       otherwise: (schema) => schema.oneOf(networksOffRamp, 'Por favor selecciona una red válida'),
     }),
+});
+
+export type GetQuoteFormValuesV2 = {
+  operationType: OperationType;
+  baseAmount: number;
+  quoteCurrency: string;
+  baseCurrency: string;
+  networkObj: Partial<Network>;
+  tokenObj: Partial<Token>;
+};
+
+export const schemaV2 = yup.object().shape({
+  operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
+  networkObj: yup.object().required(),
+  tokenObj: yup.object().required(),
+  baseAmount: yup
+    .number()
+    .typeError('') // avoid error message when form input id empty
+    .required(),
+  quoteCurrency: yup.string().required(),
+  baseCurrency: yup.string().required(),
 });
 
 export default schema;

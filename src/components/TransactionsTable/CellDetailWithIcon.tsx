@@ -23,9 +23,9 @@ export const TransactionTypeIcon = styled(TableRowDetail)(() => ({
     alignItems: 'center',
     bottom: '-3px',
     right: '-1px',
-    borderRadius: '4px',
     overflow: 'hidden',
     padding: 0,
+    borderRadius: '50%',
     '& img': {
       width: 'auto',
       height: '100%',

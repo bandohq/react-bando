@@ -20,10 +20,10 @@ describe('useTokens', () => {
     const { result } = renderHook(() => useTokens({ chainKey: 'pol' }), { wrapper });
 
     expect(result.current.data).toBeUndefined();
-    expect(result.current.totalPageTokens).toBe(0);
+    expect(result.current.totalTokens).toBe(0);
 
     await waitFor(() => {
-      expect(result.current.totalPageTokens).toBe(3);
+      expect(result.current.totalTokens).toBe(3);
       expect(result.current.data).toStrictEqual({
         count: 1348,
         next: 'http://localhost:8000/api/v1/ramps/token/pol/?page=2',
