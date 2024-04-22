@@ -30,6 +30,14 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
       color: theme.palette.ink.i950,
     },
   },
+  '& input.currency-input.placeholder': {
+    '&::placeholder': {
+      color: theme.palette.ink.i400,
+      fontFamily: 'TWK Everett',
+      fontWeight: 'normal',
+      fontSize: theme.typography.pxToRem(16),
+    },
+  },
   '& span.currency-amount': {
     color: theme.palette.ink.i400,
     fontSize: theme.typography.pxToRem(12),

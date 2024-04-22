@@ -4,7 +4,7 @@ import BoxContainer from '@components/BoxContainer';
 // import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-// import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
 // import debounce from 'lodash/debounce';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -22,8 +22,8 @@ import TokensWidget from '@components/TokensWidget';
 
 // import useQuote from '@hooks/useQuote';
 // import useUser from '@hooks/useUser';
-// import useTokens from '@hooks/useTokens';
-// import useNetworks from '@hooks/useNetworks';
+import useTokens from '@hooks/useTokens';
+import useNetworks from '@hooks/useNetworks';
 
 // import { sendCurrency, depositCurrency } from '@config/constants/currencies';
 // import { Quote } from '@hooks/useQuote/requests';
@@ -31,8 +31,8 @@ import TokensWidget from '@components/TokensWidget';
 // import formatNumber from '@helpers/formatNumber';
 
 // const REQUEST_DEBOUNCE = 250;
-// const DEFAULT_NETWORK_KEY = 'pol';
-// const DEFAULT_QUOTE_CURRENCY = 'USDC';
+const DEFAULT_NETWORK_KEY = 'pol';
+const DEFAULT_QUOTE_CURRENCY = 'USDC';
 const HAS_ONLY_CURRENCY = true;
 const DEFAULT_CURRENCY = 'MXN';
 
@@ -60,15 +60,16 @@ export default function GetQuoteFormV2() {
     },
   });
 
-  const { handleSubmit, getValues } = methods;
-  // const { networks } = useNetworks();
-  // const { tokens } = useTokens({ chainKey: 'pol' });
+  const { handleSubmit, getValues, setValue } = methods;
+  const { networks } = useNetworks();
+  const { tokens } = useTokens({ chainKey: DEFAULT_NETWORK_KEY });
   // const quoteCurrency = watch('quoteCurrency');
   // const baseCurrency = watch('baseCurrency');
   // const operationType = watch('operationType');
   // const baseAmount = watch('baseAmount');
 
-  // const defaultNetwork = networks?.find((nwk) => nwk.key === DEFAULT_NETWORK_KEY) ?? networks?.[0];
+  const defaultNetwork = networks?.find((nwk) => nwk.key === DEFAULT_NETWORK_KEY) ?? networks?.[0];
+  const usdcToken = tokens?.find((token) => token.key === DEFAULT_QUOTE_CURRENCY);
 
   // const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   // const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
@@ -80,13 +81,17 @@ export default function GetQuoteFormV2() {
 
   const onSubmit = () => {};
 
-  // useEffect(() => {
-  // if (defaultNetwork && tokens) {
-  // setValue('networkObj', defaultNetwork);
-  // }
-  // }, [setValue, networks, tokens, defaultNetwork]);
+  useEffect(() => {
+    console.log({ setvalue: !!(defaultNetwork && tokens) });
+    if (defaultNetwork && usdcToken) {
+      setValue('networkObj', defaultNetwork);
+      setValue('tokenObj', usdcToken);
+      setValue('quoteCurrency', usdcToken.key);
+    }
+  }, [setValue, defaultNetwork, usdcToken]);
 
   console.log({ values: getValues() });
+  console.log({ networks, tokens, defaultNetwork });
 
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>

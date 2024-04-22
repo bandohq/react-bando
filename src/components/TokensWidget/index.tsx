@@ -2,7 +2,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 import { useFormContext } from 'react-hook-form';
 import { GetQuoteFormValuesV2 } from '@components/forms/GetQuoteForm/schema';
-import { currencyImgPath, networkImg } from '@config/constants/currencies';
+import { currencyImgPathV2 as currencyImgPath, networkImg } from '@config/constants/currencies';
 // import { useMemo } from 'react';
 
 // import ButtonBase, { ButtonProps } from '@mui/material/Button';
@@ -18,6 +18,11 @@ import UpDownArrow from '../../assets/UpDownArrow.svg';
 import { TokensContainer, CurrencyTokenButton, CurrencyAmount } from './components';
 import { OPERATION_TYPES } from '@hooks/useTransaction/requests';
 import TokenPlaceholder from '../../assets/TokenPlaceholder.svg';
+import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
+
+import { Network } from '@hooks/useNetworks/requests';
+import { Token } from '@hooks/useTokens/requests';
+import { useCallback } from 'react';
 
 type TokensWidgetProps = {
   onlyOneCurrency?: boolean;
@@ -32,11 +37,11 @@ export default function TokensWidget({
   const baseCurrency = methods.watch('baseCurrency');
   // const baseAmount = methods.watch('baseAmount');
   const quoteCurrency = methods.watch('quoteCurrency');
-  const operationType = methods.watch('operationType');
-  // const networkObj = methods.watch('networkObj');
-  // const tokenObj = methods.watch('tokenObj');
+  // const operationType = methods.watch('operationType');
+  const networkObj = methods.watch('networkObj');
+  const tokenObj = methods.watch('tokenObj');
 
-  const isDeposit = operationType === 'deposit';
+  // const isDeposit = operationType === 'deposit';
 
   // const quoteAmount = methods.watch('quoteAmount');
   console.log({ quoteCurrency });
@@ -52,29 +57,31 @@ export default function TokensWidget({
     methods.setValue('operationType', _reverseOperation);
   };
 
-  const chooseCurrencyComp = (currency?: string) => {
-    return (
-      <>
-        {currency ? (
-          // TODO: Add img when network and token have been picked
+  const chooseCurrencyComp = useCallback(
+    (currency?: string) => {
+      const currencyImg = currencyImgPath[currency as unknown as keyof typeof currencyImgPath];
+      if (currencyImg) {
+        return <img alt={currency} src={currencyImg} />;
+      }
+
+      if (networkObj?.logoUrl && tokenObj?.imageUrl) {
+        return (
           <>
-            <img alt={'MXN'} src={currencyImgPath.USDC} />
+            <img alt={'MXN'} src={tokenObj?.imageUrl ?? TokenPlaceholderGray} />
             <span className="network-img">
-              <img alt="network" src={networkImg.POLYGON} />
+              <img alt="network" src={networkObj?.logoUrl ?? TokenPlaceholderGray} />
             </span>
           </>
-        ) : (
-          // TODO: Add drawer component to pick network and token
-          <Box
-            sx={{ padding: 0, pointerEvents: 'auto' }}
-            onClick={() => console.log('pick network')}
-          >
-            <img alt={'MXN'} src={TokenPlaceholder} />{' '}
-          </Box>
-        )}
-      </>
-    );
-  };
+        );
+      }
+      return (
+        <Box sx={{ padding: 0 }}>
+          <img alt={'Pick a token'} src={TokenPlaceholder} />{' '}
+        </Box>
+      );
+    },
+    [networkObj?.logoUrl, tokenObj?.imageUrl],
+  );
 
   return (
     <TokensContainer container spacing={2}>
@@ -90,16 +97,9 @@ export default function TokensWidget({
             <CurrencyTokenButton disabled={baseCurrency === defaultCurrency}>
               <p>Envías</p>
               <CurrencyAmount>
-                <Box sx={{ width: '38px', pointerEvents: 'none' }}>
+                <Box sx={{ width: '38px' }}>
                   <TransactionTypeIcon sx={{}}>
-                    {isDeposit ? (
-                      <img
-                        alt={baseCurrency}
-                        src={currencyImgPath[baseCurrency as keyof typeof currencyImgPath]}
-                      />
-                    ) : (
-                      chooseCurrencyComp(baseCurrency)
-                    )}
+                    {chooseCurrencyComp(baseCurrency)}
                   </TransactionTypeIcon>
                 </Box>
                 <Box
@@ -110,7 +110,6 @@ export default function TokensWidget({
                     justifyItems: 'center',
                   }}
                 >
-                  {/* TODO: Add RHF Controller and register to baseAmount */}
                   <CurrencyInput
                     className="currency-input"
                     intlConfig={{ locale: 'en-US', currency: 'USD' }}
@@ -130,21 +129,7 @@ export default function TokensWidget({
               <p>Hacia</p>
               <CurrencyAmount>
                 <Box sx={{ width: '38px' }}>
-                  <TransactionTypeIcon>
-                    {/* <img alt={'MXN'} src={currencyImgPath.USDC} />
-                    <span className="network-img">
-                      <img alt="network" src={networkImg.POLYGON} />
-                    </span> */}
-
-                    {isDeposit && quoteCurrency ? (
-                      <img
-                        alt={quoteCurrency}
-                        src={currencyImgPath[quoteCurrency as keyof typeof currencyImgPath]}
-                      />
-                    ) : (
-                      chooseCurrencyComp(quoteCurrency)
-                    )}
-                  </TransactionTypeIcon>
+                  <TransactionTypeIcon>{chooseCurrencyComp(quoteCurrency)}</TransactionTypeIcon>
                 </Box>
                 <Box
                   sx={{
@@ -154,8 +139,13 @@ export default function TokensWidget({
                     justifyItems: 'center',
                   }}
                 >
-                  <input className="currency-input" value="USDC" disabled />
-                  <span className="currency-amount">Arbitrum</span>
+                  <input
+                    className="currency-input placeholder"
+                    value={quoteCurrency ?? ''}
+                    placeholder="Selecciona una red y token"
+                    disabled
+                  />
+                  <span className="currency-amount">{quoteCurrency ?? '-'}</span>
                 </Box>
               </CurrencyAmount>
             </CurrencyTokenButton>
@@ -182,10 +172,7 @@ export default function TokensWidget({
           <CurrencyAmount>
             <Box sx={{ width: '38px' }}>
               <TransactionTypeIcon>
-                <img alt={'MXN'} src={currencyImgPath.USDC} />
-                <span className="network-img">
-                  <img alt="network" src={networkImg.POLYGON} />
-                </span>
+                {chooseCurrencyComp(quoteCurrency, networkObj, tokenObj)}
               </TransactionTypeIcon>
             </Box>
             <Box

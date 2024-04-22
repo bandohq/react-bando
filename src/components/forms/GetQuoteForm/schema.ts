@@ -9,8 +9,6 @@ export type GetQuoteFormValues = {
   quoteCurrency: string;
   baseCurrency: string;
   network: string;
-  networkObj: Partial<Network>;
-  tokenObj: Partial<Token>;
 };
 
 export type GetQuoteFormValuesV2 = GetQuoteFormValues & {

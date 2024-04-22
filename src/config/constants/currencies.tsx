@@ -52,6 +52,10 @@ export const currencyImgPath = {
   MXN: Mexico,
 };
 
+export const currencyImgPathV2 = {
+  MXN: Mexico,
+};
+
 export const currencyToken = {
   ARBITRUM: 'ARB',
   POLYGON: 'MATIC',
