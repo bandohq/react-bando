@@ -4,7 +4,7 @@ import BoxContainer from '@components/BoxContainer';
 // import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, useCallback, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 // import debounce from 'lodash/debounce';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -54,13 +54,12 @@ export default function GetQuoteFormV2() {
   const methods = useForm<GetQuoteFormValuesV2>({
     resolver: yupResolver(schemaV2),
     defaultValues: {
-      // quoteCurrency: DEFAULT_QUOTE_CURRENCY,
       baseCurrency: DEFAULT_CURRENCY,
       operationType: 'deposit',
     },
   });
 
-  const { handleSubmit, getValues, setValue } = methods;
+  const { handleSubmit, setValue } = methods;
   const { networks } = useNetworks();
   const { tokens } = useTokens({ chainKey: DEFAULT_NETWORK_KEY });
   // const quoteCurrency = watch('quoteCurrency');
@@ -82,16 +81,13 @@ export default function GetQuoteFormV2() {
   const onSubmit = () => {};
 
   useEffect(() => {
-    console.log({ setvalue: !!(defaultNetwork && tokens) });
+    // TODO: Remove this once adding the selection drawer
     if (defaultNetwork && usdcToken) {
       setValue('networkObj', defaultNetwork);
       setValue('tokenObj', usdcToken);
       setValue('quoteCurrency', usdcToken.key);
     }
-  }, [setValue, defaultNetwork, usdcToken]);
-
-  console.log({ values: getValues() });
-  console.log({ networks, tokens, defaultNetwork });
+  }, [setValue, defaultNetwork, usdcToken, tokens]);
 
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>

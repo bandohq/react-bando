@@ -2,7 +2,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 import { useFormContext } from 'react-hook-form';
 import { GetQuoteFormValuesV2 } from '@components/forms/GetQuoteForm/schema';
-import { currencyImgPathV2 as currencyImgPath, networkImg } from '@config/constants/currencies';
+import { currencyImgPathV2 as currencyImgPath } from '@config/constants/currencies';
 // import { useMemo } from 'react';
 
 // import ButtonBase, { ButtonProps } from '@mui/material/Button';
@@ -19,9 +19,6 @@ import { TokensContainer, CurrencyTokenButton, CurrencyAmount } from './componen
 import { OPERATION_TYPES } from '@hooks/useTransaction/requests';
 import TokenPlaceholder from '../../assets/TokenPlaceholder.svg';
 import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
-
-import { Network } from '@hooks/useNetworks/requests';
-import { Token } from '@hooks/useTokens/requests';
 import { useCallback } from 'react';
 
 type TokensWidgetProps = {
@@ -44,7 +41,6 @@ export default function TokensWidget({
   // const isDeposit = operationType === 'deposit';
 
   // const quoteAmount = methods.watch('quoteAmount');
-  console.log({ quoteCurrency });
 
   const switchOperation = () => {
     const _quoteCurrency = methods.getValues('quoteCurrency');
