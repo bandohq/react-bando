@@ -10,7 +10,7 @@ export default function useTokens({ chainKey = '' }) {
   const { mutate } = useSWRConfig();
   const { data, ...queryReturn } = useSWR(
     `${endpoints.tokens}${chainKey}${TOKEN_QUERYSTR}`,
-    getTokens,
+    chainKey ? getTokens : null,
     {
       revalidateOnFocus: false,
     },

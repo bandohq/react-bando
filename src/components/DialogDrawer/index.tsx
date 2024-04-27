@@ -1,58 +1,95 @@
-import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import { CircularButton } from '@components/forms/RampForm/RampTitle';
 
-import DialogBase from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
 import { styled } from '@mui/material/styles';
-import { Ref, forwardRef, ReactElement } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
-const Transition = forwardRef(function Transition(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  props: TransitionProps & { children: ReactElement<any, any> },
-  ref: Ref<unknown>,
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-const Dialog = styled(DialogBase)({
+const DialogDrawerComp = styled(Paper)(({ theme }) => ({
   position: 'absolute',
-  '& .MuiDialog-paper	': {
-    border: '1px solid red',
-    position: 'absolute',
-  },
-});
+  width: '100%',
+  maxWidth: '100%',
+  height: '100%',
+  backgroundColor: theme.palette.background.paper,
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 1001,
+  display: 'flex',
+  flexDirection: 'column',
+  overflow: 'hidden',
+}));
 
-export type DialogDrawerProps = {
+const DrawerTitleCont = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'flex-start',
+  flexDirection: 'column',
+  width: '100%',
+  maxWidth: '100%',
+  color: theme.palette.ink.i950,
+  fontFamily: 'TWK Everett',
+  fontSize: theme.typography.pxToRem(14),
+  position: 'sticky',
+  top: 0,
+  backgroundColor: theme.palette.background.paper,
+  zIndex: 1002,
+  padding: theme.spacing(2),
+  '& section': {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    '& svg': {
+      width: 24,
+    },
+  },
+}));
+
+const DrawerTitle = styled('span')(({ theme }) => ({
+  grow: 1,
+  width: '100%',
+  textAlign: 'center',
+  fontSize: theme.typography.pxToRem(16),
+}));
+
+const DrawerCont = styled('div')(({ theme }) => ({
+  padding: theme.spacing(2),
+  width: '100%',
+  overflowX: 'hidden',
+  overflowY: 'auto',
+}));
+
+export type DialogDrawerProps = PropsWithChildren & {
+  title?: string;
+  titleContent?: ReactNode;
   open?: boolean;
   onClose?: () => void;
+  showBackIcon?: boolean;
 };
 
-export default function DialogDrawer({ open = false, onClose = () => {} }: DialogDrawerProps) {
+export default function DialogDrawer({
+  children,
+  titleContent,
+  title = 'Escoge tu red y token',
+  open = false,
+  showBackIcon = true,
+  onClose = () => {},
+}: DialogDrawerProps) {
   return (
-    <Dialog
-      open={open}
-      TransitionComponent={Transition}
-      keepMounted
-      onClose={onClose}
-      sx={{ position: 'absolute', top: 0 }}
-      slots={{ backdrop: () => null }}
-      aria-describedby="alert-dialog-slide-description"
-    >
-      <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-slide-description">
-          Let Google help apps determine location. This means sending anonymous location data to
-          Google, even when no apps are running.
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Disagree</Button>
-        <Button onClick={onClose}>Agree</Button>
-      </DialogActions>
-    </Dialog>
+    <Slide direction="up" in={open} mountOnEnter unmountOnExit>
+      <DialogDrawerComp>
+        <DrawerTitleCont>
+          <section>
+            <CircularButton onClick={onClose} sx={{ color: 'ink.i950' }}>
+              <ArrowBack />
+            </CircularButton>
+            <DrawerTitle sx={{ ...(showBackIcon && { marginLeft: '-40px' }) }}>{title}</DrawerTitle>
+          </section>
+          {titleContent}
+        </DrawerTitleCont>
+        <DrawerCont>{children}</DrawerCont>
+      </DialogDrawerComp>
+    </Slide>
   );
 }

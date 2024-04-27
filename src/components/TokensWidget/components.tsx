@@ -8,7 +8,6 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
   margin: 0,
   padding: 0,
   fontFamily: 'Kanit',
-  position: 'relative',
   '& input.currency-input': {
     border: 'none',
     pointerEvents: 'auto',
@@ -27,10 +26,12 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
       fontSize: theme.typography.pxToRem(16),
       fontWeight: 'normal',
     },
+    '&:disabled': {
+      pointerEvents: 'none',
+    },
     '&::placeholder': {
       color: theme.palette.ink.i950,
     },
-    // '&:disabled': { pointerEvents: 'none' },
   },
   '& input.currency-input.placeholder': {
     '&::placeholder': {
@@ -84,7 +85,7 @@ export const CurrencyTokenButton = styled(ButtonBase)<ButtonProps>(({ theme }) =
     backgroundImage: 'linear-gradient(rgb(0 0 0/20%) 0 0)',
     boxShadow: 'none',
   },
-  '&:disabled': { color: theme.palette.ink.i950, pointerEvents: 'none' },
+  '&:disabled': { color: theme.palette.ink.i950 },
   '&.Mui-focusVisible .MuiTouchRipple-root': { display: 'none' },
 }));
 
@@ -101,5 +102,50 @@ export const CurrencyAmount = styled('div')(({ theme }) => ({
     fontSize: theme.typography.pxToRem(24),
     fontWeight: 'bold',
     margin: 0,
+  },
+}));
+
+export const NetworkBttnsCont = styled(Grid)(({ theme }) => ({
+  position: 'sticky',
+  marginTop: theme.spacing(1),
+  padding: theme.spacing(1, 0),
+  display: 'grid',
+  gridTemplateColumns: 'repeat(5, auto)',
+  gridColumnGap: theme.spacing(2),
+  gridRowGap: theme.spacing(1),
+  [theme.breakpoints.down('sm')]: {
+    gridGap: theme.spacing(1),
+  },
+}));
+
+export const NetworkButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
+  aspectRatio: '1/1',
+  paddding: theme.spacing(1),
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
+  minWidth: '30px',
+  // maxWidth: '64px', TODO: Need to revisit this
+  color: theme.palette.ink.i400,
+  border: `1px solid ${theme.palette.ink.i200}`,
+  borderRadius: theme.spacing(1),
+  '&.active': {
+    borderColor: theme.palette.primary.main,
+  },
+  '& span': {
+    margin: 'auto',
+    borderRadius: '50%',
+    overflow: 'hidden',
+    width: '100%',
+    aspectRatio: '1/1',
+    '& img': {
+      width: 'auto',
+      height: '100%',
+      objectFit: 'cover',
+    },
+  },
+  '&:disabled': {
+    opacity: '0.7',
   },
 }));

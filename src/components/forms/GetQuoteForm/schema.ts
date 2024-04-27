@@ -13,7 +13,7 @@ export type GetQuoteFormValues = {
 
 export type GetQuoteFormValuesV2 = GetQuoteFormValues & {
   networkObj: Partial<Network>;
-  tokenObj: Partial<Token>;
+  tokenObj: Partial<Token | null>;
 };
 
 const schema = yup.object().shape({

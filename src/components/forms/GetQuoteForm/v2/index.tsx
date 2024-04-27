@@ -4,7 +4,7 @@ import BoxContainer from '@components/BoxContainer';
 // import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 // import debounce from 'lodash/debounce';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -20,7 +20,7 @@ import { schemaV2, GetQuoteFormValuesV2 } from '../schema';
 // import Ethereum from '../../../../assets/ethereum.png';
 import TokensWidget from '@components/TokensWidget';
 
-// import useQuote from '@hooks/useQuote';
+import useQuote from '@hooks/useQuote';
 // import useUser from '@hooks/useUser';
 import useTokens from '@hooks/useTokens';
 import useNetworks from '@hooks/useNetworks';
@@ -32,7 +32,7 @@ import useNetworks from '@hooks/useNetworks';
 
 // const REQUEST_DEBOUNCE = 250;
 const DEFAULT_NETWORK_KEY = 'pol';
-const DEFAULT_QUOTE_CURRENCY = 'USDC';
+// const DEFAULT_QUOTE_CURRENCY = 'USDC';
 const HAS_ONLY_CURRENCY = true;
 const DEFAULT_CURRENCY = 'MXN';
 
@@ -47,7 +47,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 
 export default function GetQuoteFormV2() {
   // const navigate = useNavigate();
-  // const { isMutating, data, getQuote } = useQuote();
+  const { isMutating, data, getQuote } = useQuote();
   // const { data } = useQuote();
 
   // const { user } = useUser();
@@ -61,14 +61,20 @@ export default function GetQuoteFormV2() {
 
   const { handleSubmit, setValue } = methods;
   const { networks } = useNetworks();
-  const { tokens } = useTokens({ chainKey: DEFAULT_NETWORK_KEY });
+
+  const network = methods.watch('network');
+  const token = methods.watch('token');
+  const baseAmount = methods.watch('baseAmount');
+  const quoteAmount = methods.watch('quoteAmount');
+
+  // const { tokens } = useTokens({ chainKey: DEFAULT_NETWORK_KEY });
   // const quoteCurrency = watch('quoteCurrency');
   // const baseCurrency = watch('baseCurrency');
   // const operationType = watch('operationType');
   // const baseAmount = watch('baseAmount');
 
-  const defaultNetwork = networks?.find((nwk) => nwk.key === DEFAULT_NETWORK_KEY) ?? networks?.[0];
-  const usdcToken = tokens?.find((token) => token.key === DEFAULT_QUOTE_CURRENCY);
+  const defaultNetwork = networks?.find((nwk) => nwk?.key === DEFAULT_NETWORK_KEY) ?? networks?.[0];
+  // const usdcToken = tokens?.find((token) => token?.key === DEFAULT_QUOTE_CURRENCY);
 
   // const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   // const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
@@ -78,19 +84,29 @@ export default function GetQuoteFormV2() {
   //     ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
   //     : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
 
-  const onSubmit = () => {};
+  const onSubmit = useCallback(
+    async (formValues: GetQuoteFormValuesV2) => {
+      // if (data?.quoteAmount) return navigateForm();
+      try {
+        const quote = await getQuote({
+          baseAmount: formValues.baseAmount,
+          baseCurrency: formValues.baseCurrency,
+          quoteCurrency: formValues.quoteCurrency,
+          network: formValues.network,
+        });
 
-  useEffect(() => {
-    // TODO: Remove this once adding the selection drawer
-    if (defaultNetwork && usdcToken) {
-      setValue('networkObj', defaultNetwork);
-      setValue('tokenObj', usdcToken);
-      setValue('quoteCurrency', usdcToken.key);
-    }
-  }, [setValue, defaultNetwork, usdcToken, tokens]);
+        // navigateForm(quote);
+      } catch {
+        // TODO: Handle error
+      }
+    },
+    [getQuote, data],
+  );
 
   return (
-    <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
+    <BoxContainer
+      sx={{ width: '100%', maxWidth: '600px', overflow: 'hidden', position: 'relative' }}
+    >
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TokensWidget onlyOneCurrency={HAS_ONLY_CURRENCY} defaultCurrency={DEFAULT_CURRENCY} />
