@@ -11,7 +11,7 @@ import Title from '@components/PageTitle';
 
 import { toUpperCase, checkNumberLength } from '@helpers/inputs';
 
-import { useForm, Controller, get } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { KycFormValues } from './schema';
 import { AxiosError } from 'axios';
@@ -108,6 +108,8 @@ export default function KycForm() {
                 onChange={onChange}
                 onBlur={onBlur}
                 forceDialCode
+                error={!!formState.errors.phone?.message}
+                helperText={formState.errors.phone?.message}
               />
             )}
           />
@@ -148,6 +150,8 @@ export default function KycForm() {
                     setValue('address.country', address.country);
                   }
                 }}
+                error={!!formState.errors.address?.label?.message}
+                helperText={formState.errors.address?.label?.message}
               />
             )}
           />
@@ -160,8 +164,6 @@ export default function KycForm() {
             items={identificationOptions}
             label="Identificación"
             InputLabelProps={{ shrink: true }}
-            error={!!get(formState.errors, 'document.type').message}
-            helperText={get(formState.errors, 'document.type').message}
           />
         </Grid>
         <Grid md={8} xs={12}>
@@ -171,8 +173,8 @@ export default function KycForm() {
             type="text"
             InputLabelProps={{ shrink: true }}
             {...register('document.number')}
-            error={!!get(formState.errors, 'document.number').message}
-            helperText={get(formState.errors, 'document.number').message}
+            error={!!formState.errors.document?.number?.message}
+            helperText={formState.errors.document?.number?.message}
           />
         </Grid>
         {!!error && (
