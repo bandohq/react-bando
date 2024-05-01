@@ -96,7 +96,9 @@ export default function PlacesAutocomplete({
           <ArrowImg src={CaretDown} />
         </ArrowCont>
       }
-      renderInput={(params) => <MuiInput {...props} {...params} label={props.label} autoComplete="off" />}
+      renderInput={(params) => (
+        <MuiInput {...props} {...params} label={props.label} autoComplete="off" />
+      )}
       renderOption={(optionProps, option) => {
         const opt = option as PlaceType;
         const matches = opt?.structured_formatting?.main_text_matched_substrings || [];
