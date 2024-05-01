@@ -80,6 +80,8 @@ export default function KycForm() {
             sx={{ mt: 2 }}
             InputLabelProps={{ shrink: true }}
             {...register('firstName')}
+            error={!!formState.errors.firstName?.message}
+            helperText={formState.errors.firstName?.message}
           />
         </Grid>
         <Grid md={6} xs={12}>
@@ -89,6 +91,8 @@ export default function KycForm() {
             sx={{ mt: 2 }}
             InputLabelProps={{ shrink: true }}
             {...register('lastName')}
+            error={!!formState.errors.lastName?.message}
+            helperText={formState.errors.lastName?.message}
           />
         </Grid>
         <Grid md={12} xs={12}>
@@ -104,6 +108,8 @@ export default function KycForm() {
                 onChange={onChange}
                 onBlur={onBlur}
                 forceDialCode
+                error={!!formState.errors.phone?.message}
+                helperText={formState.errors.phone?.message}
               />
             )}
           />
@@ -130,7 +136,7 @@ export default function KycForm() {
             name="address.label"
             render={({ field: { onChange, onBlur, value } }) => (
               <PlacesAutocomplete
-                label="Domicilio"
+                label="Domicilio (Asegúrate de que sea un domicilio válido)"
                 noOptionsText="No se encontro el domicilio"
                 value={value}
                 onChange={onChange}
@@ -144,6 +150,8 @@ export default function KycForm() {
                     setValue('address.country', address.country);
                   }
                 }}
+                error={!!formState.errors.address?.label?.message}
+                helperText={formState.errors.address?.label?.message}
               />
             )}
           />
@@ -165,6 +173,8 @@ export default function KycForm() {
             type="text"
             InputLabelProps={{ shrink: true }}
             {...register('document.number')}
+            error={!!formState.errors.document?.number?.message}
+            helperText={formState.errors.document?.number?.message}
           />
         </Grid>
         {!!error && (

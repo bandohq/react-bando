@@ -45,7 +45,7 @@ type AddressParts = {
   zip: string;
   country: string;
 };
-type PlacesAutocompleteProps = MuiInputProps & {
+type PlacesAutocompleteProps = Omit<MuiInputProps, 'ref'> & {
   setInputValue: (value: string, address?: AddressParts) => void;
   noOptionsText: string;
 };
@@ -62,6 +62,7 @@ type AddressResults = {
 export default function PlacesAutocomplete({
   setInputValue,
   noOptionsText,
+  value,
   ...props
 }: PlacesAutocompleteProps) {
   const { ready, suggestions, clearSuggestions, setValue } = usePlacesAutocomplete({
@@ -83,8 +84,8 @@ export default function PlacesAutocomplete({
       autoComplete
       includeInputInList
       filterSelectedOptions
-      value={props.value as PlaceType}
-      isOptionEqualToValue={(option) => option?.description === (props.value as unknown as string)}
+      value={value as PlaceType}
+      isOptionEqualToValue={(option) => option?.description === (value as unknown as string)}
       noOptionsText={noOptionsText}
       onInputChange={(_, newInputValue) => {
         setValue(newInputValue);
@@ -95,7 +96,9 @@ export default function PlacesAutocomplete({
           <ArrowImg src={CaretDown} />
         </ArrowCont>
       }
-      renderInput={(params) => <MuiInput {...params} label={props.label} autoComplete="off" />}
+      renderInput={(params) => (
+        <MuiInput {...props} {...params} label={props.label} autoComplete="off" />
+      )}
       renderOption={(optionProps, option) => {
         const opt = option as PlaceType;
         const matches = opt?.structured_formatting?.main_text_matched_substrings || [];
