@@ -11,7 +11,7 @@ import Title from '@components/PageTitle';
 
 import { toUpperCase, checkNumberLength } from '@helpers/inputs';
 
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, get } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { KycFormValues } from './schema';
 import { AxiosError } from 'axios';
@@ -80,6 +80,8 @@ export default function KycForm() {
             sx={{ mt: 2 }}
             InputLabelProps={{ shrink: true }}
             {...register('firstName')}
+            error={!!formState.errors.firstName?.message}
+            helperText={formState.errors.firstName?.message}
           />
         </Grid>
         <Grid md={6} xs={12}>
@@ -89,6 +91,8 @@ export default function KycForm() {
             sx={{ mt: 2 }}
             InputLabelProps={{ shrink: true }}
             {...register('lastName')}
+            error={!!formState.errors.lastName?.message}
+            helperText={formState.errors.lastName?.message}
           />
         </Grid>
         <Grid md={12} xs={12}>
@@ -130,7 +134,7 @@ export default function KycForm() {
             name="address.label"
             render={({ field: { onChange, onBlur, value } }) => (
               <PlacesAutocomplete
-                label="Domicilio"
+                label="Domicilio (Asegúrate de que sea un domicilio válido)"
                 noOptionsText="No se encontro el domicilio"
                 value={value}
                 onChange={onChange}
@@ -156,6 +160,8 @@ export default function KycForm() {
             items={identificationOptions}
             label="Identificación"
             InputLabelProps={{ shrink: true }}
+            error={!!get(formState.errors, 'document.type').message}
+            helperText={get(formState.errors, 'document.type').message}
           />
         </Grid>
         <Grid md={8} xs={12}>
@@ -165,6 +171,8 @@ export default function KycForm() {
             type="text"
             InputLabelProps={{ shrink: true }}
             {...register('document.number')}
+            error={!!get(formState.errors, 'document.number').message}
+            helperText={get(formState.errors, 'document.number').message}
           />
         </Grid>
         {!!error && (
