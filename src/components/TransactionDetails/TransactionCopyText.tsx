@@ -43,30 +43,30 @@ export default function TransactionCopyText({
   ...props
 }: TransactionCopyTextProps) {
   const { t } = useTranslation('transactions');
-  const [ tooltipOpen, setTooltipOpen ] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
   const handleCopy = () => {
     setTooltipOpen(true);
     setTimeout(() => {
       setTooltipOpen(false);
     }, 700);
-  }
+  };
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <DetailText {...props} className={`${ellipse ? 'ellipse' : ''}`}>
         {text}
       </DetailText>
       <Tooltip
-          title={t('table.copied')}
-          open={tooltipOpen}
-          disableFocusListener
-          disableHoverListener
-          placement="top" 
-          arrow 
-        >
+        title={t('table.copied')}
+        open={tooltipOpen}
+        disableFocusListener
+        disableHoverListener
+        placement="top"
+        arrow
+      >
         <CopyToClipboard text={text} onCopy={() => handleCopy()}>
-            <CircularButton sx={{ ml: 'auto' }}>
-              <img src={CopyImg} alt="" width={16} height={16} />
-            </CircularButton>
+          <CircularButton sx={{ ml: 'auto' }}>
+            <img src={CopyImg} alt="" width={16} height={16} />
+          </CircularButton>
         </CopyToClipboard>
       </Tooltip>
     </Box>
