@@ -57,7 +57,6 @@ export default function GetQuoteForm() {
 
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
-  const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
   const rateText =
     operationType === 'deposit'
       ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
@@ -160,11 +159,11 @@ export default function GetQuoteForm() {
               {...register('operationType', { onChange: onChangeOperationType })}
               items={[
                 {
-                  label: `Compra cripto`,
+                  label: 'Compra cripto',
                   value: 'deposit',
                 },
                 {
-                  label: `Vende cripto`,
+                  label: 'Vende cripto',
                   value: 'withdraw',
                 },
               ]}
