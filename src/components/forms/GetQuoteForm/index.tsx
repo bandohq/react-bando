@@ -160,11 +160,11 @@ export default function GetQuoteForm() {
               {...register('operationType', { onChange: onChangeOperationType })}
               items={[
                 {
-                  label: `Deposita ${operationCurrency}`,
+                  label: `Compra cripto`,
                   value: 'deposit',
                 },
                 {
-                  label: `Retira ${operationCurrency}`,
+                  label: `Vende cripto`,
                   value: 'withdraw',
                 },
               ]}
