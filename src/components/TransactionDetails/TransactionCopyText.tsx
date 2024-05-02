@@ -63,9 +63,9 @@ export default function TransactionCopyText({
         placement="top"
         arrow
       >
-        <Box>
+        <Box sx={{ ml: 'auto' }}>
           <CopyToClipboard text={text} onCopy={() => handleCopy()}>
-            <CircularButton sx={{ ml: 'auto' }}>
+            <CircularButton>
               <img src={CopyImg} alt="" width={16} height={16} />
             </CircularButton>
           </CopyToClipboard>
