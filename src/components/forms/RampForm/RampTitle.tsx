@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import { forwardRef } from 'react';
 
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -9,12 +10,16 @@ import Button from '@mui/material/Button';
 import env from '@config/env';
 import { ReactNode } from 'react';
 
-export const CircularButton = styled(Button)(() => ({
+const StyledButton = styled(Button)(() => ({
   borderRadius: '50%',
   aspectRatio: '1/1',
   width: 'fit-content',
   minWidth: 'fit-content',
 }));
+
+export const CircularButton = forwardRef<HTMLButtonElement, any>((props, ref) => {
+  return <StyledButton {...props} ref={ref} />;
+});
 
 type RampTitleProps = {
   title?: string;
