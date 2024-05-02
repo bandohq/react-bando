@@ -169,7 +169,7 @@ export default function KycForm() {
         <Grid md={8} xs={12}>
           <MuiInput
             sx={{ mt: 2 }}
-            label="Número"
+            label="Número de Identificación"
             type="text"
             InputLabelProps={{ shrink: true }}
             {...register('document.number')}

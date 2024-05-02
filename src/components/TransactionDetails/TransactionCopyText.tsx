@@ -1,11 +1,13 @@
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { CircularButton } from '@components/forms/RampForm/RampTitle';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import CopyImg from '../../assets/CopyToClipboard.svg';
 import { styled } from '@mui/material/styles';
-import { ComponentProps } from 'react';
+import { ComponentProps, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const DetailText = styled(Typography)(({ theme }) => {
   return {
@@ -40,16 +42,35 @@ export default function TransactionCopyText({
   ellipse = false,
   ...props
 }: TransactionCopyTextProps) {
+  const { t } = useTranslation('transactions');
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const handleCopy = () => {
+    setTooltipOpen(true);
+    setTimeout(() => {
+      setTooltipOpen(false);
+    }, 700);
+  };
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <DetailText {...props} className={`${ellipse ? 'ellipse' : ''}`}>
         {text}
       </DetailText>
-      <CopyToClipboard text={text}>
-        <CircularButton sx={{ ml: 'auto' }}>
-          <img src={CopyImg} alt="" width={16} height={16} />
-        </CircularButton>
-      </CopyToClipboard>
+      <Tooltip
+        title={t('table.copied')}
+        open={tooltipOpen}
+        disableFocusListener
+        disableHoverListener
+        placement="top"
+        arrow
+      >
+        <Box>
+          <CopyToClipboard text={text} onCopy={() => handleCopy()}>
+            <CircularButton sx={{ ml: 'auto' }}>
+              <img src={CopyImg} alt="" width={16} height={16} />
+            </CircularButton>
+          </CopyToClipboard>
+        </Box>
+      </Tooltip>
     </Box>
   );
 }
