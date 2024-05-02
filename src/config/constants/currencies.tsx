@@ -1,4 +1,4 @@
-import Currency from '../../assets/currency.svg';
+import Currency from '../../assets/Mexico-01.svg';
 import Usdc from '../../assets/image-58_1.png';
 import Usdt from '../../assets/usdt.svg';
 import Polygon from '../../assets/polygon.png';
