@@ -54,7 +54,7 @@ export default function UserMenu() {
   return (
     <Box>
       <Button
-        id="basic-button"
+        id="user-nav-button"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}

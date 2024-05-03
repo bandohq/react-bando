@@ -2,6 +2,7 @@ import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
 import Logo from '../../assets/logo.svg';
+import LogoWhite from '../../assets/logo_white.svg';
 import Telegram from '../../assets/telegram.svg';
 import UserMenu from '@components/UserMenu';
 import BandoButton from '@components/Button';
@@ -18,7 +19,16 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   color: theme.palette.primary.main,
   transition: theme.transitions.create(['background-color']),
   '&.scrolled': {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.main,
+    boxShadow: theme.shadows[4],
+  },
+  [theme.breakpoints.between('xs', 'sm')]: {
+    '& #user-nav-button': {
+      display: 'none',
+    },
+    '&.scrolled #telegram-nav-button': {
+      color: theme.palette.primary.contrastText,
+    },
   },
   '& .navbar-box': {
     width: '100%',
@@ -84,13 +94,14 @@ export default function Navbar({ fullWidth = false }) {
     >
       <div className={fullWidth ? 'navbar-box full-width' : 'navbar-box'}>
         <a href="/" className="navbar-brand">
-          <img src={Logo} loading="lazy" alt="" aria-label="Bando logo" />
+          <img src={!!isOnTop ? Logo : LogoWhite} loading="lazy" alt="" aria-label="Bando logo" />
         </a>
         <div className="telegram-logo-box">
           <nav role="navigation" className="navbar-menu">
             <UserMenu />
             <BandoButton
               component="a"
+              id="telegram-nav-button"
               variant="text"
               size="small"
               className="rounded"

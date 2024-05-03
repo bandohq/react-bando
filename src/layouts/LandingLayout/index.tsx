@@ -7,6 +7,7 @@ import Jumbotron, { GridBox } from '@components/Jumbotron';
 import Footer from '@components/Footer';
 import { PropsWithChildren } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
+//import ElevateAppBar from '@components/Navbar/v2';
 
 const Container = styled('section')(({ theme }) => ({
   flexGrow: 1,
