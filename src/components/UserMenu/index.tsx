@@ -50,7 +50,7 @@ export default function UserMenu(props: UserMenuProps) {
           sx={{ textTransform: 'none', fontWeight: 400, display: 'flex', gap: 1 }}
         >
           {user?.email}
-          <img src={ props.isOnTop ? CaretGreen : CaretWhite } alt="Caret" />
+          <img src={props.isOnTop ? CaretGreen : CaretWhite} alt="Caret" />
         </Button>
         <Menu
           id="basic-menu"
