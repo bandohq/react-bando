@@ -86,8 +86,8 @@ export default function Navbar({ fullWidth = false }) {
   const theme = useTheme();
   const { user } = useUser();
   const navigate = useNavigate();
-  const {t} = useTranslation('userMenu');
-  const {pathname} = useLocation();
+  const { t } = useTranslation('userMenu');
+  const { pathname } = useLocation();
 
   const handleScroll = useCallback(() => {
     const isCurrentScropOnTop = window.scrollY === 0;
@@ -110,17 +110,16 @@ export default function Navbar({ fullWidth = false }) {
 
   const [open, setOpen] = useState(false);
 
-  const toggleDrawer = (open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event &&
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
-      ) {
-        return;
-      }
-      setOpen(open);
+  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      ((event as React.KeyboardEvent).key === 'Tab' ||
+        (event as React.KeyboardEvent).key === 'Shift')
+    ) {
+      return;
+    }
+    setOpen(open);
   };
 
   const list = () => (
@@ -137,14 +136,11 @@ export default function Navbar({ fullWidth = false }) {
           <ListItemText primary={'text2'} />,
           <ListItemText primary={'text3'} />,
           <ListItemText primary={'text4'} />,
-          ].map((text, index) => (
-            <ListItem key={index} disablePadding>
-              <ListItemButton>
-                {text}
-              </ListItemButton>
-            </ListItem>
-          )
-        )}
+        ].map((comp, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton>{comp}</ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Box>
   );
@@ -165,7 +161,6 @@ export default function Navbar({ fullWidth = false }) {
         </a>
         <div className="telegram-logo-box">
           <nav role="navigation" className="navbar-menu">
-            <UserMenu/>
             <BandoButton
               component="a"
               id="telegram-nav-button"
@@ -186,6 +181,7 @@ export default function Navbar({ fullWidth = false }) {
                 aria-label="Telegram Logo"
               />
             </BandoButton>
+            <UserMenu />
             {!user?.email && pathname !== '/signin' && (
               <Box>
                 <Button
@@ -196,12 +192,14 @@ export default function Navbar({ fullWidth = false }) {
                     fontWeight: 700,
                     display: 'flex',
                     gap: 1,
-                    color: isOnTop ? 'inherit' : 'white',
+                    color: isOnTop
+                      ? { color: theme.palette.primary.main }
+                      : { color: theme.palette.primary.contrastText },
                   }}
                 >
                   {t('signin')}
                 </Button>
-            </Box>
+              </Box>
             )}
             {!!user?.email && (
               <Fragment>
@@ -210,12 +208,18 @@ export default function Navbar({ fullWidth = false }) {
                   aria-label="open drawer"
                   edge="end"
                   onClick={toggleDrawer(true)}
-                  sx={{display: {'xs': 'block', 'sm': 'none' }}}
+                  sx={{ display: { xs: 'block', sm: 'none' } }}
                 >
-                  <MenuIcon sx={isOnTop ? {color:  theme.palette.primary.main} : {color: theme.palette.primary.contrastText}} />
+                  <MenuIcon
+                    sx={
+                      isOnTop
+                        ? { color: theme.palette.primary.main }
+                        : { color: theme.palette.primary.contrastText }
+                    }
+                  />
                 </IconButton>
                 <SwipeableDrawer
-                  anchor='right'
+                  anchor="right"
                   open={open}
                   onClose={toggleDrawer(false)}
                   onOpen={toggleDrawer(true)}
