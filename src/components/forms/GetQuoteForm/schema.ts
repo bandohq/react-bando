@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { OperationType } from '@hooks/useTransaction/requests';
 import { Network } from '@hooks/useNetworks/requests';
 import { Token } from '@hooks/useTokens/requests';
+import i18n from '@translations/index';
 
 export type GetQuoteFormValues = {
   operationType: OperationType;
@@ -13,7 +14,7 @@ export type GetQuoteFormValues = {
 
 export type GetQuoteFormValuesV2 = GetQuoteFormValues & {
   networkObj: Partial<Network>;
-  tokenObj: Partial<Token | null>;
+  tokenObj: Partial<Token>;
 };
 
 const schema = yup.object().shape({
@@ -23,13 +24,13 @@ const schema = yup.object().shape({
     .typeError('') // avoid error message when form input id empty
     .when(['operationType'], {
       is: 'deposit',
-      then: (schema) => schema.min(20, 'validation.onMinAmount'),
-      otherwise: (schema) => schema.min(2, 'validation.offMinAmount'),
+      then: (schema) => schema.min(20, 'El monto mínimo es de $20'),
+      otherwise: (schema) => schema.min(2, i18n.t('El monto mínimo es de $2')),
     })
     .when(['operationType'], {
       is: 'deposit',
-      then: (schema) => schema.max(500000, 'El monto máximo es de $500,000 MXN'),
-      otherwise: (schema) => schema.max(10000, 'El monto máximo es de $10,000 USD'),
+      then: (schema) => schema.max(500000, 'El monto máximo es de $500,000'),
+      otherwise: (schema) => schema.max(10000, 'El monto máximo es de $10,000'),
     })
     .required(),
   quoteCurrency: yup.string().required(),

@@ -1,3 +1,4 @@
+import { colors } from '@mui/material';
 import ButtonBase, { ButtonProps } from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import { styled, alpha } from '@mui/material/styles';
@@ -49,6 +50,12 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
       content: '"-"',
       color: 'transparent',
     },
+  },
+  '& span.currency-error': {
+    color: theme.palette.error.main,
+    fontSize: theme.typography.pxToRem(10),
+    lineHeight: theme.typography.pxToRem(12),
+    padding: theme.spacing(0.5, 0),
   },
   '& span.currency-rate': {
     color: theme.palette.ink.i500,
@@ -147,5 +154,38 @@ export const NetworkButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
   },
   '&:disabled': {
     opacity: '0.7',
+  },
+}));
+
+export const TokenList = styled('ul')(({ theme }) => ({
+  listStyleType: 'none',
+  display: 'flex',
+  padding: 0,
+  width: '100%',
+  flexDirection: 'column',
+
+  '& li': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: theme.spacing(2, 2),
+    width: '100%',
+    flexDirection: 'row',
+    color: theme.palette.ink.i400,
+    fontSize: theme.typography.pxToRem(12),
+    borderRadius: theme.spacing(1),
+    '& p': {
+      margin: 0,
+      color: theme.palette.ink.i950,
+      fontSize: theme.typography.pxToRem(18),
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.ink.i150,
+      cursor: 'pointer',
+    },
+    '&.active': {
+      border: `1px solid ${alpha(theme.palette.primary.main, 0.75)}`,
+      backgroundColor: theme.palette.ink.i150,
+    },
   },
 }));

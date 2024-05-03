@@ -81,7 +81,7 @@ export default function DialogDrawer({
       <DialogDrawerComp>
         <DrawerTitleCont>
           <section>
-            <CircularButton onClick={onClose} sx={{ color: 'ink.i950' }}>
+            <CircularButton role="button" onClick={onClose} sx={{ color: 'ink.i950' }}>
               <ArrowBack />
             </CircularButton>
             <DrawerTitle sx={{ ...(showBackIcon && { marginLeft: '-40px' }) }}>{title}</DrawerTitle>

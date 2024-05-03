@@ -4,13 +4,9 @@ import { useFormContext, Controller } from 'react-hook-form';
 import { GetQuoteFormValuesV2 } from '@components/forms/GetQuoteForm/schema';
 import { currencyImgPathV2 as currencyImgPath } from '@config/constants/currencies';
 import BandoButton from '@components/Button';
-// import { useMemo } from 'react';
 
-// import ButtonBase, { ButtonProps } from '@mui/material/Button';
 import CurrencyInput from 'react-currency-input-field';
 
-// import { styled, alpha } from '@mui/material/styles';
-// import { CurrencyContainerIcon } from '@components/TransactionsTable/TransactionRow';
 import formatNumber from '@helpers/formatNumber';
 import { TransactionTypeIcon } from '@components/TransactionsTable/CellDetailWithIcon';
 import { CircularButton } from '@components/forms/RampForm/RampTitle';
@@ -19,97 +15,87 @@ import DialogDrawer from '@components/DialogDrawer';
 import Title from '@components/PageTitle';
 import UpDownArrow from '../../assets/UpDownArrow.svg';
 
-import {
-  TokensContainer,
-  CurrencyTokenButton,
-  CurrencyAmount,
-  NetworkButton,
-  NetworkBttnsCont,
-} from './components';
+import { TokensContainer, CurrencyTokenButton, CurrencyAmount, TokenList } from './components';
 import { OPERATION_TYPES } from '@hooks/useTransaction/requests';
 import TokenPlaceholder from '../../assets/TokenPlaceholder.svg';
 import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import useNetworks from '@hooks/useNetworks';
+import { ReactNode, useCallback, useState } from 'react';
 import { Network } from '@hooks/useNetworks/requests';
-import { fillArray } from './helpers';
 import useTokens from '@hooks/useTokens';
 import Input from '@components/forms/Input';
 import { Token } from '@hooks/useTokens/requests';
+import { Quote } from '@hooks/useQuote/requests';
+import ErrorBox from '@components/forms/ErrorBox';
+
+import NetworkList from './NetworkList';
 
 type TokensWidgetProps = {
   onlyOneCurrency?: boolean;
   defaultCurrency?: string;
+  onSubmit?: () => void;
+  rateText?: ReactNode;
+  quote?: Quote;
+  onQuantityChange?: () => void;
+  formError?: string;
 };
-
-type ShowMoreItem = {
-  showNetworkList: boolean;
-  name?: never;
-  key?: never;
-  logoUrl?: never;
-  chainId?: never;
-  rpcUrl?: never;
-  explorerUrl?: never;
-  isTestnet?: never;
-  networkType?: never;
-  isActive?: never;
-};
-type PreviewNetworkItem = Network | ShowMoreItem | null;
-type PreviewNetworks = PreviewNetworkItem[];
 
 export default function TokensWidget({
   defaultCurrency = '',
-  // onlyOneCurrency = false,
+  onQuantityChange = () => {},
+  rateText = '',
+  quote,
+  formError,
 }: TokensWidgetProps) {
   const methods = useFormContext<GetQuoteFormValuesV2>();
   const [openSelectDrawer, setOpenSelectDrawer] = useState(false);
 
   const baseCurrency = methods.watch('baseCurrency');
-  // const baseAmount = methods.watch('baseAmount');
+  const baseAmount = methods.watch('baseAmount');
   const quoteCurrency = methods.watch('quoteCurrency');
+
   const operationType = methods.watch('operationType');
   const networkObj = methods.watch('networkObj');
   const tokenObj = methods.watch('tokenObj');
-  const { networks = [] } = useNetworks();
-  const { tokens } = useTokens({ chainKey: networkObj?.key ?? '' });
-  console.log({ tokens });
-
-  const _networks = useMemo(() => [...networks], [networks]);
-  const _previewNetworks = useMemo(() => fillArray(5, _networks, 10), [_networks]);
-  const previewNetworks = useMemo(() => {
-    const lastItem = _previewNetworks[_previewNetworks.length - 1];
-    const newArr = [..._previewNetworks] as unknown as PreviewNetworks;
-    if (lastItem) {
-      newArr.pop();
-      newArr.push({ showNetworkList: true });
-    }
-    return newArr;
-  }, [_previewNetworks]);
+  const { tokens, resetTokens, filterTokens } = useTokens({ chainKey: networkObj?.key ?? '' });
 
   const isDeposit = operationType === 'deposit';
+  const canCheckQuote =
+    parseFloat(baseAmount as unknown as string) >= 20 && !!networkObj?.chainId && !!tokenObj?.id;
 
   const onSelectNetwork = (network: Network) => {
-    methods.setValue('tokenObj', null);
+    console.log('onSelectNetwork');
+    methods.setValue('tokenObj', {});
     methods.setValue('networkObj', network);
-    methods.setValue('network', network.key);
+    methods.setValue('network', network.key ?? network.name);
   };
+
   const onSelectToken = (token: Token) => {
+    console.log('onSelectToken');
     methods.setValue('tokenObj', token);
-    methods.setValue(isDeposit ? 'quoteCurrency' : 'baseCurrency', token.key);
+    methods.setValue(isDeposit ? 'quoteCurrency' : 'baseCurrency', token.key ?? token.name);
+    // resetTokens();
+    onQuantityChange();
     setOpenSelectDrawer((prev) => !prev);
   };
 
   // const quoteAmount = methods.watch('quoteAmount');
 
   const switchOperation = () => {
-    const _quoteCurrency = methods.getValues('quoteCurrency');
-    const _baseCurrency = methods.getValues('baseCurrency');
-    const _operationType = methods.getValues('operationType');
-    const [_reverseOperation] = OPERATION_TYPES.filter((type) => type !== _operationType);
+    console.log('switchOperation');
 
-    methods.setValue('baseCurrency', _quoteCurrency);
-    methods.setValue('quoteCurrency', _baseCurrency);
-    methods.setValue('operationType', _reverseOperation);
+    try {
+      const _quoteCurrency = methods.getValues('quoteCurrency');
+      const _baseCurrency = methods.getValues('baseCurrency');
+      const _operationType = methods.getValues('operationType');
+      const [_reverseOperation] = OPERATION_TYPES.filter((type) => type !== _operationType);
+
+      methods.setValue('baseCurrency', _quoteCurrency);
+      methods.setValue('quoteCurrency', _baseCurrency);
+      methods.setValue('operationType', _reverseOperation);
+      onQuantityChange();
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   const chooseCurrencyComp = useCallback(
@@ -138,56 +124,51 @@ export default function TokensWidget({
     [networkObj?.logoUrl, tokenObj?.imageUrl],
   );
 
-  console.log({ networkObj, tokenObj, quoteCurrency, baseCurrency });
-
   return (
     <TokensContainer container spacing={2}>
       <DialogDrawer
         open={openSelectDrawer}
-        onClose={() => setOpenSelectDrawer(!openSelectDrawer)}
+        onClose={() => {
+          setOpenSelectDrawer(!openSelectDrawer);
+          if (canCheckQuote) onQuantityChange();
+        }}
         titleContent={
           <>
-            <NetworkBttnsCont xs={12} sm={12} md={12} spacing={2}>
-              {previewNetworks?.map((network: PreviewNetworkItem) => {
-                if (!network) {
-                  return (
-                    <NetworkButton role="button" disabled>
-                      <span>
-                        <img src={TokenPlaceholderGray} />
-                      </span>
-                    </NetworkButton>
-                  );
-                }
-                if (network?.showNetworkList) {
-                  return (
-                    // TODO: onclick open network list
-                    <NetworkButton role="button">
-                      + {_networks.length - previewNetworks.length}
-                    </NetworkButton>
-                  );
-                }
-                return (
-                  <NetworkButton
-                    role="button"
-                    className={networkObj?.key === network?.key ? 'active' : ''}
-                    onClick={() => onSelectNetwork(network as unknown as Network)}
-                  >
-                    <span>
-                      <img alt={network?.key} src={network?.logoUrl} />
-                    </span>
-                  </NetworkButton>
-                );
-              })}
-            </NetworkBttnsCont>
+            <NetworkList networkObj={networkObj} onSelectNetwork={onSelectNetwork} />
             <Grid xs={12} sm={12} md={12} spacing={2} sx={{ px: 0 }}>
-              <Input fullWidth />
+              <Input
+                defaultValue={tokenObj.name ?? tokenObj.key}
+                onChange={(e) => {
+                  filterTokens(e.target.value);
+                }}
+                fullWidth
+              />
             </Grid>
           </>
         }
       >
-        <ul>
-          {tokens?.map((token) => <li onClick={() => onSelectToken(token)}>{token?.name}</li>)}
-        </ul>
+        <TokenList>
+          {tokens?.map(
+            (token) =>
+              !!token.key && (
+                <li
+                  key={token?.id}
+                  onClick={() => onSelectToken(token)}
+                  className={tokenObj.id === token.id ? 'active' : ''}
+                >
+                  <Box sx={{ width: '38px', mr: 2 }}>
+                    <TransactionTypeIcon role="button" sx={{ backgroundColor: 'background.paper' }}>
+                      <img alt={token.name} src={token.imageUrl ?? TokenPlaceholderGray} />
+                    </TransactionTypeIcon>
+                  </Box>
+                  <Box>
+                    <p>{token?.key ?? token?.name}</p>
+                    {token?.name}
+                  </Box>
+                </li>
+              ),
+          )}
+        </TokenList>
       </DialogDrawer>
       <Grid xs={12} sm={12} md={12}>
         <Title variant="h2" sx={{ fontFamily: 'Kanit', mb: 1, fontSize: 20, color: 'ink.i900' }}>
@@ -233,11 +214,19 @@ export default function TokensWidget({
                           e.stopPropagation();
                         }}
                         onValueChange={(value) => {
-                          onChange(value);
+                          if (value !== String(baseAmount)) {
+                            onChange(value);
+                            if (networkObj?.chainId && tokenObj?.id) onQuantityChange();
+                          }
                         }}
                       />
                     )}
                   />
+                  {!!methods.formState.errors.baseAmount?.message && (
+                    <span className="currency-error">
+                      {methods.formState.errors.baseAmount?.message}
+                    </span>
+                  )}
                   <span className="currency-amount">{baseCurrency}</span>
                 </Box>
               </CurrencyAmount>
@@ -253,7 +242,7 @@ export default function TokensWidget({
               <p>Hacia</p>
               <CurrencyAmount>
                 <Box sx={{ width: '38px' }}>
-                  <TransactionTypeIcon sx={{ backgroundColor: 'background.paper' }}>
+                  <TransactionTypeIcon role="button" sx={{ backgroundColor: 'background.paper' }}>
                     {chooseCurrencyComp(quoteCurrency)}
                   </TransactionTypeIcon>
                 </Box>
@@ -278,6 +267,7 @@ export default function TokensWidget({
           </Grid>
 
           <CircularButton
+            role="button"
             onClick={() => switchOperation()}
             sx={{
               position: 'absolute',
@@ -297,7 +287,7 @@ export default function TokensWidget({
           <p>Recibes</p>
           <CurrencyAmount>
             <Box sx={{ width: '38px' }}>
-              <TransactionTypeIcon sx={{ backgroundColor: 'background.paper' }}>
+              <TransactionTypeIcon role="button" sx={{ backgroundColor: 'background.paper' }}>
                 {chooseCurrencyComp(quoteCurrency)}
               </TransactionTypeIcon>
             </Box>
@@ -309,13 +299,25 @@ export default function TokensWidget({
                 justifyItems: 'center',
               }}
             >
-              <input className="currency-input sm" type="text" value="0.0034567891 USDC" disabled />
-              <span className="currency-amount">${formatNumber(69.456, 2, 6)} USD</span>
+              <input
+                className="currency-input sm"
+                type="text"
+                value={`${formatNumber(quote?.quoteAmount ?? 0)} ${quote?.quoteCurrency ?? ''}`}
+                disabled
+              />
+              {/* <span className="currency-amount">${formatNumber(69.456, 2, 6)} USD</span> */}
+              <span className="currency-amount">-</span>
             </Box>
           </CurrencyAmount>
-          <span className="currency-rate">1 USDC ≈ ${formatNumber(17.08)} MXN</span>
+          <span className="currency-rate">{rateText}</span>
         </CurrencyTokenButton>
       </Grid>
+
+      {!!formError && (
+        <Grid md={12} sm={12} xs={12} sx={{}}>
+          <ErrorBox>{formError}</ErrorBox>
+        </Grid>
+      )}
 
       <Grid xs={12} sm={12} md={12}>
         <BandoButton type="submit" variant="contained" fullWidth sx={{ py: 2, mt: 2 }}>

@@ -15,6 +15,12 @@ type CellDetailWithIconProps = {
 export const TransactionTypeIcon = styled(TableRowDetail)(() => ({
   position: 'relative',
   borderRadius: '50%',
+  '& img': {
+    width: 'auto',
+    height: '100%',
+    objectFit: 'cover',
+    borderRadius: '50%',
+  },
   '& span.network-img': {
     fontSize: 'inherit',
     position: 'absolute',
