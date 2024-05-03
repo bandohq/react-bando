@@ -61,7 +61,6 @@ export default function GetQuoteForm({ enableNewWidget = false }) {
 
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
-  const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
   const rateText =
     operationType === 'deposit'
       ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
@@ -148,35 +147,32 @@ export default function GetQuoteForm({ enableNewWidget = false }) {
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {enableNewWidget ? (
-          <TokensWidget />
-        ) : (
-          <Grid container spacing={2} sx={{ margin: 0 }}>
-            <Grid xs={12}>
-              <Select
-                defaultValue={'deposit'}
-                fullWidth={false}
-                mantainLabel={false}
-                className="no-border"
-                sx={{
-                  width: 'fit-content',
-                  fontWeight: '500',
-                  fontSize: '1.5rem !important',
-                  color: 'palette.ink.i900',
-                }}
-                {...register('operationType', { onChange: onChangeOperationType })}
-                items={[
-                  {
-                    label: `Deposita ${operationCurrency}`,
-                    value: 'deposit',
-                  },
-                  {
-                    label: `Retira ${operationCurrency}`,
-                    value: 'withdraw',
-                  },
-                ]}
-              />
-            </Grid>
+        <Grid container spacing={2} sx={{ margin: 0 }}>
+          <Grid xs={12}>
+            <Select
+              defaultValue={'deposit'}
+              fullWidth={false}
+              mantainLabel={false}
+              className="no-border"
+              sx={{
+                width: 'fit-content',
+                fontWeight: '500',
+                fontSize: '1.5rem !important',
+                color: 'palette.ink.i900',
+              }}
+              {...register('operationType', { onChange: onChangeOperationType })}
+              items={[
+                {
+                  label: 'Compra cripto',
+                  value: 'deposit',
+                },
+                {
+                  label: 'Vende cripto',
+                  value: 'withdraw',
+                },
+              ]}
+            />
+          </Grid>
 
             <Grid xs={12}>
               <Select
