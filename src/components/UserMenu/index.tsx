@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import useUser from '@hooks/useUser';
 
@@ -12,9 +12,9 @@ import CaretGreen from '../../assets/CaretGreen.svg';
 import LogoutIcon from '@components/Svgs/Logout';
 
 export default function UserMenu() {
+
   const { t } = useTranslation('userMenu');
   const { user, removeSessionStorage, isLoginOut } = useUser();
-  const { pathname } = useLocation();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -25,10 +25,6 @@ export default function UserMenu() {
     navigate('/');
   };
 
-  const handleLoginClick = async () => {
-    navigate('/signin');
-  };
-
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -37,21 +33,7 @@ export default function UserMenu() {
     setAnchorEl(null);
   };
 
-  if (!user?.email)
-    if (pathname === '/signin') return null;
-    else
-      return (
-        <Box>
-          <Button
-            id="login-button"
-            onClick={handleLoginClick}
-            sx={{ textTransform: 'none', fontWeight: 700, display: 'flex', gap: 1 }}
-          >
-            {t('signin')}
-          </Button>
-        </Box>
-      );
-  return (
+  if (!!user?.email) return (
     <Box>
       <Button
         id="user-nav-button"

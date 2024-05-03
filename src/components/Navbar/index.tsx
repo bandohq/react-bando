@@ -1,11 +1,19 @@
 import Box, { BoxProps } from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
-import { useCallback, useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import { ListItem, ListItemButton, ListItemText, List } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
+import { useCallback, useEffect, useState, Fragment } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Logo from '../../assets/logo.svg';
 import LogoWhite from '../../assets/logo_white.svg';
 import Telegram from '../../assets/telegram.svg';
 import UserMenu from '@components/UserMenu';
 import BandoButton from '@components/Button';
+import useUser from '@hooks/useUser';
 
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -22,13 +30,11 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     boxShadow: theme.shadows[4],
   },
-  [theme.breakpoints.between('xs', 'sm')]: {
-    '& #user-nav-button': {
-      display: 'none',
-    },
-    '&.scrolled #telegram-nav-button': {
-      color: theme.palette.primary.contrastText,
-    },
+  '&.scrolled #telegram-nav-button': {
+    color: theme.palette.primary.contrastText,
+  },
+  '&.scrolled #user-nav-button': {
+    color: theme.palette.primary.contrastText,
   },
   '& .navbar-box': {
     width: '100%',
@@ -52,6 +58,9 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
     height: 'auto',
     verticalAlign: 'middle',
     display: 'inline-block',
+    [theme.breakpoints.between('xs', 'sm')]: {
+      maxWidth: '90px',
+    },
   },
   '& .navbar-menu': {
     display: 'flex',
@@ -62,15 +71,32 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
       marginLeft: theme.spacing(1),
     },
   },
+  [theme.breakpoints.between('xs', 'sm')]: {
+    '& #user-nav-button': {
+      display: 'none',
+    },
+    '& .navbar-menu button, .navbar-menu a': {
+      fontSize: theme.typography.pxToRem(13),
+    },
+  },
 }));
 
 export default function Navbar({ fullWidth = false }) {
   const [isOnTop, setIsOnTop] = useState(true);
+  const theme = useTheme();
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const {t} = useTranslation('userMenu');
+  const {pathname} = useLocation();
 
   const handleScroll = useCallback(() => {
     const isCurrentScropOnTop = window.scrollY === 0;
     setIsOnTop(isCurrentScropOnTop);
   }, []);
+
+  const handleLoginClick = async () => {
+    navigate('/signin');
+  };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, {
@@ -81,6 +107,47 @@ export default function Navbar({ fullWidth = false }) {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [handleScroll]);
+
+  const [open, setOpen] = useState(false);
+
+  const toggleDrawer = (open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event &&
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+      setOpen(open);
+  };
+
+  const list = () => (
+    <Box
+      component="div"
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        {[
+          <ListItemText primary={user?.email} />,
+          <ListItemText primary={'text2'} />,
+          <ListItemText primary={'text3'} />,
+          <ListItemText primary={'text4'} />,
+          ].map((text, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton>
+                {text}
+              </ListItemButton>
+            </ListItem>
+          )
+        )}
+      </List>
+    </Box>
+  );
 
   return (
     <NavbarContainer
@@ -94,11 +161,11 @@ export default function Navbar({ fullWidth = false }) {
     >
       <div className={fullWidth ? 'navbar-box full-width' : 'navbar-box'}>
         <a href="/" className="navbar-brand">
-          <img src={!!isOnTop ? Logo : LogoWhite} loading="lazy" alt="" aria-label="Bando logo" />
+          <img src={isOnTop ? Logo : LogoWhite} loading="lazy" alt="" aria-label="Bando logo" />
         </a>
         <div className="telegram-logo-box">
           <nav role="navigation" className="navbar-menu">
-            <UserMenu />
+            <UserMenu/>
             <BandoButton
               component="a"
               id="telegram-nav-button"
@@ -119,6 +186,44 @@ export default function Navbar({ fullWidth = false }) {
                 aria-label="Telegram Logo"
               />
             </BandoButton>
+            {!user?.email && pathname !== '/signin' && (
+              <Box>
+                <Button
+                  id="login-button"
+                  onClick={handleLoginClick}
+                  sx={{
+                    textTransform: 'none',
+                    fontWeight: 700,
+                    display: 'flex',
+                    gap: 1,
+                    color: isOnTop ? 'inherit' : 'white',
+                  }}
+                >
+                  {t('signin')}
+                </Button>
+            </Box>
+            )}
+            {!!user?.email && (
+              <Fragment>
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  edge="end"
+                  onClick={toggleDrawer(true)}
+                  sx={{display: {'xs': 'block', 'sm': 'none' }}}
+                >
+                  <MenuIcon sx={isOnTop ? {color:  theme.palette.primary.main} : {color: theme.palette.primary.contrastText}} />
+                </IconButton>
+                <SwipeableDrawer
+                  anchor='right'
+                  open={open}
+                  onClose={toggleDrawer(false)}
+                  onOpen={toggleDrawer(true)}
+                >
+                  {list()}
+                </SwipeableDrawer>
+              </Fragment>
+            )}
           </nav>
         </div>
       </div>
