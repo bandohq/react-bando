@@ -9,9 +9,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 import CaretGreen from '../../assets/CaretGreen.svg';
+import CaretWhite from '../../assets/CaretWhite.svg';
 import LogoutIcon from '@components/Svgs/Logout';
 
-export default function UserMenu() {
+type UserMenuProps = {
+  isOnTop?: boolean;
+};
+
+export default function UserMenu(props: UserMenuProps) {
   const { t } = useTranslation('userMenu');
   const { user, removeSessionStorage, isLoginOut } = useUser();
 
@@ -45,7 +50,7 @@ export default function UserMenu() {
           sx={{ textTransform: 'none', fontWeight: 400, display: 'flex', gap: 1 }}
         >
           {user?.email}
-          <img src={CaretGreen} alt="Caret" />
+          <img src={ props.isOnTop ? CaretGreen : CaretWhite } alt="Caret" />
         </Button>
         <Menu
           id="basic-menu"

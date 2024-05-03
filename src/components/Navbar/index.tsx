@@ -90,7 +90,7 @@ export default function Navbar({ fullWidth = false }) {
   const { pathname } = useLocation();
 
   const handleScroll = useCallback(() => {
-    const isCurrentScropOnTop = window.scrollY === 0;
+    const isCurrentScropOnTop = window.scrollY <= 30;
     setIsOnTop(isCurrentScropOnTop);
   }, []);
 
@@ -181,7 +181,7 @@ export default function Navbar({ fullWidth = false }) {
                 aria-label="Telegram Logo"
               />
             </BandoButton>
-            <UserMenu />
+            <UserMenu isOnTop={isOnTop} />
             {!user?.email && pathname !== '/signin' && (
               <Box>
                 <Button
