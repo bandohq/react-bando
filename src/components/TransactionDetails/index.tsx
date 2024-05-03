@@ -63,6 +63,9 @@ const GridRow = styled(Grid)(({ theme }) => ({
       flexDirection: 'column',
     },
   },
+  [theme.breakpoints.down('sm')]: {
+    display: 'block',
+  },
 }));
 
 const BorderContainer = styled(Grid)(({ theme }) => ({
@@ -162,7 +165,7 @@ export default function TransactionDetail({
             </Rate>
           </Grid>
           {!!rate && (
-            <GridRow xs={12}>
+            <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network
                 variant="body2"
                 sx={{
@@ -177,7 +180,7 @@ export default function TransactionDetail({
             </GridRow>
           )}
           {!!networkName && (
-            <GridRow xs={12}>
+            <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
                 {networkName?.toLowerCase()}{' '}
