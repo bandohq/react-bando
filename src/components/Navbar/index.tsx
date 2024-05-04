@@ -16,7 +16,6 @@ import UserMenu from '@components/UserMenu';
 import BandoButton from '@components/Button';
 import UserCard from '@components/UserCard';
 import useUser from '@hooks/useUser';
-import DrawerImage from '../../assets/bg-drawer.png';
 import DrawerLink from './DrawerLink';
 import TransactionsIcon from '../../assets/transactions.svg';
 import LogoutIcon from '@components/Svgs/Logout';
@@ -90,7 +89,7 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
 const StyledDrawer = styled(SwipeableDrawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
     width: 250,
-    backgroundImage: `url(${DrawerImage})`,
+    backgroundImage: "url('/images/bg-drawer.png')",
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
