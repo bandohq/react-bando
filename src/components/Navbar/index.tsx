@@ -1,9 +1,10 @@
 import Box, { BoxProps } from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Divider from '@mui/material/Divider';
 import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { ListItem, ListItemButton, ListItemText, List } from '@mui/material';
+import { ListItem, List } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useCallback, useEffect, useState, Fragment } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -13,7 +14,12 @@ import LogoWhite from '../../assets/logo_white.svg';
 import Telegram from '../../assets/telegram.svg';
 import UserMenu from '@components/UserMenu';
 import BandoButton from '@components/Button';
+import UserCard from '@components/UserCard';
 import useUser from '@hooks/useUser';
+import DrawerImage from '../../assets/bg-drawer.png';
+import DrawerLink from './DrawerLink';
+import TransactionsIcon from '../../assets/transactions.svg';
+import LogoutIcon from '@components/Svgs/Logout';
 
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -81,6 +87,17 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
+const StyledDrawer = styled(SwipeableDrawer)(({ theme }) => ({
+  '& .MuiDrawer-paper': {
+    width: 250,
+    backgroundImage: `url(${DrawerImage})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    color: theme.palette.primary.main,
+  },
+}));
+
 export default function Navbar({ fullWidth = false }) {
   const [isOnTop, setIsOnTop] = useState(true);
   const theme = useTheme();
@@ -123,22 +140,18 @@ export default function Navbar({ fullWidth = false }) {
   };
 
   const list = () => (
-    <Box
-      component="div"
-      sx={{ width: 250 }}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
+    <Box component="div" sx={{ width: 250 }} role="presentation">
       <List>
         {[
-          <ListItemText primary={user?.email} />,
-          <ListItemText primary={'text2'} />,
-          <ListItemText primary={'text3'} />,
-          <ListItemText primary={'text4'} />,
+          <DrawerLink
+            to="/transactions"
+            icon={<img src={TransactionsIcon} alt="Transactions" />}
+            text={t('viewTxnHistory')}
+          />,
+          <DrawerLink to="logout" icon={<LogoutIcon strokeWidth={1.5} />} text={t('signout')} />,
         ].map((comp, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton>{comp}</ListItemButton>
+            {comp}
           </ListItem>
         ))}
       </List>
@@ -218,14 +231,18 @@ export default function Navbar({ fullWidth = false }) {
                     }
                   />
                 </IconButton>
-                <SwipeableDrawer
+                <StyledDrawer
                   anchor="right"
                   open={open}
                   onClose={toggleDrawer(false)}
                   onOpen={toggleDrawer(true)}
                 >
+                  <ListItem key="user-card">
+                    <UserCard user={user} />
+                  </ListItem>
+                  <Divider></Divider>
                   {list()}
-                </SwipeableDrawer>
+                </StyledDrawer>
               </Fragment>
             )}
           </nav>
