@@ -15,6 +15,7 @@ const DialogDrawerComp = styled(Paper)(({ theme }) => ({
   top: 0,
   left: 0,
   right: 0,
+  bottom: 0,
   zIndex: 1001,
   display: 'flex',
   flexDirection: 'column',
@@ -53,11 +54,9 @@ const DrawerTitle = styled('span')(({ theme }) => ({
   fontSize: theme.typography.pxToRem(16),
 }));
 
-const DrawerCont = styled('div')(({ theme }) => ({
-  padding: theme.spacing(2),
-  width: '100%',
-  overflowX: 'hidden',
-  overflowY: 'auto',
+const DrawerCont = styled('div')(() => ({
+  height: '100%',
+  overflow: 'hidden',
 }));
 
 export type DialogDrawerProps = PropsWithChildren & {

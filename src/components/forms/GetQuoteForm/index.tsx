@@ -17,19 +17,16 @@ import Select from '@components/forms/Select';
 import Hr from '@components/Hr';
 
 import Polygon from '../../../assets/polygon.png';
-import Ethereum from '../../../assets/ethereum.png';
-import TokensWidget from '@components/TokensWidget';
+//import Ethereum from '../../../assets/ethereum.png';
 
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
-
 import { sendCurrency, depositCurrency } from '@config/constants/currencies';
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
 import formatNumber from '@helpers/formatNumber';
 
 const REQUEST_DEBOUNCE = 250;
-const DEFAULT_CURRENCY = 'MXN';
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
@@ -40,7 +37,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
   height: 37,
 }));
 
-export default function GetQuoteForm({ enableNewWidget = false }) {
+export default function GetQuoteForm() {
   const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
   const { user } = useUser();
@@ -49,11 +46,10 @@ export default function GetQuoteForm({ enableNewWidget = false }) {
       resolver: yupResolver(schema),
       defaultValues: {
         quoteCurrency: 'USDC',
-        baseCurrency: DEFAULT_CURRENCY,
+        baseCurrency: 'MXN',
         operationType: 'deposit',
       },
     });
-
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
   const operationType = watch('operationType');
@@ -174,92 +170,91 @@ export default function GetQuoteForm({ enableNewWidget = false }) {
             />
           </Grid>
 
-            <Grid xs={12}>
-              <Select
-                defaultValue={'POLYGON'}
-                label="Red a recibir"
-                items={[
-                  {
-                    label: 'Polygon',
-                    value: 'POLYGON',
-                    startComponent: <CurrencyImg src={Polygon} />,
-                  },
-                  {
-                    label: 'Ethereum',
-                    value: 'ETHEREUM',
-                    startComponent: <CurrencyImg src={Ethereum} />,
-                    hide: true,
-                  },
-                ]}
-                {...register('network')}
-              />
-            </Grid>
-
-            <Grid md={8} sm={6} xs={12}>
-              <Input
-                label="Envias"
-                type="text"
-                inputMode="numeric"
-                {...register('baseAmount', { onChange: onQuantityChange })}
-                helpText={formState.errors.baseAmount?.message}
-                error={!!formState.errors.baseAmount?.message}
-              />
-            </Grid>
-            <Grid md={4} sm={6} xs={12}>
-              <Select
-                items={depositCurrencyItems}
-                value={baseCurrency}
-                {...register('baseCurrency', { onChange: onChangeCurrencySelects })}
-                error={!!formState.errors.baseCurrency?.message}
-                helpText={formState.errors.baseCurrency?.message}
-              />
-            </Grid>
-            <Grid md={8} sm={6} xs={12}>
-              <Input
-                label="Recibes"
-                type="text"
-                name="quoteAmount"
-                value={formatNumber(data?.quoteAmount ?? 0)}
-                helpText={
-                  <>
-                    {isMutating ? (
-                      <CircularProgress
-                        size={15}
-                        sx={{ marginLeft: 1, color: 'palette.ink.i500' }}
-                        aria-label="submitting"
-                      />
-                    ) : (
-                      rateText
-                    )}
-                  </>
-                }
-                disabled
-              />
-            </Grid>
-            <Grid md={4} sm={6} xs={12}>
-              <Select
-                items={sendCurrencyItems}
-                value={quoteCurrency}
-                {...register('quoteCurrency', { onChange: onChangeCurrencySelects })}
-                error={!!formState.errors.quoteCurrency?.message}
-              />
-            </Grid>
-
-            <Grid xs={12}>
-              <Hr sx={{ marginBottom: 2 }} />
-            </Grid>
-            <Grid xs={12}>
-              <BandoButton
-                type="submit"
-                variant="contained"
-                fullWidth
-                sx={{ padding: '16px 8px', fontWeight: 'bold' }}
-              >
-                Continuar
-              </BandoButton>
-            </Grid>
+          <Grid xs={12}>
+            <Select
+              defaultValue={'POLYGON'}
+              label="Red a recibir"
+              items={[
+                {
+                  label: 'Polygon',
+                  value: 'POLYGON',
+                  startComponent: <CurrencyImg src={Polygon} />,
+                },
+                /* disabled for now
+                {
+                  label: 'Ethereum',
+                  value: 'ETHEREUM',
+                  startComponent: <CurrencyImg src={Ethereum} />,
+                },*/
+              ]}
+              {...register('network')}
+            />
           </Grid>
-        )}
+
+          <Grid md={8} sm={6} xs={12}>
+            <Input
+              label="Envias"
+              type="text"
+              inputMode="numeric"
+              {...register('baseAmount', { onChange: onQuantityChange })}
+              helpText={formState.errors.baseAmount?.message}
+              error={!!formState.errors.baseAmount?.message}
+            />
+          </Grid>
+          <Grid md={4} sm={6} xs={12}>
+            <Select
+              items={depositCurrencyItems}
+              value={baseCurrency}
+              {...register('baseCurrency', { onChange: onChangeCurrencySelects })}
+              error={!!formState.errors.baseCurrency?.message}
+              helpText={formState.errors.baseCurrency?.message}
+            />
+          </Grid>
+          <Grid md={8} sm={6} xs={12}>
+            <Input
+              label="Recibes"
+              type="text"
+              name="quoteAmount"
+              value={formatNumber(data?.quoteAmount ?? 0)}
+              helpText={
+                <>
+                  {isMutating ? (
+                    <CircularProgress
+                      size={15}
+                      sx={{ marginLeft: 1, color: 'palette.ink.i500' }}
+                      aria-label="submitting"
+                    />
+                  ) : (
+                    rateText
+                  )}
+                </>
+              }
+              disabled
+            />
+          </Grid>
+          <Grid md={4} sm={6} xs={12}>
+            <Select
+              items={sendCurrencyItems}
+              value={quoteCurrency}
+              {...register('quoteCurrency', { onChange: onChangeCurrencySelects })}
+              error={!!formState.errors.quoteCurrency?.message}
+            />
+          </Grid>
+
+          <Grid xs={12}>
+            <Hr sx={{ marginBottom: 2 }} />
+          </Grid>
+          <Grid xs={12}>
+            <BandoButton
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{ padding: '16px 8px', fontWeight: 'bold' }}
+            >
+              Continuar
+            </BandoButton>
+          </Grid>
+        </Grid>
       </form>
     </BoxContainer>
   );

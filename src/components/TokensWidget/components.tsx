@@ -1,4 +1,3 @@
-import { colors } from '@mui/material';
 import ButtonBase, { ButtonProps } from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import { styled, alpha } from '@mui/material/styles';
@@ -133,7 +132,6 @@ export const NetworkButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
   justifyContent: 'center',
   width: '100%',
   minWidth: '30px',
-  // maxWidth: '64px', TODO: Need to revisit this
   color: theme.palette.ink.i400,
   border: `1px solid ${theme.palette.ink.i200}`,
   borderRadius: theme.spacing(1),
@@ -160,20 +158,22 @@ export const NetworkButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
 export const TokenList = styled('ul')(({ theme }) => ({
   listStyleType: 'none',
   display: 'flex',
-  padding: 0,
   width: '100%',
   flexDirection: 'column',
+  padding: theme.spacing(0, 2),
+  paddingBottom: theme.spacing(2),
 
   '& li': {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    padding: theme.spacing(2, 2),
     width: '100%',
     flexDirection: 'row',
     color: theme.palette.ink.i400,
     fontSize: theme.typography.pxToRem(12),
     borderRadius: theme.spacing(1),
+    padding: theme.spacing(2, 2),
+
     '& p': {
       margin: 0,
       color: theme.palette.ink.i950,
