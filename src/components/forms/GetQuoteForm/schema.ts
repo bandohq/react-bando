@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import { OperationType } from '@hooks/useTransaction/requests';
-import { networks, networksOffRamp, NetworkOption } from '@config/constants/networks';
+import { networks, networksOffRamp } from '@config/constants/networks';
 
 export type GetQuoteFormValues = {
   baseAmount: number;
@@ -8,7 +8,6 @@ export type GetQuoteFormValues = {
   baseCurrency: string;
   operationType: OperationType;
   network: string;
-  networkOption: NetworkOption;
 };
 
 const schema = yup.object().shape({
@@ -37,7 +36,6 @@ const schema = yup.object().shape({
       then: (schema) => schema.oneOf(networks, 'Por favor selecciona una red válida'),
       otherwise: (schema) => schema.oneOf(networksOffRamp, 'Por favor selecciona una red válida'),
     }),
-  networkOption: yup.object(),
 });
 
 export default schema;
