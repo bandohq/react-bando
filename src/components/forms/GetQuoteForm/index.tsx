@@ -15,17 +15,23 @@ import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
 import Hr from '@components/Hr';
+import env from '@config/env';
 
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
 import { sendCurrency } from '@config/constants/currencies';
 import { Quote } from '@hooks/useQuote/requests';
-import env from '@config/env';
 import formatNumber from '@helpers/formatNumber';
 
-import networkOptionsOnRamp, { networkOptionsOffRamp } from '@config/constants/networks';
+import networkOptsOnRamp, {
+  networkOptionsOffRamp as networkOptsOffRamp,
+} from '@config/constants/networks';
 
 const REQUEST_DEBOUNCE = 250;
+const DEFAULT_NETWORK = 'pol';
+const DEFAULT_BASE_CURRENCY = 'MXN';
+const DEFAULT_QUOTE_CURRENCY = 'usdc';
+const DEFAULT_OPERATION = 'deposit';
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
@@ -44,19 +50,20 @@ export default function GetQuoteForm() {
     useForm<GetQuoteFormValues>({
       resolver: yupResolver(schema),
       defaultValues: {
-        network: 'pol',
-        quoteCurrency: 'usdc',
-        baseCurrency: 'MXN',
-        operationType: 'deposit',
+        network: DEFAULT_NETWORK,
+        quoteCurrency: DEFAULT_QUOTE_CURRENCY,
+        baseCurrency: DEFAULT_BASE_CURRENCY,
+        operationType: DEFAULT_OPERATION,
       },
     });
+
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
-  const operationType = watch('operationType');
+  const optType = watch('operationType');
   const baseAmount = watch('baseAmount');
   const network = watch('network');
 
-  const networkOptions = operationType === 'deposit' ? networkOptionsOnRamp : networkOptionsOffRamp;
+  const networkOptions = optType === DEFAULT_OPERATION ? networkOptsOnRamp : networkOptsOffRamp;
   const depositCurrency = useMemo(() => {
     return networkOptions[network]?.chains?.map((chain) => ({
       label: chain.label,
@@ -65,10 +72,10 @@ export default function GetQuoteForm() {
     }));
   }, [network, networkOptions]);
 
-  const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
-  const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
+  const depositCurrencyItems = optType === DEFAULT_OPERATION ? sendCurrency : depositCurrency;
+  const sendCurrencyItems = optType === DEFAULT_OPERATION ? depositCurrency : sendCurrency;
   const rateText =
-    operationType === 'deposit'
+    optType === DEFAULT_OPERATION
       ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
       : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
 
@@ -132,10 +139,12 @@ export default function GetQuoteForm() {
   const onChangeOperationType = useCallback(
     (event: ChangeEvent<HTMLSelectElement>) => {
       const { value } = event.target;
-      const depositCurrencyItms = value === 'deposit' ? 'MXN' : 'usdc';
-      const sendCurrencyItms = value === 'deposit' ? 'usdc' : 'MXN';
+      const depositCurrencyItms =
+        value === DEFAULT_OPERATION ? DEFAULT_BASE_CURRENCY : DEFAULT_QUOTE_CURRENCY;
+      const sendCurrencyItms =
+        value === DEFAULT_OPERATION ? DEFAULT_QUOTE_CURRENCY : DEFAULT_BASE_CURRENCY;
 
-      setValue('network', 'pol');
+      setValue('network', DEFAULT_NETWORK);
       setValue('baseCurrency', depositCurrencyItms);
       setValue('quoteCurrency', sendCurrencyItms);
       if (baseAmount > 0) handleSubmit(debouncedRequest)();
@@ -158,7 +167,7 @@ export default function GetQuoteForm() {
         <Grid container spacing={2} sx={{ margin: 0 }}>
           <Grid xs={12}>
             <Select
-              defaultValue={'deposit'}
+              defaultValue={DEFAULT_OPERATION}
               fullWidth={false}
               mantainLabel={false}
               className="no-border"
@@ -172,7 +181,7 @@ export default function GetQuoteForm() {
               items={[
                 {
                   label: 'Compra cripto',
-                  value: 'deposit',
+                  value: DEFAULT_OPERATION,
                 },
                 {
                   label: 'Vende cripto',
@@ -184,8 +193,8 @@ export default function GetQuoteForm() {
 
           <Grid xs={12}>
             <Controller
-              control={methods.control}
               name="network"
+              control={methods.control}
               render={({ field: { onChange, value } }) => (
                 <Select
                   label="Red a recibir"
