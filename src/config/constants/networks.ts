@@ -5,13 +5,11 @@ import Base from '../../assets/networks/base.png';
 import Scroll from '../../assets/networks/scroll.png';
 import Binance from '../../assets/networks/binance-smart-chain.png';
 
-import ARB from '../../assets/chains/arbitrum.png';
 import WETH from '../../assets/chains/weth.png';
 import USDC from '../../assets/chains/usdc.png';
 import USDT from '../../assets/chains/usdt.png';
 import MATIC from '../../assets/chains/matic.png';
 import ETH from '../../assets/chains/eth.png';
-import OP from '../../assets/chains/optimism.png';
 import BNB from '../../assets/chains/bnb.png';
 
 export type NetworkOption = Record<
@@ -64,7 +62,7 @@ const networkOptions: NetworkOption = {
       {
         label: 'ARB',
         value: 'arb',
-        img: ARB,
+        img: Arbitrum,
       },
       {
         label: 'USDC',
@@ -106,7 +104,7 @@ const networkOptions: NetworkOption = {
       {
         label: 'OP',
         value: 'op',
-        img: OP,
+        img: Optimism,
       },
     ],
   },
