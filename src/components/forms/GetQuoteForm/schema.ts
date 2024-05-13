@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import { OperationType } from '@hooks/useTransaction/requests';
+import { networks, networksOffRamp, NetworkOption } from '@config/constants/networks';
 
 export type GetQuoteFormValues = {
   baseAmount: number;
@@ -7,13 +8,14 @@ export type GetQuoteFormValues = {
   baseCurrency: string;
   operationType: OperationType;
   network: string;
+  networkOption: NetworkOption;
 };
 
 const schema = yup.object().shape({
   operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
   baseAmount: yup
     .number()
-    .typeError('') // avoid error message when form input id empty
+    .typeError('Introduce un monto válido') // avoid error message when form input id empty
     .when(['operationType'], {
       is: 'deposit',
       then: (schema) => schema.min(20, 'validation.onMinAmount'),
@@ -27,7 +29,15 @@ const schema = yup.object().shape({
     .required(),
   quoteCurrency: yup.string().required(),
   baseCurrency: yup.string().required(),
-  network: yup.string().required(),
+  network: yup
+    .string()
+    .required()
+    .when(['operationType'], {
+      is: 'deposit',
+      then: (schema) => schema.oneOf(networks, 'Por favor selecciona una red válida'),
+      otherwise: (schema) => schema.oneOf(networksOffRamp, 'Por favor selecciona una red válida'),
+    }),
+  networkOption: yup.object(),
 });
 
 export default schema;

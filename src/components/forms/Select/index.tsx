@@ -92,7 +92,7 @@ const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelec
           </MenuItem>
         ))}
       </SelectBase>
-      {!!helpText && <HelpText>{helpText}</HelpText>}
+      {!!helpText && <HelpText className={props.error ? 'error' : ''}>{helpText}</HelpText>}
     </FormControl>
   );
 });

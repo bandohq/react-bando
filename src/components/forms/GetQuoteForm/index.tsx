@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 import { ChangeEvent, useCallback, useRef } from 'react';
 import debounce from 'lodash/debounce';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { GetQuoteFormValues } from './schema';
 
@@ -16,15 +16,14 @@ import Input from '@components/forms/Input';
 import Select from '@components/forms/Select';
 import Hr from '@components/Hr';
 
-import Polygon from '../../../assets/polygon.png';
-//import Ethereum from '../../../assets/ethereum.png';
-
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
-import { sendCurrency, depositCurrency } from '@config/constants/currencies';
+import { sendCurrency } from '@config/constants/currencies';
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
 import formatNumber from '@helpers/formatNumber';
+
+import networkOptionsOnRamp, { networkOptionsOffRamp } from '@config/constants/networks';
 
 const REQUEST_DEBOUNCE = 250;
 
@@ -41,11 +40,12 @@ export default function GetQuoteForm() {
   const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
   const { user } = useUser();
-  const { register, handleSubmit, setValue, watch, formState, getValues } =
+  const { register, handleSubmit, setValue, watch, formState, getValues, ...methods } =
     useForm<GetQuoteFormValues>({
       resolver: yupResolver(schema),
       defaultValues: {
-        quoteCurrency: 'USDC',
+        network: 'pol',
+        quoteCurrency: 'usdc',
         baseCurrency: 'MXN',
         operationType: 'deposit',
       },
@@ -54,6 +54,15 @@ export default function GetQuoteForm() {
   const baseCurrency = watch('baseCurrency');
   const operationType = watch('operationType');
   const baseAmount = watch('baseAmount');
+  const network = watch('network');
+
+  const networkOptions = operationType === 'deposit' ? networkOptionsOnRamp : networkOptionsOffRamp;
+
+  const depositCurrency = networkOptions[network]?.chains?.map((chain) => ({
+    label: chain.label,
+    value: chain.value,
+    startComponent: <CurrencyImg src={chain.img} />,
+  }));
 
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
@@ -124,11 +133,13 @@ export default function GetQuoteForm() {
       const { value } = event.target;
       const depositCurrencyItms = value === 'deposit' ? sendCurrency : depositCurrency;
       const sendCurrencyItms = value === 'deposit' ? depositCurrency : sendCurrency;
+
+      setValue('network', '');
       setValue('baseCurrency', depositCurrencyItms[0].value);
       setValue('quoteCurrency', sendCurrencyItms[0].value);
       if (baseAmount > 0) handleSubmit(debouncedRequest)();
     },
-    [baseAmount, debouncedRequest, handleSubmit, setValue],
+    [baseAmount, debouncedRequest, handleSubmit, setValue, depositCurrency],
   );
 
   const onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -150,13 +161,13 @@ export default function GetQuoteForm() {
               fullWidth={false}
               mantainLabel={false}
               className="no-border"
+              {...register('operationType', { onChange: onChangeOperationType })}
               sx={{
                 width: 'fit-content',
                 fontWeight: '500',
                 fontSize: '1.5rem !important',
                 color: 'palette.ink.i900',
               }}
-              {...register('operationType', { onChange: onChangeOperationType })}
               items={[
                 {
                   label: 'Compra cripto',
@@ -171,23 +182,23 @@ export default function GetQuoteForm() {
           </Grid>
 
           <Grid xs={12}>
-            <Select
-              defaultValue={'POLYGON'}
-              label="Red a recibir"
-              items={[
-                {
-                  label: 'Polygon',
-                  value: 'POLYGON',
-                  startComponent: <CurrencyImg src={Polygon} />,
-                },
-                /* disabled for now
-                {
-                  label: 'Ethereum',
-                  value: 'ETHEREUM',
-                  startComponent: <CurrencyImg src={Ethereum} />,
-                },*/
-              ]}
-              {...register('network')}
+            <Controller
+              control={methods.control}
+              name="network"
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  label="Red a recibir"
+                  items={Object.values(networkOptions)?.map((network) => ({
+                    label: network.label,
+                    value: network.value,
+                    startComponent: <CurrencyImg src={network.img} />,
+                  }))}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  error={!!formState.errors.network?.message}
+                  helpText={formState.errors.network?.message}
+                />
+              )}
             />
           </Grid>
 
