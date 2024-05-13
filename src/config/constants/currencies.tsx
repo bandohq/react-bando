@@ -11,18 +11,18 @@ export const sendCurrency = [
   {
     label: 'MXN',
     value: 'MXN',
-    startComponent: <CurrencyImg src={Currency} />,
+    startComponent: <CurrencyImg src={Currency} sx={{ width: 32, height: 32 }} />,
   },
   {
     label: 'CO (muy pronto)',
     value: 'CO',
-    startComponent: <CurrencyImg src={Currency} />,
+    startComponent: <CurrencyImg src={Currency} sx={{ width: 32, height: 32 }} />,
     disabled: true,
   },
   {
     label: 'ARS (muy pronto)',
     value: 'ARS',
-    startComponent: <CurrencyImg src={Currency} />,
+    startComponent: <CurrencyImg src={Currency} sx={{ width: 32, height: 32 }} />,
     disabled: true,
   },
 ];

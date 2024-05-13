@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, useCallback, useRef } from 'react';
+import { ChangeEvent, useCallback, useMemo, useRef } from 'react';
 import debounce from 'lodash/debounce';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -57,12 +57,13 @@ export default function GetQuoteForm() {
   const network = watch('network');
 
   const networkOptions = operationType === 'deposit' ? networkOptionsOnRamp : networkOptionsOffRamp;
-
-  const depositCurrency = networkOptions[network]?.chains?.map((chain) => ({
-    label: chain.label,
-    value: chain.value,
-    startComponent: <CurrencyImg src={chain.img} />,
-  }));
+  const depositCurrency = useMemo(() => {
+    return networkOptions[network]?.chains?.map((chain) => ({
+      label: chain.label,
+      value: chain.value,
+      startComponent: <CurrencyImg src={chain.img} sx={{ width: 32, height: 32 }} />,
+    }));
+  }, [network, networkOptions]);
 
   const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
   const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
@@ -131,15 +132,15 @@ export default function GetQuoteForm() {
   const onChangeOperationType = useCallback(
     (event: ChangeEvent<HTMLSelectElement>) => {
       const { value } = event.target;
-      const depositCurrencyItms = value === 'deposit' ? sendCurrency : depositCurrency;
-      const sendCurrencyItms = value === 'deposit' ? depositCurrency : sendCurrency;
+      const depositCurrencyItms = value === 'deposit' ? 'MXN' : 'usdc';
+      const sendCurrencyItms = value === 'deposit' ? 'usdc' : 'MXN';
 
-      setValue('network', '');
-      setValue('baseCurrency', depositCurrencyItms[0].value);
-      setValue('quoteCurrency', sendCurrencyItms[0].value);
+      setValue('network', 'pol');
+      setValue('baseCurrency', depositCurrencyItms);
+      setValue('quoteCurrency', sendCurrencyItms);
       if (baseAmount > 0) handleSubmit(debouncedRequest)();
     },
-    [baseAmount, debouncedRequest, handleSubmit, setValue, depositCurrency],
+    [baseAmount, debouncedRequest, handleSubmit, setValue],
   );
 
   const onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -217,6 +218,7 @@ export default function GetQuoteForm() {
               items={depositCurrencyItems}
               value={baseCurrency}
               {...register('baseCurrency', { onChange: onChangeCurrencySelects })}
+              sx={{ '& .MuiSelect-select': { px: 1.5 } }}
               error={!!formState.errors.baseCurrency?.message}
               helpText={formState.errors.baseCurrency?.message}
             />
@@ -248,7 +250,9 @@ export default function GetQuoteForm() {
               items={sendCurrencyItems}
               value={quoteCurrency}
               {...register('quoteCurrency', { onChange: onChangeCurrencySelects })}
+              sx={{ '& .MuiSelect-select': { px: 1.5 } }}
               error={!!formState.errors.quoteCurrency?.message}
+              helpText={formState.errors.quoteCurrency?.message}
             />
           </Grid>
 
