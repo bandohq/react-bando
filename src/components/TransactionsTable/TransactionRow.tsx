@@ -80,6 +80,7 @@ function formatAmounts(amount: number, currency: string) {
   return `$ ${formatNumber(amount, 2, 18)} ${currency}`;
 }
 
+console.log({ networkCurrencyInfo });
 function parseDataForRows(txn: Transaction) {
   return {
     ...txn,

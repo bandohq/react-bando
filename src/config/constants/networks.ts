@@ -212,8 +212,8 @@ export const networkOptionsOffRamp: NetworkOption = {
 export const networkInfo = Object.keys(networkOptions).reduce(
   (acc, key) => {
     acc[key as string] = {
-      label: acc[key as string]?.label,
-      img: acc[key as string]?.img,
+      label: networkOptions[key as string]?.label,
+      img: networkOptions[key as string]?.img,
     };
     return acc;
   },
