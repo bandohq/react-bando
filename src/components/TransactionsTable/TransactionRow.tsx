@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import StatusBadge from '@components/StatusBadge';
 import mapProviderStatus from '@components/TransactionDetails/mapProviderStatus';
-import { networkImg, currencyImgPath } from '@config/constants/currencies';
+import { networkCurrencyInfo } from '@config/constants/networks';
 
 import ArrowDown from '../../assets/ArrowDown.svg';
 import CopyImg from '../../assets/CopyToClipboard.svg';
@@ -84,11 +84,11 @@ function parseDataForRows(txn: Transaction) {
   return {
     ...txn,
     address: txn?.recipient ?? '',
-    networkIcon: networkImg[txn.networkConfig?.name as keyof typeof networkImg],
+    networkIcon: networkCurrencyInfo[txn?.networkConfig?.name ?? '']?.img,
     sent: formatAmounts(txn.baseAmount, txn.baseCurrency),
     received: formatAmounts(txn.quoteAmount, txn.quoteCurrency),
-    sentIcon: currencyImgPath[txn.baseCurrency as keyof typeof currencyImgPath],
-    receivedIcon: currencyImgPath[txn.quoteCurrency as keyof typeof currencyImgPath],
+    sentIcon: networkCurrencyInfo[txn.baseCurrency ?? '']?.img,
+    receivedIcon: networkCurrencyInfo[txn.quoteCurrency ?? '']?.img,
     operationIcon: txn.operationType === 'withdraw' ? <ArrowCircleIcon /> : <DepositArrow />,
   };
 }

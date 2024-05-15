@@ -4,6 +4,7 @@ import Optimism from '../../assets/networks/optimism.png';
 import Base from '../../assets/networks/base.png';
 import Scroll from '../../assets/networks/scroll.png';
 import Binance from '../../assets/networks/binance-smart-chain.png';
+import Ethereum from '../../assets/networks/ethereum.png';
 
 import WETH from '../../assets/chains/weth.png';
 import USDC from '../../assets/chains/usdc.png';
@@ -207,6 +208,29 @@ export const networkOptionsOffRamp: NetworkOption = {
     ],
   },
 } as const;
+
+export const networkInfo = Object.keys(networkOptions).reduce(
+  (acc, key) => {
+    acc[key as string] = {
+      label: acc[key as string]?.label,
+      img: acc[key as string]?.img,
+    };
+    return acc;
+  },
+  {} as { [key: string]: { label: string; img: string } },
+);
+
+export const networkCurrencyInfo = {
+  ...networkInfo,
+  mxn: {
+    label: 'MXN',
+    img: Ethereum,
+  },
+  eth: {
+    label: 'Ethereum',
+    img: Ethereum,
+  },
+} as { [key: string]: { label: string; img: string } };
 
 export const networks = Object.keys(networkOptions);
 export const networksOffRamp = Object.keys(networkOptionsOffRamp);
