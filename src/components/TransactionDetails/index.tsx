@@ -185,10 +185,10 @@ export default function TransactionDetail({
             <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                {networkOptions[networkName as keyof typeof networkOptions].label}{' '}
+                {networkOptions[networkName as keyof typeof networkOptions]?.label}{' '}
                 <img
                   alt="Network"
-                  src={networkOptions[networkName as keyof typeof networkOptions].img}
+                  src={networkOptions[networkName as keyof typeof networkOptions]?.img}
                   width={18}
                   height={18}
                 />
