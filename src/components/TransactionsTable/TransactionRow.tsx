@@ -84,11 +84,11 @@ function parseDataForRows(txn: Transaction) {
   return {
     ...txn,
     address: txn?.recipient ?? '',
-    networkIcon: networkCurrencyInfo[txn?.networkConfig?.name ?? '']?.img,
+    networkIcon: networkCurrencyInfo[(txn?.networkConfig?.key ?? '').toLowerCase()]?.img,
     sent: formatAmounts(txn.baseAmount, txn.baseCurrency),
     received: formatAmounts(txn.quoteAmount, txn.quoteCurrency),
-    sentIcon: networkCurrencyInfo[txn.baseCurrency ?? '']?.img,
-    receivedIcon: networkCurrencyInfo[txn.quoteCurrency ?? '']?.img,
+    sentIcon: networkCurrencyInfo[(txn.baseCurrency ?? '').toLowerCase()]?.img,
+    receivedIcon: networkCurrencyInfo[(txn.quoteCurrency ?? '').toLowerCase()]?.img,
     operationIcon: txn.operationType === 'withdraw' ? <ArrowCircleIcon /> : <DepositArrow />,
   };
 }
