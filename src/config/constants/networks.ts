@@ -18,8 +18,6 @@ type NetworkOptionItem = {
   img: string;
 };
 
-// NetworkOptionItem & { enabled: boolean; chains: NetworkOptionItem[] }
-
 export type NetworkOption = Record<
   string,
   NetworkOptionItem & {
