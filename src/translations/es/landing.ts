@@ -1,18 +1,18 @@
 export default {
-  mainTitle: 'Intercambia entre MXN y cripto en un SPEI',
+  mainTitle: 'Intercambia entre pesos y cripto en una transferencia bancaria',
   subtitle:
-    'Con Bando entra y sal del mundo cripto en segundos con SPEI. <separator /> Puedes depositar o retirar a tu wallet o exchange en la red de Polygon y muy pronto en las redes de Ethereum, Arbitrum, Optimism y muchas más.',
+    'Con Bando entra y sal del mundo cripto en segundos. <separator /> Puedes depositar o retirar a tu wallet o exchange en la red de Polygon y Arbitrum, muy pronto en Optimism, Scroll y más.',
   section1: {
     title: 'Controla tus criptos y explora con seguridad',
     info: 'Bando es tu puerta a cripto como debe ser: tus llaves, tus tokens, con bajos costos de transacción y con la conexión a DeFi que buscas.',
   },
   section2: {
     title: 'Deposita con pesos, <separator /> obtén cripto',
-    info: 'Deposita con pesos o tu moneda local, y obtén criptomonedas directamente en tu wallet preferida o en tu cuenta inteligente Bando.',
+    info: 'Deposita con pesos mexicanos, y obtén criptomonedas directamente en tu wallet preferida.',
   },
   section3: {
     title: 'Pon a trabajar tus criptos por ti',
-    info: 'Obtén los rendimientos que esta industria tiene disponibles hoy',
+    info: 'Obtén los rendimientos que esta industria tiene disponibles',
   },
   section4: {
     title: 'Accede a más de 800 criptomonedas',
