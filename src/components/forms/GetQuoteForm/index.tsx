@@ -13,7 +13,7 @@ import schema, { GetQuoteFormValues } from './schema';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
-import Select from '@components/forms/Select';
+import Select, { CustomSelectProps } from '@components/forms/Select';
 import Hr from '@components/Hr';
 import env from '@config/env';
 
@@ -30,7 +30,7 @@ import networkOptsOnRamp, {
 const REQUEST_DEBOUNCE = 250;
 const DEFAULT_NETWORK = 'pol';
 const DEFAULT_BASE_CURRENCY = 'MXN';
-const DEFAULT_QUOTE_CURRENCY = 'usdc';
+const DEFAULT_QUOTE_CURRENCY = 'USDC';
 const DEFAULT_OPERATION = 'deposit';
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
@@ -76,8 +76,8 @@ export default function GetQuoteForm() {
   const sendCurrencyItems = optType === DEFAULT_OPERATION ? depositCurrency : sendCurrency;
   const rateText =
     optType === DEFAULT_OPERATION
-      ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
-      : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
+      ? `1 ${quoteCurrency} ≈ ${formatNumber(data?.quoteRateInverse, 2, 18) ?? 0} ${baseCurrency}`
+      : `1 ${baseCurrency} ≈ ${formatNumber(data?.quoteRate, 2, 18) ?? 0} ${quoteCurrency}`;
 
   const debouncedRequest = useCallback(
     (formValues: GetQuoteFormValues) =>
@@ -85,7 +85,7 @@ export default function GetQuoteForm() {
         baseAmount: formValues.baseAmount,
         baseCurrency: formValues.baseCurrency,
         quoteCurrency: formValues.quoteCurrency,
-        network: formValues.network,
+        network: formValues.network.toUpperCase(),
       }).catch(() => null),
     [getQuote],
   );
@@ -97,7 +97,7 @@ export default function GetQuoteForm() {
         env.rampDataLocalStorage,
         JSON.stringify({
           quote: quote ?? data,
-          network: formValues.network,
+          network: formValues.network.toUpperCase(),
           operationType: formValues.operationType,
         }),
       );
@@ -117,7 +117,7 @@ export default function GetQuoteForm() {
           baseAmount: formValues.baseAmount,
           baseCurrency: formValues.baseCurrency,
           quoteCurrency: formValues.quoteCurrency,
-          network: formValues.network,
+          network: formValues.network.toUpperCase(),
         });
 
         navigateForm(quote);
@@ -161,6 +161,22 @@ export default function GetQuoteForm() {
     debouncedQuoteRequest.current();
   };
 
+  const networkSelectItems = useMemo(() => {
+    return Object.values(networkOptions)?.reduce(
+      (acc, network) => {
+        if (acc && network.enabled) {
+          acc.push({
+            label: network.label,
+            value: network.value,
+            startComponent: <CurrencyImg src={network.img} />,
+          });
+        }
+        return acc;
+      },
+      [] as CustomSelectProps['items'],
+    );
+  }, [networkOptions]);
+
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -198,11 +214,7 @@ export default function GetQuoteForm() {
               render={({ field: { onChange, value } }) => (
                 <Select
                   label="Red a recibir"
-                  items={Object.values(networkOptions)?.map((network) => ({
-                    label: network.label,
-                    value: network.value,
-                    startComponent: <CurrencyImg src={network.img} />,
-                  }))}
+                  items={networkSelectItems}
                   value={value}
                   onChange={(e) => onChange(e.target.value)}
                   error={!!formState.errors.network?.message}
@@ -237,7 +249,7 @@ export default function GetQuoteForm() {
               label="Recibes"
               type="text"
               name="quoteAmount"
-              value={formatNumber(data?.quoteAmount ?? 0)}
+              value={formatNumber(data?.quoteAmount ?? 0, 2, 18)}
               helpText={
                 <>
                   {isMutating ? (

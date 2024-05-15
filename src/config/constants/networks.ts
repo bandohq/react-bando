@@ -12,17 +12,19 @@ import MATIC from '../../assets/chains/matic.png';
 import ETH from '../../assets/chains/eth.png';
 import BNB from '../../assets/chains/bnb.png';
 
+type NetworkOptionItem = {
+  label: string;
+  value: string;
+  img: string;
+};
+
+// NetworkOptionItem & { enabled: boolean; chains: NetworkOptionItem[] }
+
 export type NetworkOption = Record<
   string,
-  {
-    label: string;
-    value: string;
-    img: string;
-    chains: {
-      label: string;
-      value: string;
-      img: string;
-    }[];
+  NetworkOptionItem & {
+    enabled: boolean;
+    chains: NetworkOptionItem[];
   }
 >;
 
@@ -31,25 +33,26 @@ const networkOptions: NetworkOption = {
     label: 'Polygon',
     value: 'pol',
     img: Polygon,
+    enabled: true,
     chains: [
       {
         label: 'WETH',
-        value: 'weth',
+        value: 'WETH',
         img: WETH,
       },
       {
         label: 'USDC',
-        value: 'usdc',
+        value: 'USDC',
         img: USDC,
       },
       {
         label: 'USDT',
-        value: 'usdt',
+        value: 'USDT',
         img: USDT,
       },
       {
         label: 'MATIC',
-        value: 'matic',
+        value: 'MATIC',
         img: MATIC,
       },
     ],
@@ -58,20 +61,21 @@ const networkOptions: NetworkOption = {
     label: 'Arbitrum',
     value: 'arb',
     img: Arbitrum,
+    enabled: true,
     chains: [
       {
         label: 'ARB',
-        value: 'arb',
+        value: 'ARB',
         img: Arbitrum,
       },
       {
         label: 'USDC',
-        value: 'usdc',
+        value: 'USDC',
         img: USDC,
       },
       {
         label: 'USDT',
-        value: 'usdt',
+        value: 'USDT',
         img: USDT,
       },
       {
@@ -85,25 +89,26 @@ const networkOptions: NetworkOption = {
     label: 'Optimism',
     value: 'op',
     img: Optimism,
+    enabled: false,
     chains: [
       {
         label: 'ETH',
-        value: 'eth',
+        value: 'ETH',
         img: ETH,
       },
       {
         label: 'USDC',
-        value: 'usdc',
+        value: 'USDC',
         img: USDC,
       },
       {
         label: 'USDT',
-        value: 'usdt',
+        value: 'USDT',
         img: USDT,
       },
       {
         label: 'OP',
-        value: 'op',
+        value: 'OP',
         img: Optimism,
       },
     ],
@@ -112,20 +117,21 @@ const networkOptions: NetworkOption = {
     label: 'Base',
     value: 'bas',
     img: Base,
+    enabled: false,
     chains: [
       {
         label: 'ETH',
-        value: 'eth',
+        value: 'ETH',
         img: ETH,
       },
       {
         label: 'USDC',
-        value: 'usdc',
+        value: 'USDC',
         img: USDC,
       },
       {
         label: 'USDT',
-        value: 'usdt',
+        value: 'USDT',
         img: USDT,
       },
     ],
@@ -134,20 +140,21 @@ const networkOptions: NetworkOption = {
     label: 'Scroll',
     value: 'scl',
     img: Scroll,
+    enabled: false,
     chains: [
       {
         label: 'ETH',
-        value: 'eth',
+        value: 'ETH',
         img: ETH,
       },
       {
         label: 'USDC',
-        value: 'usdc',
+        value: 'USDC',
         img: USDC,
       },
       {
         label: 'USDT',
-        value: 'usdt',
+        value: 'USDT',
         img: USDT,
       },
     ],
@@ -156,25 +163,26 @@ const networkOptions: NetworkOption = {
     label: 'Binance ',
     value: 'bsc',
     img: Binance,
+    enabled: false,
     chains: [
       {
         label: 'BNB',
-        value: 'bnb',
+        value: 'BNB',
         img: BNB,
       },
       {
         label: 'WETH',
-        value: 'weth',
+        value: 'WETH',
         img: WETH,
       },
       {
         label: 'USDC',
-        value: 'usdc',
+        value: 'USDC',
         img: USDC,
       },
       {
         label: 'USDT',
-        value: 'usdt',
+        value: 'USDT',
         img: USDT,
       },
     ],
@@ -186,15 +194,16 @@ export const networkOptionsOffRamp: NetworkOption = {
     label: 'Polygon',
     value: 'pol',
     img: Polygon,
+    enabled: true,
     chains: [
       {
         label: 'USDC',
-        value: 'usdc',
+        value: 'USDC',
         img: USDC,
       },
       {
         label: 'USDT',
-        value: 'usdt',
+        value: 'USDT',
         img: USDT,
       },
     ],

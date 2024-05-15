@@ -77,7 +77,7 @@ const ArrowIcon = styled('img')(() => ({
 }));
 
 function formatAmounts(amount: number, currency: string) {
-  return `$ ${formatNumber(amount)} ${currency}`;
+  return `$ ${formatNumber(amount, 2, 18)} ${currency}`;
 }
 
 function parseDataForRows(txn: Transaction) {
@@ -197,7 +197,7 @@ export default function TransactionRow({
             <>
               <RowTextDetail>
                 <span>{t('table.rate')}</span>
-                {formatNumber(row.quoteRateInverse)} USDC
+                {formatNumber(row.quoteRateInverse, 2, 18)} USDC
               </RowTextDetail>
               <RowTextDetail onClick={(e) => e.stopPropagation()}>
                 <span>{t('table.address')}</span>

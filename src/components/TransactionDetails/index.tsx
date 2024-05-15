@@ -161,7 +161,7 @@ export default function TransactionDetail({
           </Grid>
           <Grid md={8} sm={7} xs={7}>
             <Rate variant="body1" sx={{ textWrap: 'wrap' }}>
-              $ {formatNumber(transaction?.quoteAmount)}
+              $ {formatNumber(transaction?.quoteAmount, 2, 18)}
             </Rate>
           </Grid>
           {!!rate && (
