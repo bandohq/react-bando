@@ -85,7 +85,7 @@ export default function GetQuoteForm() {
         baseAmount: formValues.baseAmount,
         baseCurrency: formValues.baseCurrency,
         quoteCurrency: formValues.quoteCurrency,
-        network: formValues.network.toUpperCase(),
+        network: formValues.network,
       }).catch(() => null),
     [getQuote],
   );
@@ -97,7 +97,7 @@ export default function GetQuoteForm() {
         env.rampDataLocalStorage,
         JSON.stringify({
           quote: quote ?? data,
-          network: formValues.network.toUpperCase(),
+          network: formValues.network,
           operationType: formValues.operationType,
         }),
       );
@@ -117,7 +117,7 @@ export default function GetQuoteForm() {
           baseAmount: formValues.baseAmount,
           baseCurrency: formValues.baseCurrency,
           quoteCurrency: formValues.quoteCurrency,
-          network: formValues.network.toUpperCase(),
+          network: formValues.network,
         });
 
         navigateForm(quote);
