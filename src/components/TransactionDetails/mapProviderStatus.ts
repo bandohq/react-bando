@@ -15,7 +15,6 @@ export default function mapProviderStatus(status: string) {
     case 'BRIDGE_NOT_AVAILABLE':
     case 'CHAIN_NOT_AVAILABLE':
     case 'REFUND_IN_PROGRESS':
-    case 'UNKNOWN_ERROR':
     case 'REFUNDED':
       return {
         text: 'Procesando',
