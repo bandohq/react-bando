@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { PropsWithChildren } from 'react';
 import { Transaction, OperationType } from '@hooks/useTransaction/requests';
 import { SxProps, styled } from '@mui/material/styles';
-import networkOptions from '@config/constants/networks';
+import { networkCurrencyInfo } from '@config/constants/networks';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -185,10 +185,10 @@ export default function TransactionDetail({
             <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                {networkOptions[networkName as keyof typeof networkOptions]?.label}{' '}
+                {networkCurrencyInfo[networkName.toLowerCase()]?.label}{' '}
                 <img
                   alt="Network"
-                  src={networkOptions[networkName as keyof typeof networkOptions]?.img}
+                  src={networkCurrencyInfo[networkName.toLowerCase()]?.img}
                   width={18}
                   height={18}
                 />

@@ -209,19 +209,31 @@ export const networkOptionsOffRamp: NetworkOption = {
   },
 } as const;
 
-export const networkInfo = Object.keys(networkOptions).reduce(
-  (acc, key) => {
-    acc[key as string] = {
-      label: networkOptions[key as string]?.label,
-      img: networkOptions[key as string]?.img,
-    };
-    return acc;
-  },
-  {} as { [key: string]: { label: string; img: string } },
-);
-
 export const networkCurrencyInfo = {
-  ...networkInfo,
+  pol: {
+    label: 'Polygon',
+    img: Polygon,
+  },
+  arb: {
+    label: 'Arbitrum',
+    img: Arbitrum,
+  },
+  op: {
+    label: 'Optimism',
+    img: Optimism,
+  },
+  bas: {
+    label: 'Base',
+    img: Base,
+  },
+  scl: {
+    label: 'Scroll',
+    img: Scroll,
+  },
+  bsc: {
+    label: 'Binance ',
+    img: Binance,
+  },
   mxn: {
     label: 'MXN',
     img: Ethereum,
@@ -229,6 +241,26 @@ export const networkCurrencyInfo = {
   eth: {
     label: 'Ethereum',
     img: Ethereum,
+  },
+  usdc: {
+    label: 'USDC',
+    img: USDC,
+  },
+  usdt: {
+    label: 'USDT',
+    img: USDT,
+  },
+  bnb: {
+    label: 'BNB',
+    img: BNB,
+  },
+  weth: {
+    label: 'WETH',
+    img: WETH,
+  },
+  matic: {
+    label: 'MATIC',
+    img: MATIC,
   },
 } as { [key: string]: { label: string; img: string } };
 
