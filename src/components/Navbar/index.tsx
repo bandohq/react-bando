@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { ListItem, List } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState, Fragment } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -99,7 +99,6 @@ const StyledDrawer = styled(SwipeableDrawer)(({ theme }) => ({
 
 export default function Navbar({ fullWidth = false }) {
   const [isOnTop, setIsOnTop] = useState(true);
-  const theme = useTheme();
   const { user } = useUser();
   const navigate = useNavigate();
   const { t } = useTranslation('userMenu');
@@ -204,9 +203,7 @@ export default function Navbar({ fullWidth = false }) {
                     fontWeight: 700,
                     display: 'flex',
                     gap: 1,
-                    color: isOnTop
-                      ? { color: theme.palette.primary.main }
-                      : { color: theme.palette.primary.contrastText },
+                    color: isOnTop ? { color: 'primary.main' } : { color: 'primary.contrastText' },
                   }}
                 >
                   {t('signin')}
@@ -223,11 +220,7 @@ export default function Navbar({ fullWidth = false }) {
                   sx={{ display: { xs: 'block', sm: 'none' } }}
                 >
                   <MenuIcon
-                    sx={
-                      isOnTop
-                        ? { color: theme.palette.primary.main }
-                        : { color: theme.palette.primary.contrastText }
-                    }
+                    sx={isOnTop ? { color: 'primary.main' } : { color: 'primary.contrastText' }}
                   />
                 </IconButton>
                 <StyledDrawer
