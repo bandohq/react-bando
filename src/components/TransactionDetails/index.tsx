@@ -42,9 +42,15 @@ export type TransactionDetailProps = PropsWithChildren & {
 };
 
 const Rate = styled(Typography)(({ theme }) => ({
-  fontSize: `${theme.typography.pxToRem(28)} !important`,
   fontWeight: '500',
   textAlign: 'right',
+  marginTop: theme.spacing(1.4),
+  [theme.breakpoints.between('xs', 'sm')]: {
+    fontSize: theme.typography.pxToRem(18),
+  },
+  [theme.breakpoints.up('sm')]: {
+    fontSize: theme.typography.pxToRem(28),
+  },
 }));
 
 const GridRow = styled(Grid)(({ theme }) => ({
@@ -56,6 +62,9 @@ const GridRow = styled(Grid)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
     },
+  },
+  [theme.breakpoints.down('sm')]: {
+    display: 'block',
   },
 }));
 
@@ -126,10 +135,10 @@ export default function TransactionDetail({
           />
         </Grid>
         <BorderContainer container spacing={2}>
-          <Grid md={4} sm={6} xs={7}>
+          <Grid md={4} sm={5} xs={5}>
             <CurrencyPill currency={transaction?.baseCurrency ?? ''} />
           </Grid>
-          <Grid md={8} sm={6} xs={5}>
+          <Grid md={8} sm={7} xs={7}>
             <Rate variant="body1">$ {formatNumber(transaction?.baseAmount)}</Rate>
           </Grid>
           <Grid xs={12} sx={{ position: 'relative' }}>
@@ -147,16 +156,16 @@ export default function TransactionDetail({
             </ArrowButton>
           </Grid>
 
-          <Grid md={4} sm={6} xs={7}>
+          <Grid md={4} sm={5} xs={5}>
             <CurrencyPill currency={transaction?.quoteCurrency ?? ''} />
           </Grid>
-          <Grid md={8} sm={6} xs={5}>
+          <Grid md={8} sm={7} xs={7}>
             <Rate variant="body1" sx={{ textWrap: 'wrap' }}>
               $ {formatNumber(transaction?.quoteAmount)}
             </Rate>
           </Grid>
           {!!rate && (
-            <GridRow xs={12}>
+            <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network
                 variant="body2"
                 sx={{
@@ -171,7 +180,7 @@ export default function TransactionDetail({
             </GridRow>
           )}
           {!!networkName && (
-            <GridRow xs={12}>
+            <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
                 {networkName?.toLowerCase()}{' '}

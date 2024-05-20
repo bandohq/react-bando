@@ -7,6 +7,6 @@ export default {
     fee: 'Fee',
     noFee: 'N/A',
     address: 'Destination account',
-    copied: 'Copied',
+    copied: 'Copied. 🫡',
   },
 };

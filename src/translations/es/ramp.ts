@@ -1,5 +1,5 @@
 export default {
-  address: 'Recibes en esta dirección',
+  address: 'Dirección de tu billetera',
   lastName: 'Apellidos',
   name: 'Nombres',
   clabe: 'Clabe',
