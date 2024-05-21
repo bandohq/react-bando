@@ -16,6 +16,8 @@ export default function mapProviderStatus(status: string) {
     case 'CHAIN_NOT_AVAILABLE':
     case 'REFUND_IN_PROGRESS':
     case 'REFUNDED':
+    case 'FIAT_COMPLETED':
+    case 'PENDING':
       return {
         text: 'Procesando',
         color: 'info',
