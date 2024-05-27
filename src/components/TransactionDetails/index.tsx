@@ -107,10 +107,10 @@ export default function TransactionDetail({
 
   const navigate = useNavigate();
   const DetailContainer = noContainer ? Box : BoxContainer;
-  const networkName = network || transaction?.networkConfig?.name;
+  const networkKey = network || transaction?.networkConfig?.key;
   const depositTitle = transaction?.cashinDetails?.CLABE
-    ? `Deposita ${transaction.baseCurrency} a la cuenta:`
-    : `Deposita tu ${transaction?.baseCurrency} a esta dirección en
+    ? `Envía ${transaction.baseCurrency} a la cuenta:`
+    : `Envía tu ${transaction?.baseCurrency} a esta dirección en
   ${transaction?.cashinDetails?.network}:`;
   const rate = operationType === 'deposit' ? quoteRateInverse : quoteRate;
 
@@ -181,14 +181,14 @@ export default function TransactionDetail({
               </Network>
             </GridRow>
           )}
-          {!!networkName && (
+          {!!networkKey && (
             <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                {networkCurrencyInfo[networkName.toLowerCase()]?.label}{' '}
+                {networkCurrencyInfo[networkKey.toLowerCase()]?.label}{' '}
                 <img
                   alt="Network"
-                  src={networkCurrencyInfo[networkName.toLowerCase()]?.img}
+                  src={networkCurrencyInfo[networkKey.toLowerCase()]?.img}
                   width={18}
                   height={18}
                 />

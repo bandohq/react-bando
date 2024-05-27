@@ -161,7 +161,7 @@ const networkOptions: NetworkOption = {
     ],
   },
   bsc: {
-    label: 'Binance ',
+    label: 'Binance Smart Chain',
     value: 'bsc',
     img: Binance,
     enabled: false,
