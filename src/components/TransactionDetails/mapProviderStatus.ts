@@ -18,6 +18,8 @@ export default function mapProviderStatus(status: string) {
     case 'REFUNDED':
     case 'FIAT_COMPLETED':
     case 'PENDING':
+    case 'TXN_REVERTED':
+    case 'APPROVE_REVERTED':
       return {
         text: 'Procesando',
         color: 'info',
