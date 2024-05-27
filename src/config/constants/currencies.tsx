@@ -1,9 +1,16 @@
-import Currency from '../../assets/Mexico-01.svg';
-import Usdc from '../../assets/image-58_1.png';
-import Usdt from '../../assets/usdt.svg';
-import Polygon from '../../assets/networks/polygon.png';
-import Ethereum from '../../assets/networks/ethereum.png';
 import Mexico from '../../assets/Mexico-01.svg';
+import Currency from '../../assets/Mexico-01.svg';
+import Polygon from '../../assets/networks/polygon.png';
+import Arbitrum from '../../assets/networks/arbitrum.png';
+import Optimism from '../../assets/networks/optimism.png';
+import Ethereum from '../../assets/networks/ethereum.png';
+
+import WETH from '../../assets/chains/weth.png';
+import Usdc from '../../assets/chains/usdc.png';
+import Usdt from '../../assets/chains/usdt.png';
+import MATIC from '../../assets/chains/matic.png';
+import ETH from '../../assets/chains/eth.png';
+import BNB from '../../assets/chains/bnb.png';
 
 import CurrencyImg from '@components/CurrencyImg';
 
@@ -44,6 +51,12 @@ export const currencyImg = {
   USDC: <CurrencyImg src={Usdc} />,
   USDT: <CurrencyImg src={Usdt} />,
   MXN: <CurrencyImg src={Currency} />,
+  ARB: <CurrencyImg src={Arbitrum} />,
+  MATIC: <CurrencyImg src={MATIC} />,
+  WETH: <CurrencyImg src={WETH} />,
+  ETH: <CurrencyImg src={ETH} />,
+  BNB: <CurrencyImg src={BNB} />,
+  OPTIMISM: <CurrencyImg src={Optimism} />,
 };
 
 export const currencyImgPath = {
