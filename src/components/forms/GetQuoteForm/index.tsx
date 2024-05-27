@@ -4,29 +4,34 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, useCallback, useRef } from 'react';
+import { ChangeEvent, useCallback, useMemo, useRef } from 'react';
 import debounce from 'lodash/debounce';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { GetQuoteFormValues } from './schema';
 
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
-import Select from '@components/forms/Select';
+import Select, { CustomSelectProps } from '@components/forms/Select';
 import Hr from '@components/Hr';
-
-import Polygon from '../../../assets/polygon.png';
-//import Ethereum from '../../../assets/ethereum.png';
+import env from '@config/env';
 
 import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
-import { sendCurrency, depositCurrency } from '@config/constants/currencies';
+import { sendCurrency } from '@config/constants/currencies';
 import { Quote } from '@hooks/useQuote/requests';
-import env from '@config/env';
 import formatNumber from '@helpers/formatNumber';
 
+import networkOptsOnRamp, {
+  networkOptionsOffRamp as networkOptsOffRamp,
+} from '@config/constants/networks';
+
 const REQUEST_DEBOUNCE = 250;
+const DEFAULT_NETWORK = 'pol';
+const DEFAULT_BASE_CURRENCY = 'MXN';
+const DEFAULT_QUOTE_CURRENCY = 'USDC';
+const DEFAULT_OPERATION = 'deposit';
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
@@ -41,26 +46,38 @@ export default function GetQuoteForm() {
   const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
   const { user } = useUser();
-  const { register, handleSubmit, setValue, watch, formState, getValues } =
+  const { register, handleSubmit, setValue, watch, formState, getValues, ...methods } =
     useForm<GetQuoteFormValues>({
       resolver: yupResolver(schema),
       defaultValues: {
-        quoteCurrency: 'USDC',
-        baseCurrency: 'MXN',
-        operationType: 'deposit',
+        network: DEFAULT_NETWORK,
+        quoteCurrency: DEFAULT_QUOTE_CURRENCY,
+        baseCurrency: DEFAULT_BASE_CURRENCY,
+        operationType: DEFAULT_OPERATION,
       },
     });
+
   const quoteCurrency = watch('quoteCurrency');
   const baseCurrency = watch('baseCurrency');
-  const operationType = watch('operationType');
+  const optType = watch('operationType');
   const baseAmount = watch('baseAmount');
+  const network = watch('network');
 
-  const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
-  const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
+  const networkOptions = optType === DEFAULT_OPERATION ? networkOptsOnRamp : networkOptsOffRamp;
+  const depositCurrency = useMemo(() => {
+    return networkOptions[network]?.chains?.map((chain) => ({
+      label: chain.label,
+      value: chain.value,
+      startComponent: <CurrencyImg src={chain.img} sx={{ width: 32, height: 32 }} />,
+    }));
+  }, [network, networkOptions]);
+
+  const depositCurrencyItems = optType === DEFAULT_OPERATION ? sendCurrency : depositCurrency;
+  const sendCurrencyItems = optType === DEFAULT_OPERATION ? depositCurrency : sendCurrency;
   const rateText =
-    operationType === 'deposit'
-      ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
-      : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
+    optType === DEFAULT_OPERATION
+      ? `1 ${quoteCurrency} ≈ ${formatNumber(data?.quoteRateInverse, 2, 18) ?? 0} ${baseCurrency}`
+      : `1 ${baseCurrency} ≈ ${formatNumber(data?.quoteRate, 2, 18) ?? 0} ${quoteCurrency}`;
 
   const debouncedRequest = useCallback(
     (formValues: GetQuoteFormValues) =>
@@ -122,10 +139,14 @@ export default function GetQuoteForm() {
   const onChangeOperationType = useCallback(
     (event: ChangeEvent<HTMLSelectElement>) => {
       const { value } = event.target;
-      const depositCurrencyItms = value === 'deposit' ? sendCurrency : depositCurrency;
-      const sendCurrencyItms = value === 'deposit' ? depositCurrency : sendCurrency;
-      setValue('baseCurrency', depositCurrencyItms[0].value);
-      setValue('quoteCurrency', sendCurrencyItms[0].value);
+      const depositCurrencyItms =
+        value === DEFAULT_OPERATION ? DEFAULT_BASE_CURRENCY : DEFAULT_QUOTE_CURRENCY;
+      const sendCurrencyItms =
+        value === DEFAULT_OPERATION ? DEFAULT_QUOTE_CURRENCY : DEFAULT_BASE_CURRENCY;
+
+      setValue('network', DEFAULT_NETWORK);
+      setValue('baseCurrency', depositCurrencyItms);
+      setValue('quoteCurrency', sendCurrencyItms);
       if (baseAmount > 0) handleSubmit(debouncedRequest)();
     },
     [baseAmount, debouncedRequest, handleSubmit, setValue],
@@ -140,27 +161,43 @@ export default function GetQuoteForm() {
     debouncedQuoteRequest.current();
   };
 
+  const networkSelectItems = useMemo(() => {
+    return Object.values(networkOptions)?.reduce(
+      (acc, network) => {
+        if (acc && network.enabled) {
+          acc.push({
+            label: network.label,
+            value: network.value,
+            startComponent: <CurrencyImg src={network.img} />,
+          });
+        }
+        return acc;
+      },
+      [] as CustomSelectProps['items'],
+    );
+  }, [networkOptions]);
+
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2} sx={{ margin: 0 }}>
           <Grid xs={12}>
             <Select
-              defaultValue={'deposit'}
+              defaultValue={DEFAULT_OPERATION}
               fullWidth={false}
               mantainLabel={false}
               className="no-border"
+              {...register('operationType', { onChange: onChangeOperationType })}
               sx={{
                 width: 'fit-content',
                 fontWeight: '500',
                 fontSize: '1.5rem !important',
                 color: 'palette.ink.i900',
               }}
-              {...register('operationType', { onChange: onChangeOperationType })}
               items={[
                 {
                   label: 'Compra cripto',
-                  value: 'deposit',
+                  value: DEFAULT_OPERATION,
                 },
                 {
                   label: 'Vende cripto',
@@ -171,23 +208,19 @@ export default function GetQuoteForm() {
           </Grid>
 
           <Grid xs={12}>
-            <Select
-              defaultValue={'POLYGON'}
-              label="Red a recibir"
-              items={[
-                {
-                  label: 'Polygon',
-                  value: 'POLYGON',
-                  startComponent: <CurrencyImg src={Polygon} />,
-                },
-                /* disabled for now
-                {
-                  label: 'Ethereum',
-                  value: 'ETHEREUM',
-                  startComponent: <CurrencyImg src={Ethereum} />,
-                },*/
-              ]}
-              {...register('network')}
+            <Controller
+              name="network"
+              control={methods.control}
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  label="Red a recibir"
+                  items={networkSelectItems}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  error={!!formState.errors.network?.message}
+                  helpText={formState.errors.network?.message}
+                />
+              )}
             />
           </Grid>
 
@@ -206,6 +239,7 @@ export default function GetQuoteForm() {
               items={depositCurrencyItems}
               value={baseCurrency}
               {...register('baseCurrency', { onChange: onChangeCurrencySelects })}
+              sx={{ '& .MuiSelect-select': { px: 1.5 } }}
               error={!!formState.errors.baseCurrency?.message}
               helpText={formState.errors.baseCurrency?.message}
             />
@@ -215,7 +249,7 @@ export default function GetQuoteForm() {
               label="Recibes"
               type="text"
               name="quoteAmount"
-              value={formatNumber(data?.quoteAmount ?? 0)}
+              value={formatNumber(data?.quoteAmount ?? 0, 2, 18)}
               helpText={
                 <>
                   {isMutating ? (
@@ -237,7 +271,9 @@ export default function GetQuoteForm() {
               items={sendCurrencyItems}
               value={quoteCurrency}
               {...register('quoteCurrency', { onChange: onChangeCurrencySelects })}
+              sx={{ '& .MuiSelect-select': { px: 1.5 } }}
               error={!!formState.errors.quoteCurrency?.message}
+              helpText={formState.errors.quoteCurrency?.message}
             />
           </Grid>
 

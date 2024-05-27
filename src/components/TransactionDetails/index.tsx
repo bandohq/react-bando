@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { PropsWithChildren } from 'react';
 import { Transaction, OperationType } from '@hooks/useTransaction/requests';
 import { SxProps, styled } from '@mui/material/styles';
-import { networkImg } from '@config/constants/currencies';
+import { networkCurrencyInfo } from '@config/constants/networks';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -45,11 +45,15 @@ const Rate = styled(Typography)(({ theme }) => ({
   fontWeight: '500',
   textAlign: 'right',
   marginTop: theme.spacing(1.4),
+  textWrap: 'wrap',
   [theme.breakpoints.between('xs', 'sm')]: {
     fontSize: theme.typography.pxToRem(18),
   },
   [theme.breakpoints.up('sm')]: {
-    fontSize: theme.typography.pxToRem(28),
+    fontSize: theme.typography.pxToRem(20),
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: theme.typography.pxToRem(26),
   },
 }));
 
@@ -73,7 +77,7 @@ const BorderContainer = styled(Grid)(({ theme }) => ({
   width: 'calc(100% - 16px) !important',
   border: '1px solid #E6E7E9',
   borderRadius: '12px',
-  padding: theme.spacing(2),
+  padding: theme.spacing(2, 0.5),
 }));
 
 const Network = styled(Typography)(({ theme }) => ({
@@ -139,7 +143,7 @@ export default function TransactionDetail({
             <CurrencyPill currency={transaction?.baseCurrency ?? ''} />
           </Grid>
           <Grid md={8} sm={7} xs={7}>
-            <Rate variant="body1">$ {formatNumber(transaction?.baseAmount)}</Rate>
+            <Rate>{formatNumber(transaction?.baseAmount)}</Rate>
           </Grid>
           <Grid xs={12} sx={{ position: 'relative' }}>
             <Hr sx={{ marginBottom: 2 }} />
@@ -160,9 +164,7 @@ export default function TransactionDetail({
             <CurrencyPill currency={transaction?.quoteCurrency ?? ''} />
           </Grid>
           <Grid md={8} sm={7} xs={7}>
-            <Rate variant="body1" sx={{ textWrap: 'wrap' }}>
-              $ {formatNumber(transaction?.quoteAmount)}
-            </Rate>
+            <Rate>{formatNumber(transaction?.quoteAmount, 2, 18)}</Rate>
           </Grid>
           {!!rate && (
             <GridRow xs={12} sx={{ display: 'flex !important' }}>
@@ -183,10 +185,10 @@ export default function TransactionDetail({
             <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                {networkName?.toLowerCase()}{' '}
+                {networkCurrencyInfo[networkName.toLowerCase()]?.label}{' '}
                 <img
                   alt="Network"
-                  src={networkImg[networkName as keyof typeof networkImg]}
+                  src={networkCurrencyInfo[networkName.toLowerCase()]?.img}
                   width={18}
                   height={18}
                 />

@@ -48,7 +48,7 @@ const MuiSelect = forwardRef((inputProps: MuiSelectProps, ref: ForwardedRef<HTML
       }}
       select
     >
-      {items.map((item) => (
+      {items?.map((item) => (
         <MenuItem
           key={`select-menuItem-${item.label}-${item.value}`}
           value={item.value}

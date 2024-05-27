@@ -1,8 +1,8 @@
 import Currency from '../../assets/Mexico-01.svg';
 import Usdc from '../../assets/image-58_1.png';
 import Usdt from '../../assets/usdt.svg';
-import Polygon from '../../assets/polygon.png';
-import Ethereum from '../../assets/ethereum.png';
+import Polygon from '../../assets/networks/polygon.png';
+import Ethereum from '../../assets/networks/ethereum.png';
 import Mexico from '../../assets/Mexico-01.svg';
 
 import CurrencyImg from '@components/CurrencyImg';
@@ -11,18 +11,18 @@ export const sendCurrency = [
   {
     label: 'MXN',
     value: 'MXN',
-    startComponent: <CurrencyImg src={Currency} />,
+    startComponent: <CurrencyImg src={Currency} sx={{ width: 32, height: 32 }} />,
   },
   {
     label: 'CO (muy pronto)',
     value: 'CO',
-    startComponent: <CurrencyImg src={Currency} />,
+    startComponent: <CurrencyImg src={Currency} sx={{ width: 32, height: 32 }} />,
     disabled: true,
   },
   {
     label: 'ARS (muy pronto)',
     value: 'ARS',
-    startComponent: <CurrencyImg src={Currency} />,
+    startComponent: <CurrencyImg src={Currency} sx={{ width: 32, height: 32 }} />,
     disabled: true,
   },
 ];

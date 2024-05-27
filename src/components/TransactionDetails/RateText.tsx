@@ -24,7 +24,7 @@ export default function RateText({ operationType, transaction, rate = 0 }: RateT
       <>
         1 {transaction?.quoteCurrency} ≈{' '}
         <Amount as="span" variant="body2">
-          ${formatNumber(rate)}
+          {formatNumber(rate, 2, 18)}
         </Amount>{' '}
         {transaction?.baseCurrency}
       </>
@@ -34,7 +34,7 @@ export default function RateText({ operationType, transaction, rate = 0 }: RateT
     <>
       1 {transaction?.baseCurrency} ≈{' '}
       <Amount as="span" variant="body2">
-        ${formatNumber(rate)}
+        {formatNumber(rate, 2, 18)}
       </Amount>{' '}
       {transaction?.quoteCurrency}
     </>
