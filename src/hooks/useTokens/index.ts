@@ -1,13 +1,19 @@
 import useSWR, { useSWRConfig } from 'swr';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { matchSorter } from 'match-sorter';
 
 import { getTokens, Token } from './requests';
 import endpoints from '@config/endpoints';
+import { OperationType } from '@hooks/useTransaction/requests';
 
 const TOKEN_QUERYSTR = '/?all=true';
 
-export default function useTokens({ chainKey = '' }) {
+type UseTokensArgs = {
+  chainKey?: string;
+  operationType?: OperationType;
+};
+
+export default function useTokens({ chainKey = '', operationType }: UseTokensArgs) {
   const { mutate } = useSWRConfig();
 
   const [tokens, setTokens] = useState<Token[]>([]);
@@ -26,6 +32,14 @@ export default function useTokens({ chainKey = '' }) {
 
   const resetTokens = () => !!data?.tokens && setTokens(data.tokens.filter((token) => !!token.key));
 
+  const filteredTokensByOperationType = useMemo(
+    () =>
+      operationType == 'deposit'
+        ? data?.tokens?.filter((token) => token?.isOnrampActive && !!token.key)
+        : data?.tokens?.filter((token) => token?.isOfframpActive && !!token.key),
+    [data, operationType],
+  );
+
   const filterTokens = useCallback(
     (search: string) => {
       if (tokens) {
@@ -38,15 +52,14 @@ export default function useTokens({ chainKey = '' }) {
   );
 
   useEffect(() => {
-    if (data?.tokens) {
-      setTokens(data.tokens.filter((token) => !!token.key));
+    if (filteredTokensByOperationType) {
+      setTokens(filteredTokensByOperationType);
     }
-  }, [data]);
+  }, [filteredTokensByOperationType]);
 
   return {
     refetchTokens,
     data,
-    // tokens: data?.tokens,
     tokens,
     resetTokens,
     filterTokens,

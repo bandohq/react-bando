@@ -37,8 +37,8 @@ const mapToken = (token: Record<string, unknown>) => ({
   isOnrampActive: token?.is_onramp_active,
   isOfframpActive: token?.is_offramp_active,
   imageUrl: token?.image_url,
-  minAllowance: token?.min_allowance,
-  maxAllowance: token?.max_allowance,
+  minAllowance: parseFloat((token?.min_allowance as string) ?? '2'), // Set default of 2 when there is no min_allowance
+  maxAllowance: parseFloat((token?.max_allowance as string) ?? '20'), // Set default of 20 when there is no max_allowance
 });
 
 export const getTokens: GetTokensRequest = (endpoint) =>

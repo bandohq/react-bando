@@ -10,10 +10,12 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { Token } from '@hooks/useTokens/requests';
 import { TransactionTypeIcon } from '@components/TransactionsTable/CellDetailWithIcon';
 import { TokenList } from './components';
+import { OperationType } from '@hooks/useTransaction/requests';
 
 type TokenListProps = {
   tokens?: Token[];
   tokenObj?: Partial<Token>;
+  operationType?: OperationType;
   onSelectToken?: (token: Token) => void;
   filterTokens?: (value: string) => Token[] | undefined;
 };
@@ -22,13 +24,21 @@ export default function TokensList({
   tokens,
   filterTokens,
   onSelectToken,
+  // operationType,
   tokenObj = {},
 }: TokenListProps) {
   const listRef = useRef<HTMLUListElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
   const searchTokensElement = document.getElementById('search-tokens');
 
-  const count = tokens?.length ?? 0;
+  const allTokens = tokens;
+  // operationType == 'deposit'
+  //   ? tokens?.filter((token) => token?.isOnrampActive)
+  //   : tokens?.filter((token) => token?.isOfframpActive);
+
+  console.log({ allTokens, count: allTokens?.length });
+
+  const count = allTokens?.length ?? 0;
   const virtualizer = useVirtualizer({
     count,
     getScrollElement: () => listRef.current,
@@ -42,7 +52,7 @@ export default function TokensList({
         createPortal(
           <Grid xs={12} sm={12} md={12} spacing={2} sx={{ px: 0, pb: 0 }}>
             <Input
-              disabled={!tokens?.length}
+              disabled={!allTokens?.length}
               defaultValue={tokenObj?.name ?? tokenObj?.key}
               sx={{ '& .MuiInputBase-input': { borderColor: 'ink.i250' } }}
               onChange={(e) => {
@@ -80,7 +90,7 @@ export default function TokensList({
               }}
             >
               {items.map((virtualRow) => {
-                const token = tokens?.[virtualRow.index];
+                const token = allTokens?.[virtualRow.index];
                 return (
                   <li
                     key={virtualRow.key}
