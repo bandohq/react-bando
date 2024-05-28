@@ -20,7 +20,6 @@ export type CustomSelectProps = {
     startComponent?: ReactNode;
     endComponent?: ReactNode;
     disabled?: boolean;
-    hide?: boolean;
   }[];
 };
 export type SelectProps = Partial<SelectBaseProps> & CustomSelectProps;
