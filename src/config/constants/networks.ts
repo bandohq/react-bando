@@ -141,7 +141,7 @@ const networkOptions: NetworkOption = {
     label: 'Scroll',
     value: 'scl',
     img: Scroll,
-    enabled: false,
+    enabled: true,
     chains: [
       {
         label: 'ETH',
