@@ -8,6 +8,7 @@ import { NetworkBttnsCont, NetworkButton, TokenList } from './components';
 import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
 import DialogDrawer from '@components/DialogDrawer';
 import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
 
 import useNetworks from '@hooks/useNetworks';
 import { TransactionTypeIcon } from '@components/TransactionsTable/CellDetailWithIcon';
@@ -68,9 +69,9 @@ export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTil
           >
             <Box sx={{ height: '100%', width: '100%', overflowY: 'auto', px: 2, pb: 2 }}>
               <TokenList sx={{ width: '100%' }}>
-                {_networks?.map((network) => (
+                {_networks?.map((network, idx) => (
                   <li
-                    key={network?.chainId}
+                    key={`${network?.chainId}-${idx}`}
                     onClick={() => {
                       onSelectNetwork(network);
                       setOpenNetworkList(!openNetworkList);
@@ -111,7 +112,7 @@ export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTil
             return (
               <NetworkButton
                 role="button"
-                key={`${id}-${idx}`}
+                key={`${id}-${idx}-${network.chainId}`}
                 onClick={() => {
                   console.log('asdasd');
                   setOpenNetworkList(!openNetworkList);
@@ -122,16 +123,22 @@ export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTil
             );
           }
           return (
-            <NetworkButton
-              role="button"
-              className={networkObj?.key === network?.key ? 'active' : ''}
-              onClick={() => onSelectNetwork(network as unknown as Network)}
-              key={`${id}-${network.chainId}`}
+            <Tooltip
+              arrow
+              placement="top"
+              title={network?.name}
+              key={`${id}-${idx}-${network.chainId}`}
             >
-              <span>
-                <img alt={network?.key} src={network?.logoUrl} />
-              </span>
-            </NetworkButton>
+              <NetworkButton
+                role="button"
+                className={networkObj?.key === network?.key ? 'active' : ''}
+                onClick={() => onSelectNetwork(network as unknown as Network)}
+              >
+                <span>
+                  <img alt={network?.key} src={network?.logoUrl} />
+                </span>
+              </NetworkButton>
+            </Tooltip>
           );
         })}
       </NetworkBttnsCont>
