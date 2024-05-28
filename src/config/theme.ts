@@ -49,6 +49,12 @@ const theme = createTheme({
       '"Segoe UI Symbol"',
     ].join(','),
   },
+  transitions: {
+    duration: {
+      enteringScreen: 400,
+      leavingScreen: 350,
+    },
+  },
 });
 
 export default responsiveFontSizes(theme);

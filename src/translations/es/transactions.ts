@@ -7,6 +7,6 @@ export default {
     fee: 'Comisión',
     noFee: 'N/A',
     address: 'Cuenta Destino',
-    copied: 'Copiado',
+    copied: 'Copiado. 🫡',
   },
 };

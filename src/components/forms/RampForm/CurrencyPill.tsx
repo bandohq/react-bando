@@ -15,6 +15,17 @@ const Container = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   fontFamily: 'Kanit',
   fontWeight: 'bold',
+  [theme.breakpoints.between('xs', 'sm')]: {
+    fontSize: theme.typography.pxToRem(14),
+    '& img': {
+      width: '22px',
+      height: '22px',
+    },
+  },
+  '& img': {
+    borderRadius: '50%',
+    objectFit: 'cover',
+  },
 }));
 
 type CurrencyPillProps = {

@@ -10,6 +10,7 @@ export type Network = {
   isTestnet: boolean;
   networkType: string;
   isActive: boolean;
+  showNetworkList: never;
 };
 
 type TokenResponse = Network[];

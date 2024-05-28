@@ -20,26 +20,48 @@ const StatusBadgeContainer = styled('span')(({ theme }) => ({
     backgroundColor: `${alpha(theme.palette.warning.light, 0.35)}`,
     color: theme.palette.ink.i600,
     border: `1px solid ${theme.palette.warning.light}`,
+    '& p': {
+      [theme.breakpoints.between('xs', 'sm')]: {
+        fontSize: theme.typography.pxToRem(11),
+        textAlign: 'left',
+      },
+    },
   },
   '&.error': {
     backgroundColor: `${alpha(theme.palette.error.light, 0.35)}`,
     color: theme.palette.ink.i600,
     border: `1px solid ${theme.palette.error.light}`,
+    [theme.breakpoints.between('xs', 'sm')]: {
+      fontSize: theme.typography.pxToRem(14),
+      textAlign: 'left',
+    },
   },
   '&.success': {
     backgroundColor: `${alpha(theme.palette.success.light, 0.35)}`,
     color: theme.palette.ink.i600,
     border: `1px solid ${theme.palette.success.light}`,
+    [theme.breakpoints.between('xs', 'sm')]: {
+      fontSize: theme.typography.pxToRem(14),
+      textAlign: 'left',
+    },
   },
   '&.info': {
     backgroundColor: `${alpha(theme.palette.info.light, 0.35)}`,
     color: theme.palette.ink.i600,
     border: `1px solid ${theme.palette.info.light}`,
+    [theme.breakpoints.between('xs', 'sm')]: {
+      fontSize: theme.typography.pxToRem(13),
+      textAlign: 'left',
+    },
   },
   '&.simple': {
     backgroundColor: 'transparent',
     color: theme.palette.ink.i600,
     border: 'none',
+    [theme.breakpoints.between('xs', 'sm')]: {
+      fontSize: theme.typography.pxToRem(14),
+      textAlign: 'left',
+    },
   },
 }));
 
