@@ -1,5 +1,5 @@
 import Mexico from '../../assets/Mexico.svg';
-import Currency from '../../assets/Mexico-01.svg';
+import Currency from '../../assets/Mexico.svg';
 import Polygon from '../../assets/networks/polygon.png';
 import Arbitrum from '../../assets/networks/arbitrum.png';
 import Optimism from '../../assets/networks/optimism.png';
