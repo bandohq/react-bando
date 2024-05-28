@@ -51,10 +51,11 @@ export default function GetQuoteFormV2() {
   const baseCurrency = methods.watch('baseCurrency');
   const quoteCurrency = methods.watch('quoteCurrency');
 
-  const rateText =
-    operationType === 'deposit'
-      ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
-      : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
+  const rateText = !quoteCurrency
+    ? '-'
+    : operationType === 'deposit'
+      ? `1 ${quoteCurrency} ≈ ${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
+      : `1 ${baseCurrency} ≈ ${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
 
   const navigateForm = useCallback(
     (quote?: Quote) => {
@@ -63,7 +64,7 @@ export default function GetQuoteFormV2() {
         env.rampDataLocalStorage,
         JSON.stringify({
           quote: quote ?? data,
-          network: formValues.network,
+          network: formValues.networkObj.key ?? '',
           operationType: formValues.operationType,
         }),
       );
@@ -85,7 +86,7 @@ export default function GetQuoteFormV2() {
           baseAmount: formValues.baseAmount,
           baseCurrency: formValues.baseCurrency,
           quoteCurrency: formValues.quoteCurrency,
-          network: formValues.network,
+          network: formValues.networkObj.key ?? '',
         });
 
         navigateForm(quote);
@@ -104,7 +105,7 @@ export default function GetQuoteFormV2() {
       baseAmount: formValues.baseAmount,
       baseCurrency: formValues.baseCurrency,
       quoteCurrency: formValues.quoteCurrency,
-      network: formValues.network,
+      network: formValues.networkObj.key ?? '',
     }).catch(() => {
       setFormError('Ha ocurrido un error.');
       return null;

@@ -79,23 +79,21 @@ const Select = forwardRef((selectProps: SelectProps, ref: ForwardedRef<HTMLSelec
         IconComponent={() => <CaretImg src={CaretDown} />}
         {...props}
       >
-        {items.map((item) =>
-          item.hide ? null : (
-            <MenuItem
-              key={`select-menuItem-${item.label}-${item.value}`}
-              value={item.value}
-              aria-label={item.label}
-              disabled={item.disabled}
-            >
-              <>
-                {item.startComponent}
-                {item.label}
-              </>
-            </MenuItem>
-          ),
-        )}
+        {items?.map((item) => (
+          <MenuItem
+            key={`select-menuItem-${item.label}-${item.value}`}
+            value={item.value}
+            aria-label={item.label}
+            disabled={item.disabled}
+          >
+            <>
+              {item.startComponent}
+              {item.label}
+            </>
+          </MenuItem>
+        ))}
       </SelectBase>
-      {!!helpText && <HelpText>{helpText}</HelpText>}
+      {!!helpText && <HelpText className={props.error ? 'error' : ''}>{helpText}</HelpText>}
     </FormControl>
   );
 });

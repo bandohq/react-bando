@@ -2,7 +2,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 import CurrencyInput from 'react-currency-input-field';
 
-import { ReactNode, useCallback, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { GetQuoteFormValuesV2 } from '@components/forms/GetQuoteForm/schema';
 import { currencyImgPathV2 as currencyImgPath } from '@config/constants/currencies';
@@ -61,12 +61,12 @@ export default function TokensWidget({
   const canCheckQuote =
     parseFloat(baseAmount as unknown as string) >= 20 && !!networkObj?.chainId && !!tokenObj?.id;
 
-  const { tokens, filterTokens } = useTokens({ chainKey: networkObj?.key ?? '' });
+  const { tokens, filterTokens } = useTokens({ chainKey: networkObj?.key ?? '', operationType });
 
   const onSelectNetwork = (network: Network) => {
     methods.setValue('tokenObj', {});
     methods.setValue('networkObj', network);
-    methods.setValue('network', network.key ?? network.name);
+    // methods.setValue('network', network.key ?? network.name);
   };
 
   const onSelectToken = (token: Token) => {
@@ -113,6 +113,19 @@ export default function TokensWidget({
     },
     [networkObj?.logoUrl, tokenObj?.imageUrl],
   );
+
+  useEffect(() => {
+    if (operationType && tokens && !!tokenObj?.id) {
+      const currentTokenIsValid = !!tokens?.find((token) => token.id === tokenObj?.id);
+      if (!currentTokenIsValid) {
+        methods.setValue('tokenObj', {});
+
+        const resetCurrencyKey = operationType === 'deposit' ? 'quoteCurrency' : 'baseCurrency';
+        methods.setValue(resetCurrencyKey, '');
+        methods.setValue(resetCurrencyKey, '');
+      }
+    }
+  }, [operationType, tokens, tokenObj, methods]);
 
   return (
     <TokensContainer container spacing={2}>
@@ -182,9 +195,31 @@ export default function TokensWidget({
                           e.stopPropagation();
                         }}
                         onValueChange={(value) => {
+                          const baseValue = parseFloat(String(value));
+                          const minValue = tokenObj?.minAllowance ?? 0;
+                          const maxValue = tokenObj?.maxAllowance ?? 0;
+
                           if (value !== String(baseAmount)) {
                             onChange(value);
                             if (networkObj?.chainId && tokenObj?.id) onQuantityChange();
+                          }
+
+                          if (baseValue > maxValue) {
+                            methods.setError('baseAmount', {
+                              type: 'custom',
+                              message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
+                            });
+                          }
+
+                          if (baseValue < minValue) {
+                            methods.setError('baseAmount', {
+                              type: 'custom',
+                              message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
+                            });
+                          }
+
+                          if (baseValue >= minValue && baseValue <= maxValue) {
+                            methods.clearErrors('baseAmount');
                           }
                         }}
                       />

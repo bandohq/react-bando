@@ -10,6 +10,16 @@ export default function mapProviderStatus(status: string) {
     case 'CASH_OUT_REQUESTED':
     case 'CASH_OUT_PROCESSING':
     case 'CASH_OUT_COMPLETED':
+    case 'WAIT_SOURCE_CONFIRMATIONS':
+    case 'WAIT_DESTINATION_TRANSACTION':
+    case 'BRIDGE_NOT_AVAILABLE':
+    case 'CHAIN_NOT_AVAILABLE':
+    case 'REFUND_IN_PROGRESS':
+    case 'REFUNDED':
+    case 'FIAT_COMPLETED':
+    case 'PENDING':
+    case 'TXN_REVERTED':
+    case 'APPROVE_REVERTED':
       return {
         text: 'Procesando',
         color: 'info',
@@ -17,6 +27,12 @@ export default function mapProviderStatus(status: string) {
     case 'REJECTED':
     case 'FAILED':
     case 'ERROR':
+    case 'NOT_PROCESSABLE_REFUND_NEEDED':
+    case 'OUT_OF_GAS':
+    case 'SLIPPAGE_EXCEEDED':
+    case 'INSUFFICIENT_ALLOWANCE':
+    case 'INSUFFICIENT_BALANCE':
+    case 'UNKNOWN_ERROR':
       return {
         text: 'Fallida ',
         subtitle:
@@ -38,12 +54,14 @@ export default function mapProviderStatus(status: string) {
         color: 'error',
       };
     case 'COMPLETED':
+    case 'DONE':
       return {
         text: 'Completada  ',
         color: 'success',
       };
     case 'CASH_IN_PROCESSING':
     case 'CASH_IN_REQUESTED':
+    case 'CREATED':
       return {
         text: 'Esperando depósito',
         color: 'pending',

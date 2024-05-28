@@ -24,7 +24,7 @@ export default function MuiPhoneInput({
   const { inputValue, handlePhoneValueChange, inputRef, country, setCountry } = usePhoneInput({
     defaultCountry,
     value,
-    disableDialCodePrefill: true,
+    disableDialCodePrefill: false,
     countries: defaultCountries,
     onChange: (data) => {
       onChange?.(data.phone, data);

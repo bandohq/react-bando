@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import StatusBadge from '@components/StatusBadge';
 import mapProviderStatus from '@components/TransactionDetails/mapProviderStatus';
-import { networkImg, currencyImgPath } from '@config/constants/currencies';
+import { networkCurrencyInfo } from '@config/constants/networks';
 
 import ArrowDown from '../../assets/ArrowDown.svg';
 import CopyImg from '../../assets/CopyToClipboard.svg';
@@ -77,18 +77,18 @@ const ArrowIcon = styled('img')(() => ({
 }));
 
 function formatAmounts(amount: number, currency: string) {
-  return `$ ${formatNumber(amount)} ${currency}`;
+  return `$ ${formatNumber(amount, 2, 18)} ${currency}`;
 }
 
 function parseDataForRows(txn: Transaction) {
   return {
     ...txn,
     address: txn?.recipient ?? '',
-    networkIcon: networkImg[txn.networkConfig?.name as keyof typeof networkImg],
+    networkIcon: networkCurrencyInfo[(txn?.networkConfig?.key ?? '').toLowerCase()]?.img,
     sent: formatAmounts(txn.baseAmount, txn.baseCurrency),
     received: formatAmounts(txn.quoteAmount, txn.quoteCurrency),
-    sentIcon: currencyImgPath[txn.baseCurrency as keyof typeof currencyImgPath],
-    receivedIcon: currencyImgPath[txn.quoteCurrency as keyof typeof currencyImgPath],
+    sentIcon: networkCurrencyInfo[(txn.baseCurrency ?? '').toLowerCase()]?.img,
+    receivedIcon: networkCurrencyInfo[(txn.quoteCurrency ?? '').toLowerCase()]?.img,
     operationIcon: txn.operationType === 'withdraw' ? <ArrowCircleIcon /> : <DepositArrow />,
   };
 }
@@ -197,7 +197,7 @@ export default function TransactionRow({
             <>
               <RowTextDetail>
                 <span>{t('table.rate')}</span>
-                {formatNumber(row.quoteRateInverse)} USDC
+                {formatNumber(row.quoteRateInverse, 2, 18)} USDC
               </RowTextDetail>
               <RowTextDetail onClick={(e) => e.stopPropagation()}>
                 <span>{t('table.address')}</span>
