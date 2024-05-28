@@ -1,16 +1,20 @@
 import useSWR, { useSWRConfig } from 'swr';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { matchSorter } from 'match-sorter';
 
-import { getTokens } from './requests';
+import { getTokens, Token } from './requests';
 import endpoints from '@config/endpoints';
 
 const TOKEN_QUERYSTR = '/?all=true';
 
 export default function useTokens({ chainKey = '' }) {
   const { mutate } = useSWRConfig();
+
+  const [tokens, setTokens] = useState<Token[]>([]);
+
   const { data, ...queryReturn } = useSWR(
     `${endpoints.tokens}${chainKey}${TOKEN_QUERYSTR}`,
-    getTokens,
+    chainKey ? getTokens : null,
     {
       revalidateOnFocus: false,
     },
@@ -20,10 +24,32 @@ export default function useTokens({ chainKey = '' }) {
     mutate(`${endpoints.tokens}${chainKey}${TOKEN_QUERYSTR}`);
   }, [mutate, chainKey]);
 
+  const resetTokens = () => !!data?.tokens && setTokens(data.tokens.filter((token) => !!token.key));
+
+  const filterTokens = useCallback(
+    (search: string) => {
+      if (tokens) {
+        const sort = matchSorter(tokens, search, { keys: ['key', 'name'] });
+        setTokens(sort);
+        return sort;
+      }
+    },
+    [tokens],
+  );
+
+  useEffect(() => {
+    if (data?.tokens) {
+      setTokens(data.tokens.filter((token) => !!token.key));
+    }
+  }, [data]);
+
   return {
     refetchTokens,
     data,
-    tokens: data?.tokens,
+    // tokens: data?.tokens,
+    tokens,
+    resetTokens,
+    filterTokens,
     totalTokens: data?.tokens?.length ?? 0,
     ...queryReturn,
   };

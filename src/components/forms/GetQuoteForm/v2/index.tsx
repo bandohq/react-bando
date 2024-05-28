@@ -1,40 +1,28 @@
-// import Grid from '@mui/material/Unstable_Grid2';
 import BoxContainer from '@components/BoxContainer';
-// import CircularProgress from '@mui/material/CircularProgress';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import { useEffect } from 'react';
-// import debounce from 'lodash/debounce';
+import { useCallback, useRef, useState } from 'react';
+import debounce from 'lodash/debounce';
 
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaV2, GetQuoteFormValuesV2 } from '../schema';
 
-// import BandoButton from '@components/Button';
-// import Input from '@components/forms/Input';
-// import Select from '@components/forms/Select';
-// import Hr from '@components/Hr';
-
-// import Polygon from '../../../../assets/polygon.png';
-// import Ethereum from '../../../../assets/ethereum.png';
 import TokensWidget from '@components/TokensWidget';
 
-// import useQuote from '@hooks/useQuote';
-// import useUser from '@hooks/useUser';
-import useTokens from '@hooks/useTokens';
-import useNetworks from '@hooks/useNetworks';
+import useQuote from '@hooks/useQuote';
+import useUser from '@hooks/useUser';
+import formatNumber from '@helpers/formatNumber';
+import { CircularProgress } from '@mui/material';
 
-// import { sendCurrency, depositCurrency } from '@config/constants/currencies';
-// import { Quote } from '@hooks/useQuote/requests';
-// import env from '@config/env';
-// import formatNumber from '@helpers/formatNumber';
+import { Quote } from '@hooks/useQuote/requests';
+import env from '@config/env';
 
-// const REQUEST_DEBOUNCE = 250;
-const DEFAULT_NETWORK_KEY = 'pol';
-const DEFAULT_QUOTE_CURRENCY = 'USDC';
+const REQUEST_DEBOUNCE = 250;
 const HAS_ONLY_CURRENCY = true;
 const DEFAULT_CURRENCY = 'MXN';
+const DEFAULT_OPERATION = 'deposit';
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
@@ -46,54 +34,111 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 }));
 
 export default function GetQuoteFormV2() {
-  // const navigate = useNavigate();
-  // const { isMutating, data, getQuote } = useQuote();
-  // const { data } = useQuote();
+  const navigate = useNavigate();
+  const { isMutating, data, getQuote } = useQuote();
+  const [formError, setFormError] = useState<string>('');
 
-  // const { user } = useUser();
+  const { user } = useUser();
   const methods = useForm<GetQuoteFormValuesV2>({
     resolver: yupResolver(schemaV2),
     defaultValues: {
       baseCurrency: DEFAULT_CURRENCY,
-      operationType: 'deposit',
+      operationType: DEFAULT_OPERATION,
     },
   });
 
-  const { handleSubmit, setValue } = methods;
-  const { networks } = useNetworks();
-  const { tokens } = useTokens({ chainKey: DEFAULT_NETWORK_KEY });
-  // const quoteCurrency = watch('quoteCurrency');
-  // const baseCurrency = watch('baseCurrency');
-  // const operationType = watch('operationType');
-  // const baseAmount = watch('baseAmount');
+  const operationType = methods.watch('operationType');
+  const baseCurrency = methods.watch('baseCurrency');
+  const quoteCurrency = methods.watch('quoteCurrency');
 
-  const defaultNetwork = networks?.find((nwk) => nwk.key === DEFAULT_NETWORK_KEY) ?? networks?.[0];
-  const usdcToken = tokens?.find((token) => token.key === DEFAULT_QUOTE_CURRENCY);
+  const rateText =
+    operationType === 'deposit'
+      ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
+      : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
 
-  // const depositCurrencyItems = operationType === 'deposit' ? sendCurrency : depositCurrency;
-  // const sendCurrencyItems = operationType === 'deposit' ? depositCurrency : sendCurrency;
-  // const operationCurrency = operationType === 'deposit' ? baseCurrency : quoteCurrency;
-  // const rateText =
-  //   operationType === 'deposit'
-  //     ? `1 ${quoteCurrency} ≈ $${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
-  //     : `1 ${baseCurrency} ≈ $${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
+  const navigateForm = useCallback(
+    (quote?: Quote) => {
+      const formValues = methods.getValues();
+      localStorage.setItem(
+        env.rampDataLocalStorage,
+        JSON.stringify({
+          quote: quote ?? data,
+          network: formValues.network,
+          operationType: formValues.operationType,
+        }),
+      );
 
-  const onSubmit = () => {};
+      if (!user?.email && !user?.id) return navigate('/signin');
+      if (!user?.kycLevel) return navigate('/kyc');
+      return navigate('/ramp');
+    },
+    [data, methods, navigate, user],
+  );
 
-  useEffect(() => {
-    // TODO: Remove this once adding the selection drawer
-    if (defaultNetwork && usdcToken) {
-      setValue('networkObj', defaultNetwork);
-      setValue('tokenObj', usdcToken);
-      setValue('quoteCurrency', usdcToken.key);
-    }
-  }, [setValue, defaultNetwork, usdcToken, tokens]);
+  const onSubmit = useCallback(
+    async (formValues: GetQuoteFormValuesV2) => {
+      console.log('onSubmit');
+      if (data?.quoteAmount) return navigateForm();
+      setFormError('');
+      try {
+        const quote = await getQuote({
+          baseAmount: formValues.baseAmount,
+          baseCurrency: formValues.baseCurrency,
+          quoteCurrency: formValues.quoteCurrency,
+          network: formValues.network,
+        });
+
+        navigateForm(quote);
+      } catch {
+        setFormError('Ha ocurrido un error.');
+      }
+    },
+    [getQuote, data, navigateForm],
+  );
+
+  const debouncedRequest = useCallback(async () => {
+    const formValues = methods.getValues();
+    setFormError('');
+    if (!formValues.baseAmount) return;
+    return getQuote({
+      baseAmount: formValues.baseAmount,
+      baseCurrency: formValues.baseCurrency,
+      quoteCurrency: formValues.quoteCurrency,
+      network: formValues.network,
+    }).catch(() => {
+      setFormError('Ha ocurrido un error.');
+      return null;
+    });
+  }, [methods, getQuote]);
+
+  const debouncedQuoteRequest = useRef(
+    debounce(debouncedRequest, REQUEST_DEBOUNCE, { leading: true }),
+  );
 
   return (
-    <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
+    <BoxContainer
+      sx={{ width: '100%', maxWidth: '600px', overflow: 'hidden', position: 'relative' }}
+    >
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TokensWidget onlyOneCurrency={HAS_ONLY_CURRENCY} defaultCurrency={DEFAULT_CURRENCY} />
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <TokensWidget
+            onlyOneCurrency={HAS_ONLY_CURRENCY}
+            defaultCurrency={DEFAULT_CURRENCY}
+            onQuantityChange={() => debouncedQuoteRequest.current()}
+            formError={formError}
+            rateText={
+              isMutating ? (
+                <CircularProgress
+                  size={15}
+                  sx={{ marginLeft: 1, color: 'palette.ink.i500' }}
+                  aria-label="submitting"
+                />
+              ) : (
+                rateText
+              )
+            }
+            quote={data}
+          />
         </form>
       </FormProvider>
     </BoxContainer>
