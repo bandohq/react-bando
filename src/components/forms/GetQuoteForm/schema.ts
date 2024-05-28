@@ -9,7 +9,6 @@ import { sendCurrency } from '@config/constants/currencies';
 
 import { Network } from '@hooks/useNetworks/requests';
 import { Token } from '@hooks/useTokens/requests';
-import i18n from '@translations/index';
 
 export type GetQuoteFormValues = {
   operationType: OperationType;
@@ -89,19 +88,6 @@ export const schemaV2 = yup.object().shape({
   baseAmount: yup
     .number()
     .typeError('') // avoid error message when form input id empty
-<<<<<<< HEAD
-=======
-    .when(['operationType'], {
-      is: 'deposit',
-      then: (schema) => schema.min(20, 'El monto mínimo es de $20'),
-      otherwise: (schema) => schema.min(2, i18n.t('El monto mínimo es de $2')),
-    })
-    .when(['operationType'], {
-      is: 'deposit',
-      then: (schema) => schema.max(500000, 'El monto máximo es de $500,000'),
-      otherwise: (schema) => schema.max(10000, 'El monto máximo es de $10,000'),
-    })
->>>>>>> c0df249e26c10c41f0f67bea09704b24d5a4cb3e
     .required(),
   quoteCurrency: yup.string().required(),
   baseCurrency: yup.string().required(),

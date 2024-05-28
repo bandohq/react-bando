@@ -66,3 +66,4 @@ export default function useTokens({ chainKey = '', operationType }: UseTokensArg
     totalTokens: data?.tokens?.length ?? 0,
     ...queryReturn,
   };
+}
