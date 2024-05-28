@@ -38,8 +38,8 @@ export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTil
 
   const [openNetworkList, setOpenNetworkList] = useState(false);
   const { networks = [] } = useNetworks();
-  const _networks = useMemo(() => [...networks, ...networks, ...networks, ...networks], [networks]);
-  // const _networks = useMemo(() => [...networks], [networks]);
+  // const _networks = useMemo(() => [...networks, ...networks, ...networks, ...networks], [networks]);
+  const _networks = useMemo(() => [...networks], [networks]);
 
   const networkListElement = document.getElementById('network-list');
 
