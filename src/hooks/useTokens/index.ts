@@ -16,6 +16,7 @@ type UseTokensArgs = {
 export default function useTokens({ chainKey = '', operationType }: UseTokensArgs) {
   const { mutate } = useSWRConfig();
 
+  const [rspTokens, setRspTokens] = useState<Token[]>([]);
   const [tokens, setTokens] = useState<Token[]>([]);
 
   const { data, ...queryReturn } = useSWR(
@@ -42,18 +43,23 @@ export default function useTokens({ chainKey = '', operationType }: UseTokensArg
 
   const filterTokens = useCallback(
     (search: string) => {
-      if (tokens) {
-        const sort = matchSorter(tokens, search, { keys: ['key', 'name'] });
+      if (!search && rspTokens.length) {
+        setTokens(rspTokens);
+        return;
+      }
+      if (rspTokens) {
+        const sort = matchSorter(rspTokens, search, { keys: ['key', 'name'] });
         setTokens(sort);
         return sort;
       }
     },
-    [tokens],
+    [rspTokens],
   );
 
   useEffect(() => {
     if (filteredTokensByOperationType) {
       setTokens(filteredTokensByOperationType);
+      setRspTokens(filteredTokensByOperationType);
     }
   }, [filteredTokensByOperationType]);
 

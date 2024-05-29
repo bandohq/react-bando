@@ -78,7 +78,6 @@ export default function GetQuoteFormV2() {
 
   const onSubmit = useCallback(
     async (formValues: GetQuoteFormValuesV2) => {
-      console.log('onSubmit');
       if (data?.quoteAmount) return navigateForm();
       setFormError('');
       try {

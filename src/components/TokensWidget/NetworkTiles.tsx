@@ -43,12 +43,11 @@ export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTil
 
   const networkListElement = document.getElementById('network-list');
 
-  const _previewNetworks = useMemo(() => fillArray(5, _networks, 10), [_networks]);
+  const _previewNetworks = useMemo(() => fillArray(5, _networks, 9), [_networks]);
   const previewNetworks = useMemo(() => {
     const lastItem = _previewNetworks[_previewNetworks.length - 1];
     const newArr = [..._previewNetworks] as unknown as PreviewNetworks;
     if (lastItem) {
-      newArr.pop();
       newArr.push({ showNetworkList: true });
     }
     return newArr;
@@ -114,11 +113,10 @@ export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTil
                 role="button"
                 key={`${id}-${idx}-${network.chainId}`}
                 onClick={() => {
-                  console.log('asdasd');
                   setOpenNetworkList(!openNetworkList);
                 }}
               >
-                + {_networks.length - previewNetworks.length}
+                + {_networks.length - (previewNetworks.length - 1)}
               </NetworkButton>
             );
           }
