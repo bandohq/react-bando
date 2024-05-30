@@ -84,6 +84,11 @@ const networkOptions: NetworkOption = {
         value: 'weth',
         img: WETH,
       },
+      {
+        label: 'ETH',
+        value: 'ETH',
+        img: ETH,
+      },
     ],
   },
   op: {
