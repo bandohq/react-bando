@@ -84,6 +84,11 @@ const networkOptions: NetworkOption = {
         value: 'weth',
         img: WETH,
       },
+      {
+        label: 'ETH',
+        value: 'ETH',
+        img: ETH,
+      },
     ],
   },
   op: {
@@ -118,7 +123,7 @@ const networkOptions: NetworkOption = {
     label: 'Base',
     value: 'bas',
     img: Base,
-    enabled: false,
+    enabled: true,
     chains: [
       {
         label: 'ETH',
@@ -129,11 +134,6 @@ const networkOptions: NetworkOption = {
         label: 'USDC',
         value: 'USDC',
         img: USDC,
-      },
-      {
-        label: 'USDT',
-        value: 'USDT',
-        img: USDT,
       },
     ],
   },
