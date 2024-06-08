@@ -33,11 +33,13 @@ const schema = yup.object().shape({
     .test('phone', 'Número de teléfono inválido', (value) => isPhoneValid(value)),
   nationalIdNumber: yup.string().required('RFC es requerido').matches(rfcRegex, 'RFC Inválido'),
   address: yup.object().shape({
-    label: yup.string().required('Tu domicilio es requerido'),
-    street: yup.string().required(),
-    city: yup.string().required(),
-    zip: yup.string().required(),
-    country: yup.string().required(),
+    label: yup.string().required('Tu colonia, municipio, barrio va en este campo.'),
+    street: yup
+      .string()
+      .required('Tu calle, localidad, esquina, referencia, etc va en este campo.'),
+    city: yup.string().required('La ciudad en donde vives va en este campo.'),
+    zip: yup.string().required('El código postal de tu domicilio va en este campo.'),
+    country: yup.string().required('El país es requerido.'),
   }),
   document: yup.object().shape({
     type: yup.string().required(),
