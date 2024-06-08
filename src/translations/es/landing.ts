@@ -46,4 +46,8 @@ export default {
       amount: '5%',
     },
   },
+  video: {
+    title: 'Usar Bando es muy fácil',
+    subtitle: 'Mira a nuestro co-founder Lalo explicando como funciona.',
+  }
 };
