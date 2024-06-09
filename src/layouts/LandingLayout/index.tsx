@@ -59,13 +59,39 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
             </Grid>
           </Grid>
         </section>
-        <section className="section hidden">
-          <div className="w-layout-blockcontainer container-7 w-container">
-            <div className="div-block horizontal">
-              <h1 className="heading-2">{t('section1.title')}</h1>
-              <p className="paragraph-4 hidden">{t('section1.info')}</p>
-            </div>
-          </div>
+        <section className="section">
+          <Grid container spacing={0}>
+            <Grid
+              md={6}
+              xs={12}
+              sx={{
+                display: { md: 'block', lg: 'block', sm: 'block', xs: 'block' },
+                padding: { md: '0 6rem 0 6rem', lg: '0 6rem 0 6rem', sm: '0', xs: '0' },
+                marginTop: '2rem',
+              }}
+            >
+              <h1 className="h3">
+                <Trans t={t} i18nKey="video.title" components={{ separator: <br /> }} />
+              </h1>
+              <p className="paragraph-5">
+                <Trans t={t} i18nKey="video.subtitle" components={{ separator: <br /> }} />
+              </p>
+            </Grid>
+            <Grid
+              md={6}
+              xs={12}
+              sx={{ marginTop: { xs: '55px', md: 'auto' }, padding: { xs: '15px' } }}
+            >
+              <iframe
+                width="100%"
+                height="315"
+                src="https://www.youtube.com/embed/qe-AxuZ93eE?si=Rve00R3_vHJgJGhG"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </Grid>
+          </Grid>
         </section>
         <section className="section white">
           <div className="w-layout-blockcontainer container-4 w-container">

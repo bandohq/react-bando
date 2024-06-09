@@ -46,4 +46,9 @@ export default {
       amount: '5%',
     },
   },
+  video: {
+    title: 'Using Bando is super easy',
+    subtitle:
+      'Check our co-founder Lalo explaining how to seamlessly buy tokens from mexican pesos.',
+  },
 };

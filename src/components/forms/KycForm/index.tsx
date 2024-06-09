@@ -2,7 +2,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import MuiInput from '@components/forms/MuiInput';
 import MuiSelect from '@components/forms/MuiSelect';
 import MuiPhoneInput from '@components/forms/MuiInput/MuiPhoneInput';
-import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
 
 import ErrorBox from '@components/forms/ErrorBox';
 import BandoButton from '@components/Button';
@@ -21,6 +20,7 @@ import useUser from '@hooks/useUser';
 import { useNavigate } from 'react-router-dom';
 
 import { identificationOptions, Identifications } from '@config/constants/identification';
+import { AcceptedCountries, countryOptions } from '@config/constants/countries';
 import { useState } from 'react';
 import getStorageQuote from '@helpers/getStorageQuote';
 
@@ -32,7 +32,7 @@ export default function KycForm() {
   const { user } = useUser();
   const { isMutating, postUserKyc } = useKyc();
   const storageQuote = getStorageQuote();
-  const { register, control, formState, handleSubmit, setValue } = useForm<KycFormValues>({
+  const { register, control, formState, handleSubmit } = useForm<KycFormValues>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
@@ -71,7 +71,7 @@ export default function KycForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Title variant="h3">Verifica tus datos</Title>
+      <Title variant="h3">Verifica tu identidad</Title>
       <Grid container spacing={1} sx={{ margin: 0 }}>
         <Grid md={6} xs={12}>
           <MuiInput
@@ -130,52 +130,88 @@ export default function KycForm() {
             helperText={formState.errors.nationalIdNumber?.message}
           />
         </Grid>
-        <Grid md={12} xs={12} sx={{ mt: 2 }}>
-          <Controller
-            control={control}
-            name="address.label"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <PlacesAutocomplete
-                label="Domicilio (Asegúrate de que sea un domicilio válido)"
-                noOptionsText="No se encontro el domicilio"
-                value={value}
-                onChange={onChange}
-                onBlur={onBlur}
-                setInputValue={(val, address) => {
-                  setValue('address.label', val);
-                  if (address) {
-                    setValue('address.street', address.street);
-                    setValue('address.city', address.city);
-                    setValue('address.zip', address.zip);
-                    setValue('address.country', address.country);
-                  }
-                }}
-                error={!!formState.errors.address?.label?.message}
-                helperText={formState.errors.address?.label?.message}
-              />
-            )}
-          />
+        <Title variant="h3">Verifica tu domicilio</Title>
+        <Grid container spacing={1} sx={{ margin: 0 }}>
+          <Grid md={12} xs={12}>
+            <MuiInput
+              label="Calle, número, ó localidad"
+              type="text"
+              sx={{ mt: 2 }}
+              InputLabelProps={{ shrink: true }}
+              {...register('address.street')}
+              error={!!formState.errors.address?.street?.message}
+              helperText={formState.errors.address?.street?.message}
+            />
+          </Grid>
+          <Grid md={12} xs={12}>
+            <MuiInput
+              label="Colonia, Municipio"
+              type="text"
+              sx={{ mt: 2 }}
+              InputLabelProps={{ shrink: true }}
+              {...register('address.label')}
+              error={!!formState.errors.address?.label?.message}
+              helperText={formState.errors.address?.label?.message}
+            />
+          </Grid>
+          <Grid md={8} xs={12}>
+            <MuiInput
+              label="Estado / Provincia"
+              type="text"
+              sx={{ mt: 2 }}
+              InputLabelProps={{ shrink: true }}
+              {...register('address.city')}
+              error={!!formState.errors.address?.city?.message}
+              helperText={formState.errors.address?.city?.message}
+            />
+          </Grid>
+          <Grid md={4} xs={12}>
+            <MuiInput
+              label="Código Postal"
+              type="text"
+              sx={{ mt: 2 }}
+              InputLabelProps={{ shrink: true }}
+              {...register('address.zip')}
+              error={!!formState.errors.address?.zip?.message}
+              helperText={formState.errors.address?.zip?.message}
+            />
+          </Grid>
+          <Grid md={12} xs={12}>
+            <MuiSelect
+              sx={{ mt: 2 }}
+              defaultValue={AcceptedCountries.MX}
+              {...register('address.country')}
+              items={countryOptions}
+              label="País"
+              InputLabelProps={{ shrink: true }}
+              error={!!formState.errors.address?.country?.message}
+              helperText={formState.errors.address?.country?.message}
+            />
+          </Grid>
         </Grid>
-        <Grid md={4} xs={12}>
-          <MuiSelect
-            sx={{ mt: 2 }}
-            defaultValue={Identifications.NATIONAL_IDENTITY_CARD}
-            {...register('document.type')}
-            items={identificationOptions}
-            label="Identificación"
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-        <Grid md={8} xs={12}>
-          <MuiInput
-            sx={{ mt: 2 }}
-            label="Número de Identificación"
-            type="text"
-            InputLabelProps={{ shrink: true }}
-            {...register('document.number')}
-            error={!!formState.errors.document?.number?.message}
-            helperText={formState.errors.document?.number?.message}
-          />
+        <Title variant="h3">Número de Identificación</Title>
+        <Grid container spacing={1} sx={{ margin: 0, width: '100%' }}>
+          <Grid md={4} xs={12}>
+            <MuiSelect
+              sx={{ mt: 2 }}
+              defaultValue={Identifications.NATIONAL_IDENTITY_CARD}
+              {...register('document.type')}
+              items={identificationOptions}
+              label="Identificación"
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+          <Grid md={8} xs={12}>
+            <MuiInput
+              sx={{ mt: 2, width: '100%' }}
+              label="Número de Identificación"
+              type="text"
+              InputLabelProps={{ shrink: true }}
+              {...register('document.number')}
+              error={!!formState.errors.document?.number?.message}
+              helperText={formState.errors.document?.number?.message}
+            />
+          </Grid>
         </Grid>
         {!!error && (
           <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
