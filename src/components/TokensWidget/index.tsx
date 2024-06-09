@@ -34,14 +34,18 @@ type TokensWidgetProps = {
   onlyOneCurrency?: boolean;
   defaultCurrency?: string;
   rateText?: ReactNode;
-  quote?: Quote;
+  quote?: Quote | null;
   onQuantityChange?: () => void;
+  resetQuote?: () => void;
   formError?: string;
+  isLoadingQuote?: boolean;
 };
 
 export default function TokensWidget({
   defaultCurrency = '',
   onQuantityChange = () => {},
+  resetQuote = () => {},
+  isLoadingQuote = false,
   rateText = '',
   quote,
   formError,
@@ -58,21 +62,22 @@ export default function TokensWidget({
   const tokenObj = methods.watch('tokenObj');
 
   const isDeposit = operationType === 'deposit';
-  const canCheckQuote =
-    parseFloat(baseAmount as unknown as string) >= 20 && !!networkObj?.chainId && !!tokenObj?.id;
+  // const canCheckQuote =
+  //   parseFloat(baseAmount as unknown as string) >= 20 && !!networkObj?.chainId && !!tokenObj?.id;
 
   const { tokens, filterTokens } = useTokens({ chainKey: networkObj?.key ?? '', operationType });
 
   const onSelectNetwork = (network: Network) => {
     methods.setValue('tokenObj', {});
     methods.setValue('networkObj', network);
-    // methods.setValue('network', network.key ?? network.name);
+    methods.setValue('baseAmount', 0);
   };
 
   const onSelectToken = (token: Token) => {
     methods.setValue('tokenObj', token);
     methods.setValue(isDeposit ? 'quoteCurrency' : 'baseCurrency', token.key ?? token.name);
-    onQuantityChange();
+    methods.setValue('baseAmount', 0);
+
     setOpenSelectDrawer((prev) => !prev);
   };
 
@@ -85,7 +90,6 @@ export default function TokensWidget({
     methods.setValue('baseCurrency', _quoteCurrency);
     methods.setValue('quoteCurrency', _baseCurrency);
     methods.setValue('operationType', _reverseOperation);
-    onQuantityChange();
   };
 
   const chooseCurrencyComp = useCallback(
@@ -128,12 +132,11 @@ export default function TokensWidget({
   }, [operationType, tokens, tokenObj, methods]);
 
   return (
-    <TokensContainer container spacing={2}>
+    <TokensContainer container spacing={2} sx={openSelectDrawer ? { paddingBottom: '80px' } : {}}>
       <DialogDrawer
         open={openSelectDrawer}
         onClose={() => {
           setOpenSelectDrawer(!openSelectDrawer);
-          if (canCheckQuote) onQuantityChange();
         }}
         titleContent={
           <>
@@ -187,7 +190,7 @@ export default function TokensWidget({
                       <CurrencyInput
                         className="currency-input"
                         prefix={isDeposit ? '$' : ''}
-                        decimalsLimit={2}
+                        decimalsLimit={isDeposit ? 2 : 18}
                         placeholder={isDeposit ? '$0.00' : '0.00'}
                         decimalSeparator="."
                         value={value}
@@ -196,24 +199,29 @@ export default function TokensWidget({
                         }}
                         onValueChange={(value) => {
                           const baseValue = parseFloat(String(value));
+                          const baseAmountValue = parseFloat(String(baseAmount));
+
                           const minValue = tokenObj?.minAllowance ?? 0;
                           const maxValue = tokenObj?.maxAllowance ?? 0;
 
-                          if (value !== String(baseAmount)) {
+                          if (baseValue !== baseAmountValue) {
                             onChange(value);
-                            if (networkObj?.chainId && tokenObj?.id) onQuantityChange();
+                            if (networkObj?.chainId && tokenObj?.id) {
+                              resetQuote();
+                              onQuantityChange();
+                            }
                           }
 
                           if (baseValue > maxValue) {
                             methods.setError('baseAmount', {
-                              type: 'custom',
+                              type: 'required',
                               message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
                             });
                           }
 
                           if (baseValue < minValue) {
                             methods.setError('baseAmount', {
-                              type: 'custom',
+                              type: 'required',
                               message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
                             });
                           }
@@ -275,7 +283,7 @@ export default function TokensWidget({
             sx={{
               position: 'absolute',
               margin: '0 auto',
-              top: 'calc(50% - 29px)',
+              top: 'calc(50% - 19px)',
               left: 'calc(50% - 29px)',
               zIndex: 1000,
             }}
@@ -305,11 +313,11 @@ export default function TokensWidget({
               <input
                 className="currency-input sm"
                 type="text"
-                value={`${formatNumber(quote?.quoteAmount ?? 0)} ${quote?.quoteCurrency ?? ''}`}
+                value={`${formatNumber(quote?.quoteAmount ?? 0, 2, 18)} ${quote?.quoteCurrency ?? ''}`}
                 disabled
               />
               {/* <span className="currency-amount">${formatNumber(69.456, 2, 6)} USD</span> */}
-              <span className="currency-amount">-</span>
+              {/* <span className="currency-amount">-</span> */}
             </Box>
           </CurrencyAmount>
           <span className="currency-rate">{rateText}</span>
@@ -323,7 +331,13 @@ export default function TokensWidget({
       )}
 
       <Grid xs={12} sm={12} md={12}>
-        <BandoButton type="submit" variant="contained" fullWidth sx={{ py: 2, mt: 2 }}>
+        <BandoButton
+          type="submit"
+          disabled={isLoadingQuote}
+          variant="contained"
+          fullWidth
+          sx={{ py: 2, mt: 2 }}
+        >
           Comenzar
         </BandoButton>
       </Grid>

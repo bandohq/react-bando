@@ -35,7 +35,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 
 export default function GetQuoteFormV2() {
   const navigate = useNavigate();
-  const { isMutating, data, getQuote } = useQuote();
+  const { isMutating, quote: data, getQuote, resetQuote } = useQuote();
   const [formError, setFormError] = useState<string>('');
 
   const { user } = useUser();
@@ -78,6 +78,27 @@ export default function GetQuoteFormV2() {
 
   const onSubmit = useCallback(
     async (formValues: GetQuoteFormValuesV2) => {
+      const baseValue = parseFloat(String(formValues.baseAmount));
+      const minValue = formValues?.tokenObj?.minAllowance ?? 0;
+      const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
+
+      if (isMutating) return;
+      if (baseValue > maxValue) {
+        methods.setError('baseAmount', {
+          type: 'required',
+          message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
+        });
+        return;
+      }
+
+      if (baseValue < minValue) {
+        methods.setError('baseAmount', {
+          type: 'required',
+          message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
+        });
+        return;
+      }
+
       if (data?.quoteAmount) return navigateForm();
       setFormError('');
       try {
@@ -93,7 +114,7 @@ export default function GetQuoteFormV2() {
         setFormError('Ha ocurrido un error.');
       }
     },
-    [getQuote, data, navigateForm],
+    [getQuote, isMutating, methods, data, navigateForm],
   );
 
   const debouncedRequest = useCallback(async () => {
@@ -120,12 +141,14 @@ export default function GetQuoteFormV2() {
       sx={{ width: '100%', maxWidth: '600px', overflow: 'hidden', position: 'relative' }}
     >
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form onSubmit={isMutating ? undefined : methods.handleSubmit(onSubmit)}>
           <TokensWidget
             onlyOneCurrency={HAS_ONLY_CURRENCY}
             defaultCurrency={DEFAULT_CURRENCY}
             onQuantityChange={() => debouncedQuoteRequest.current()}
+            resetQuote={() => resetQuote()}
             formError={formError}
+            isLoadingQuote={isMutating}
             rateText={
               isMutating ? (
                 <CircularProgress

@@ -45,6 +45,7 @@ export const TokensContainer = styled(Grid)(({ theme }) => ({
     color: theme.palette.ink.i400,
     fontSize: theme.typography.pxToRem(12),
     lineHeight: theme.typography.pxToRem(14),
+    paddingBottom: theme.spacing(1),
     '&:empty::before': {
       content: '"-"',
       color: 'transparent',
@@ -100,7 +101,7 @@ export const CurrencyAmount = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(2),
-  alignItems: 'center',
+  alignItems: 'flex-start',
   pointerEvents: 'auto',
   '& p': {
     fontFamily: 'TWK Everett',
@@ -187,5 +188,21 @@ export const TokenList = styled('ul')(({ theme }) => ({
       border: `1px solid ${alpha(theme.palette.primary.main, 0.75)}`,
       backgroundColor: theme.palette.ink.i150,
     },
+
+    '& .token-address': {
+      display: 'none',
+    },
+
+    '&:hover .token-name': {
+      display: 'none',
+    },
+
+    '&:hover .token-address': {
+      display: 'flex',
+    },
   },
+}));
+
+export const TokenLink = styled('a')(() => ({
+  all: 'unset',
 }));
