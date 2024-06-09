@@ -1,10 +1,12 @@
 import axios from 'axios';
+import endpoints from '@config/endpoints';
+
 import { User } from '@hooks/useUser/MagicUserProvider';
 
-type GetUserDataRequest = (endpoint: string) => Promise<Partial<User>>;
-export const getUserData: GetUserDataRequest = (endpoint) =>
+type GetUserDataRequest = () => Promise<Partial<User>>;
+export const getUserData: GetUserDataRequest = () =>
   axios
-    .get(endpoint)
+    .get(endpoints.userKyc)
     .then(({ data }) => ({
       id: data.id,
       kycLevel: data.kyc_level,

@@ -21,6 +21,7 @@
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
     "@sentry/react": "^7.101.0",
+    "@tanstack/react-query": "^5.40.0",
     "@tanstack/react-virtual": "^3.2.1",
     "D": "^1.0.0",
     "autosuggest-highlight": "^3.3.4",

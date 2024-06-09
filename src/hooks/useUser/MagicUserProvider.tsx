@@ -51,6 +51,7 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
 
   const setUserData = useCallback(
     (userData: Partial<User>) => {
+      console.log('setUserData');
       return setUser((prevUser) => ({ ...prevUser, ...userData }));
     },
     [setUser],
@@ -59,6 +60,7 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
   const resetUser = useCallback(() => setUser(null), [setUser]);
 
   const logoutUser = useCallback(async () => {
+    console.log('logoutUser');
     try {
       magic?.user.isLoggedIn().then(async (isLoggedIn) => {
         if (isLoggedIn) await magic?.user?.logout();
@@ -69,6 +71,7 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
   }, [magic]);
 
   const fetchUser = useCallback(async () => {
+    console.log('fetchUser');
     if (magic) {
       try {
         setIsLoading(true);
@@ -81,9 +84,9 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
     }
   }, [magic, setIsLoading, setUserData, setDataLoaded]);
 
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+  // useEffect(() => {
+  //   fetchUser();
+  // }, [fetchUser]);
 
   const contextValue = useMemo(
     () => ({

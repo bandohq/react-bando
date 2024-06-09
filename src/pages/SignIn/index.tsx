@@ -32,7 +32,8 @@ export default function SignIn() {
   const onSubmit = async (data: SignInFormValues) => {
     try {
       const rsp = await login(data);
-      await fetchMagicUser();
+      // await fetchMagicUser();
+
       await Promise.all([refetchUser(), fetchMagicUser()]);
       if ((rsp?.kycLevel ?? 0) > 0) {
         if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp');
