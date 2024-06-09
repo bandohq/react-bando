@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Input from '@components/forms/Input';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
 
 import { useRef } from 'react';
@@ -9,7 +10,8 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 
 import { Token } from '@hooks/useTokens/requests';
 import { TransactionTypeIcon } from '@components/TransactionsTable/CellDetailWithIcon';
-import { TokenList } from './components';
+import { TokenList, TokenLink } from './components';
+import formatWalletNumber from '@helpers/formatWalletNumber';
 
 type TokenListProps = {
   tokens?: Token[];
@@ -98,7 +100,33 @@ export default function TokensList({
                     </Box>
                     <Box>
                       <p>{token?.key ?? token?.name}</p>
-                      {token?.name}
+                      <Box className="token-name">{token?.name}</Box>
+                      <Box
+                        className="token-address"
+                        sx={{
+                          display: 'flex',
+                          gap: 1,
+                          alignItems: 'center',
+                          justifyItems: 'center',
+                          '& svg': {
+                            width: '16px',
+                            height: '16px',
+                            verticalAlign: 'middle',
+                            ml: 0.5,
+                            mt: '-4px',
+                          },
+                        }}
+                      >
+                        <TokenLink
+                          href={`https://etherscan.io/address/${token?.address}`}
+                          target="_blank"
+                          onClick={(e) => e.stopPropagation()}
+                          rel="noopener noreferrer"
+                        >
+                          {formatWalletNumber(token?.address ?? '')}
+                          <OpenInNewIcon width={16} height={16} />
+                        </TokenLink>
+                      </Box>
                     </Box>
                   </li>
                 );

@@ -39,7 +39,7 @@ export default function Footer() {
       <Container
         maxWidth={false}
         sx={{
-          maxWidth: '1200px',
+          maxWidth: '1280px',
           minHeight: '200px',
           borderTop: '1px solid',
           borderColor: 'primary.contrastText',
