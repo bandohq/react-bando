@@ -203,6 +203,6 @@ export const TokenList = styled('ul')(({ theme }) => ({
   },
 }));
 
-export const TokenLink = styled('a')(({ theme }) => ({
+export const TokenLink = styled('a')(() => ({
   all: 'unset',
 }));
