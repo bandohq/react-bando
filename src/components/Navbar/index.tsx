@@ -103,7 +103,9 @@ const StyledDrawer = styled(SwipeableDrawer)(({ theme }) => ({
 
 export default function Navbar({ fullWidth = false }) {
   const [isOnTop, setIsOnTop] = useState(true);
-  const { user, isLoading } = useUser();
+  const { user, isLoading, isMagicLoading, isLoginOut } = useUser();
+  const isUserInfoLoading = isLoading || isMagicLoading || isLoginOut;
+
   const navigate = useNavigate();
   const { t } = useTranslation('userMenu');
 
@@ -200,7 +202,7 @@ export default function Navbar({ fullWidth = false }) {
                 aria-label="Telegram Logo"
               />
             </BandoButton>
-            {!isLoading && <UserMenu isOnTop={isOnTop} />}
+            <UserMenu isOnTop={isOnTop} disabled={isUserInfoLoading} />
             {!user?.email && (
               <>
                 <Box>
@@ -214,7 +216,7 @@ export default function Navbar({ fullWidth = false }) {
                       gap: 1,
                       color: 'primary.main',
                     }}
-                    disabled={isLoading}
+                    disabled={isUserInfoLoading}
                   >
                     {t('signin')}
                   </Button>
@@ -231,7 +233,7 @@ export default function Navbar({ fullWidth = false }) {
                       gap: 1,
                       color: 'primary.contrastText',
                     }}
-                    disabled={isLoading}
+                    disabled={isUserInfoLoading}
                   >
                     {t('signup')}
                   </Button>
@@ -260,7 +262,7 @@ export default function Navbar({ fullWidth = false }) {
                   <ListItem key="user-card">
                     <UserCard user={user} />
                   </ListItem>
-                  <Divider></Divider>
+                  <Divider />
                   {list()}
                 </StyledDrawer>
               </Fragment>
