@@ -9,7 +9,6 @@ export default function ProtectedWrapper() {
   const { isUnauthorized, isLoading } = useUser();
 
   useEffect(() => {
-    console.log(isUnauthorized);
     if (isUnauthorized) {
       navigate('/signin', { replace: true });
     }
