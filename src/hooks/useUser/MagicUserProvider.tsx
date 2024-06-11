@@ -26,7 +26,7 @@ export type User = {
 export type UserContextType = {
   user: Partial<User> | null;
   fetchUser: () => Promise<void>;
-  logoutUser: () => Promise<void>;
+  logoutUser: () => Promise<void | string>;
   setUser: (userData: Partial<User>) => void;
   resetUser: () => void;
   isLoading: boolean;
@@ -60,11 +60,10 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
 
   const logoutUser = useCallback(async () => {
     try {
-      magic?.user.isLoggedIn().then(async (isLoggedIn) => {
-        if (isLoggedIn) await magic?.user?.logout();
-      });
+      await magic?.user?.logout();
+      return 'ok';
     } catch {
-      //
+      return 'error logging out';
     }
   }, [magic]);
 
@@ -84,6 +83,8 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
+
+  console.log({ user });
 
   const contextValue = useMemo(
     () => ({

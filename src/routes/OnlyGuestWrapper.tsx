@@ -7,6 +7,7 @@ export default function OnlyGuestWrapper() {
   const outlet = useOutlet();
   const navigate = useNavigate();
   const { isUnauthorized, isLoading } = useUser();
+  console.log({ isUnauthorized, isLoading });
 
   useEffect(() => {
     if (!isLoading && !isUnauthorized) {
