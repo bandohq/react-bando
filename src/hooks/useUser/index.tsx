@@ -36,7 +36,6 @@ export default function useUser() {
       localStorage.removeItem(env.rampDataLocalStorage);
       Cookies.remove(env.authCookieName);
       resetUser();
-      refetchUser();
     } catch (err) {
       //
     } finally {
