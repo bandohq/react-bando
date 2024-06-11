@@ -43,7 +43,7 @@ const Logo = styled('img')(() => ({
 
 export type EmptyLayoutProps = PropsWithChildren;
 
-export default function CleanLayout({ children }: CleanLayoutProps) {
+export default function EmptyLayout({ children }: EmptyLayoutProps) {
   return (
     <LayoutContainer>
       <ContentContainer sx={{ mt: '50px' }}>
