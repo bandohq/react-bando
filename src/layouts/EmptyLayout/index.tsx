@@ -41,7 +41,7 @@ const Logo = styled('img')(() => ({
   margin: '0 auto',
 }));
 
-export type CleanLayoutProps = PropsWithChildren;
+export type EmptyLayoutProps = PropsWithChildren;
 
 export default function CleanLayout({ children }: CleanLayoutProps) {
   return (
