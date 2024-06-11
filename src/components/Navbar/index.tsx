@@ -1,4 +1,5 @@
 import Box, { BoxProps } from '@mui/material/Box';
+//import { CircularProgress } from '@mui/material';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
@@ -7,7 +8,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { ListItem, List } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState, Fragment } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Logo from '../../assets/logo.svg';
 import LogoWhite from '../../assets/logo_white.svg';
@@ -39,6 +40,9 @@ const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
     color: theme.palette.primary.contrastText,
   },
   '&.scrolled #user-nav-button': {
+    color: theme.palette.primary.contrastText,
+  },
+  '&.scrolled #login-button': {
     color: theme.palette.primary.contrastText,
   },
   '& .navbar-box': {
@@ -99,10 +103,9 @@ const StyledDrawer = styled(SwipeableDrawer)(({ theme }) => ({
 
 export default function Navbar({ fullWidth = false }) {
   const [isOnTop, setIsOnTop] = useState(true);
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const navigate = useNavigate();
   const { t } = useTranslation('userMenu');
-  const { pathname } = useLocation();
 
   const handleScroll = useCallback(() => {
     const isCurrentScropOnTop = window.scrollY <= 30;
@@ -111,6 +114,10 @@ export default function Navbar({ fullWidth = false }) {
 
   const handleLoginClick = async () => {
     navigate('/signin');
+  };
+
+  const handleStartClick = async () => {
+    navigate('/signup');
   };
 
   useEffect(() => {
@@ -180,10 +187,11 @@ export default function Navbar({ fullWidth = false }) {
               className="rounded"
               sx={{
                 py: '0 !important',
+                display: { xs: 'none', sm: 'block' },
               }}
               onClick={() => window.open('https://t.me/+ZUfDxp78dwAwMDcx', '_blank')}
             >
-              Únete
+              {t('joinTg')}
               <img
                 className="telegram-icon"
                 src={Telegram}
@@ -192,23 +200,43 @@ export default function Navbar({ fullWidth = false }) {
                 aria-label="Telegram Logo"
               />
             </BandoButton>
-            <UserMenu isOnTop={isOnTop} />
-            {!user?.email && pathname !== '/signin' && (
-              <Box>
-                <Button
-                  id="login-button"
-                  onClick={handleLoginClick}
-                  sx={{
-                    textTransform: 'none',
-                    fontWeight: 700,
-                    display: 'flex',
-                    gap: 1,
-                    color: isOnTop ? { color: 'primary.main' } : { color: 'primary.contrastText' },
-                  }}
-                >
-                  {t('signin')}
-                </Button>
-              </Box>
+            {!isLoading && <UserMenu isOnTop={isOnTop} />}
+            {!user?.email && (
+              <>
+                <Box>
+                  <Button
+                    id="login-button"
+                    onClick={handleLoginClick}
+                    sx={{
+                      textTransform: 'none',
+                      fontWeight: 700,
+                      display: 'flex',
+                      gap: 1,
+                      color: 'primary.main',
+                    }}
+                    disabled={isLoading}
+                  >
+                    {t('signin')}
+                  </Button>
+                </Box>
+                <Box>
+                  <Button
+                    id="signup-button"
+                    onClick={handleStartClick}
+                    sx={{
+                      backgroundColor: '#5760df !important',
+                      textTransform: 'none',
+                      fontWeight: 700,
+                      display: 'flex',
+                      gap: 1,
+                      color: 'primary.contrastText',
+                    }}
+                    disabled={isLoading}
+                  >
+                    {t('signup')}
+                  </Button>
+                </Box>
+              </>
             )}
             {!!user?.email && (
               <Fragment>

@@ -22,7 +22,6 @@ export default function useUser() {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
   });
-
   const isLoading = useMemo(() => isMagicLoading || isUserLoading, [isMagicLoading, isUserLoading]);
   const isUnauthorized = useMemo(() => !isLoading && !data, [isLoading, data]);
 
@@ -37,6 +36,7 @@ export default function useUser() {
       localStorage.removeItem(env.rampDataLocalStorage);
       Cookies.remove(env.authCookieName);
       resetUser();
+      refetchUser();
     } catch (err) {
       //
     } finally {

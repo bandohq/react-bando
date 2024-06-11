@@ -3,17 +3,16 @@ import useUser from '@hooks/useUser';
 import { useEffect } from 'react';
 import SiteSpinner from '@components/SiteSpinner';
 
-export default function ProtectedWrapper() {
+export default function OnlyGuestWrapper() {
   const outlet = useOutlet();
   const navigate = useNavigate();
   const { isUnauthorized, isLoading } = useUser();
 
   useEffect(() => {
-    console.log(isUnauthorized);
-    if (isUnauthorized) {
-      navigate('/signin', { replace: true });
+    if (!isLoading && !isUnauthorized) {
+      navigate('/', { replace: true });
     }
-  }, [isUnauthorized, navigate]);
+  }, [isUnauthorized, navigate, isLoading]);
 
   if (isLoading) {
     return <SiteSpinner />;

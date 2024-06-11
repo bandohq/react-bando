@@ -2,6 +2,7 @@ import { Route, createBrowserRouter, createRoutesFromElements } from 'react-rout
 
 import Landing from '@pages/Landing';
 import SignIn from '@pages/SignIn';
+import SignUp from '@pages/Signup';
 import Kyc from '@pages/Kyc';
 import Ramp from '@pages/Ramp';
 import ProtectedRamp from '@pages/ProtectedRamp';
@@ -14,12 +15,17 @@ import Faq from '@pages/FAQ';
 
 import ExposedWrapper from './ExposedWrapper';
 import ProtectedWrapper from './ProtectedWrapper';
+import OnlyGuestWrapper from './OnlyGuestWrapper';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      <Route path="/" element={<OnlyGuestWrapper />}>
+        <Route path="signin" element={<SignIn />} />
+        <Route path="signup" element={<SignUp />} />
+      </Route>
       <Route path="/" element={<ProtectedWrapper />}>
-        <Route path="kyc" element={<Kyc />} />
+        <Route path="start" element={<Kyc />} />
         <Route path="ramp" element={<Ramp />} />
         <Route path="transactions" element={<TransactionHistory />} />
 
@@ -31,7 +37,6 @@ const router = createBrowserRouter(
         <Route index element={<Landing />} />
         <Route path="terms" element={<Terms />} />
         <Route path="faq" element={<Faq />} />
-        <Route path="signin" element={<SignIn />} />
       </Route>
     </>,
   ),

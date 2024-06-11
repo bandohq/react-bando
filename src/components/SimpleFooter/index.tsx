@@ -15,7 +15,7 @@ export default function SimpleFooter({ bgColor, textColor }: SimpleFooterProps) 
       sx={{
         maxWidth: '1200px',
         minHeight: '150px',
-        paddingTop: '30px',
+        paddingTop: '20px',
         backgroundColor: bgColor || 'primary.main',
       }}
     >
