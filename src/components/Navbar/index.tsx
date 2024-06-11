@@ -105,7 +105,7 @@ export default function Navbar({ fullWidth = false }) {
   const [isOnTop, setIsOnTop] = useState(true);
   const { user, isLoading, isMagicLoading, isLoginOut } = useUser();
   const isUserInfoLoading = isLoading || isMagicLoading || isLoginOut;
-  console.log({ isUserInfoLoading, isLoading, isMagicLoading, isLoginOut });
+
   const navigate = useNavigate();
   const { t } = useTranslation('userMenu');
 

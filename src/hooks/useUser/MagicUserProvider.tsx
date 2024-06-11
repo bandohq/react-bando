@@ -84,8 +84,6 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
     fetchUser();
   }, [fetchUser]);
 
-  console.log({ user });
-
   const contextValue = useMemo(
     () => ({
       user,
