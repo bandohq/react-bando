@@ -288,7 +288,7 @@ export const networkCurrencyInfo = {
     label: 'USDB',
     img: USDB,
   },
-  blast: {
+  bls: {
     label: 'Blast',
     img: Blast,
   },
