@@ -16,6 +16,7 @@ import formatWalletNumber from '@helpers/formatWalletNumber';
 type TokenListProps = {
   tokens?: Token[];
   tokenObj?: Partial<Token>;
+  explorerUrl?: string;
   onSelectToken?: (token: Token) => void;
   filterTokens?: (value: string) => Token[] | undefined;
 };
@@ -24,6 +25,7 @@ export default function TokensList({
   tokens,
   filterTokens,
   onSelectToken,
+  explorerUrl = '',
   tokenObj = {},
 }: TokenListProps) {
   const listRef = useRef<HTMLUListElement>(null);
@@ -43,7 +45,6 @@ export default function TokensList({
         createPortal(
           <Grid xs={12} sm={12} md={12} spacing={2} sx={{ px: 0, pb: 0 }}>
             <Input
-              disabled={!tokens?.length}
               defaultValue={tokenObj?.name ?? tokenObj?.key}
               sx={{ '& .MuiInputBase-input': { borderColor: 'ink.i250' } }}
               onChange={(e) => {
@@ -118,7 +119,7 @@ export default function TokensList({
                         }}
                       >
                         <TokenLink
-                          href={`https://etherscan.io/address/${token?.address}`}
+                          href={`${explorerUrl}address/${token?.address}`}
                           target="_blank"
                           onClick={(e) => e.stopPropagation()}
                           rel="noopener noreferrer"

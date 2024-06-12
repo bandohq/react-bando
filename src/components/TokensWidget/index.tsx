@@ -69,6 +69,7 @@ export default function TokensWidget({
 
   const onSelectNetwork = (network: Network) => {
     methods.setValue('tokenObj', {});
+    methods.setValue('quoteCurrency', '');
     methods.setValue('networkObj', network);
     methods.setValue('baseAmount', 0);
   };
@@ -78,6 +79,7 @@ export default function TokensWidget({
     methods.setValue(isDeposit ? 'quoteCurrency' : 'baseCurrency', token.key ?? token.name);
     methods.setValue('baseAmount', 0);
 
+    resetQuote();
     setOpenSelectDrawer((prev) => !prev);
   };
 
@@ -90,6 +92,9 @@ export default function TokensWidget({
     methods.setValue('baseCurrency', _quoteCurrency);
     methods.setValue('quoteCurrency', _baseCurrency);
     methods.setValue('operationType', _reverseOperation);
+
+    resetQuote();
+    onQuantityChange();
   };
 
   const chooseCurrencyComp = useCallback(
@@ -149,6 +154,7 @@ export default function TokensWidget({
           onSelectToken={onSelectToken}
           tokenObj={tokenObj}
           tokens={tokens}
+          explorerUrl={networkObj?.explorerUrl}
           filterTokens={filterTokens}
         />
       </DialogDrawer>
