@@ -11,6 +11,7 @@ import Usdt from '../../assets/chains/usdt.png';
 import MATIC from '../../assets/chains/matic.png';
 import ETH from '../../assets/chains/eth.png';
 import BNB from '../../assets/chains/bnb.png';
+import USDB from '../../assets/chains/usdb.png';
 
 import CurrencyImg from '@components/CurrencyImg';
 
@@ -57,6 +58,7 @@ export const currencyImg = {
   ETH: <CurrencyImg src={ETH} />,
   BNB: <CurrencyImg src={BNB} />,
   OPTIMISM: <CurrencyImg src={Optimism} />,
+  USDB: <CurrencyImg src={USDB} />
 };
 
 export const currencyImgPath = {
