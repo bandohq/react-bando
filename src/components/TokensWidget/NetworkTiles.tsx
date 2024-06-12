@@ -33,6 +33,8 @@ type NetworkTilesProps = {
   onSelectNetwork: (network: Network) => void;
 };
 
+const MAX_PREVIEW_LENGHT = 4;
+
 export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTilesProps) {
   const id = useId();
 
@@ -43,7 +45,7 @@ export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTil
 
   const networkListElement = document.getElementById('network-list');
 
-  const _previewNetworks = useMemo(() => fillArray(5, _networks, 9), [_networks]);
+  const _previewNetworks = useMemo(() => fillArray(5, _networks, MAX_PREVIEW_LENGHT), [_networks]);
   const previewNetworks = useMemo(() => {
     const lastItem = _previewNetworks[_previewNetworks.length - 1];
     const newArr = [..._previewNetworks] as unknown as PreviewNetworks;
