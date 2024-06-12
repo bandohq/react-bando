@@ -291,7 +291,7 @@ export const networkCurrencyInfo = {
   blast: {
     label: 'Blast',
     img: Blast,
-  }
+  },
 } as { [key: string]: { label: string; img: string } };
 
 export const networks = Object.keys(networkOptions);
