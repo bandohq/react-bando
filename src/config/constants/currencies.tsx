@@ -58,7 +58,7 @@ export const currencyImg = {
   ETH: <CurrencyImg src={ETH} />,
   BNB: <CurrencyImg src={BNB} />,
   OPTIMISM: <CurrencyImg src={Optimism} />,
-  USDB: <CurrencyImg src={USDB} />
+  USDB: <CurrencyImg src={USDB} />,
 };
 
 export const currencyImgPath = {
