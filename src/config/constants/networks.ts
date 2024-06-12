@@ -7,6 +7,7 @@ import Base from '../../assets/networks/base.png';
 import Scroll from '../../assets/networks/scroll.png';
 import Binance from '../../assets/networks/binance-smart-chain.png';
 import Ethereum from '../../assets/networks/ethereum.png';
+import Blast from '../../assets/networks/blast.png';
 
 import WETH from '../../assets/chains/weth.png';
 import USDC from '../../assets/chains/usdc.png';
@@ -14,6 +15,7 @@ import USDT from '../../assets/chains/usdt.png';
 import MATIC from '../../assets/chains/matic.png';
 import ETH from '../../assets/chains/eth.png';
 import BNB from '../../assets/chains/bnb.png';
+import USDB from '../../assets/chains/usdb.png';
 
 type NetworkOptionItem = {
   label: string;
@@ -160,6 +162,24 @@ const networkOptions: NetworkOption = {
       },
     ],
   },
+  bls: {
+    label: 'Blast',
+    value: 'bls',
+    img: Blast,
+    enabled: true,
+    chains: [
+      {
+        label: 'ETH',
+        value: 'ETH',
+        img: ETH,
+      },
+      {
+        label: 'USDB',
+        value: 'USDB',
+        img: USDB,
+      },
+    ],
+  },
   bsc: {
     label: 'Binance Smart Chain',
     value: 'bsc',
@@ -263,6 +283,10 @@ export const networkCurrencyInfo = {
   matic: {
     label: 'MATIC',
     img: MATIC,
+  },
+  usdb: {
+    label: 'USDB',
+    img: USDB,
   },
 } as { [key: string]: { label: string; img: string } };
 

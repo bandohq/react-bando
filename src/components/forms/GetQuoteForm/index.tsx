@@ -40,6 +40,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
   marginRight: theme.spacing(1),
   width: 37,
   height: 37,
+  borderRadius: '50px',
 }));
 
 export default function GetQuoteForm() {
