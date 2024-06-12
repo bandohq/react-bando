@@ -191,6 +191,7 @@ export default function TransactionDetail({
                   src={networkCurrencyInfo[networkKey.toLowerCase()]?.img}
                   width={18}
                   height={18}
+                  style={{ borderRadius: '50px' }}
                 />
               </Network>
             </GridRow>
