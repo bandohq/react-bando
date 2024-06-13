@@ -12,9 +12,11 @@ export type KycFormValues = {
   address: {
     label: string;
     street: string;
-    city: string;
+    // city: string;
+    state: string;
     zip: string;
     country: string;
+    neighborhood: string;
   };
   document: {
     type: string;
@@ -37,7 +39,8 @@ const schema = yup.object().shape({
     street: yup
       .string()
       .required('Tu calle, localidad, esquina, referencia, etc va en este campo.'),
-    city: yup.string().required('La ciudad en donde vives va en este campo.'),
+    neighborhood: yup.string().required('La colonia o municipio en donde vives va en este campo.'),
+    state: yup.string().required('El estado en donde vives va en este campo.'),
     zip: yup.string().required('El código postal de tu domicilio va en este campo.'),
     country: yup.string().required('El país es requerido.'),
   }),

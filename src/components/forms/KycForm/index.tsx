@@ -2,6 +2,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import MuiInput from '@components/forms/MuiInput';
 import MuiSelect from '@components/forms/MuiSelect';
 import MuiPhoneInput from '@components/forms/MuiInput/MuiPhoneInput';
+import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
 
 import ErrorBox from '@components/forms/ErrorBox';
 import BandoButton from '@components/Button';
@@ -32,7 +33,7 @@ export default function KycForm() {
   const { user } = useUser();
   const { isMutating, postUserKyc } = useKyc();
   const storageQuote = getStorageQuote();
-  const { register, control, formState, handleSubmit } = useForm<KycFormValues>({
+  const { register, control, formState, handleSubmit, setValue } = useForm<KycFormValues>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
@@ -49,6 +50,7 @@ export default function KycForm() {
     setError('');
     try {
       await postUserKyc({ ...formValues, email: user?.email as string });
+
       if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp', { replace: true });
       return navigate('/', { replace: true });
     } catch (err) {
@@ -131,6 +133,27 @@ export default function KycForm() {
           />
         </Grid>
         <Title variant="h3">Verifica tu domicilio</Title>
+
+        <Grid md={12} xs={12} sx={{ mt: 2 }}>
+          <PlacesAutocomplete
+            label="Busca tu domicilio o llena los campos manualmente"
+            noOptionsText="No se encontro el domicilio"
+            setInputValue={(label, address) => {
+              setValue('address.label', label);
+
+              if (address) {
+                setValue('address.street', address.street ?? '');
+                setValue('address.state', address.state ?? '');
+                setValue('address.zip', address.zip ?? '');
+                setValue('address.country', address.country ?? '');
+                setValue('address.neighborhood', address.neighborhood ?? '');
+              }
+            }}
+            error={!!formState.errors.address?.label?.message}
+            helperText={formState.errors.address?.label?.message}
+          />
+        </Grid>
+
         <Grid container spacing={1} sx={{ margin: 0 }}>
           <Grid md={12} xs={12}>
             <MuiInput
@@ -149,9 +172,9 @@ export default function KycForm() {
               type="text"
               sx={{ mt: 2 }}
               InputLabelProps={{ shrink: true }}
-              {...register('address.label')}
-              error={!!formState.errors.address?.label?.message}
-              helperText={formState.errors.address?.label?.message}
+              {...register('address.neighborhood')}
+              error={!!formState.errors.address?.neighborhood?.message}
+              helperText={formState.errors.address?.neighborhood?.message}
             />
           </Grid>
           <Grid md={8} xs={12}>
@@ -160,9 +183,9 @@ export default function KycForm() {
               type="text"
               sx={{ mt: 2 }}
               InputLabelProps={{ shrink: true }}
-              {...register('address.city')}
-              error={!!formState.errors.address?.city?.message}
-              helperText={formState.errors.address?.city?.message}
+              {...register('address.state')}
+              error={!!formState.errors.address?.state?.message}
+              helperText={formState.errors.address?.state?.message}
             />
           </Grid>
           <Grid md={4} xs={12}>
