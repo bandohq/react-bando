@@ -78,26 +78,28 @@ export default function GetQuoteFormV2() {
 
   const onSubmit = useCallback(
     async (formValues: GetQuoteFormValuesV2) => {
-      const baseValue = parseFloat(String(formValues.baseAmount));
-      const minValue = formValues?.tokenObj?.minAllowance ?? 0;
-      const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
+      console.log({ errors: methods.formState.errors });
+      // const baseValue = parseFloat(String(formValues.baseAmount));
+      // const minValue = formValues?.tokenObj?.minAllowance ?? 0;
+      // const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
 
       if (isMutating) return;
-      if (baseValue > maxValue) {
-        methods.setError('baseAmount', {
-          type: 'required',
-          message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
-        });
-        return;
-      }
+      if (Object.keys(methods.formState.errors).length) return;
+      // if (baseValue > maxValue) {
+      //   methods.setError('baseAmount', {
+      //     type: 'required',
+      //     message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
+      //   });
+      //   return;
+      // }
 
-      if (baseValue < minValue) {
-        methods.setError('baseAmount', {
-          type: 'required',
-          message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
-        });
-        return;
-      }
+      // if (baseValue < minValue) {
+      //   methods.setError('baseAmount', {
+      //     type: 'required',
+      //     message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
+      //   });
+      //   return;
+      // }
 
       if (data?.quoteAmount) return navigateForm();
       setFormError('');
@@ -114,22 +116,51 @@ export default function GetQuoteFormV2() {
         setFormError('Ha ocurrido un error.');
       }
     },
-    [getQuote, isMutating, methods, data, navigateForm],
+    [getQuote, isMutating, data, navigateForm, methods],
   );
 
   const debouncedRequest = useCallback(async () => {
     const formValues = methods.getValues();
     setFormError('');
     if (!formValues.baseAmount) return;
-    return getQuote({
-      baseAmount: formValues.baseAmount,
-      baseCurrency: formValues.baseCurrency,
-      quoteCurrency: formValues.quoteCurrency,
-      network: formValues.networkObj.key ?? '',
-    }).catch(() => {
+    try {
+      const quote = await getQuote({
+        baseAmount: formValues.baseAmount,
+        baseCurrency: formValues.baseCurrency,
+        quoteCurrency: formValues.quoteCurrency,
+        network: formValues.networkObj.key ?? '',
+      });
+
+      //  const baseValue = parseFloat(String(formValues.baseAmount));
+      const quoteValue = parseFloat(String(quote?.quoteAmount ?? 0));
+      const minValue = formValues?.tokenObj?.minAllowance ?? 0;
+      const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
+
+      console.log({ quoteValue, minValue, maxValue });
+
+      if (quoteValue > maxValue) {
+        methods.setError('baseAmount', {
+          type: 'required',
+          message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
+        });
+      }
+
+      if (quoteValue < minValue) {
+        methods.setError('baseAmount', {
+          type: 'required',
+          message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
+        });
+      }
+
+      if (quoteValue >= minValue && quoteValue <= maxValue) {
+        methods.clearErrors('baseAmount');
+      }
+
+      return quote;
+    } catch {
       setFormError('Ha ocurrido un error.');
       return null;
-    });
+    }
   }, [methods, getQuote]);
 
   const debouncedQuoteRequest = useRef(

@@ -87,7 +87,18 @@ export const schemaV2 = yup.object().shape({
   tokenObj: yup.object().required(),
   baseAmount: yup
     .number()
-    .typeError('') // avoid error message when form input id empty
+    .typeError('Introduce un monto válido')
+    .when(['operationType'], {
+      is: 'deposit',
+      then: (schema) =>
+        schema
+          .min(20, 'El monto mínimo es de $20.00 MXN')
+          .max(500000, 'El monto máximo es de $500,000 MXN'),
+      otherwise: (schema) =>
+        schema
+          .min(2, 'El monto mínimo es de $2.00 USD')
+          .max(10000, 'El monto máximo es de $10,000 USD'),
+    })
     .required(),
   quoteCurrency: yup.string().required(),
   baseCurrency: yup.string().required(),

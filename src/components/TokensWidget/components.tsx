@@ -118,10 +118,9 @@ export const NetworkBttnsCont = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(1, 0),
   display: 'grid',
   gridTemplateColumns: 'repeat(5, auto)',
-  gridColumnGap: theme.spacing(2),
-  gridRowGap: theme.spacing(1),
   gridTemplateRows: 'auto',
-  // gap: `${theme.spacing(2)} ${theme.spacing(1)}`,
+  height: 'auto',
+  gap: `${theme.spacing(1)} ${theme.spacing(2)}`,
   [theme.breakpoints.down('sm')]: {
     gridGap: theme.spacing(1),
   },
