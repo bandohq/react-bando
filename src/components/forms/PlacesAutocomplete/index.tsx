@@ -41,7 +41,6 @@ interface PlaceType {
 
 type AddressParts = {
   street: string;
-  // city: string;
   state: string;
   zip: string;
   country: string;

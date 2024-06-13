@@ -73,8 +73,10 @@ export default function KycForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Title variant="h3">Verifica tu identidad</Title>
-      <Grid container spacing={1} sx={{ margin: 0 }}>
+      <Title variant="h3" sx={{ mt: 1 }}>
+        Verifica tu identidad
+      </Title>
+      <Grid container spacing={1} sx={{ m: 0 }}>
         <Grid md={6} xs={12}>
           <MuiInput
             label="Nombres"
@@ -132,9 +134,12 @@ export default function KycForm() {
             helperText={formState.errors.nationalIdNumber?.message}
           />
         </Grid>
-        <Title variant="h3">Verifica tu domicilio</Title>
 
-        <Grid md={12} xs={12} sx={{ mt: 2 }}>
+        <Title variant="h3" sx={{ mt: 2 }}>
+          Verifica tu domicilio
+        </Title>
+
+        <Grid md={12} xs={12}>
           <PlacesAutocomplete
             label="Busca tu domicilio o llena los campos manualmente"
             noOptionsText="No se encontro el domicilio"
@@ -212,8 +217,12 @@ export default function KycForm() {
             />
           </Grid>
         </Grid>
-        <Title variant="h3">Número de Identificación</Title>
-        <Grid container spacing={1} sx={{ margin: 0, width: '100%' }}>
+
+        <Title variant="h3" sx={{ mt: 2 }}>
+          Número de Identificación
+        </Title>
+
+        <Grid container spacing={1} sx={{ m: 0, width: '100%' }}>
           <Grid md={4} xs={12}>
             <MuiSelect
               sx={{ mt: 2 }}
