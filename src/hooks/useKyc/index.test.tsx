@@ -54,7 +54,7 @@ describe('useKyc', () => {
       dateOfBirth: 'dateOfBirth',
       address: {
         street: 'street',
-        city: 'city',
+        state: 'state',
         zip: 'zip',
         country: 'country',
       },
@@ -68,7 +68,7 @@ describe('useKyc', () => {
 
     expect(axios.post).toHaveBeenCalledWith('/api/v1/ramps/kyc/user/', {
       address: {
-        city: 'city',
+        city: 'state',
         country: 'country',
         street: 'street',
         zip: 'zip',

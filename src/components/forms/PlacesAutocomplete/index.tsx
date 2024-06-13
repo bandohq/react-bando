@@ -1,5 +1,5 @@
 import usePlacesAutocomplete, { getDetails } from 'use-places-autocomplete';
-import { MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -41,10 +41,12 @@ interface PlaceType {
 
 type AddressParts = {
   street: string;
-  city: string;
+  state: string;
   zip: string;
   country: string;
+  neighborhood: string;
 };
+
 type PlacesAutocompleteProps = Omit<MuiInputProps, 'ref'> & {
   setInputValue: (value: string, address?: AddressParts) => void;
   noOptionsText: string;
@@ -52,6 +54,7 @@ type PlacesAutocompleteProps = Omit<MuiInputProps, 'ref'> & {
 
 type AddressResults = {
   name: string;
+  formatted_address: string;
   address_components: {
     long_name: string;
     short_name: string;
@@ -62,9 +65,10 @@ type AddressResults = {
 export default function PlacesAutocomplete({
   setInputValue,
   noOptionsText,
-  value,
+  value = '',
   ...props
 }: PlacesAutocompleteProps) {
+  const [compValue, setCompValue] = useState(value);
   const { ready, suggestions, clearSuggestions, setValue } = usePlacesAutocomplete({
     requestOptions: {},
     debounce: 300,
@@ -84,12 +88,13 @@ export default function PlacesAutocomplete({
       autoComplete
       includeInputInList
       filterSelectedOptions
-      value={value as PlaceType}
-      isOptionEqualToValue={(option) => option?.description === (value as unknown as string)}
+      value={compValue as PlaceType}
+      isOptionEqualToValue={(option) => option?.description === compValue}
       noOptionsText={noOptionsText}
       onInputChange={(_, newInputValue) => {
         setValue(newInputValue);
-        setInputValue(newInputValue);
+        setCompValue(newInputValue);
+        // setInputValue(newInputValue);
       }}
       popupIcon={
         <ArrowCont>
@@ -117,7 +122,7 @@ export default function PlacesAutocomplete({
           getDetails({ placeId: opt.place_id }).then((results: AddressResults) => {
             const addressParts = results.address_components;
 
-            const streetName = results.name;
+            const label = results.formatted_address ?? opt.description;
 
             const streetRoute =
               addressParts.find((result) => result.types.includes('route'))?.long_name ?? '';
@@ -126,15 +131,22 @@ export default function PlacesAutocomplete({
               '';
             const city =
               addressParts.find((result) => result.types.includes('locality'))?.long_name ?? '';
+            const state =
+              addressParts.find((result) => result.types.includes('administrative_area_level_1'))
+                ?.long_name ?? '';
             const zip =
               addressParts.find((result) => result.types.includes('postal_code'))?.long_name ?? '';
             const country =
               addressParts.find((result) => result.types.includes('country'))?.short_name ?? '';
-            const street = streetRoute ? [streetRoute, streetNumber].join(' ') : streetName;
+            const streetNoCity = streetRoute ? [streetRoute, streetNumber].join(' ') : '';
+            const street = city ? [streetNoCity, city].join(', ') : streetNoCity;
+            const neighborhood =
+              addressParts.find((result) => result.types.includes('sublocality'))?.long_name ?? '';
 
-            setInputValue(opt.description, {
+            setInputValue(label, {
+              neighborhood,
               street,
-              city,
+              state,
               zip,
               country,
             });
