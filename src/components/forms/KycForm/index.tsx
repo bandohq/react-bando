@@ -218,7 +218,7 @@ export default function KycForm() {
           </Grid>
         </Grid>
 
-        <Title variant="h3" sx={{ mt: 2 }}>
+        <Title variant="h3" sx={{ mt: 2, mb: 1 }}>
           Número de Identificación
         </Title>
 
