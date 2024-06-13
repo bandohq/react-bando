@@ -53,6 +53,7 @@ export default function TokensWidget({
   const methods = useFormContext<GetQuoteFormValuesV2>();
   const [openSelectDrawer, setOpenSelectDrawer] = useState(false);
 
+  const hasErrors = !!Object.keys(methods.formState.errors).length;
   const baseCurrency = methods.watch('baseCurrency');
   const baseAmount = methods.watch('baseAmount');
   const quoteCurrency = methods.watch('quoteCurrency');
@@ -69,9 +70,10 @@ export default function TokensWidget({
 
   const onSelectNetwork = (network: Network) => {
     methods.setValue('tokenObj', {});
-    methods.setValue('quoteCurrency', '');
+    if (operationType !== 'withdraw') methods.setValue('quoteCurrency', '');
     methods.setValue('networkObj', network);
     methods.setValue('baseAmount', 0);
+    methods.clearErrors('baseAmount');
   };
 
   const onSelectToken = (token: Token) => {
@@ -81,6 +83,7 @@ export default function TokensWidget({
 
     resetQuote();
     setOpenSelectDrawer((prev) => !prev);
+    methods.clearErrors('baseAmount');
   };
 
   const switchOperation = () => {
@@ -90,8 +93,16 @@ export default function TokensWidget({
     const [_reverseOperation] = OPERATION_TYPES.filter((type) => type !== _operationType);
 
     methods.setValue('baseCurrency', _quoteCurrency);
-    methods.setValue('quoteCurrency', _baseCurrency);
     methods.setValue('operationType', _reverseOperation);
+    methods.clearErrors('baseAmount');
+
+    // When switching from on to off
+    if (_reverseOperation === 'withdraw') {
+      methods.setValue('quoteCurrency', _baseCurrency ?? 'MXN');
+    } else {
+      // When switching from off to on
+      if (_baseCurrency !== 'MXN') methods.setValue('quoteCurrency', _baseCurrency);
+    }
 
     resetQuote();
     onQuantityChange();
@@ -204,46 +215,21 @@ export default function TokensWidget({
                           e.stopPropagation();
                         }}
                         onValueChange={(value) => {
-                          const baseValue = parseFloat(String(value));
-                          const baseAmountValue = parseFloat(String(baseAmount));
-
-                          const minValue = tokenObj?.minAllowance ?? 0;
-                          const maxValue = tokenObj?.maxAllowance ?? 0;
+                          const baseValue = String(value);
+                          const baseAmountValue = String(baseAmount);
 
                           if (baseValue !== baseAmountValue) {
                             onChange(value);
-                            if (networkObj?.chainId && tokenObj?.id) {
+                            const parsedValue = parseFloat(baseValue);
+                            if (networkObj?.chainId && tokenObj?.id && parsedValue > 0) {
                               resetQuote();
                               onQuantityChange();
                             }
-                          }
-
-                          if (baseValue > maxValue) {
-                            methods.setError('baseAmount', {
-                              type: 'required',
-                              message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
-                            });
-                          }
-
-                          if (baseValue < minValue) {
-                            methods.setError('baseAmount', {
-                              type: 'required',
-                              message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
-                            });
-                          }
-
-                          if (baseValue >= minValue && baseValue <= maxValue) {
-                            methods.clearErrors('baseAmount');
                           }
                         }}
                       />
                     )}
                   />
-                  {!!methods.formState.errors.baseAmount?.message && (
-                    <span className="currency-error">
-                      {methods.formState.errors.baseAmount?.message}
-                    </span>
-                  )}
                   <span className="currency-amount">{baseCurrency}</span>
                 </Box>
               </CurrencyAmount>
@@ -322,6 +308,11 @@ export default function TokensWidget({
                 value={`${formatNumber(quote?.quoteAmount ?? 0, 2, 18)} ${quote?.quoteCurrency ?? ''}`}
                 disabled
               />
+              {!!methods.formState.errors.baseAmount?.message && (
+                <span className="currency-error">
+                  {methods.formState.errors.baseAmount?.message}
+                </span>
+              )}
               {/* <span className="currency-amount">${formatNumber(69.456, 2, 6)} USD</span> */}
               {/* <span className="currency-amount">-</span> */}
             </Box>
@@ -339,7 +330,7 @@ export default function TokensWidget({
       <Grid xs={12} sm={12} md={12}>
         <BandoButton
           type="submit"
-          disabled={isLoadingQuote}
+          disabled={isLoadingQuote || hasErrors}
           variant="contained"
           fullWidth
           sx={{ py: 2, mt: 2 }}
