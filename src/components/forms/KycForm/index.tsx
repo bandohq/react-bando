@@ -139,27 +139,27 @@ export default function KycForm() {
           Verifica tu domicilio
         </Title>
 
-        <Grid md={12} xs={12}>
-          <PlacesAutocomplete
-            label="Busca tu domicilio o llena los campos manualmente"
-            noOptionsText="No se encontro el domicilio"
-            setInputValue={(label, address) => {
-              setValue('address.label', label);
-
-              if (address) {
-                setValue('address.street', address.street ?? '');
-                setValue('address.state', address.state ?? '');
-                setValue('address.zip', address.zip ?? '');
-                setValue('address.country', address.country ?? '');
-                setValue('address.neighborhood', address.neighborhood ?? '');
-              }
-            }}
-            error={!!formState.errors.address?.label?.message}
-            helperText={formState.errors.address?.label?.message}
-          />
-        </Grid>
-
         <Grid container spacing={1} sx={{ margin: 0 }}>
+          <Grid md={12} xs={12}>
+            <PlacesAutocomplete
+              label="Busca tu domicilio o llena los campos manualmente"
+              noOptionsText="No se encontro el domicilio"
+              setInputValue={(label, address) => {
+                setValue('address.label', label);
+
+                if (address) {
+                  setValue('address.street', address.street ?? '');
+                  setValue('address.state', address.state ?? '');
+                  setValue('address.zip', address.zip ?? '');
+                  setValue('address.country', address.country ?? '');
+                  setValue('address.neighborhood', address.neighborhood ?? '');
+                }
+              }}
+              error={!!formState.errors.address?.label?.message}
+              helperText={formState.errors.address?.label?.message}
+            />
+          </Grid>
+
           <Grid md={12} xs={12}>
             <MuiInput
               label="Calle, número, ó localidad"
