@@ -16,6 +16,9 @@ import MATIC from '../../assets/chains/matic.png';
 import ETH from '../../assets/chains/eth.png';
 import BNB from '../../assets/chains/bnb.png';
 import USDB from '../../assets/chains/usdb.png';
+import BRETT from '../../assets/chains/brett.png';
+import MAGA from '../../assets/chains/maga.png';
+import DEGEN from '../../assets/chains/degen.png';
 
 type NetworkOptionItem = {
   label: string;
@@ -136,6 +139,21 @@ const networkOptions: NetworkOption = {
         label: 'USDC',
         value: 'USDC',
         img: USDC,
+      },
+      {
+        label: 'BRETT',
+        value: 'BRETT',
+        img: BRETT,
+      },
+      {
+        label: 'MAGA',
+        value: 'TRUMP',
+        img: MAGA,
+      },
+      {
+        label: 'DEGEN',
+        value: 'DEGEN',
+        img: DEGEN,
       },
     ],
   },
