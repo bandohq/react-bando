@@ -10,7 +10,7 @@ export type KycFormValues = {
   phone: string;
   nationalIdNumber: string;
   address: {
-    label: string;
+    label?: yup.Maybe<string | undefined>;
     street: string;
     state: string;
     zip: string;
@@ -34,7 +34,7 @@ const schema = yup.object().shape({
     .test('phone', 'Número de teléfono inválido', (value) => isPhoneValid(value)),
   nationalIdNumber: yup.string().required('RFC es requerido').matches(rfcRegex, 'RFC Inválido'),
   address: yup.object().shape({
-    label: yup.string().required('Tu colonia, municipio, barrio va en este campo.'),
+    label: yup.string().notRequired(),
     street: yup
       .string()
       .required('Tu calle, localidad, esquina, referencia, etc va en este campo.'),

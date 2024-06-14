@@ -183,7 +183,7 @@ export default function KycForm() {
                 helperText={formState.errors.address?.neighborhood?.message}
               />
             </Grid>
-            <Grid md={8} xs={12}>
+            <Grid md={12} xs={12}>
               <MuiInput
                 label="Estado / Provincia"
                 type="text"
