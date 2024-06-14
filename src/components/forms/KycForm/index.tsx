@@ -52,7 +52,7 @@ export default function KycForm() {
     try {
       await postUserKyc({ ...formValues, email: user?.email as string });
 
-      if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp', { replace: true });
+      if (storageQuote.quote?.baseAmount) return navigate('/ramp', { replace: true });
       return navigate('/', { replace: true });
     } catch (err) {
       if ((err as AxiosError).response?.status === 403) {
