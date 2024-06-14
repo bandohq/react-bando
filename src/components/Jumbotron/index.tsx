@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import { useTranslation, Trans } from 'react-i18next';
 
 const H1 = styled(Typography)(({ theme }) => ({
+  zIndex: '1',
   fontFamily: 'Bueno',
   fontWeight: 'bold',
   lineHeight: 'normal',
@@ -30,6 +31,7 @@ const H1 = styled(Typography)(({ theme }) => ({
 
 const P = styled(Typography)(({ theme }) => ({
   fontFamily: 'Kanit',
+  zIndex: '1',
   fontSize: '20px !important',
   color: theme.palette.ink.i600,
   [theme.breakpoints.down('md')]: {
@@ -126,10 +128,20 @@ export default function Jumbotron() {
       <P>
         <Trans t={t} i18nKey="subtitle" components={{ separator: <br /> }} />
       </P>
-      <img src="images/Model-Tank.png" loading="lazy" alt="" className="tank" />
-      <img src="images/Model-Cone.png" loading="lazy" alt="" className="cone" />
-      <img src="images/Vector-2.png" loading="lazy" alt="" className="scribble" />
-      <img src="images/2D-Shape.png" loading="lazy" alt="" className="arrow" />
+      <img
+        style={{ zIndex: '0' }}
+        src="images/Model-Tank.png"
+        loading="lazy"
+        alt=""
+        className="tank"
+      />
+      <img
+        style={{ zIndex: '0' }}
+        src="images/Model-Cone.png"
+        loading="lazy"
+        alt=""
+        className="cone"
+      />
     </JumbotronContainer>
   );
 }
