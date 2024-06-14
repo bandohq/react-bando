@@ -62,7 +62,7 @@ export const currencyImg = {
   BNB: <CurrencyImg src={BNB} />,
   OPTIMISM: <CurrencyImg src={Optimism} />,
   USDB: <CurrencyImg src={USDB} />,
-  MAGA: <CurrencyImg src={MAGA} />,
+  TRUMP: <CurrencyImg src={MAGA} />,
   BRETT: <CurrencyImg src={BRETT} />,
   DEGEN: <CurrencyImg src={DEGEN} />,
 };

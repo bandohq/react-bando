@@ -310,6 +310,18 @@ export const networkCurrencyInfo = {
     label: 'Blast',
     img: Blast,
   },
+  brett: {
+    label: 'BRETT',
+    img: BRETT,
+  },
+  trump: {
+    label: 'MAGA',
+    img: MAGA,
+  },
+  degen: {
+    label: 'DEGEN',
+    img: DEGEN,
+  },
 } as { [key: string]: { label: string; img: string } };
 
 export const networks = Object.keys(networkOptions);
