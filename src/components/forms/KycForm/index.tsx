@@ -183,7 +183,7 @@ export default function KycForm() {
                 helperText={formState.errors.address?.neighborhood?.message}
               />
             </Grid>
-            <Grid md={12} xs={12}>
+            <Grid md={8} xs={12}>
               <MuiInput
                 label="Estado / Provincia"
                 type="text"
@@ -192,6 +192,17 @@ export default function KycForm() {
                 {...register('address.state')}
                 error={!!formState.errors.address?.state?.message}
                 helperText={formState.errors.address?.state?.message}
+              />
+            </Grid>
+            <Grid md={4} xs={12}>
+              <MuiInput
+                label="Código Postal"
+                type="text"
+                sx={{ mt: 2 }}
+                InputLabelProps={{ shrink: true }}
+                {...register('address.zip')}
+                error={!!formState.errors.address?.zip?.message}
+                helperText={formState.errors.address?.zip?.message}
               />
             </Grid>
             <Grid md={12} xs={12}>
