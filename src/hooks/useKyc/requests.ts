@@ -19,6 +19,7 @@ type PostUserKycArgs = {
     number: string;
     country: string;
   };
+  acceptedNotifications?: boolean | undefined;
 };
 type PostUserKycRequest = (
   endpoint: string,
@@ -41,4 +42,5 @@ export const postUserKyc: PostUserKycRequest = (endpoint, { arg }) =>
     },
     national_id_number: arg.nationalIdNumber,
     document: arg.document,
+    accepted_notifications: arg.acceptedNotifications,
   });
