@@ -9,6 +9,7 @@ export type KycFormValues = {
   lastName: string;
   phone: string;
   nationalIdNumber: string;
+  acceptedNotifications?: boolean | undefined;
   address: {
     label?: yup.Maybe<string | undefined>;
     street: string;
@@ -28,6 +29,7 @@ const schema = yup.object().shape({
   type: yup.string().required(),
   firstName: yup.string().required('El nombre es requerido'),
   lastName: yup.string().required('El apellido es requerido'),
+  acceptedNotifications: yup.boolean(),
   phone: yup
     .string()
     .required('El télefono es requerido')

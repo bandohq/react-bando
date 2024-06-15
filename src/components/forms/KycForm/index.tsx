@@ -1,4 +1,6 @@
 import Grid from '@mui/material/Unstable_Grid2';
+import { styled } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
 import MuiInput from '@components/forms/MuiInput';
 import MuiSelect from '@components/forms/MuiSelect';
 import MuiPhoneInput from '@components/forms/MuiInput/MuiPhoneInput';
@@ -25,6 +27,24 @@ import { identificationOptions, Identifications } from '@config/constants/identi
 import { AcceptedCountries, countryOptions } from '@config/constants/countries';
 import { useState } from 'react';
 import getStorageQuote from '@helpers/getStorageQuote';
+
+const P = styled('p')(({ theme }) => ({
+  fontSize: theme.typography.pxToRem(14),
+  color: theme.palette.ink.i600,
+  [theme.breakpoints.between('xs', 'sm')]: {
+    fontSize: theme.typography.pxToRem(10),
+  },
+}));
+
+const H5 = styled('h5')(({ theme }) => ({
+  textAlign: 'center',
+  fontSize: theme.typography.pxToRem(14),
+  fontWeight: 'normal',
+  color: theme.palette.ink.i500,
+  [theme.breakpoints.between('xs', 'sm')]: {
+    fontSize: theme.typography.pxToRem(10),
+  },
+}));
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function KycForm() {
@@ -252,6 +272,15 @@ export default function KycForm() {
             </Grid>
           )}
           <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>
+            <Grid container spacing={1} sx={{ m: 0, width: '100%', alignItems: 'center' }}>
+              <Grid xs={2}>
+                <Checkbox sx={{ padding: '0' }} {...register('acceptedNotifications')} />
+              </Grid>
+              <Grid xs={10} sx={{ display: 'flex', alignItems: 'center' }}>
+                <P>Notifícame acerca del estado de mis transacciones</P>
+              </Grid>
+            </Grid>
+            <H5>Al crear tu cuenta aceptas nuestros términos y condiciones</H5>
             <BandoButton type="submit" variant="contained" disabled={isMutating} fullWidth>
               {isMutating && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
               Verificar
