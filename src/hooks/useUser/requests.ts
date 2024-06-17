@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User } from '@hooks/useUser/MagicUserProvider';
+import { User } from '@hooks/useUser/types';
 
 type GetUserDataRequest = (endpoint: string) => Promise<Partial<User>>;
 export const getUserData: GetUserDataRequest = (endpoint) =>
