@@ -1,7 +1,7 @@
 import Intercom from '@intercom/messenger-js-sdk';
 import { PropsWithChildren, useEffect } from 'react';
-import env from '@config/env';
 import { User } from './types';
+import env from '@config/env';
 
 type IntercomProviderProps = PropsWithChildren & {
   user: Partial<User> | null;
