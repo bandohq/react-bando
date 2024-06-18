@@ -31,6 +31,7 @@ const mockTransactionResponse = {
     clabe: 'clabe',
     concepto: 'concepto',
   },
+  recipient: 'recipient',
   created_at: 'created_at',
   updated_at: 'updated_at',
 };
@@ -94,6 +95,7 @@ describe('useTransaction', () => {
       status: 'passed',
       transactionId: 555,
       operationType: 'withdraw',
+      recipient: 'recipient',
       createdAt: 'created_at',
       updatedAt: 'updated_at',
     });
@@ -120,6 +122,7 @@ describe('useTransaction', () => {
           network: 'network',
           address: 'address',
         },
+        recipient: 'recipient',
         created_at: 'created_at',
         updated_at: 'updated_at',
       },
@@ -169,6 +172,7 @@ describe('useTransaction', () => {
       status: 'passed',
       transactionId: 555,
       operationType: 'withdraw',
+      recipient: 'recipient',
       createdAt: 'created_at',
       updatedAt: 'updated_at',
     });

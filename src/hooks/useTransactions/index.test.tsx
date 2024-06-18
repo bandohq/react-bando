@@ -26,6 +26,7 @@ const mockTransactionResponse = {
   end_network: 'end_network',
   created_at: 'created_at',
   updated_at: 'updated_at',
+  recipient: 'recipient',
   cash_in_details: {
     network: 'network',
     bank: 'bank',
@@ -79,6 +80,7 @@ describe('useTransactions', () => {
             status: 'passed',
             transactionId: 555,
             updatedAt: 'updated_at',
+            recipient: 'recipient',
           },
           {
             baseAmount: 1000,
@@ -104,6 +106,7 @@ describe('useTransactions', () => {
             status: 'passed',
             transactionId: 555,
             updatedAt: 'updated_at',
+            recipient: 'recipient',
           },
         ],
         '2024-03-18': [
@@ -131,6 +134,7 @@ describe('useTransactions', () => {
             status: 'passed',
             transactionId: 555,
             updatedAt: 'updated_at',
+            recipient: 'recipient',
           },
           {
             baseAmount: 1000,
@@ -156,6 +160,7 @@ describe('useTransactions', () => {
             status: 'passed',
             transactionId: 555,
             updatedAt: 'updated_at',
+            recipient: 'recipient',
           },
         ],
       });

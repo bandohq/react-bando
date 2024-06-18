@@ -1,18 +1,19 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { useNavigate, BrowserRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { PropsWithChildren } from 'react';
+import Wrapper from '@helpers/TestProvider';
 
 import Navbar from '.';
-import { PropsWithChildren } from 'react';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
 }));
 
-const Container = ({ children }: PropsWithChildren) => (
-  <BrowserRouter>
+const wrapper = ({ children }: PropsWithChildren) => (
+  <Wrapper>
     <div style={{ width: '1500px', height: '2000px' }}>{children}</div>
-  </BrowserRouter>
+  </Wrapper>
 );
 
 describe('Navbar', () => {
@@ -23,11 +24,7 @@ describe('Navbar', () => {
   });
 
   it('should render the navbar and change the navbar classname based on the scroll position', async () => {
-    render(
-      <Container>
-        <Navbar />
-      </Container>,
-    );
+    render(<Navbar />, { wrapper });
 
     screen.getByLabelText('Bando logo');
     screen.getByLabelText('scrollTop');

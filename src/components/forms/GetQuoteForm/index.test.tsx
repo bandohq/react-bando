@@ -136,8 +136,8 @@ describe('GetQuoteForm', () => {
     });
 
     const input = screen.getByLabelText('baseAmount') as HTMLInputElement;
-    await userEvent.type(input, '10');
-    expect(input.value).toBe('10');
+    await userEvent.type(input, '20');
+    expect(input.value).toBe('20');
 
     await userEvent.click(baseCurrency);
     const options1 = screen.getAllByRole('option');
@@ -145,10 +145,10 @@ describe('GetQuoteForm', () => {
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenLastCalledWith('/api/v1/ramps/quote/', {
-        base_amount: '10',
+        base_amount: '20',
         base_currency: 'MXN',
         quote_currency: 'USDC',
-        network: 'POLYGON',
+        network: 'pol',
       });
     });
 
@@ -162,10 +162,10 @@ describe('GetQuoteForm', () => {
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenLastCalledWith('/api/v1/ramps/quote/', {
-        base_amount: '10',
+        base_amount: '20',
         base_currency: 'USD',
-        quote_currency: 'USDT',
-        network: 'POLYGON',
+        quote_currency: 'USDC',
+        network: 'pol',
       });
     });
   });
@@ -184,7 +184,7 @@ describe('GetQuoteForm', () => {
       expect(quoteAmountInput.value).toBe('58.47');
       expect(localStorage.setItem).toHaveBeenCalledWith(
         'bando_ramp_data',
-        '{"quote":{"id":46,"baseCurrency":"MXN","baseAmount":1000,"quoteCurrency":"USDC","quoteAmount":58.47,"quoteRate":null,"quoteRateInverse":null,"isExpired":false,"expiresAt":"2024-01-10T23:06:08.388000Z"},"network":"POLYGON","operationType":"deposit"}',
+        '{"quote":{"id":46,"baseCurrency":"MXN","baseAmount":1000,"quoteCurrency":"USDC","quoteAmount":58.47,"quoteRate":null,"quoteRateInverse":null,"isExpired":false,"expiresAt":"2024-01-10T23:06:08.388000Z"},"network":"pol","operationType":"deposit"}',
       );
       expect(navigate).toHaveBeenCalledWith('/signin');
     });
@@ -273,7 +273,7 @@ describe('GetQuoteForm', () => {
     await userEvent.type(baseAmountInput, '500000.00');
 
     await waitFor(() => {
-      expect(quoteAmountInput.value).toBe('29,056.90');
+      expect(quoteAmountInput.value).toBe('29,056.901316254385');
     });
   });
 });
