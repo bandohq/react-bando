@@ -30,6 +30,6 @@ export default {
   },
   q7: {
     title: '¿Qué hago si tengo un problema o una pregunta?',
-    info: 'Nuestro equipo de soporte está disponible para ayudarte con cualquier problema o duda. Puedes contactarnos enviando un correo electrónico a nuestro equipo de soporte al correo hola@bando.cool',
+    info: 'Nuestro equipo de soporte está disponible para ayudarte con cualquier problema o duda. Puedes contactarnos enviando un correo electrónico a nuestro equipo de soporte al correo soporte@bando.cool',
   },
 };
