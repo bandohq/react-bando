@@ -16,7 +16,7 @@ export default function IntercomProvider({ children, user }: IntercomProviderPro
   // NOTE: Set or unset User data on Intercom
   useEffect(() => {
     if (!user) {
-      Intercom({ app_id: env.intercomAppId, email: '', name: '', id: '' });
+      Intercom({ app_id: env.intercomAppId });
     } else {
       Intercom({
         app_id: env.intercomAppId,
