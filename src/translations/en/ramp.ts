@@ -7,7 +7,7 @@ export default {
   errors: {
     recipient: 'This account has been rejected by Bando. Try with another account.',
     forbidden:
-      'Bando is in private beta. To become one of our first users, send an email to hola@bando.cool',
+      'Bando is in private beta. To become one of our first users, send an email to soporte@bando.cool',
     txn: 'There was an error processing your transaction. Please try again',
     limit: 'You have reached the limit of allowed transactions. Please try again later.',
     accountNames: 'The account name does not match your registered name.',
