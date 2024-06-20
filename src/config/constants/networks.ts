@@ -97,9 +97,9 @@ const networkOptions: NetworkOption = {
       },
     ],
   },
-  op: {
+  opt: {
     label: 'Optimism',
-    value: 'op',
+    value: 'opt',
     img: Optimism,
     enabled: true,
     chains: [
@@ -264,7 +264,7 @@ export const networkCurrencyInfo = {
     label: 'Arbitrum',
     img: Arbitrum,
   },
-  op: {
+  opt: {
     label: 'Optimism',
     img: Optimism,
   },
@@ -331,6 +331,10 @@ export const networkCurrencyInfo = {
   mpeth: {
     label: 'mpETH',
     img: MPETH,
+  },
+  op: {
+    label: 'Optimism',
+    img: Optimism,
   },
 } as { [key: string]: { label: string; img: string } };
 
