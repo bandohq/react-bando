@@ -123,11 +123,6 @@ const networkOptions: NetworkOption = {
         value: 'OP',
         img: Optimism,
       },
-      {
-        label: 'mpETH',
-        value: 'mpETH',
-        img: MPETH,
-      },
     ],
   },
   bas: {
