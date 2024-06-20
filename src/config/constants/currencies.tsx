@@ -66,7 +66,7 @@ export const currencyImg = {
   TRUMP: <CurrencyImg src={MAGA} />,
   BRETT: <CurrencyImg src={BRETT} />,
   DEGEN: <CurrencyImg src={DEGEN} />,
-  MPETH: <CurrencyImg src={MPETH} />,
+  mpETH: <CurrencyImg src={MPETH} />,
 };
 
 export const currencyImgPath = {
