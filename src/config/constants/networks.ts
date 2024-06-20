@@ -19,6 +19,7 @@ import USDB from '../../assets/chains/usdb.png';
 import BRETT from '../../assets/chains/brett.png';
 import MAGA from '../../assets/chains/maga.png';
 import DEGEN from '../../assets/chains/degen.png';
+import MPETH from '../../assets/chains/mpeth.png';
 
 type NetworkOptionItem = {
   label: string;
@@ -321,6 +322,10 @@ export const networkCurrencyInfo = {
   degen: {
     label: 'DEGEN',
     img: DEGEN,
+  },
+  mpeth: {
+    label: 'mpETH',
+    img: MPETH,
   },
 } as { [key: string]: { label: string; img: string } };
 

@@ -15,6 +15,7 @@ import USDB from '../../assets/chains/usdb.png';
 import MAGA from '../../assets/chains/maga.png';
 import BRETT from '../../assets/chains/brett.png';
 import DEGEN from '../../assets/chains/degen.png';
+import MPETH from '../../assets/chains/mpeth.png';
 
 import CurrencyImg from '@components/CurrencyImg';
 
@@ -65,6 +66,7 @@ export const currencyImg = {
   TRUMP: <CurrencyImg src={MAGA} />,
   BRETT: <CurrencyImg src={BRETT} />,
   DEGEN: <CurrencyImg src={DEGEN} />,
+  MPETH: <CurrencyImg src={MPETH} />,
 };
 
 export const currencyImgPath = {
