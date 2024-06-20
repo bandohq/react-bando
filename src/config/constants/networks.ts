@@ -100,7 +100,7 @@ const networkOptions: NetworkOption = {
     label: 'Optimism',
     value: 'op',
     img: Optimism,
-    enabled: false,
+    enabled: true,
     chains: [
       {
         label: 'ETH',
