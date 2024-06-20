@@ -19,6 +19,7 @@ import USDB from '../../assets/chains/usdb.png';
 import BRETT from '../../assets/chains/brett.png';
 import MAGA from '../../assets/chains/maga.png';
 import DEGEN from '../../assets/chains/degen.png';
+import MPETH from '../../assets/chains/mpeth.png';
 
 type NetworkOptionItem = {
   label: string;
@@ -96,11 +97,11 @@ const networkOptions: NetworkOption = {
       },
     ],
   },
-  op: {
+  opt: {
     label: 'Optimism',
-    value: 'op',
+    value: 'opt',
     img: Optimism,
-    enabled: false,
+    enabled: true,
     chains: [
       {
         label: 'ETH',
@@ -121,6 +122,11 @@ const networkOptions: NetworkOption = {
         label: 'OP',
         value: 'OP',
         img: Optimism,
+      },
+      {
+        label: 'mpETH',
+        value: 'mpETH',
+        img: MPETH,
       },
     ],
   },
@@ -258,7 +264,7 @@ export const networkCurrencyInfo = {
     label: 'Arbitrum',
     img: Arbitrum,
   },
-  op: {
+  opt: {
     label: 'Optimism',
     img: Optimism,
   },
@@ -321,6 +327,14 @@ export const networkCurrencyInfo = {
   degen: {
     label: 'DEGEN',
     img: DEGEN,
+  },
+  mpeth: {
+    label: 'mpETH',
+    img: MPETH,
+  },
+  op: {
+    label: 'Optimism',
+    img: Optimism,
   },
 } as { [key: string]: { label: string; img: string } };
 
