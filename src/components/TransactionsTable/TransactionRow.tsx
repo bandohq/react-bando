@@ -83,6 +83,7 @@ function formatAmounts(amount: number, currency: string) {
 function parseDataForRows(txn: Transaction) {
   return {
     ...txn,
+    quoteCurrency: txn.quoteCurrency.toUpperCase(),
     address: txn?.recipient ?? '',
     networkIcon: networkCurrencyInfo[(txn?.networkConfig?.key ?? '').toLowerCase()]?.img,
     sent: formatAmounts(txn.baseAmount, txn.baseCurrency),
@@ -197,7 +198,7 @@ export default function TransactionRow({
             <>
               <RowTextDetail>
                 <span>{t('table.rate')}</span>
-                {formatNumber(row.quoteRateInverse, 2, 18)} USDC
+                {formatNumber(row.quoteRateInverse, 2, 18)} {row.quoteCurrency}
               </RowTextDetail>
               <RowTextDetail onClick={(e) => e.stopPropagation()}>
                 <span>{t('table.address')}</span>
