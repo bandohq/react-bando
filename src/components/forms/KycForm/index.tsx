@@ -77,7 +77,7 @@ export default function KycForm() {
     } catch (err) {
       if ((err as AxiosError).response?.status === 403) {
         setError(`Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía un
-        correo a hola@bando.cool`);
+        correo a soporte@bando.cool`);
         return;
       }
       if ((err as AxiosError<{ code: string; error: string }>).response?.data.code) {
