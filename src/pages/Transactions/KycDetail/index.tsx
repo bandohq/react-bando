@@ -19,6 +19,8 @@ export default function TransactionKycDetail() {
           showFooter
           noArrow
           success
+          networkObj={null}
+          tokenObj={null}
         />
       }
       rightContent={<KycBulletPoints />}

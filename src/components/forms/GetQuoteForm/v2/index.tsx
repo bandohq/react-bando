@@ -64,7 +64,8 @@ export default function GetQuoteFormV2() {
         env.rampDataLocalStorage,
         JSON.stringify({
           quote: quote ?? data,
-          network: formValues.networkObj.key ?? '',
+          networkObj: formValues.networkObj,
+          tokenObj: formValues.tokenObj,
           operationType: formValues.operationType,
         }),
       );
@@ -78,28 +79,8 @@ export default function GetQuoteFormV2() {
 
   const onSubmit = useCallback(
     async (formValues: GetQuoteFormValuesV2) => {
-      console.log({ errors: methods.formState.errors });
-      // const baseValue = parseFloat(String(formValues.baseAmount));
-      // const minValue = formValues?.tokenObj?.minAllowance ?? 0;
-      // const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
-
       if (isMutating) return;
       if (Object.keys(methods.formState.errors).length) return;
-      // if (baseValue > maxValue) {
-      //   methods.setError('baseAmount', {
-      //     type: 'required',
-      //     message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
-      //   });
-      //   return;
-      // }
-
-      // if (baseValue < minValue) {
-      //   methods.setError('baseAmount', {
-      //     type: 'required',
-      //     message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
-      //   });
-      //   return;
-      // }
 
       if (data?.quoteAmount) return navigateForm();
       setFormError('');
@@ -131,12 +112,9 @@ export default function GetQuoteFormV2() {
         network: formValues.networkObj.key ?? '',
       });
 
-      //  const baseValue = parseFloat(String(formValues.baseAmount));
       const quoteValue = parseFloat(String(quote?.quoteAmount ?? 0));
       const minValue = formValues?.tokenObj?.minAllowance ?? 0;
       const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
-
-      console.log({ quoteValue, minValue, maxValue });
 
       if (quoteValue > maxValue) {
         methods.setError('baseAmount', {
