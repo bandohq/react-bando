@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 import Box, { BoxProps } from '@mui/material/Box';
-import { User } from '../../hooks/useUser/MagicUserProvider';
+import { User } from '../../hooks/useUser/types';
 import { styled } from '@mui/material/styles';
 
 type UserCardProps = {

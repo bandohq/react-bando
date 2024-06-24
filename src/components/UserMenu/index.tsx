@@ -14,6 +14,7 @@ import LogoutIcon from '@components/Svgs/Logout';
 
 type UserMenuProps = {
   isOnTop?: boolean;
+  disabled?: boolean;
 };
 
 export default function UserMenu(props: UserMenuProps) {
@@ -46,7 +47,7 @@ export default function UserMenu(props: UserMenuProps) {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
-          disabled={isLoginOut}
+          disabled={isLoginOut || props.disabled}
           sx={{ textTransform: 'none', fontWeight: 400, display: 'flex', gap: 1 }}
         >
           {user?.email}

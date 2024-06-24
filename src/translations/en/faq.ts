@@ -30,6 +30,6 @@ export default {
   },
   q7: {
     title: 'What do I do if I have a problem or a question?',
-    info: 'Our support team is available to assist you with any issues or questions. You can contact us by sending an email to our support team at correo hola@bando.cool',
+    info: 'Our support team is available to assist you with any issues or questions. You can contact us by sending an email to our support team at correo soporte@bando.cool',
   },
 };

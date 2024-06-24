@@ -9,12 +9,14 @@ export type KycFormValues = {
   lastName: string;
   phone: string;
   nationalIdNumber: string;
+  acceptedNotifications?: boolean | undefined;
   address: {
-    label: string;
+    label?: yup.Maybe<string | undefined>;
     street: string;
-    city: string;
+    state: string;
     zip: string;
     country: string;
+    neighborhood: string;
   };
   document: {
     type: string;
@@ -27,17 +29,19 @@ const schema = yup.object().shape({
   type: yup.string().required(),
   firstName: yup.string().required('El nombre es requerido'),
   lastName: yup.string().required('El apellido es requerido'),
+  acceptedNotifications: yup.boolean(),
   phone: yup
     .string()
     .required('El télefono es requerido')
     .test('phone', 'Número de teléfono inválido', (value) => isPhoneValid(value)),
   nationalIdNumber: yup.string().required('RFC es requerido').matches(rfcRegex, 'RFC Inválido'),
   address: yup.object().shape({
-    label: yup.string().required('Tu colonia, municipio, barrio va en este campo.'),
+    label: yup.string().notRequired(),
     street: yup
       .string()
       .required('Tu calle, localidad, esquina, referencia, etc va en este campo.'),
-    city: yup.string().required('La ciudad en donde vives va en este campo.'),
+    neighborhood: yup.string().required('La colonia o municipio en donde vives va en este campo.'),
+    state: yup.string().required('El estado en donde vives va en este campo.'),
     zip: yup.string().required('El código postal de tu domicilio va en este campo.'),
     country: yup.string().required('El país es requerido.'),
   }),

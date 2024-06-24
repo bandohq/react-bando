@@ -2,6 +2,7 @@ import { Route, createBrowserRouter, createRoutesFromElements } from 'react-rout
 
 import Landing from '@pages/Landing';
 import SignIn from '@pages/SignIn';
+import SignUp from '@pages/Signup';
 import Kyc from '@pages/Kyc';
 import Ramp from '@pages/Ramp';
 import ProtectedRamp from '@pages/ProtectedRamp';
@@ -19,19 +20,19 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<ProtectedWrapper />}>
-        <Route path="kyc" element={<Kyc />} />
+        <Route path="start" element={<Kyc />} />
         <Route path="ramp" element={<Ramp />} />
         <Route path="transactions" element={<TransactionHistory />} />
-
         <Route path="transactions/:txnId" element={<TransactionDetail />} />
         <Route path="kyc/ramp" element={<ProtectedRamp />} />
         <Route path="kyc/transactions/:txnId" element={<TransactionKycDetail />} />
       </Route>
       <Route path="/" element={<ExposedWrapper />}>
         <Route index element={<Landing />} />
+        <Route path="signin" element={<SignIn />} />
+        <Route path="signup" element={<SignUp />} />
         <Route path="terms" element={<Terms />} />
         <Route path="faq" element={<Faq />} />
-        <Route path="signin" element={<SignIn />} />
       </Route>
     </>,
   ),

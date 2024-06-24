@@ -16,6 +16,10 @@ import MATIC from '../../assets/chains/matic.png';
 import ETH from '../../assets/chains/eth.png';
 import BNB from '../../assets/chains/bnb.png';
 import USDB from '../../assets/chains/usdb.png';
+import BRETT from '../../assets/chains/brett.png';
+import MAGA from '../../assets/chains/maga.png';
+import DEGEN from '../../assets/chains/degen.png';
+import MPETH from '../../assets/chains/mpeth.png';
 
 type NetworkOptionItem = {
   label: string;
@@ -93,11 +97,11 @@ const networkOptions: NetworkOption = {
       },
     ],
   },
-  op: {
+  opt: {
     label: 'Optimism',
-    value: 'op',
+    value: 'opt',
     img: Optimism,
-    enabled: false,
+    enabled: true,
     chains: [
       {
         label: 'ETH',
@@ -119,6 +123,11 @@ const networkOptions: NetworkOption = {
         value: 'OP',
         img: Optimism,
       },
+      {
+        label: 'mpETH',
+        value: 'mpETH',
+        img: MPETH,
+      },
     ],
   },
   bas: {
@@ -136,6 +145,21 @@ const networkOptions: NetworkOption = {
         label: 'USDC',
         value: 'USDC',
         img: USDC,
+      },
+      {
+        label: 'BRETT',
+        value: 'BRETT',
+        img: BRETT,
+      },
+      {
+        label: 'MAGA',
+        value: 'TRUMP',
+        img: MAGA,
+      },
+      {
+        label: 'DEGEN',
+        value: 'DEGEN',
+        img: DEGEN,
       },
     ],
   },
@@ -240,7 +264,7 @@ export const networkCurrencyInfo = {
     label: 'Arbitrum',
     img: Arbitrum,
   },
-  op: {
+  opt: {
     label: 'Optimism',
     img: Optimism,
   },
@@ -291,6 +315,26 @@ export const networkCurrencyInfo = {
   bls: {
     label: 'Blast',
     img: Blast,
+  },
+  brett: {
+    label: 'BRETT',
+    img: BRETT,
+  },
+  trump: {
+    label: 'MAGA',
+    img: MAGA,
+  },
+  degen: {
+    label: 'DEGEN',
+    img: DEGEN,
+  },
+  mpeth: {
+    label: 'mpETH',
+    img: MPETH,
+  },
+  op: {
+    label: 'Optimism',
+    img: Optimism,
   },
 } as { [key: string]: { label: string; img: string } };
 

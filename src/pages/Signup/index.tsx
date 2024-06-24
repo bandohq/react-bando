@@ -10,7 +10,7 @@ import getStorageQuote from '@helpers/getStorageQuote';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import schema, { SignInFormValues } from './schema';
+import schema, { SignInFormValues } from '../SignIn/schema';
 import { Link } from 'react-router-dom';
 import useMagicLinkAuth from '@hooks/useMagicLinkAuth';
 import useUser from '@hooks/useUser';
@@ -23,7 +23,7 @@ const BottomLink = styled(Link)(({ theme }) => ({
   color: theme.palette.primary.main,
 }));
 
-export default function SignIn() {
+export default function SignUp() {
   const navigate = useNavigate();
   const storageQuote = getStorageQuote();
 
@@ -43,7 +43,7 @@ export default function SignIn() {
       await fetchMagicUser();
       await Promise.all([refetchUser(), fetchMagicUser()]);
       if ((rsp?.kycLevel ?? 0) > 0) {
-        if (storageQuote.quote?.baseAmount) return navigate('/kyc/ramp');
+        if (storageQuote.quote?.baseAmount) return navigate('/ramp');
         return navigate('/');
       }
       return navigate('/start');
@@ -57,7 +57,7 @@ export default function SignIn() {
       <BoxContainer sx={{ maxWidth: { md: '60vw' }, width: { md: '30vw' }, m: '0 auto' }}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ padding: '40px 20px 40px 20px' }}>
           <PageTitle variant="h3" sx={{ textAlign: 'center' }}>
-            Verifica tu Correo
+            Crea tu cuenta
           </PageTitle>
           <MuiInput
             label="Email"
@@ -80,7 +80,7 @@ export default function SignIn() {
           </BandoButton>
         </form>
       </BoxContainer>
-      <BottomLink to={'/signup'}>Crear cuenta</BottomLink>
+      <BottomLink to={'/signin'}>Ya tengo cuenta</BottomLink>
     </EmptyLayout>
   );
 }

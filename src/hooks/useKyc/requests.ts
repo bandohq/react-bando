@@ -9,7 +9,7 @@ type PostUserKycArgs = {
   dateOfBirth?: string;
   address: {
     street: string;
-    city: string;
+    state: string;
     zip: string;
     country: string;
   };
@@ -19,6 +19,7 @@ type PostUserKycArgs = {
     number: string;
     country: string;
   };
+  acceptedNotifications?: boolean | undefined;
 };
 type PostUserKycRequest = (
   endpoint: string,
@@ -35,10 +36,11 @@ export const postUserKyc: PostUserKycRequest = (endpoint, { arg }) =>
     date_of_birth: arg.dateOfBirth ?? '1990-12-14',
     address: {
       street: arg.address.street,
-      city: arg.address.city,
+      city: arg.address.state,
       zip: arg.address.zip,
       country: arg.address.country,
     },
     national_id_number: arg.nationalIdNumber,
     document: arg.document,
+    accepted_notifications: arg.acceptedNotifications,
   });

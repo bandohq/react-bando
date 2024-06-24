@@ -7,7 +7,7 @@ const BoxContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(2),
-  borderRadius: theme.spacing(2),
+  borderRadius: theme.spacing(1),
   boxShadow: '0 4px  4px rgb(0 0 0 / 25%)',
 }));
 

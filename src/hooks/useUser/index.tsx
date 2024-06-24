@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import Cookies from 'js-cookie';
 import env from '@config/env';
 
-import { User, useMagicUser } from './MagicUserProvider';
+import { useMagicUser } from './MagicUserProvider';
 import { getUserData } from './requests';
 import endpoints from '@config/endpoints';
 
@@ -21,35 +21,34 @@ export default function useUser() {
   const { data, isLoading: isUserLoading } = useSWR(endpoints.userKyc, getUserData, {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
+    onSuccess: (rsp) => {
+      if (rsp?.email) {
+        setUser(rsp);
+      }
+    },
+    onError: () => {
+      removeSessionStorage();
+    },
   });
-
   const isLoading = useMemo(() => isMagicLoading || isUserLoading, [isMagicLoading, isUserLoading]);
-  const isUnauthorized = useMemo(() => !isLoading && !data, [isLoading, data]);
+  const isUnauthorized = useMemo(() => !isLoading && !user, [isLoading, user]);
 
   const refetchUser = useCallback(() => {
     mutate(endpoints.userKyc);
   }, [mutate]);
 
-  const removeSessionStorage = async () => {
+  const removeSessionStorage = useCallback(async () => {
     setIsLoginOut(true);
     try {
       await logoutUser();
       localStorage.removeItem(env.rampDataLocalStorage);
       Cookies.remove(env.authCookieName, { domain: window.location.hostname });
       resetUser();
+      setIsLoginOut(false);
     } catch (err) {
-      //
-    } finally {
       setIsLoginOut(false);
     }
-  };
-
-  useEffect(() => {
-    if (data?.email) {
-      const rsp = (typeof data === 'object' ? data : {}) as unknown as User;
-      setUser(rsp);
-    }
-  }, [data, setUser]);
+  }, [logoutUser, resetUser]);
 
   return {
     user,
@@ -62,6 +61,7 @@ export default function useUser() {
     refetchUser,
     userEmail: user?.email,
     isLoading,
+    isMagicLoading,
     isSessionValid: !!data,
     isUnauthorized,
   };

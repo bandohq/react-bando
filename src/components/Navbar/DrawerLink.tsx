@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ListItemButton, ListItemIcon, ListItemText, ListItemButtonProps } from '@mui/material';
-import styled from '@mui/material/styles/styled';
+import { styled } from '@mui/material/styles';
 import useUser from '../../hooks/useUser';
 
 type DrawerLinkProps = {

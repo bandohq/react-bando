@@ -8,30 +8,8 @@ import {
   useMemo,
 } from 'react';
 import useMagic from '@hooks/useMagic';
-
-export type User = {
-  id: number;
-  kycLevel: number;
-  email: string;
-  publicAddress: string;
-  externalId: string;
-  firstName: string;
-  lastName: string;
-  killbId: string;
-  dateOfBirth: string;
-  phone: string;
-  nationalIdNumber: string;
-};
-
-export type UserContextType = {
-  user: Partial<User> | null;
-  fetchUser: () => Promise<void>;
-  logoutUser: () => Promise<void>;
-  setUser: (userData: Partial<User>) => void;
-  resetUser: () => void;
-  isLoading: boolean;
-  dataLoaded: boolean;
-};
+import { User, UserContextType } from './types';
+import IntercomProvider from './IntercomProvider';
 
 export const UserContext = createContext<UserContextType>({
   user: null,
@@ -60,11 +38,10 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
 
   const logoutUser = useCallback(async () => {
     try {
-      magic?.user.isLoggedIn().then(async (isLoggedIn) => {
-        if (isLoggedIn) await magic?.user?.logout();
-      });
+      await magic?.user?.logout();
+      return 'ok';
     } catch {
-      //
+      return 'error logging out';
     }
   }, [magic]);
 
@@ -98,7 +75,11 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
     [user, fetchUser, logoutUser, isLoading, dataLoaded, setUserData, resetUser],
   );
 
-  return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={contextValue}>
+      <IntercomProvider user={user}>{children}</IntercomProvider>
+    </UserContext.Provider>
+  );
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
