@@ -9,10 +9,10 @@ export default function ProtectedWrapper() {
   const { isUnauthorized, isLoading } = useUser();
 
   useEffect(() => {
-    if (isUnauthorized) {
+    if (isUnauthorized && !isLoading) {
       navigate('/signin', { replace: true });
     }
-  }, [isUnauthorized, navigate]);
+  }, [isUnauthorized, isLoading, navigate]);
 
   if (isLoading) {
     return <SiteSpinner />;

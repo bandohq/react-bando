@@ -8,7 +8,6 @@ import Button from '@mui/material/Button';
 import { PropsWithChildren } from 'react';
 import { Transaction, OperationType } from '@hooks/useTransaction/requests';
 import { SxProps, styled } from '@mui/material/styles';
-import { networkCurrencyInfo } from '@config/constants/networks';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -25,6 +24,9 @@ import formatNumber from '@helpers/formatNumber';
 import mapProviderStatus from './mapProviderStatus';
 import { deleteStorageQuote } from '@helpers/getStorageQuote';
 import { bandoAcademy } from '@config/constants/links';
+import { Network as NetworkObj } from '@hooks/useNetworks/requests';
+import { Token } from '@hooks/useTokens/requests';
+import { currencyImgPathV2 as currencyImgPath } from '@config/constants/currencies';
 
 export type TransactionDetailProps = PropsWithChildren & {
   success: boolean;
@@ -34,7 +36,8 @@ export type TransactionDetailProps = PropsWithChildren & {
   transaction?: Transaction;
   quoteRateInverse?: number;
   quoteRate?: number;
-  network?: string;
+  networkObj: NetworkObj | null;
+  tokenObj: Token | null;
   title?: string;
   sx?: SxProps;
   showFooter?: boolean;
@@ -98,23 +101,36 @@ export default function TransactionDetail({
   noArrow = false,
   showStatusBadge = false,
   showFooter = false,
-  network = '',
+  networkObj,
+  tokenObj,
   title = '',
   sx,
   operationType,
 }: TransactionDetailProps) {
   const { t } = useTranslation('transactionDetail');
+  console.log({ transaction });
 
   const navigate = useNavigate();
+  const isDeposit = (transaction?.operationType ?? operationType) === 'deposit';
   const DetailContainer = noContainer ? Box : BoxContainer;
-  const networkKey = network || transaction?.networkConfig?.key;
+  const networkKey = networkObj?.key || transaction?.networkConfig?.key;
   const depositTitle = transaction?.cashinDetails?.CLABE
     ? `Envía ${transaction.baseCurrency} a la cuenta:`
     : `Envía tu ${transaction?.baseCurrency} a esta dirección en
   ${transaction?.cashinDetails?.network}:`;
-  const rate = operationType === 'deposit' ? quoteRateInverse : quoteRate;
+  const rate = isDeposit ? quoteRateInverse : quoteRate;
 
   const providerStatus = mapProviderStatus(transaction?.providerStatus ?? '');
+
+  const tokenImg = transaction?.asset?.imageUrl ?? tokenObj?.imageUrl;
+  const baseCurrencyImg = {
+    baseImg: isDeposit
+      ? currencyImgPath[transaction?.baseCurrency as unknown as keyof typeof currencyImgPath]
+      : tokenImg,
+    quoteImg: !isDeposit
+      ? currencyImgPath[transaction?.quoteCurrency as unknown as keyof typeof currencyImgPath]
+      : tokenImg,
+  };
 
   const onNewTransaction = () => {
     deleteStorageQuote();
@@ -140,7 +156,10 @@ export default function TransactionDetail({
         </Grid>
         <BorderContainer container spacing={2}>
           <Grid md={4} sm={5} xs={5}>
-            <CurrencyPill currency={transaction?.baseCurrency ?? ''} />
+            <CurrencyPill
+              currency={transaction?.baseCurrency ?? ''}
+              imgUrl={baseCurrencyImg.baseImg}
+            />
           </Grid>
           <Grid md={8} sm={7} xs={7}>
             <Rate>{formatNumber(transaction?.baseAmount)}</Rate>
@@ -161,7 +180,10 @@ export default function TransactionDetail({
           </Grid>
 
           <Grid md={4} sm={5} xs={5}>
-            <CurrencyPill currency={transaction?.quoteCurrency ?? ''} />
+            <CurrencyPill
+              currency={transaction?.quoteCurrency ?? ''}
+              imgUrl={baseCurrencyImg.quoteImg}
+            />
           </Grid>
           <Grid md={8} sm={7} xs={7}>
             <Rate>{formatNumber(transaction?.quoteAmount, 2, 18)}</Rate>
@@ -185,10 +207,10 @@ export default function TransactionDetail({
             <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                {networkCurrencyInfo[networkKey.toLowerCase()]?.label}{' '}
+                {(transaction?.networkConfig?.name ?? networkObj?.name ?? '').toLowerCase()}{' '}
                 <img
                   alt="Network"
-                  src={networkCurrencyInfo[networkKey.toLowerCase()]?.img}
+                  src={transaction?.networkConfig?.imageUrl ?? networkObj?.logoUrl}
                   width={18}
                   height={18}
                   style={{ borderRadius: '50px' }}
