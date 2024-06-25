@@ -46,6 +46,13 @@ export type Transaction = {
     name: string;
     chainId: string;
     key: string;
+    imageUrl: string;
+  };
+  asset?: {
+    symbol: string;
+    address: string;
+    decimals: number;
+    imageUrl: string;
   };
   createdAt?: string;
   updatedAt?: string;
@@ -55,7 +62,8 @@ export type Transaction = {
 
 export type TransactionRequest = Record<string, unknown> & {
   cash_in_details: WithDrawCashinDetailsArgs | DepositCashinDetailsArgs;
-  network_config: Record<string, unknown>;
+  network_config?: Record<string, unknown>;
+  asset?: Record<string, unknown>;
 };
 
 export const mapTransactionData = (data: TransactionRequest): Transaction =>
@@ -80,6 +88,15 @@ export const mapTransactionData = (data: TransactionRequest): Transaction =>
         name: String(data.network_config.name).toUpperCase(),
         chainId: data.network_config.chain_id,
         key: data.network_config.key,
+        imageUrl: data.network_config.image,
+      },
+    }),
+    ...(data.asset && {
+      asset: {
+        name: String(data.asset.symbol).toUpperCase(),
+        address: data.asset.address,
+        decimals: data.asset.decimals,
+        imageUrl: data.asset.image,
       },
     }),
     recipient: data.recipient,

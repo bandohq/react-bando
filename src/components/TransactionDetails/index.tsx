@@ -108,9 +108,10 @@ export default function TransactionDetail({
   operationType,
 }: TransactionDetailProps) {
   const { t } = useTranslation('transactionDetail');
+  console.log({ transaction });
 
   const navigate = useNavigate();
-  const isDeposit = operationType === 'deposit';
+  const isDeposit = (transaction?.operationType ?? operationType) === 'deposit';
   const DetailContainer = noContainer ? Box : BoxContainer;
   const networkKey = networkObj?.key || transaction?.networkConfig?.key;
   const depositTitle = transaction?.cashinDetails?.CLABE
@@ -120,13 +121,15 @@ export default function TransactionDetail({
   const rate = isDeposit ? quoteRateInverse : quoteRate;
 
   const providerStatus = mapProviderStatus(transaction?.providerStatus ?? '');
+
+  const tokenImg = transaction?.asset?.imageUrl ?? tokenObj?.imageUrl;
   const baseCurrencyImg = {
     baseImg: isDeposit
       ? currencyImgPath[transaction?.baseCurrency as unknown as keyof typeof currencyImgPath]
-      : tokenObj?.imageUrl,
+      : tokenImg,
     quoteImg: !isDeposit
       ? currencyImgPath[transaction?.quoteCurrency as unknown as keyof typeof currencyImgPath]
-      : tokenObj?.imageUrl,
+      : tokenImg,
   };
 
   const onNewTransaction = () => {
@@ -204,10 +207,10 @@ export default function TransactionDetail({
             <GridRow xs={12} sx={{ display: 'flex !important' }}>
               <Network variant="body2">Red:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
-                {networkObj?.name ?? ''}{' '}
+                {(transaction?.networkConfig?.name ?? networkObj?.name ?? '').toLowerCase()}{' '}
                 <img
                   alt="Network"
-                  src={networkObj?.logoUrl}
+                  src={transaction?.networkConfig?.imageUrl ?? networkObj?.logoUrl}
                   width={18}
                   height={18}
                   style={{ borderRadius: '50px' }}
