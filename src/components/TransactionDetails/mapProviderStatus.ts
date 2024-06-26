@@ -18,6 +18,7 @@ export default function mapProviderStatus(status: string) {
     case 'REFUNDED':
     case 'FIAT_COMPLETED':
     case 'PENDING':
+    case 'FAILED':
     case 'TXN_REVERTED':
     case 'APPROVE_REVERTED':
       return {
@@ -25,7 +26,6 @@ export default function mapProviderStatus(status: string) {
         color: 'info',
       };
     case 'REJECTED':
-    case 'FAILED':
     case 'ERROR':
     case 'NOT_PROCESSABLE_REFUND_NEEDED':
     case 'OUT_OF_GAS':
