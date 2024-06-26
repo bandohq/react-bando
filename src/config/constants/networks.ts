@@ -272,7 +272,7 @@ export const networkCurrencyInfo = {
     img: Scroll,
   },
   bsc: {
-    label: 'Binance ',
+    label: 'Binance Smart Chain',
     img: Binance,
   },
   mxn: {
