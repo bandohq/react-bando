@@ -1,11 +1,8 @@
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Unstable_Grid2';
-import Input from '@components/forms/Input';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
 
 import { useRef } from 'react';
-import { createPortal } from 'react-dom';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 import { Token } from '@hooks/useTokens/requests';
@@ -18,19 +15,16 @@ type TokenListProps = {
   tokenObj?: Partial<Token>;
   explorerUrl?: string;
   onSelectToken?: (token: Token) => void;
-  filterTokens?: (value: string) => Token[] | undefined;
 };
 
 export default function TokensList({
   tokens,
-  filterTokens,
   onSelectToken,
   explorerUrl = '',
   tokenObj = {},
 }: TokenListProps) {
   const listRef = useRef<HTMLUListElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
-  const searchTokensElement = document.getElementById('search-tokens');
   const count = tokens?.length ?? 0;
   const virtualizer = useVirtualizer({
     count,
@@ -41,20 +35,6 @@ export default function TokensList({
 
   return (
     <>
-      {!!searchTokensElement &&
-        createPortal(
-          <Grid xs={12} sm={12} md={12} spacing={2} sx={{ px: 0, pb: 0 }}>
-            <Input
-              defaultValue={tokenObj?.name ?? tokenObj?.key}
-              sx={{ '& .MuiInputBase-input': { borderColor: 'ink.i250' } }}
-              onChange={(e) => {
-                filterTokens?.(e.target.value);
-              }}
-              fullWidth
-            />
-          </Grid>,
-          searchTokensElement,
-        )}
       <Box sx={{ height: '100%', width: '100%' }} ref={parentRef}>
         <TokenList
           ref={listRef}

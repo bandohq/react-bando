@@ -1,5 +1,6 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import CurrencyInput from 'react-currency-input-field';
 
 import { ReactNode, useCallback, useEffect, useState } from 'react';
@@ -15,6 +16,7 @@ import DialogDrawer from '@components/DialogDrawer';
 import Title from '@components/PageTitle';
 import ErrorBox from '@components/forms/ErrorBox';
 import BandoButton from '@components/Button';
+import Input from '@components/forms/Input';
 import NetworkTiles from './NetworkTiles';
 import TokensList from './TokensList';
 
@@ -24,11 +26,12 @@ import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
 
 import { TokensContainer, CurrencyTokenButton, CurrencyAmount } from './components';
 
+import useTokens from '@hooks/useTokens';
+import { useTranslation } from 'react-i18next';
 import { Token } from '@hooks/useTokens/requests';
 import { Quote } from '@hooks/useQuote/requests';
 import { Network } from '@hooks/useNetworks/requests';
 import { OPERATION_TYPES } from '@hooks/useTransaction/requests';
-import useTokens from '@hooks/useTokens';
 
 type TokensWidgetProps = {
   onlyOneCurrency?: boolean;
@@ -50,6 +53,8 @@ export default function TokensWidget({
   quote,
   formError,
 }: TokensWidgetProps) {
+  const { t } = useTranslation('quote');
+
   const methods = useFormContext<GetQuoteFormValuesV2>();
   const [openSelectDrawer, setOpenSelectDrawer] = useState(false);
 
@@ -63,10 +68,12 @@ export default function TokensWidget({
   const tokenObj = methods.watch('tokenObj');
 
   const isDeposit = operationType === 'deposit';
-  // const canCheckQuote =
-  //   parseFloat(baseAmount as unknown as string) >= 20 && !!networkObj?.chainId && !!tokenObj?.id;
 
-  const { tokens, filterTokens } = useTokens({ chainKey: networkObj?.key ?? '', operationType });
+  const {
+    tokens,
+    filterTokens,
+    isLoading: isTokensLoading,
+  } = useTokens({ chainKey: networkObj?.key ?? '', operationType });
 
   const onSelectNetwork = (network: Network) => {
     methods.setValue('tokenObj', {});
@@ -158,16 +165,39 @@ export default function TokensWidget({
           <>
             <NetworkTiles networkObj={networkObj} onSelectNetwork={onSelectNetwork} />
             <Box id="search-tokens" sx={{ width: '100%' }} />
+            <Grid xs={12} sm={12} md={12} spacing={2} sx={{ px: 0, pb: 0 }}>
+              <Input
+                defaultValue={tokenObj?.name ?? tokenObj?.key}
+                sx={{ '& .MuiInputBase-input': { borderColor: 'ink.i250' } }}
+                onChange={(e) => {
+                  filterTokens?.(e.target.value);
+                }}
+                fullWidth
+              />
+            </Grid>
           </>
         }
       >
-        <TokensList
-          onSelectToken={onSelectToken}
-          tokenObj={tokenObj}
-          tokens={tokens}
-          explorerUrl={networkObj?.explorerUrl}
-          filterTokens={filterTokens}
-        />
+        {isTokensLoading ? (
+          <Box
+            sx={{ p: 2, display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}
+          >
+            <CircularProgress size={25} sx={{ color: 'ink.i500' }} aria-label="submitting" />
+          </Box>
+        ) : !tokens.length ? (
+          <Box
+            sx={{ p: 2, display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}
+          >
+            {t('noData')}
+          </Box>
+        ) : (
+          <TokensList
+            onSelectToken={onSelectToken}
+            tokenObj={tokenObj}
+            tokens={tokens}
+            explorerUrl={networkObj?.explorerUrl}
+          />
+        )}
       </DialogDrawer>
       <div id="network-list" />
 
@@ -185,7 +215,7 @@ export default function TokensWidget({
               disabled={baseCurrency === defaultCurrency}
               onClick={() => setOpenSelectDrawer(!openSelectDrawer)}
             >
-              <p>Envías</p>
+              <p>{t('on')}</p>
               <CurrencyAmount>
                 <Box sx={{ width: '38px' }}>
                   <TransactionTypeIcon sx={{ backgroundColor: 'background.paper' }}>
@@ -242,7 +272,7 @@ export default function TokensWidget({
               disabled={quoteCurrency === defaultCurrency}
               onClick={() => setOpenSelectDrawer(!openSelectDrawer)}
             >
-              <p>Hacia</p>
+              <p>{t('recipient')}</p>
               <CurrencyAmount>
                 <Box sx={{ width: '38px' }}>
                   <TransactionTypeIcon role="button" sx={{ backgroundColor: 'background.paper' }}>
@@ -260,7 +290,7 @@ export default function TokensWidget({
                   <input
                     className="currency-input placeholder"
                     value={quoteCurrency ?? ''}
-                    placeholder="Selecciona una red y token"
+                    placeholder={t('selectNetwork')}
                     disabled
                   />
                   <span className="currency-amount">{isDeposit ? networkObj?.name : ''}</span>
@@ -287,7 +317,7 @@ export default function TokensWidget({
 
       <Grid xs={12} sm={12} md={12}>
         <CurrencyTokenButton role="button" disabled>
-          <p>Recibes</p>
+          <p>{t('off')}</p>
           <CurrencyAmount>
             <Box sx={{ width: '38px' }}>
               <TransactionTypeIcon role="button" sx={{ backgroundColor: 'background.paper' }}>

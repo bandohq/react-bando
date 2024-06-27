@@ -159,9 +159,7 @@ export const NetworkButton = styled(ButtonBase)<ButtonProps>(({ theme }) => ({
 
 export const TokenList = styled('ul')(({ theme }) => ({
   listStyleType: 'none',
-  display: 'flex',
   width: '100%',
-  flexDirection: 'column',
   padding: theme.spacing(0, 2),
   paddingBottom: theme.spacing(2),
 
