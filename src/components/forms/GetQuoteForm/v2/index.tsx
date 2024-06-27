@@ -162,7 +162,7 @@ export default function GetQuoteFormV2() {
               isMutating ? (
                 <CircularProgress
                   size={15}
-                  sx={{ marginLeft: 1, color: 'palette.ink.i500' }}
+                  sx={{ marginLeft: 1, color: 'ink.i500' }}
                   aria-label="submitting"
                 />
               ) : (
