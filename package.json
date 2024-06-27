@@ -100,7 +100,7 @@
     "outputName": "jest-junit.xml"
   },
   "engines": {
-    "node": "^20.15.0",
+    "node": "^20.12.2",
     "yarn": "^1.22.17"
   }
 }
