@@ -205,20 +205,15 @@ const networkOptions: NetworkOption = {
     ],
   },
   bsc: {
-    label: 'Binance Smart Chain',
+    label: 'BNB Smart Chain',
     value: 'bsc',
     img: Binance,
-    enabled: false,
+    enabled: true,
     chains: [
       {
         label: 'BNB',
         value: 'BNB',
         img: BNB,
-      },
-      {
-        label: 'WETH',
-        value: 'WETH',
-        img: WETH,
       },
       {
         label: 'USDC',
@@ -277,7 +272,7 @@ export const networkCurrencyInfo = {
     img: Scroll,
   },
   bsc: {
-    label: 'Binance ',
+    label: 'BNB Smart Chain',
     img: Binance,
   },
   mxn: {
