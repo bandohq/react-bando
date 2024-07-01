@@ -5,7 +5,7 @@ import Arbitrum from '../../assets/networks/arbitrum.png';
 import Optimism from '../../assets/networks/optimism.png';
 import Base from '../../assets/networks/base.png';
 import Scroll from '../../assets/networks/scroll.png';
-import Binance from '../../assets/networks/binance-smart-chain.png';
+import Binance from '../../assets/networks/binance-smart-chain.svg';
 import Ethereum from '../../assets/networks/ethereum.png';
 import Blast from '../../assets/networks/blast.png';
 
