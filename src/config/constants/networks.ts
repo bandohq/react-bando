@@ -8,6 +8,7 @@ import Scroll from '../../assets/networks/scroll.png';
 import Binance from '../../assets/networks/binance-smart-chain.svg';
 import Ethereum from '../../assets/networks/ethereum.png';
 import Blast from '../../assets/networks/blast.png';
+import Solana from '../../assets/networks/solana.svg';
 
 import WETH from '../../assets/chains/weth.png';
 import USDC from '../../assets/chains/usdc.png';
@@ -160,6 +161,19 @@ const networkOptions: NetworkOption = {
         label: 'DEGEN',
         value: 'DEGEN',
         img: DEGEN,
+      },
+    ],
+  },
+  sol: {
+    label: 'Solana',
+    value: 'sol',
+    img: Solana,
+    enabled: true,
+    chains: [
+      {
+        label: 'USDC',
+        value: 'USDC',
+        img: USDC,
       },
     ],
   },
@@ -330,6 +344,10 @@ export const networkCurrencyInfo = {
   op: {
     label: 'Optimism',
     img: Optimism,
+  },
+  sol: {
+    label: 'Solana',
+    img: Solana,
   },
 } as { [key: string]: { label: string; img: string } };
 
