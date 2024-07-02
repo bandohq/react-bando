@@ -78,7 +78,7 @@ export const CurrencyTokenButton = styled(ButtonBase)<ButtonProps>(({ theme }) =
   fontSize: '1rem',
   fontFamily: 'Kanit',
   color: theme.palette.ink.i950,
-  backgroundColor: theme.palette.ink.i150,
+  backgroundColor: 'white',
   borderColor: theme.palette.ink.i250,
   borderWidth: '1px',
   borderStyle: 'solid',

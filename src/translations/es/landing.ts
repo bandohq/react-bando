@@ -1,7 +1,7 @@
 export default {
   mainTitle: 'Intercambia entre pesos y cripto en una transferencia bancaria',
   subtitle:
-    'Con Bando entra y sal del mundo cripto en segundos. <separator /> Puedes depositar o retirar a tu wallet o exchange en la red de Polygon y Arbitrum, muy pronto en Optimism, Scroll y más.',
+    'Con Bando entra y sal del mundo cripto en segundos. <separator /> Puedes depositar o retirar a tu wallet o exchange en la red de Polygon y Arbitrum, Optimism, Scroll y más.',
   section1: {
     title: 'Controla tus criptos y explora con seguridad',
     info: 'Bando es tu puerta a cripto como debe ser: tus llaves, tus tokens, con bajos costos de transacción y con la conexión a DeFi que buscas.',

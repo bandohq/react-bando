@@ -102,6 +102,7 @@ export default function GetQuoteFormV2() {
 
   const debouncedRequest = useCallback(async () => {
     const formValues = methods.getValues();
+    methods.clearErrors('baseAmount');
     setFormError('');
     if (!formValues.baseAmount) return;
     try {
