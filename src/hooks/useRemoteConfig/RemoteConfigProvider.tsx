@@ -27,7 +27,11 @@ const RemoteConfigProvider = ({ children }: PropsWithChildren) => {
         data-testid="configs-loader"
         sx={{ p: 2, display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}
       >
-        <CircularProgress size={25} sx={{ color: 'ink.i500' }} aria-label="submitting" />
+        <CircularProgress
+          size={25}
+          sx={{ color: 'ink.i500' }}
+          aria-label="loading firebase configs"
+        />
       </Box>
     );
   }
