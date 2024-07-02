@@ -26,7 +26,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      Cookies.remove(env.authCookieName);
+      Cookies.remove(env.authCookieName, { domain: window.location.hostname });
     }
 
     return Promise.reject(error);

@@ -17,20 +17,32 @@ export default function useUser() {
     fetchUser: fetchMagicUser,
   } = useMagicUser();
   const [isLoginOut, setIsLoginOut] = useState<boolean>(false);
+  const [isUserDataLoading, setIsUserDataLoading] = useState<boolean>(false);
   const { mutate } = useSWRConfig();
-  const { data, isLoading: isUserLoading } = useSWR(endpoints.userKyc, getUserData, {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
-    onSuccess: (rsp) => {
-      if (rsp?.email) {
-        setUser(rsp);
-      }
+  const { data, isLoading: isUserLoading } = useSWR(
+    endpoints.userKyc,
+    (endpoint: string) => {
+      setIsUserDataLoading(true);
+      return getUserData(endpoint);
     },
-    onError: () => {
-      removeSessionStorage();
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+      onSuccess: (rsp) => {
+        if (rsp?.email) {
+          setUser(rsp);
+          setIsUserDataLoading(false);
+        }
+      },
+      onError: () => {
+        removeSessionStorage();
+      },
     },
-  });
-  const isLoading = useMemo(() => isMagicLoading || isUserLoading, [isMagicLoading, isUserLoading]);
+  );
+  const isLoading = useMemo(
+    () => isMagicLoading || isUserLoading || isUserDataLoading,
+    [isMagicLoading, isUserLoading, isUserDataLoading],
+  );
   const isUnauthorized = useMemo(() => !isLoading && !user, [isLoading, user]);
 
   const refetchUser = useCallback(() => {
@@ -42,7 +54,7 @@ export default function useUser() {
     try {
       await logoutUser();
       localStorage.removeItem(env.rampDataLocalStorage);
-      Cookies.remove(env.authCookieName);
+      Cookies.remove(env.authCookieName, { domain: window.location.hostname });
       resetUser();
       setIsLoginOut(false);
     } catch (err) {

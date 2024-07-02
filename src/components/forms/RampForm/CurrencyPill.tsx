@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles';
-import { currencyImg } from '@config/constants/currencies';
 
 const Container = styled('div')(({ theme }) => ({
   borderRadius: '100px',
@@ -15,6 +14,13 @@ const Container = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   fontFamily: 'Kanit',
   fontWeight: 'bold',
+  '& img': {
+    width: '37px',
+    height: '37px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    marginRight: theme.spacing(1),
+  },
   [theme.breakpoints.between('xs', 'sm')]: {
     fontSize: theme.typography.pxToRem(14),
     '& img': {
@@ -22,22 +28,17 @@ const Container = styled('div')(({ theme }) => ({
       height: '22px',
     },
   },
-  '& img': {
-    borderRadius: '50%',
-    objectFit: 'cover',
-  },
 }));
 
 type CurrencyPillProps = {
   currency: string;
+  imgUrl?: string;
 };
 
-export default function CurrencyPill({ currency }: Readonly<CurrencyPillProps>) {
-  const currencyType = currency as keyof typeof currencyImg;
-
+export default function CurrencyPill({ currency, imgUrl = '' }: Readonly<CurrencyPillProps>) {
   return (
     <Container sx={{ fontWeight: 'normal' }}>
-      {currencyImg[currencyType as keyof typeof currencyImg]} {currencyType}
+      <img src={imgUrl} /> {currency}
     </Container>
   );
 }

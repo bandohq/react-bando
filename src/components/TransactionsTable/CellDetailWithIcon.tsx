@@ -12,20 +12,27 @@ type CellDetailWithIconProps = {
   sx?: SxProps;
 };
 
-const TransactionTypeIcon = styled(TableRowDetail)(() => ({
+export const TransactionTypeIcon = styled(TableRowDetail)(() => ({
   position: 'relative',
+  borderRadius: '50%',
+  '& img': {
+    width: 'auto',
+    height: '100%',
+    objectFit: 'cover',
+    borderRadius: '50%',
+  },
   '& span.network-img': {
     fontSize: 'inherit',
     position: 'absolute',
-    width: 16,
-    height: 16,
+    width: 14,
+    height: 14,
     display: 'flex',
     alignItems: 'center',
-    bottom: '-2px',
-    right: 0,
-    borderRadius: '4px',
+    bottom: '-3px',
+    right: '-1px',
     overflow: 'hidden',
     padding: 0,
+    borderRadius: '50%',
     '& img': {
       width: 'auto',
       height: '100%',

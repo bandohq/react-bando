@@ -5,4 +5,6 @@ export default {
   postRecipient: '/api/v1/ramps/recipient/',
   transaction: '/api/v1/ramps/transaction/',
   transactionHistory: '/api/v1/ramps/transaction/history/',
+  tokens: '/api/v1/ramps/token/',
+  networks: '/api/v1/ramps/network/',
 };

@@ -13,7 +13,7 @@ export default function SimpleFooter({ bgColor, textColor }: SimpleFooterProps) 
     <Container
       maxWidth={false}
       sx={{
-        maxWidth: '1200px',
+        maxWidth: '1280px',
         minHeight: '150px',
         paddingTop: '20px',
         backgroundColor: bgColor || 'primary.main',

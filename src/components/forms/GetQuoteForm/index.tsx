@@ -193,7 +193,7 @@ export default function GetQuoteForm() {
                 width: 'fit-content',
                 fontWeight: '500',
                 fontSize: '1.5rem !important',
-                color: 'palette.ink.i900',
+                color: 'ink.i900',
               }}
               items={[
                 {
@@ -256,7 +256,7 @@ export default function GetQuoteForm() {
                   {isMutating ? (
                     <CircularProgress
                       size={15}
-                      sx={{ marginLeft: 1, color: 'palette.ink.i500' }}
+                      sx={{ marginLeft: 1, color: 'ink.i500' }}
                       aria-label="submitting"
                     />
                   ) : (
