@@ -11,7 +11,7 @@ export type ConfirmRampFormValues = {
   clabe?: string;
 };
 
-const schema = (network: string) => 
+const schema = (network: string) =>
   yup.object().shape({
     operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
     address: yup.string().when(['operationType'], {
@@ -21,7 +21,8 @@ const schema = (network: string) =>
           .test(
             'is-valid-address',
             () => 'La dirección es incorrecta',
-            (value) => network == 'sol' ? isValidSolanaAddress(value ?? '') : isAddress(value ?? ''),
+            (value) =>
+              network == 'sol' ? isValidSolanaAddress(value ?? '') : isAddress(value ?? ''),
           )
           .required(),
       otherwise: (schema) => schema.optional(),
@@ -41,6 +42,6 @@ const schema = (network: string) =>
       then: (schema) => schema.min(18).max(18).required(),
       otherwise: (schema) => schema.optional(),
     }),
-});
+  });
 
 export default schema;
