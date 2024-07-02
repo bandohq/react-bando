@@ -25,7 +25,16 @@ const RemoteConfigProvider = ({ children }: PropsWithChildren) => {
     return (
       <Box
         data-testid="configs-loader"
-        sx={{ p: 2, display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}
+        sx={{
+          p: 4,
+          paddingBottom: 12,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          minHeight: '100vh',
+          height: '100%',
+        }}
       >
         <CircularProgress
           size={25}
