@@ -168,7 +168,7 @@ const networkOptions: NetworkOption = {
     label: 'Solana',
     value: 'sol',
     img: Solana,
-    enabled: true,
+    enabled: false,
     chains: [
       {
         label: 'USDC',
