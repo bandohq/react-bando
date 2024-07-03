@@ -22,6 +22,7 @@
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
     "@sentry/react": "^7.101.0",
+    "@solana/web3.js": "^1.94.0",
     "D": "^1.0.0",
     "autosuggest-highlight": "^3.3.4",
     "axios": "^1.6.5",
