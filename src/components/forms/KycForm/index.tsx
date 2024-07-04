@@ -21,6 +21,7 @@ import { AxiosError } from 'axios';
 
 import useKyc from '@hooks/useKyc';
 import useUser from '@hooks/useUser';
+import useRemoteConfig from '@hooks/useRemoteConfig';
 import { useNavigate } from 'react-router-dom';
 
 import { identificationOptions, Identifications } from '@config/constants/identification';
@@ -51,6 +52,7 @@ export default function KycForm() {
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
+  const { configs } = useRemoteConfig();
   const { user } = useUser();
   const { isMutating, postUserKyc } = useKyc();
   const storageQuote = getStorageQuote();
@@ -162,25 +164,27 @@ export default function KycForm() {
           </Title>
 
           <Grid container spacing={1} sx={{ margin: 0 }}>
-            <Grid md={12} xs={12}>
-              <PlacesAutocomplete
-                label="Busca tu domicilio o llena los campos manualmente"
-                noOptionsText="No se encontro el domicilio"
-                setInputValue={(label, address) => {
-                  setValue('address.label', label);
+            {configs?.useGoogleAutocomplete && (
+              <Grid md={12} xs={12}>
+                <PlacesAutocomplete
+                  label="Busca tu domicilio o llena los campos manualmente"
+                  noOptionsText="No se encontro el domicilio"
+                  setInputValue={(label, address) => {
+                    setValue('address.label', label);
 
-                  if (address) {
-                    setValue('address.street', address.street ?? '');
-                    setValue('address.state', address.state ?? '');
-                    setValue('address.zip', address.zip ?? '');
-                    setValue('address.country', address.country ?? '');
-                    setValue('address.neighborhood', address.neighborhood ?? '');
-                  }
-                }}
-                error={!!formState.errors.address?.label?.message}
-                helperText={formState.errors.address?.label?.message}
-              />
-            </Grid>
+                    if (address) {
+                      setValue('address.street', address.street ?? '');
+                      setValue('address.state', address.state ?? '');
+                      setValue('address.zip', address.zip ?? '');
+                      setValue('address.country', address.country ?? '');
+                      setValue('address.neighborhood', address.neighborhood ?? '');
+                    }
+                  }}
+                  error={!!formState.errors.address?.label?.message}
+                  helperText={formState.errors.address?.label?.message}
+                />
+              </Grid>
+            )}
             <Grid md={12} xs={12}>
               <MuiInput
                 label="Calle, número, ó localidad"

@@ -30,3 +30,21 @@ Object.defineProperty(window, 'location', {
 
 global.ResizeObserver = require('resize-observer-polyfill');
 Object.assign(global, { TextDecoder, TextEncoder, Response });
+
+const asString = jest.fn().mockImplementation(() => '{}');
+const asBoolean = jest.fn().mockImplementation(() => true);
+const asNumber = jest.fn().mockImplementation(() => 1);
+const remoteConfigValue = {
+  asString,
+  asBoolean,
+  asNumber,
+};
+
+jest.mock('firebase/remote-config', () => ({
+  getAll: jest.fn().mockReturnValue({
+    USE_GOOGLE_AUTOCOMPLETE: remoteConfigValue,
+  }),
+  getValue: jest.fn().mockReturnValue(remoteConfigValue),
+  getRemoteConfig: jest.fn().mockImplementation(() => ({})),
+  fetchAndActivate: jest.fn().mockResolvedValue(true),
+}));
