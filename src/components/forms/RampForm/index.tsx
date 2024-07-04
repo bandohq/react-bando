@@ -40,7 +40,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
   const isLoading = isRecipientMutating || isTransactionMutation;
 
   const { register, handleSubmit, formState, watch, setValue } = useForm<ConfirmRampFormValues>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema(network ?? '')),
     mode: 'onBlur',
     defaultValues: {
       address: '',
