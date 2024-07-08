@@ -7,15 +7,17 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import LimitUsage, { LimitUsageProps } from '@components/LimitUsage';
 
 import CaretGreen from '../../assets/CaretGreen.svg';
 import CaretWhite from '../../assets/CaretWhite.svg';
-import LogoutIcon from '@components/Svgs/Logout';
 
 type UserMenuProps = {
   isOnTop?: boolean;
   disabled?: boolean;
 };
+
+const menuItemSx = { fontSize: '14px !important', gap: 1, color: 'ink.i400', fontWeight: 200 };
 
 export default function UserMenu(props: UserMenuProps) {
   const { t } = useTranslation('userMenu');
@@ -63,14 +65,15 @@ export default function UserMenu(props: UserMenuProps) {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem
-            onClick={() => navigate('/transactions')}
-            sx={{ fontSize: '16px !important', gap: 1 }}
-          >
+          <MenuItem onClick={() => navigate('/transactions')} sx={{ ...menuItemSx, mt: 2 }}>
             {t('viewTxnHistory')}
           </MenuItem>
-          <MenuItem onClick={logoutUser} sx={{ fontSize: '16px !important', gap: 1 }}>
-            {t('signout')} <LogoutIcon strokeWidth={1.5} sx={{ color: 'inherit' }} />
+          <LimitUsage
+            usage={user.currentDepositUsageUsd}
+            kycLevel={user.kycLevel as LimitUsageProps['kycLevel']}
+          />
+          <MenuItem onClick={logoutUser} sx={{ ...menuItemSx, mb: 2 }}>
+            {t('signout')}
           </MenuItem>
         </Menu>
       </Box>
