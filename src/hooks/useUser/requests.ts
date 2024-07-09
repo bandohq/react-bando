@@ -16,8 +16,8 @@ export const getUserData: GetUserDataRequest = (endpoint) =>
       phone: data.phone,
       nationalIdNumber: data.national_id_number,
       email: data.email,
-      currentDepositUsageUsd: parseFloat(data.current_deposit_usage_usd),
-      currentWithdrawalUsageUsd: parseFloat(data.current_withdrawal_usage_usd),
+      currentDepositUsageUsd: Math.abs(parseFloat(data.current_deposit_usage_usd)),
+      currentWithdrawalUsageUsd: Math.abs(parseFloat(data.current_withdrawal_usage_usd)),
       resetAt: data.reset_at,
     }))
     .catch((error) => {
