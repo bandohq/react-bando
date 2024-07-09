@@ -10,6 +10,9 @@ export type User = {
   dateOfBirth: string;
   phone: string;
   nationalIdNumber: string;
+  currentDepositUsageUsd: number;
+  currentWithdrawalUsageUsd: number;
+  resetAt: string;
 };
 
 export type UserContextType = {
