@@ -13,8 +13,9 @@ export type LimitUsageProps = {
 
 const limitByLevel = {
   1: 500,
-  2: 2000,
+  2: 9999,
   3: 9999,
+  4: 49999,
 };
 
 export default function LimitUsage({
