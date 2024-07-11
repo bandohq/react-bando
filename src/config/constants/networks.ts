@@ -247,7 +247,7 @@ const networkOptions: NetworkOption = {
   cel: {
     label: 'Celo',
     value: 'cel',
-    img: Binance,
+    img: CELO,
     enabled: true,
     chains: [
       {
