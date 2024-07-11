@@ -9,6 +9,7 @@ import Binance from '../../assets/networks/binance-smart-chain.svg';
 import Ethereum from '../../assets/networks/ethereum.png';
 import Blast from '../../assets/networks/blast.png';
 import Solana from '../../assets/networks/solana.svg';
+import CELO from '../../assets/networks/celo.png';
 
 import WETH from '../../assets/chains/weth.png';
 import USDC from '../../assets/chains/usdc.png';
@@ -21,6 +22,8 @@ import BRETT from '../../assets/chains/brett.png';
 import MAGA from '../../assets/chains/maga.png';
 import DEGEN from '../../assets/chains/degen.png';
 import MPETH from '../../assets/chains/mpeth.png';
+import CUSD from '../../assets/chains/cusd.png';
+import CEUR from '../../assets/chains/ceur.png';
 
 type NetworkOptionItem = {
   label: string;
@@ -241,6 +244,34 @@ const networkOptions: NetworkOption = {
       },
     ],
   },
+  cel: {
+    label: 'Celo',
+    value: 'cel',
+    img: CELO,
+    enabled: true,
+    chains: [
+      {
+        label: 'USDC',
+        value: 'USDC',
+        img: USDC,
+      },
+      {
+        label: 'cUSD',
+        value: 'cUSD',
+        img: CUSD,
+      },
+      {
+        label: 'cEUR',
+        value: 'cEUR',
+        img: CEUR,
+      },
+      {
+        label: 'CELO',
+        value: 'CELO',
+        img: CELO,
+      },
+    ],
+  },
 } as const;
 
 export const networkOptionsOffRamp: NetworkOption = {
@@ -348,6 +379,22 @@ export const networkCurrencyInfo = {
   sol: {
     label: 'Solana',
     img: Solana,
+  },
+  cel: {
+    label: 'Celo',
+    img: CELO,
+  },
+  celo: {
+    label: 'Celo',
+    img: CELO,
+  },
+  cusd: {
+    label: 'cUSD',
+    img: CUSD,
+  },
+  ceur: {
+    label: 'cEUR',
+    img: CEUR,
   },
 } as { [key: string]: { label: string; img: string } };
 
