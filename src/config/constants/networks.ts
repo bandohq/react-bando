@@ -380,6 +380,10 @@ export const networkCurrencyInfo = {
     label: 'Solana',
     img: Solana,
   },
+  cel: {
+    label: 'Celo',
+    img: CELO,
+  },
   celo: {
     label: 'Celo',
     img: CELO,
