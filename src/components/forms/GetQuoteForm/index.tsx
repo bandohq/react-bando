@@ -104,7 +104,7 @@ export default function GetQuoteForm() {
       );
 
       if (!user?.email && !user?.id) return navigate('/signin');
-      if (!user?.kycLevel) return navigate('/kyc');
+      if (!user?.kycLevel) return navigate('/start');
       return navigate('/ramp');
     },
     [data, getValues, navigate, user],
