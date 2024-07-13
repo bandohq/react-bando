@@ -10,17 +10,15 @@ import { currencyImgPathV2 as currencyImgPath } from '@config/constants/currenci
 
 import formatNumber from '@helpers/formatNumber';
 import { TransactionTypeIcon } from '@components/TransactionsTable/CellDetailWithIcon';
-import { CircularButton } from '@components/forms/RampForm/RampTitle';
+import RampDirectionTabs from '@components/RampDirectionTabs';
 
 import DialogDrawer from '@components/DialogDrawer';
-import Title from '@components/PageTitle';
 import ErrorBox from '@components/forms/ErrorBox';
 import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import NetworkTiles from './NetworkTiles';
 import TokensList from './TokensList';
 
-import UpDownArrow from '../../assets/UpDownArrow.svg';
 import TokenPlaceholder from '../../assets/TokenPlaceholder.svg';
 import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
 
@@ -202,9 +200,7 @@ export default function TokensWidget({
       <div id="network-list" />
 
       <Grid xs={12} sm={12} md={12}>
-        <Title variant="h2" sx={{ fontFamily: 'Kanit', mb: 1, fontSize: 20, color: 'ink.i900' }}>
-          Entra al mundo cripto
-        </Title>
+        <RampDirectionTabs handleChange={() => switchOperation()} />
       </Grid>
 
       <TokensContainer container spacing={2} sx={{ position: 'relative' }}>
@@ -299,7 +295,7 @@ export default function TokensWidget({
             </CurrencyTokenButton>
           </Grid>
 
-          <CircularButton
+          {/*<CircularButton
             role="button"
             onClick={() => switchOperation()}
             sx={{
@@ -311,7 +307,7 @@ export default function TokensWidget({
             }}
           >
             <img src={UpDownArrow} alt="" width={42} height={42} />
-          </CircularButton>
+          </CircularButton>*/}
         </>
       </TokensContainer>
 
