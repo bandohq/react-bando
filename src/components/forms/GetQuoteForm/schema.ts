@@ -29,11 +29,11 @@ const schema = yup.object().shape({
       is: 'deposit',
       then: (schema) =>
         schema
-          .min(20, 'El monto mínimo es de $20.00 MXN')
+          .min(100, 'El monto mínimo es de $100.00 MXN')
           .max(500000, 'El monto máximo es de $500,000 MXN'),
       otherwise: (schema) =>
         schema
-          .min(2, 'El monto mínimo es de $2.00 USD')
+          .min(5, 'El monto mínimo es de $5.00 USD')
           .max(10000, 'El monto máximo es de $10,000 USD'),
     })
     .required(),

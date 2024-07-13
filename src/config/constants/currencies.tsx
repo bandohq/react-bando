@@ -4,6 +4,7 @@ import Polygon from '../../assets/networks/polygon.png';
 import Arbitrum from '../../assets/networks/arbitrum.png';
 import Optimism from '../../assets/networks/optimism.png';
 import Ethereum from '../../assets/networks/ethereum.png';
+import CELO from '../../assets/networks/celo.png';
 
 import WETH from '../../assets/chains/weth.png';
 import Usdc from '../../assets/chains/usdc.png';
@@ -16,6 +17,8 @@ import MAGA from '../../assets/chains/maga.png';
 import BRETT from '../../assets/chains/brett.png';
 import DEGEN from '../../assets/chains/degen.png';
 import MPETH from '../../assets/chains/mpeth.png';
+import CUSD from '../../assets/chains/cusd.png';
+import CEUR from '../../assets/chains/ceur.png';
 
 import CurrencyImg from '@components/CurrencyImg';
 
@@ -67,6 +70,9 @@ export const currencyImg = {
   BRETT: <CurrencyImg src={BRETT} />,
   DEGEN: <CurrencyImg src={DEGEN} />,
   mpETH: <CurrencyImg src={MPETH} />,
+  cUSD: <CurrencyImg src={CUSD} />,
+  cEUR: <CurrencyImg src={CEUR} />,
+  CELO: <CurrencyImg src={CELO} />,
 };
 
 export const currencyImgPath = {

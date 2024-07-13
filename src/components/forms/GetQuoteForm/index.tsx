@@ -104,7 +104,7 @@ export default function GetQuoteForm() {
       );
 
       if (!user?.email && !user?.id) return navigate('/signin');
-      if (!user?.kycLevel) return navigate('/kyc');
+      if (!user?.kycLevel) return navigate('/start');
       return navigate('/ramp');
     },
     [data, getValues, navigate, user],
@@ -230,7 +230,7 @@ export default function GetQuoteForm() {
               label="Envias"
               type="text"
               inputMode="numeric"
-              {...register('baseAmount', { onChange: onQuantityChange })}
+              {...register('baseAmount', { onBlur: onQuantityChange })}
               helpText={formState.errors.baseAmount?.message}
               error={!!formState.errors.baseAmount?.message}
             />
