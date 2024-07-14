@@ -100,6 +100,7 @@ export default function GetQuoteFormV2() {
             type: 'required',
             message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
           });
+          return;
         }
 
         if (quoteValue < minValue) {
@@ -107,6 +108,7 @@ export default function GetQuoteFormV2() {
             type: 'required',
             message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
           });
+          return;
         }
 
         if (quoteValue >= minValue && quoteValue <= maxValue) {
