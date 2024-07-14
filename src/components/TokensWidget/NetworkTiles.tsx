@@ -53,13 +53,10 @@ export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTil
   const _networks = useMemo(() => {
     const activeNetwork = networks.find((network) => network?.key === networkObj?.key);
     const activeInMain = previewNetworks.find((network) => network?.key === networkObj?.key);
-    console.log({ activeNetwork, activeInMain });
     const filteredNetworks = networks.filter((network) => network?.key !== networkObj?.key);
 
     return activeNetwork && !activeInMain ? [activeNetwork, ...filteredNetworks] : filteredNetworks;
   }, [networks, networkObj, previewNetworks]);
-
-  console.log({ previewNetworks });
 
   const networkListElement = document.getElementById('network-list');
 

@@ -108,7 +108,6 @@ export default function TransactionDetail({
   operationType,
 }: TransactionDetailProps) {
   const { t } = useTranslation('transactionDetail');
-  console.log({ transaction });
 
   const navigate = useNavigate();
   const isDeposit = (transaction?.operationType ?? operationType) === 'deposit';

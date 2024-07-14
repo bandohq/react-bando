@@ -240,6 +240,7 @@ export default function TokensWidget({
                         onClick={(e) => {
                           e.stopPropagation();
                         }}
+                        onBlur={() => onQuantityChange()}
                         onValueChange={(value) => {
                           const baseValue = String(value);
                           const baseAmountValue = String(baseAmount);
@@ -249,7 +250,7 @@ export default function TokensWidget({
                             const parsedValue = parseFloat(baseValue);
                             if (networkObj?.chainId && tokenObj?.id && parsedValue > 0) {
                               resetQuote();
-                              onQuantityChange();
+                              // onQuantityChange();
                             }
                           }
                         }}

@@ -2,7 +2,8 @@ import BoxContainer from '@components/BoxContainer';
 import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import debounce from 'lodash/debounce';
 
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,6 +19,7 @@ import { CircularProgress } from '@mui/material';
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
 
+const REQUEST_DEBOUNCE = 250;
 const HAS_ONLY_CURRENCY = true;
 const DEFAULT_CURRENCY = 'MXN';
 const DEFAULT_OPERATION = 'deposit';
@@ -75,13 +77,12 @@ export default function GetQuoteFormV2() {
     [data, methods, navigate, user],
   );
 
-  const onSubmit = useCallback(
-    async (formValues: GetQuoteFormValuesV2) => {
-      if (isMutating) return;
-      if (Object.keys(methods.formState.errors).length) return;
-
-      if (data?.quoteAmount) return navigateForm();
+  const debouncedRequest = useCallback(
+    async (submittedValues?: GetQuoteFormValuesV2) => {
+      const formValues = submittedValues ?? methods.getValues();
+      methods.clearErrors('baseAmount');
       setFormError('');
+      if (!formValues.baseAmount) return;
       try {
         const quote = await getQuote({
           baseAmount: formValues.baseAmount,
@@ -95,14 +96,14 @@ export default function GetQuoteFormV2() {
         const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
 
         if (quoteValue > maxValue) {
-          return methods.setError('baseAmount', {
+          methods.setError('baseAmount', {
             type: 'required',
             message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
           });
         }
 
         if (quoteValue < minValue) {
-          return methods.setError('baseAmount', {
+          methods.setError('baseAmount', {
             type: 'required',
             message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
           });
@@ -112,12 +113,33 @@ export default function GetQuoteFormV2() {
           methods.clearErrors('baseAmount');
         }
 
-        navigateForm(quote);
+        return quote;
+      } catch {
+        setFormError('Ha ocurrido un error.');
+        return null;
+      }
+    },
+    [methods, getQuote],
+  );
+
+  const onSubmit = useCallback(
+    async (formValues: GetQuoteFormValuesV2) => {
+      if (isMutating) return;
+      if (data?.quoteAmount) return navigateForm();
+
+      try {
+        const quote = await debouncedRequest(formValues);
+
+        if (quote) navigateForm(quote);
       } catch {
         setFormError('Ha ocurrido un error.');
       }
     },
-    [getQuote, isMutating, data, navigateForm, methods],
+    [isMutating, data, navigateForm, debouncedRequest],
+  );
+
+  const debouncedQuoteRequest = useRef(
+    debounce(debouncedRequest, REQUEST_DEBOUNCE, { leading: true }),
   );
 
   return (
@@ -129,6 +151,7 @@ export default function GetQuoteFormV2() {
           <TokensWidget
             onlyOneCurrency={HAS_ONLY_CURRENCY}
             defaultCurrency={DEFAULT_CURRENCY}
+            onQuantityChange={() => debouncedQuoteRequest.current()}
             resetQuote={() => resetQuote()}
             formError={formError}
             isLoadingQuote={isMutating}
