@@ -2,8 +2,7 @@ import BoxContainer from '@components/BoxContainer';
 import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import { useCallback, useRef, useState } from 'react';
-import debounce from 'lodash/debounce';
+import { useCallback, useState } from 'react';
 
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,7 +18,6 @@ import { CircularProgress } from '@mui/material';
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
 
-const REQUEST_DEBOUNCE = 250;
 const HAS_ONLY_CURRENCY = true;
 const DEFAULT_CURRENCY = 'MXN';
 const DEFAULT_OPERATION = 'deposit';
@@ -92,58 +90,34 @@ export default function GetQuoteFormV2() {
           network: formValues.networkObj.key ?? '',
         });
 
+        const quoteValue = parseFloat(String(quote?.quoteAmount ?? 0));
+        const minValue = formValues?.tokenObj?.minAllowance ?? 0;
+        const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
+
+        if (quoteValue > maxValue) {
+          return methods.setError('baseAmount', {
+            type: 'required',
+            message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
+          });
+        }
+
+        if (quoteValue < minValue) {
+          return methods.setError('baseAmount', {
+            type: 'required',
+            message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
+          });
+        }
+
+        if (quoteValue >= minValue && quoteValue <= maxValue) {
+          methods.clearErrors('baseAmount');
+        }
+
         navigateForm(quote);
       } catch {
         setFormError('Ha ocurrido un error.');
       }
     },
     [getQuote, isMutating, data, navigateForm, methods],
-  );
-
-  const debouncedRequest = useCallback(async () => {
-    const formValues = methods.getValues();
-    methods.clearErrors('baseAmount');
-    setFormError('');
-    if (!formValues.baseAmount) return;
-    try {
-      const quote = await getQuote({
-        baseAmount: formValues.baseAmount,
-        baseCurrency: formValues.baseCurrency,
-        quoteCurrency: formValues.quoteCurrency,
-        network: formValues.networkObj.key ?? '',
-      });
-
-      const quoteValue = parseFloat(String(quote?.quoteAmount ?? 0));
-      const minValue = formValues?.tokenObj?.minAllowance ?? 0;
-      const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
-
-      if (quoteValue > maxValue) {
-        methods.setError('baseAmount', {
-          type: 'required',
-          message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
-        });
-      }
-
-      if (quoteValue < minValue) {
-        methods.setError('baseAmount', {
-          type: 'required',
-          message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
-        });
-      }
-
-      if (quoteValue >= minValue && quoteValue <= maxValue) {
-        methods.clearErrors('baseAmount');
-      }
-
-      return quote;
-    } catch {
-      setFormError('Ha ocurrido un error.');
-      return null;
-    }
-  }, [methods, getQuote]);
-
-  const debouncedQuoteRequest = useRef(
-    debounce(debouncedRequest, REQUEST_DEBOUNCE, { leading: true }),
   );
 
   return (
@@ -155,7 +129,6 @@ export default function GetQuoteFormV2() {
           <TokensWidget
             onlyOneCurrency={HAS_ONLY_CURRENCY}
             defaultCurrency={DEFAULT_CURRENCY}
-            onQuantityChange={() => debouncedQuoteRequest.current()}
             resetQuote={() => resetQuote()}
             formError={formError}
             isLoadingQuote={isMutating}
