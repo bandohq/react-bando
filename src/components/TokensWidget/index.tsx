@@ -250,7 +250,6 @@ export default function TokensWidget({
                             const parsedValue = parseFloat(baseValue);
                             if (networkObj?.chainId && tokenObj?.id && parsedValue > 0) {
                               resetQuote();
-                              // onQuantityChange();
                             }
                           }
                         }}
