@@ -77,13 +77,12 @@ export default function GetQuoteFormV2() {
     [data, methods, navigate, user],
   );
 
-  const onSubmit = useCallback(
-    async (formValues: GetQuoteFormValuesV2) => {
-      if (isMutating) return;
-      if (Object.keys(methods.formState.errors).length) return;
-
-      if (data?.quoteAmount) return navigateForm();
+  const debouncedRequest = useCallback(
+    async (submittedValues?: GetQuoteFormValuesV2) => {
+      const formValues = submittedValues ?? methods.getValues();
+      methods.clearErrors('baseAmount');
       setFormError('');
+      if (!formValues.baseAmount) return;
       try {
         const quote = await getQuote({
           baseAmount: formValues.baseAmount,
@@ -92,55 +91,54 @@ export default function GetQuoteFormV2() {
           network: formValues.networkObj.key ?? '',
         });
 
-        navigateForm(quote);
+        const quoteValue = parseFloat(String(quote?.quoteAmount ?? 0));
+        const minValue = formValues?.tokenObj?.minAllowance ?? 0;
+        const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
+
+        if (quoteValue > maxValue) {
+          methods.setError('baseAmount', {
+            type: 'required',
+            message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
+          });
+          return;
+        }
+
+        if (quoteValue < minValue) {
+          methods.setError('baseAmount', {
+            type: 'required',
+            message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
+          });
+          return;
+        }
+
+        if (quoteValue >= minValue && quoteValue <= maxValue) {
+          methods.clearErrors('baseAmount');
+        }
+
+        return quote;
+      } catch {
+        setFormError('Ha ocurrido un error.');
+        return null;
+      }
+    },
+    [methods, getQuote],
+  );
+
+  const onSubmit = useCallback(
+    async (formValues: GetQuoteFormValuesV2) => {
+      if (isMutating) return;
+      if (data?.quoteAmount) return navigateForm();
+
+      try {
+        const quote = await debouncedRequest(formValues);
+
+        if (quote) navigateForm(quote);
       } catch {
         setFormError('Ha ocurrido un error.');
       }
     },
-    [getQuote, isMutating, data, navigateForm, methods],
+    [isMutating, data, navigateForm, debouncedRequest],
   );
-
-  const debouncedRequest = useCallback(async () => {
-    const formValues = methods.getValues();
-    methods.clearErrors('baseAmount');
-    setFormError('');
-    if (!formValues.baseAmount) return;
-    try {
-      const quote = await getQuote({
-        baseAmount: formValues.baseAmount,
-        baseCurrency: formValues.baseCurrency,
-        quoteCurrency: formValues.quoteCurrency,
-        network: formValues.networkObj.key ?? '',
-      });
-
-      const quoteValue = parseFloat(String(quote?.quoteAmount ?? 0));
-      const minValue = formValues?.tokenObj?.minAllowance ?? 0;
-      const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
-
-      if (quoteValue > maxValue) {
-        methods.setError('baseAmount', {
-          type: 'required',
-          message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
-        });
-      }
-
-      if (quoteValue < minValue) {
-        methods.setError('baseAmount', {
-          type: 'required',
-          message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
-        });
-      }
-
-      if (quoteValue >= minValue && quoteValue <= maxValue) {
-        methods.clearErrors('baseAmount');
-      }
-
-      return quote;
-    } catch {
-      setFormError('Ha ocurrido un error.');
-      return null;
-    }
-  }, [methods, getQuote]);
 
   const debouncedQuoteRequest = useRef(
     debounce(debouncedRequest, REQUEST_DEBOUNCE, { leading: true }),

@@ -41,19 +41,24 @@ export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTil
   const [openNetworkList, setOpenNetworkList] = useState(false);
   const { networks = [] } = useNetworks();
   // const _networks = useMemo(() => [...networks, ...networks, ...networks, ...networks], [networks]);
-  const _networks = useMemo(() => [...networks], [networks]);
 
-  const networkListElement = document.getElementById('network-list');
-
-  const _previewNetworks = useMemo(() => fillArray(5, _networks, MAX_PREVIEW_LENGHT), [_networks]);
+  const _previewNetworks = useMemo(() => fillArray(5, networks, MAX_PREVIEW_LENGHT), [networks]);
   const previewNetworks = useMemo(() => {
     const lastItem = _previewNetworks[_previewNetworks.length - 1];
     const newArr = [..._previewNetworks] as unknown as PreviewNetworks;
-    if (lastItem) {
-      newArr.push({ showNetworkList: true });
-    }
+    if (lastItem) newArr.push({ showNetworkList: true });
     return newArr;
   }, [_previewNetworks]);
+
+  const _networks = useMemo(() => {
+    const activeNetwork = networks.find((network) => network?.key === networkObj?.key);
+    const activeInMain = previewNetworks.find((network) => network?.key === networkObj?.key);
+    const filteredNetworks = networks.filter((network) => network?.key !== networkObj?.key);
+
+    return activeNetwork && !activeInMain ? [activeNetwork, ...filteredNetworks] : filteredNetworks;
+  }, [networks, networkObj, previewNetworks]);
+
+  const networkListElement = document.getElementById('network-list');
 
   if (!_networks) return null;
 
