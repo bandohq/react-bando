@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema, { ConfirmRampFormValues } from './schema';
@@ -32,6 +32,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
   const { quote, operationType: opType, networkObj, tokenObj } = getStorageQuote();
 
   const [formError, setFormError] = useState<string>('');
+  const [limitAlert, setLimitAlert] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const { user } = useUser();
@@ -75,6 +76,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         clabe: formValues?.clabe ?? '',
       });
     } catch (err) {
+      setLimitAlert(false);
       setFormError(t(getErrorMessage((err as AxiosError).response?.status)));
       return;
     }
@@ -91,9 +93,11 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
       navigate(`/transactions/${txn?.transactionId}`);
     } catch (err) {
       if ((err as AxiosError).response?.status === 403) {
-        setFormError(t('errors.limit'));
+        setFormError('');
+        setLimitAlert(true);
         return;
       }
+      setLimitAlert(false);
       setFormError(t('errors.txn'));
       return;
     }
@@ -165,7 +169,25 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                 <ErrorBox>{formError}</ErrorBox>
               </Grid>
             )}
-
+            {!!limitAlert && (
+              <Grid xs={12}>
+                <ErrorBox mode="alert" align="left">
+                  <Trans
+                    t={t}
+                    i18nKey="errors.limit"
+                    components={{
+                      strong: <strong />,
+                      p: <p />,
+                      h4: <h4 />,
+                      ol: <ol />,
+                      li: <li />,
+                      h6: <h6 />,
+                      br: <br />,
+                    }}
+                  />
+                </ErrorBox>
+              </Grid>
+            )}
             <Grid xs={12}>
               <BandoButton
                 type="submit"
