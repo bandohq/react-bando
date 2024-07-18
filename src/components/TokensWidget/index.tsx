@@ -240,7 +240,7 @@ export default function TokensWidget({
                         onClick={(e) => {
                           e.stopPropagation();
                         }}
-                        onBlur={() => onQuantityChange()}
+                        onChange={() => onQuantityChange()}
                         onValueChange={(value) => {
                           const baseValue = String(value);
                           const baseAmountValue = String(baseAmount);
