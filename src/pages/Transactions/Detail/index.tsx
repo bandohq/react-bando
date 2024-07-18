@@ -19,6 +19,8 @@ export default function TransactionDetail() {
         showFooter
         noArrow
         success
+        networkObj={null}
+        tokenObj={null}
       />
     </CleanLayout>
   );

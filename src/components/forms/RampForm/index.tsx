@@ -29,7 +29,7 @@ type RampFormProps = {
 
 export default function RampForm({ noContainer = false }: Readonly<RampFormProps>) {
   const { t } = useTranslation('ramp');
-  const { quote, network = '', operationType: opType } = getStorageQuote();
+  const { quote, operationType: opType, networkObj, tokenObj } = getStorageQuote();
 
   const [formError, setFormError] = useState<string>('');
   const [limitAlert, setLimitAlert] = useState<boolean>(false);
@@ -41,7 +41,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
   const isLoading = isRecipientMutating || isTransactionMutation;
 
   const { register, handleSubmit, formState, watch, setValue } = useForm<ConfirmRampFormValues>({
-    resolver: yupResolver(schema(network ?? '')),
+    resolver: yupResolver(schema(networkObj?.key ?? '')),
     mode: 'onBlur',
     defaultValues: {
       address: '',
@@ -66,7 +66,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
 
     try {
       await postRecipient({
-        network: network ?? '',
+        network: networkObj?.key ?? '',
         email: user?.email ?? '',
         asset: quote?.quoteCurrency ?? '',
         address: formValues?.address ?? '',
@@ -86,7 +86,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         ...(quote as Quote),
         accountAddress:
           (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? '',
-        accountNetwork: network ?? '',
+        accountNetwork: networkObj?.key ?? '',
         operationType: formValues?.operationType ?? '',
       });
       deleteStorageQuote();
@@ -115,7 +115,8 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
           noContainer={noContainer}
           quoteRateInverse={quote?.quoteRateInverse}
           quoteRate={quote?.quoteRate}
-          network={network ?? ''}
+          networkObj={networkObj}
+          tokenObj={tokenObj}
           success={false}
           operationType={operationType}
         >

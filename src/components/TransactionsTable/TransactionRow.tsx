@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import StatusBadge from '@components/StatusBadge';
 import mapProviderStatus from '@components/TransactionDetails/mapProviderStatus';
-import { networkCurrencyInfo } from '@config/constants/networks';
+import { currencyImgPathV2 as currencyImgPath } from '@config/constants/currencies';
 
 import ArrowDown from '../../assets/ArrowDown.svg';
 import CopyImg from '../../assets/CopyToClipboard.svg';
@@ -41,7 +41,7 @@ const DepositArrow = styled(ArrowCircleIcon)(({ theme }) => ({
   },
 }));
 
-const CurrencyContainerIcon = styled('span')(({ theme }) => ({
+export const CurrencyContainerIcon = styled('span')(({ theme }) => ({
   width: 32,
   height: 32,
   aspectRatio: '1/1',
@@ -81,16 +81,26 @@ function formatAmounts(amount: number, currency: string) {
 }
 
 function parseDataForRows(txn: Transaction) {
+  const isDeposit = txn.operationType === 'deposit';
+
   return {
     ...txn,
     quoteCurrency: txn.quoteCurrency.toUpperCase(),
     address: txn?.recipient ?? '',
-    networkIcon: networkCurrencyInfo[(txn?.networkConfig?.key ?? '').toLowerCase()]?.img,
+    networkIcon: txn?.networkConfig?.imageUrl,
     sent: formatAmounts(txn.baseAmount, txn.baseCurrency),
     received: formatAmounts(txn.quoteAmount, txn.quoteCurrency),
-    sentIcon: networkCurrencyInfo[(txn.baseCurrency ?? '').toLowerCase()]?.img,
-    receivedIcon: networkCurrencyInfo[(txn.quoteCurrency ?? '').toLowerCase()]?.img,
-    operationIcon: txn.operationType === 'withdraw' ? <ArrowCircleIcon /> : <DepositArrow />,
+    ...(isDeposit
+      ? {
+          sentIcon: currencyImgPath[txn.baseCurrency as unknown as keyof typeof currencyImgPath],
+          receivedIcon: txn.asset?.imageUrl,
+        }
+      : {
+          sentIcon: txn.asset?.imageUrl,
+          receivedIcon:
+            currencyImgPath[txn.quoteCurrency as unknown as keyof typeof currencyImgPath],
+        }),
+    operationIcon: !isDeposit ? <ArrowCircleIcon /> : <DepositArrow />,
   };
 }
 export type TransactionRowProps = {
