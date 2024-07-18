@@ -18,7 +18,6 @@ import { CircularProgress } from '@mui/material';
 
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
-import form from '@translations/es/form';
 
 const REQUEST_DEBOUNCE = 250;
 const HAS_ONLY_CURRENCY = true;
