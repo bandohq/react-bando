@@ -23,11 +23,11 @@ const REQUEST_DEBOUNCE = 250;
 const HAS_ONLY_CURRENCY = true;
 const DEFAULT_CURRENCY = 'MXN';
 const DEFAULT_OPERATION = 'deposit';
-const MIN_DEFAULT_AMOUNTS: { [key: string]: number } =  {
-  'MXN': 100,
-  'USDC': 5,
-  'USDT': 5,
-  'ETH': 0.0001,
+const MIN_DEFAULT_AMOUNTS: { [key: string]: number } = {
+  MXN: 100,
+  USDC: 5,
+  USDT: 5,
+  ETH: 0.0001,
 };
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
@@ -97,12 +97,14 @@ export default function GetQuoteFormV2() {
           quoteCurrency: formValues.quoteCurrency,
           network: formValues.networkObj.key ?? '',
         });
-
-        const quoteValue = parseFloat(String(quote?.quoteAmount ?? 0));
+        const tokenValue =
+          formValues.operationType === 'deposit'
+            ? parseFloat(String(quote?.quoteAmount ?? 0))
+            : parseFloat(String(quote?.baseAmount ?? 0));
         const minValue = formValues?.tokenObj?.minAllowance ?? 0;
         const maxValue = formValues?.tokenObj?.maxAllowance ?? 0;
 
-        if (quoteValue > maxValue) {
+        if (tokenValue > maxValue) {
           methods.setError('baseAmount', {
             type: 'required',
             message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
@@ -110,7 +112,7 @@ export default function GetQuoteFormV2() {
           return;
         }
 
-        if (quoteValue < minValue) {
+        if (tokenValue < minValue) {
           methods.setError('baseAmount', {
             type: 'required',
             message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
@@ -118,7 +120,7 @@ export default function GetQuoteFormV2() {
           return;
         }
 
-        if (quoteValue >= minValue && quoteValue <= maxValue) {
+        if (tokenValue >= minValue && tokenValue <= maxValue) {
           methods.clearErrors('baseAmount');
         }
 
