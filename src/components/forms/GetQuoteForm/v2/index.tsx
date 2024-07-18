@@ -25,7 +25,7 @@ const DEFAULT_CURRENCY = 'MXN';
 const DEFAULT_OPERATION = 'deposit';
 const MIN_DEFAULT_AMOUNTS: { [key: string]: number } = {
   MXN: 100,
-  USDD: 5,
+  USDC: 5,
   USDT: 5,
   ETH: 0.0001,
 };
@@ -97,7 +97,6 @@ export default function GetQuoteFormV2() {
           quoteCurrency: formValues.quoteCurrency,
           network: formValues.networkObj.key ?? '',
         });
-
         const tokenValue =
           formValues.operationType === 'deposit'
             ? parseFloat(String(quote?.quoteAmount ?? 0))
