@@ -42,12 +42,16 @@ const mapToken = (token: Record<string, unknown>) => ({
 });
 
 export const getTokens: GetTokensRequest = (endpoint) =>
-  axios.get(endpoint).then(({ data }) => {
-    const tokenArr = (data.length ? data : data.results) ?? [];
-    return {
-      count: data?.count,
-      next: data?.next,
-      previous: data?.previous,
-      tokens: tokenArr.map((token: Record<string, unknown>) => mapToken(token)),
-    };
-  });
+  axios
+    .get(endpoint, {
+      headers: { Authorization: '' },
+    })
+    .then(({ data }) => {
+      const tokenArr = (data.length ? data : data.results) ?? [];
+      return {
+        count: data?.count,
+        next: data?.next,
+        previous: data?.previous,
+        tokens: tokenArr.map((token: Record<string, unknown>) => mapToken(token)),
+      };
+    });

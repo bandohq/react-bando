@@ -17,16 +17,20 @@ type TokenResponse = Network[];
 type GetNetworksRequest = (endpoint: string) => Promise<TokenResponse>;
 
 export const getNetworks: GetNetworksRequest = (endpoint) =>
-  axios.get(endpoint).then(({ data }) => {
-    return (data ?? []).map((network: Record<string, unknown>) => ({
-      name: network.name,
-      key: network.key,
-      logoUrl: network.logo_url,
-      chainId: network.chain_id,
-      rpcUrl: network.rpc_url,
-      explorerUrl: network.explorer_url,
-      isTestnet: network.is_testnet,
-      networkType: network.network_type,
-      isActive: network.is_active,
-    }));
-  });
+  axios
+    .get(endpoint, {
+      headers: { Authorization: '' },
+    })
+    .then(({ data }) => {
+      return (data ?? []).map((network: Record<string, unknown>) => ({
+        name: network.name,
+        key: network.key,
+        logoUrl: network.logo_url,
+        chainId: network.chain_id,
+        rpcUrl: network.rpc_url,
+        explorerUrl: network.explorer_url,
+        isTestnet: network.is_testnet,
+        networkType: network.network_type,
+        isActive: network.is_active,
+      }));
+    });
