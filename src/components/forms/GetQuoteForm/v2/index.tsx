@@ -18,11 +18,18 @@ import { CircularProgress } from '@mui/material';
 
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
+import form from '@translations/es/form';
 
 const REQUEST_DEBOUNCE = 250;
 const HAS_ONLY_CURRENCY = true;
 const DEFAULT_CURRENCY = 'MXN';
 const DEFAULT_OPERATION = 'deposit';
+const MIN_DEFAULT_AMOUNTS: { [key: string]: number } =  {
+  'MXN': 100,
+  'USDC': 5,
+  'USDT': 5,
+  'ETH': 0.0001,
+};
 
 export const CurrencyImg = styled('img')(({ theme }) => ({
   marginTop: '-10px',
@@ -71,7 +78,7 @@ export default function GetQuoteFormV2() {
       );
 
       if (!user?.email && !user?.id) return navigate('/signin');
-      if (!user?.kycLevel) return navigate('/kyc');
+      if (!user?.kycLevel) return navigate('/start');
       return navigate('/ramp');
     },
     [data, methods, navigate, user],
@@ -83,6 +90,7 @@ export default function GetQuoteFormV2() {
       methods.clearErrors('baseAmount');
       setFormError('');
       if (!formValues.baseAmount) return;
+      if (formValues.baseAmount < MIN_DEFAULT_AMOUNTS[formValues.baseCurrency]) return;
       try {
         const quote = await getQuote({
           baseAmount: formValues.baseAmount,
