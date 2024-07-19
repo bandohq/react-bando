@@ -98,13 +98,13 @@ export default function TokensList({
                           },
                         }}
                       >
+                        {formatWalletNumber(token?.address ?? '')}
                         <TokenLink
                           href={`${explorerUrl}address/${token?.address}`}
                           target="_blank"
                           onClick={(e) => e.stopPropagation()}
                           rel="noopener noreferrer"
                         >
-                          {formatWalletNumber(token?.address ?? '')}
                           <OpenInNewIcon width={16} height={16} />
                         </TokenLink>
                       </Box>
