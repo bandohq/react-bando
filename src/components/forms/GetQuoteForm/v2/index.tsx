@@ -165,6 +165,7 @@ export default function GetQuoteFormV2() {
             onQuantityChange={() => debouncedQuoteRequest.current()}
             resetQuote={() => resetQuote()}
             formError={formError}
+            setFormError={setFormError}
             isLoadingQuote={isMutating}
             rateText={
               isMutating ? (

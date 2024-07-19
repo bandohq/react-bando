@@ -39,6 +39,7 @@ type TokensWidgetProps = {
   onQuantityChange?: () => void;
   resetQuote?: () => void;
   formError?: string;
+  setFormError?: (error: string) => void;
   isLoadingQuote?: boolean;
 };
 
@@ -50,6 +51,7 @@ export default function TokensWidget({
   rateText = '',
   quote,
   formError,
+  setFormError = () => {},
 }: TokensWidgetProps) {
   const { t } = useTranslation('quote');
 
@@ -76,19 +78,19 @@ export default function TokensWidget({
   const onSelectNetwork = (network: Network) => {
     methods.setValue('tokenObj', {});
     if (operationType !== 'withdraw') methods.setValue('quoteCurrency', '');
+    setFormError('');
     methods.setValue('networkObj', network);
-    methods.setValue('baseAmount', 0);
     methods.clearErrors('baseAmount');
   };
 
   const onSelectToken = (token: Token) => {
     methods.setValue('tokenObj', token);
     methods.setValue(isDeposit ? 'quoteCurrency' : 'baseCurrency', token.key ?? token.name);
-    methods.setValue('baseAmount', 0);
-
+    setFormError('');
     resetQuote();
     setOpenSelectDrawer((prev) => !prev);
     methods.clearErrors('baseAmount');
+    onQuantityChange();
   };
 
   const switchOperation = () => {
@@ -294,20 +296,6 @@ export default function TokensWidget({
               </CurrencyAmount>
             </CurrencyTokenButton>
           </Grid>
-
-          {/*<CircularButton
-            role="button"
-            onClick={() => switchOperation()}
-            sx={{
-              position: 'absolute',
-              margin: '0 auto',
-              top: 'calc(50% - 19px)',
-              left: 'calc(50% - 29px)',
-              zIndex: 1000,
-            }}
-          >
-            <img src={UpDownArrow} alt="" width={42} height={42} />
-          </CircularButton>*/}
         </>
       </TokensContainer>
 
