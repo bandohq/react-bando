@@ -13,8 +13,10 @@ export const postAuthentication: PostAuthenticationRequest = (
   endpoint,
   { arg: { username, password } },
 ) =>
-  axios.post(endpoint, { username, password }).then(({ data }) => ({
-    refresh: data.refresh,
-    token: data.token,
-    kycLevel: data.kyc_level,
-  }));
+  axios
+    .post(endpoint, { username, password }, { headers: { Authorization: '' } })
+    .then(({ data }) => ({
+      refresh: data.refresh,
+      token: data.token,
+      kycLevel: data.kyc_level,
+    }));
