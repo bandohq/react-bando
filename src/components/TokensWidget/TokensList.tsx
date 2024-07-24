@@ -80,7 +80,7 @@ export default function TokensList({
                       </TransactionTypeIcon>
                     </Box>
                     <Box>
-                      <p>{token?.key ?? token?.name}</p>
+                      <p>{token?.symbol ?? token?.name}</p>
                       <Box className="token-name">{token?.name}</Box>
                       <Box
                         className="token-address"

@@ -85,7 +85,7 @@ export default function TokensWidget({
 
   const onSelectToken = (token: Token) => {
     methods.setValue('tokenObj', token);
-    methods.setValue(isDeposit ? 'quoteCurrency' : 'baseCurrency', token.key ?? token.name);
+    methods.setValue(isDeposit ? 'quoteCurrency' : 'baseCurrency', token.symbol ?? token.name);
     setFormError('');
     resetQuote();
     setOpenSelectDrawer((prev) => !prev);
