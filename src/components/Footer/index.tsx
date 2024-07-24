@@ -1,10 +1,5 @@
 import Box, { BoxProps } from '@mui/material/Box';
-import Grid from '@mui/material/Unstable_Grid2';
-import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-
+import { Grid, Link, Typography, Container, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import XIcon from '@mui/icons-material/X';
 import Logo from '../../assets/logo_white.svg';
@@ -39,7 +34,7 @@ export default function Footer() {
       <Container
         maxWidth={false}
         sx={{
-          maxWidth: '1280px',
+          maxWidth: '1200px',
           minHeight: '200px',
           borderTop: '1px solid',
           borderColor: 'primary.contrastText',
@@ -47,10 +42,10 @@ export default function Footer() {
         }}
       >
         <Grid container spacing={2} justifyContent="space-between">
-          <Grid xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <FooterLogo src={Logo} loading="lazy" alt="" aria-label="Bando footer logo" />
           </Grid>
-          <Grid xs={6} sm={3} md={2}>
+          <Grid item xs={6} sm={3} md={2}>
             <Typography
               variant="subtitle1"
               sx={{ color: 'primary.contrastText', fontWeight: 700 }}
@@ -64,8 +59,11 @@ export default function Footer() {
             <FooterLink href="https://academy.bando.cool" target="_blank" display="block">
               Bando Academy
             </FooterLink>
+            <FooterLink href="https://status.bando.cool" target="_blank" display="block">
+              Status
+            </FooterLink>
           </Grid>
-          <Grid xs={6} sm={3} md={2}>
+          <Grid item xs={6} sm={3} md={2}>
             <Typography
               variant="subtitle1"
               sx={{ color: 'primary.contrastText', fontWeight: 700 }}
@@ -79,11 +77,11 @@ export default function Footer() {
             <FooterLink href="/terms" display="block">
               Términos y Condiciones
             </FooterLink>
-            <FooterLink href="mailto:hola@bando.cool" display="block">
+            <FooterLink href="mailto:soporte@bando.cool" display="block">
               Contacto
             </FooterLink>
           </Grid>
-          <Grid xs={6} sm={3} md={2}>
+          <Grid item xs={6} sm={3} md={2}>
             <Typography
               variant="subtitle1"
               sx={{ color: 'primary.contrastText', fontWeight: 700 }}
