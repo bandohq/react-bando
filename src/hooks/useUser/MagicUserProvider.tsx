@@ -52,6 +52,8 @@ const MagicUserProvider = ({ children }: PropsWithChildren) => {
         const userInfo = (await magic?.user.getInfo()) as Partial<User>;
         setUserData({ email: userInfo?.email, publicAddress: userInfo?.publicAddress });
         setDataLoaded(true);
+      } catch {
+        // NOTE: Prevent internal user error from magic
       } finally {
         setIsLoading(false);
       }

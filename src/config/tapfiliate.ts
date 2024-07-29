@@ -1,9 +1,16 @@
 import Tap from '@tapfiliate/tapfiliate-js';
+import * as Sentry from '@sentry/react';
+
 import env from './env';
 
 export default function initTapfiliate() {
-  Tap.init(env.tapfiliateAccountId);
-  Tap.detect();
+  try {
+    Tap.init(env.tapfiliateAccountId);
+    Tap.detect();
+  } catch (err) {
+    // NOTE: Notify Sentry of error
+    Sentry.captureException(err);
+  }
 }
 
 export function tapfiliateConversion(
