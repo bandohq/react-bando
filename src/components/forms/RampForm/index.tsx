@@ -18,7 +18,7 @@ import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
 import useTransaction from '@hooks/useTransaction';
 import getStorageQuote, { deleteStorageQuote } from '@helpers/getStorageQuote';
-import { tapfiliateConversion } from '@config/tapfiliate';
+// import { tapfiliateConversion } from '@config/tapfiliate';
 
 import { checkNumberLength, allowOnlyNumbers } from '@helpers/inputs';
 import { Quote } from '@hooks/useQuote/requests';
