@@ -91,10 +91,12 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         operationType: formValues?.operationType ?? '',
       });
 
-      tapfiliateConversion(txn.id, txn.quoteAmount, {
-        baseCurrency: txn.baseCurrency,
-        quoteCurrency: txn.quoteCurrency,
-      });
+      // TODO: This most likely does not belong here, we need to figure out how to
+      // send the conversition event on completed txn
+      // tapfiliateConversion(txn.id, txn.quoteAmount, {
+      //   baseCurrency: txn.baseCurrency,
+      //   quoteCurrency: txn.quoteCurrency,
+      // });
       deleteStorageQuote();
       navigate(`/transactions/${txn?.transactionId}`);
     } catch (err) {
