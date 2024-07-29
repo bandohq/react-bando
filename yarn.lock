@@ -1993,6 +1993,11 @@
   resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.8.3.tgz#9db61ab2a96e43d9e035b1cfd82eeede6d52f171"
   integrity sha512-vd2A2TnM5lbnWZnHi9B+L2gPtkSeOtJOAw358JqokIH1+v2J7vUAzFVPwB/wrye12RFOurffXu33plm4uQ+JBQ==
 
+"@tapfiliate/tapfiliate-js@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@tapfiliate/tapfiliate-js/-/tapfiliate-js-1.0.2.tgz#9db4a7bd5fe96688b26ecb7e7ba1904d39b41eaf"
+  integrity sha512-W1byQF2aFAcMmlWF8QxpGQ8oueHF1p85+g+U/aMXlB5eJelMdCOvPr7q+FZ66umFcDRhcjcszO9dXlX9Nolj+w==
+
 "@testing-library/dom@^9.0.0":
   version "9.3.4"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-9.3.4.tgz#50696ec28376926fec0a1bf87d9dbac5e27f60ce"

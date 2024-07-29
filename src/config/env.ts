@@ -3,6 +3,7 @@ const authCookieName = process.env.AUTH_COOKIE_NAME || '';
 const rampDataLocalStorage = 'bando_ramp_data';
 const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY ?? '';
 const intercomAppId = process.env.INTERCOM_APP_ID ?? '';
+const tapfiliateAccountId = process.env.TAPFILIATE_ACCOUNT_ID ?? '';
 
 const magicLink = {
   secret: process.env.MAGIC_LINK_SECRET || '',
@@ -17,4 +18,5 @@ export default {
   rampDataLocalStorage,
   googleMapsApiKey,
   intercomAppId,
+  tapfiliateAccountId,
 };
