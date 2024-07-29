@@ -18,6 +18,7 @@ import useUser from '@hooks/useUser';
 import useRecipient from '@hooks/useRecipient';
 import useTransaction from '@hooks/useTransaction';
 import getStorageQuote, { deleteStorageQuote } from '@helpers/getStorageQuote';
+import { tapfiliateConversion } from '@config/tapfiliate';
 
 import { checkNumberLength, allowOnlyNumbers } from '@helpers/inputs';
 import { Quote } from '@hooks/useQuote/requests';
@@ -88,6 +89,11 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
           (formValues?.operationType === 'deposit' ? formValues?.address : formValues.clabe) ?? '',
         accountNetwork: networkObj?.key ?? '',
         operationType: formValues?.operationType ?? '',
+      });
+
+      tapfiliateConversion(txn.id, txn.quoteAmount, {
+        baseCurrency: txn.baseCurrency,
+        quoteCurrency: txn.quoteCurrency,
       });
       deleteStorageQuote();
       navigate(`/transactions/${txn?.transactionId}`);

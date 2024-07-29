@@ -7,6 +7,7 @@ import MagicUserProvider from '@hooks/useUser/MagicUserProvider';
 import RemoteConfigProvider from '@hooks/useRemoteConfig/RemoteConfigProvider';
 
 import initFirebase from '@config/firebase';
+import initTapfiliate from '@config/tapfiliate';
 
 import router from 'routes/index.tsx';
 import theme from '@config/theme.ts';
@@ -19,6 +20,7 @@ import './index.css';
 
 setupDateLocale();
 initFirebase();
+initTapfiliate();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
