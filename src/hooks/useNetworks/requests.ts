@@ -13,12 +13,17 @@ export type Network = {
   showNetworkList: never;
 };
 
-type TokenResponse = Network[];
-type GetNetworksRequest = (endpoint: string) => Promise<TokenResponse>;
+type NetworkResponse = Network[];
+type GetNetworksRequest = (
+  endpoint: string,
+  direction: 'deposit' | 'withdraw',
+) => Promise<NetworkResponse>;
 
-export const getNetworks: GetNetworksRequest = (endpoint) =>
-  axios
+export const getNetworks: GetNetworksRequest = (endpoint, direction = 'deposit') => {
+  const dir = direction === 'deposit' ? 'ON' : 'OFF';
+  return axios
     .get(endpoint, {
+      params: { direction: dir },
       headers: { Authorization: '' },
     })
     .then(({ data }) => {
@@ -34,3 +39,4 @@ export const getNetworks: GetNetworksRequest = (endpoint) =>
         isActive: network.is_active,
       }));
     });
+};

@@ -30,16 +30,21 @@ type PreviewNetworks = PreviewNetworkItem[];
 
 type NetworkTilesProps = {
   networkObj?: Partial<Network>;
+  operationType?: 'deposit' | 'withdraw';
   onSelectNetwork: (network: Network) => void;
 };
 
 const MAX_PREVIEW_LENGHT = 4;
 
-export default function NetworkTiles({ networkObj, onSelectNetwork }: NetworkTilesProps) {
+export default function NetworkTiles({
+  operationType,
+  networkObj,
+  onSelectNetwork,
+}: NetworkTilesProps) {
   const id = useId();
 
   const [openNetworkList, setOpenNetworkList] = useState(false);
-  const { networks = [] } = useNetworks();
+  const { networks = [] } = useNetworks(operationType);
   // const _networks = useMemo(() => [...networks, ...networks, ...networks, ...networks], [networks]);
 
   const _previewNetworks = useMemo(() => fillArray(5, networks, MAX_PREVIEW_LENGHT), [networks]);
