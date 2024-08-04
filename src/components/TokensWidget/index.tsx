@@ -163,7 +163,11 @@ export default function TokensWidget({
         }}
         titleContent={
           <>
-            <NetworkTiles networkObj={networkObj} onSelectNetwork={onSelectNetwork} />
+            <NetworkTiles
+              operationType={operationType}
+              networkObj={networkObj}
+              onSelectNetwork={onSelectNetwork}
+            />
             <Box id="search-tokens" sx={{ width: '100%' }} />
             <Grid xs={12} sm={12} md={12} spacing={2} sx={{ px: 0, pb: 0 }}>
               <Input

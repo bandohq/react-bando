@@ -4,11 +4,15 @@ import { getNetworks } from './requests';
 import endpoints from '@config/endpoints';
 import { useCallback } from 'react';
 
-export default function useNetworks() {
+export default function useNetworks(direction: 'deposit' | 'withdraw' = 'deposit') {
   const { mutate } = useSWRConfig();
-  const { data: networks, ...queryReturn } = useSWR(endpoints.networks, getNetworks, {
-    revalidateOnFocus: false,
-  });
+  const { data: networks, ...queryReturn } = useSWR(
+    endpoints.networks,
+    () => getNetworks(endpoints.networks, direction),
+    {
+      revalidateOnFocus: false,
+    },
+  );
 
   const refetchNetworks = useCallback(() => {
     mutate(endpoints.networks);
