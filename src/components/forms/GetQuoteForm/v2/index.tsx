@@ -161,7 +161,6 @@ export default function GetQuoteFormV2() {
         <form onSubmit={isMutating ? undefined : methods.handleSubmit(onSubmit)}>
           <TokensWidget
             onlyOneCurrency={HAS_ONLY_CURRENCY}
-            defaultCurrency={DEFAULT_CURRENCY}
             onQuantityChange={() => debouncedQuoteRequest.current()}
             resetQuote={() => resetQuote()}
             formError={formError}

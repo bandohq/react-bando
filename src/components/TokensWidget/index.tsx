@@ -33,7 +33,6 @@ import { OPERATION_TYPES } from '@hooks/useTransaction/requests';
 
 type TokensWidgetProps = {
   onlyOneCurrency?: boolean;
-  defaultCurrency?: string;
   rateText?: ReactNode;
   quote?: Quote | null;
   onQuantityChange?: () => void;
@@ -44,7 +43,6 @@ type TokensWidgetProps = {
 };
 
 export default function TokensWidget({
-  defaultCurrency = '',
   onQuantityChange = () => {},
   resetQuote = () => {},
   isLoadingQuote = false,
@@ -112,7 +110,8 @@ export default function TokensWidget({
     }
 
     resetQuote();
-    onQuantityChange();
+    methods.setValue('baseAmount', 0);
+    setFormError('');
   };
 
   const chooseCurrencyComp = useCallback(
@@ -214,7 +213,40 @@ export default function TokensWidget({
           <Grid xs={12} sm={12} md={12}>
             <CurrencyTokenButton
               role="button"
-              disabled={baseCurrency === defaultCurrency}
+              onClick={() => setOpenSelectDrawer(!openSelectDrawer)}
+            >
+              <p>{t('selectNetwork')}</p>
+              <CurrencyAmount>
+                <Box sx={{ width: '38px' }}>
+                  <TransactionTypeIcon role="button" sx={{ backgroundColor: 'background.paper' }}>
+                    {isDeposit
+                      ? chooseCurrencyComp(quoteCurrency)
+                      : chooseCurrencyComp(baseCurrency)}
+                  </TransactionTypeIcon>
+                </Box>
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyItems: 'center',
+                  }}
+                >
+                  <input
+                    className="currency-input placeholder"
+                    value={isDeposit ? quoteCurrency : baseCurrency}
+                    placeholder={t('selectNetwork')}
+                    disabled
+                  />
+                  <span className="currency-amount">{networkObj?.name}</span>
+                </Box>
+              </CurrencyAmount>
+            </CurrencyTokenButton>
+          </Grid>
+          <Grid xs={12} sm={12} md={12}>
+            <CurrencyTokenButton
+              role="button"
+              disabled
               onClick={() => setOpenSelectDrawer(!openSelectDrawer)}
             >
               <p>{t('on')}</p>
@@ -263,39 +295,6 @@ export default function TokensWidget({
                     )}
                   />
                   <span className="currency-amount">{baseCurrency}</span>
-                </Box>
-              </CurrencyAmount>
-            </CurrencyTokenButton>
-          </Grid>
-
-          <Grid xs={12} sm={12} md={12}>
-            <CurrencyTokenButton
-              role="button"
-              disabled={quoteCurrency === defaultCurrency}
-              onClick={() => setOpenSelectDrawer(!openSelectDrawer)}
-            >
-              <p>{t('recipient')}</p>
-              <CurrencyAmount>
-                <Box sx={{ width: '38px' }}>
-                  <TransactionTypeIcon role="button" sx={{ backgroundColor: 'background.paper' }}>
-                    {chooseCurrencyComp(quoteCurrency)}
-                  </TransactionTypeIcon>
-                </Box>
-                <Box
-                  sx={{
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyItems: 'center',
-                  }}
-                >
-                  <input
-                    className="currency-input placeholder"
-                    value={quoteCurrency ?? ''}
-                    placeholder={t('selectNetwork')}
-                    disabled
-                  />
-                  <span className="currency-amount">{isDeposit ? networkObj?.name : ''}</span>
                 </Box>
               </CurrencyAmount>
             </CurrencyTokenButton>
