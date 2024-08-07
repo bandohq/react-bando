@@ -18,6 +18,7 @@ import BandoButton from '@components/Button';
 import Input from '@components/forms/Input';
 import NetworkTiles from './NetworkTiles';
 import TokensList from './TokensList';
+import { RouteAlert } from './alerts';
 
 import TokenPlaceholder from '../../assets/TokenPlaceholder.svg';
 import TokenPlaceholderGray from '../../assets/TokenPlaceholderGray.svg';
@@ -38,6 +39,7 @@ type TokensWidgetProps = {
   onQuantityChange?: () => void;
   resetQuote?: () => void;
   formError?: string;
+  notFoundMessage?: boolean;
   setFormError?: (error: string) => void;
   isLoadingQuote?: boolean;
 };
@@ -49,6 +51,7 @@ export default function TokensWidget({
   rateText = '',
   quote,
   formError,
+  notFoundMessage,
   setFormError = () => {},
 }: TokensWidgetProps) {
   const { t } = useTranslation('quote');
@@ -341,6 +344,11 @@ export default function TokensWidget({
       {!!formError && (
         <Grid md={12} sm={12} xs={12} sx={{}}>
           <ErrorBox>{formError}</ErrorBox>
+        </Grid>
+      )}
+      {!!notFoundMessage && (
+        <Grid md={12} sm={12} xs={12} sx={{}}>
+          <RouteAlert text={t('notFoundText')} title={t('notFoundTitle')} />
         </Grid>
       )}
 

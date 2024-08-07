@@ -1,5 +1,6 @@
 import BoxContainer from '@components/BoxContainer';
 import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 import { styled } from '@mui/material/styles';
 import { useCallback, useRef, useState } from 'react';
@@ -43,6 +44,7 @@ export default function GetQuoteFormV2() {
   const navigate = useNavigate();
   const { isMutating, quote: data, getQuote, resetQuote } = useQuote();
   const [formError, setFormError] = useState<string>('');
+  const [notFoundMessage, setNotFoundMessage] = useState<boolean>(false);
 
   const { user } = useUser();
   const methods = useForm<GetQuoteFormValuesV2>({
@@ -125,7 +127,12 @@ export default function GetQuoteFormV2() {
         }
 
         return quote;
-      } catch {
+      } catch (err) {
+        if ((err as AxiosError).response?.status === 404) {
+          setFormError('');
+          setNotFoundMessage(true);
+          return;
+        }
         setFormError('Ha ocurrido un error.');
         return null;
       }
@@ -165,6 +172,7 @@ export default function GetQuoteFormV2() {
             resetQuote={() => resetQuote()}
             formError={formError}
             setFormError={setFormError}
+            notFoundMessage={notFoundMessage}
             isLoadingQuote={isMutating}
             rateText={
               isMutating ? (
