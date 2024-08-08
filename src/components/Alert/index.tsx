@@ -11,9 +11,9 @@ const StyledAlert = styled(Alert)<AlertProps>({
   margin: '0 8px',
 });
 
-export default function BandoAlert({ title, text, severity, variant }: BandoAlertProps) {
+export default function BandoAlert({ title, text, severity, variant, icon }: BandoAlertProps) {
   return (
-    <StyledAlert severity={severity} variant={variant}>
+    <StyledAlert severity={severity} variant={variant} icon={icon || undefined}>
       {title && <AlertTitle>{title}</AlertTitle>}
       {text}
     </StyledAlert>
