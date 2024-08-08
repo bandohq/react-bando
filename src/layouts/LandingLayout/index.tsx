@@ -60,14 +60,21 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
           </Grid>
         </section>
         <section className="section">
-          <Grid container spacing={0}>
+          <Grid
+            container
+            spacing={0}
+            margin="auto"
+            alignItems="center"
+            sx={(theme) => ({ maxWidth: theme.breakpoints.values.lg })}
+          >
             <Grid
               md={6}
               xs={12}
               sx={{
                 display: { md: 'block', lg: 'block', sm: 'block', xs: 'block' },
-                padding: { md: '0 6rem 0 6rem', lg: '0 6rem 0 6rem', sm: '0', xs: '0' },
-                marginTop: '2rem',
+                padding: { md: '0 6rem 0 1rem', lg: '0 6rem 0 0', sm: '0', xs: '0' },
+                textAlign: { md: 'left', xs: 'center' },
+                marginTop: { md: 0, xs: '2rem' },
               }}
             >
               <h1 className="h3">
