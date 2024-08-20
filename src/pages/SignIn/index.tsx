@@ -55,7 +55,7 @@ export default function SignIn() {
   return (
     <EmptyLayout>
       <BoxContainer sx={{ maxWidth: { md: '60vw' }, width: { md: '30vw' }, m: '0 auto' }}>
-        <form onSubmit={handleSubmit(onSubmit)} style={{ padding: '40px 20px 40px 20px' }}>
+        <form onSubmit={handleSubmit(onSubmit)} style={{ padding: '41px 20px 40px 20px' }}>
           <PageTitle variant="h3" sx={{ textAlign: 'center' }}>
             Verifica tu Correo
           </PageTitle>
