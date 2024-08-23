@@ -54,6 +54,10 @@ export type Transaction = {
     decimals: number;
     imageUrl: string;
   };
+  commission?: {
+    amountUSD: number;
+    currency: string;
+  };
   createdAt?: string;
   updatedAt?: string;
   operationType?: string;
@@ -64,6 +68,7 @@ export type TransactionRequest = Record<string, unknown> & {
   cash_in_details: WithDrawCashinDetailsArgs | DepositCashinDetailsArgs;
   network_config?: Record<string, unknown>;
   asset?: Record<string, unknown>;
+  commission?: Record<string, unknown>;
 };
 
 export const mapTransactionData = (data: TransactionRequest): Transaction =>
@@ -97,6 +102,12 @@ export const mapTransactionData = (data: TransactionRequest): Transaction =>
         address: data.asset.address,
         decimals: data.asset.decimals,
         imageUrl: data.asset.image,
+      },
+    }),
+    ...(data.commission && {
+      commission: {
+        amountUSD: parseFloat(data.commission.quote_amount_usd as string),
+        currency: data.commission.quote_currency,
       },
     }),
     recipient: data.recipient,
