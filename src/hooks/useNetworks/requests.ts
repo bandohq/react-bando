@@ -25,7 +25,7 @@ export const getNetworks: GetNetworksRequest = (endpoint, direction = 'deposit')
   return axios
     .get(endpoint, {
       params: { direction: dir },
-      headers: { Authorization: '', 'X-bnd': bnd },
+      headers: { Authorization: '', Bnd: bnd },
     })
     .then(({ data }) => {
       return (data ?? []).map((network: Record<string, unknown>) => ({

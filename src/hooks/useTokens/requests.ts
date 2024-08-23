@@ -45,7 +45,7 @@ export const getTokens: GetTokensRequest = (endpoint) => {
   const bnd = localStorage.getItem('bnd') || 'not_set';
   return axios
       .get(endpoint, {
-        headers: {Authorization: '', 'X-bnd': bnd},
+        headers: {Authorization: '', Bnd: bnd},
       })
       .then(({data}) => {
         const tokenArr = (data.length ? data : data.results) ?? [];
