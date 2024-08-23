@@ -24,7 +24,7 @@ export default function useMagicLinkAuth() {
 
         const rsp = await trigger({ username: userInfo.email ?? '', password: did ?? '' });
         Cookies.set(env.authCookieName, rsp.token, { domain: window.location.hostname });
-        localStorage.setItem('bnd', userInfo.email || '');
+        localStorage.setItem('bnd', userInfo.email ?? '');
         return rsp;
       }
     } finally {
