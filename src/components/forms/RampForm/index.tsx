@@ -90,11 +90,12 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
         accountNetwork: networkObj?.key ?? '',
         operationType: formValues?.operationType ?? '',
       });
-
-      tapfiliateConversion(txn.id, txn.quoteAmount, {
-        baseCurrency: txn.baseCurrency,
-        quoteCurrency: txn.quoteCurrency,
-      });
+      if (!!txn.commission?.amountUSD && txn.commission?.amountUSD > 0) {
+        tapfiliateConversion(txn.id, txn.commission.amountUSD, {
+          baseCurrency: txn.baseCurrency,
+          quoteCurrency: txn.quoteCurrency,
+        });
+      }
       deleteStorageQuote();
       navigate(`/transactions/${txn?.transactionId}`);
     } catch (err) {
