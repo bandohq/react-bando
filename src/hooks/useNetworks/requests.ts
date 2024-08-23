@@ -21,10 +21,11 @@ type GetNetworksRequest = (
 
 export const getNetworks: GetNetworksRequest = (endpoint, direction = 'deposit') => {
   const dir = direction === 'deposit' ? 'ON' : 'OFF';
+  const bnd = localStorage.getItem('bnd') || '';
   return axios
     .get(endpoint, {
       params: { direction: dir },
-      headers: { Authorization: '' },
+      headers: { Authorization: '', 'X-bnd': bnd },
     })
     .then(({ data }) => {
       return (data ?? []).map((network: Record<string, unknown>) => ({

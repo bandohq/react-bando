@@ -41,17 +41,19 @@ const mapToken = (token: Record<string, unknown>) => ({
   maxAllowance: parseFloat((token?.max_allowance as string) ?? '20'), // Set default of 20 when there is no max_allowance
 });
 
-export const getTokens: GetTokensRequest = (endpoint) =>
-  axios
-    .get(endpoint, {
-      headers: { Authorization: '' },
-    })
-    .then(({ data }) => {
-      const tokenArr = (data.length ? data : data.results) ?? [];
-      return {
-        count: data?.count,
-        next: data?.next,
-        previous: data?.previous,
-        tokens: tokenArr.map((token: Record<string, unknown>) => mapToken(token)),
-      };
-    });
+export const getTokens: GetTokensRequest = (endpoint) => {
+  const bnd = localStorage.getItem('bnd') || '';
+  return axios
+      .get(endpoint, {
+        headers: {Authorization: '', 'X-bnd': bnd},
+      })
+      .then(({data}) => {
+        const tokenArr = (data.length ? data : data.results) ?? [];
+        return {
+          count: data?.count,
+          next: data?.next,
+          previous: data?.previous,
+          tokens: tokenArr.map((token: Record<string, unknown>) => mapToken(token)),
+        };
+      });
+}
