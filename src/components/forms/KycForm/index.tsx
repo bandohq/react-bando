@@ -255,6 +255,7 @@ export default function KycForm() {
                   <img src={INE} alt="INE" style={{ width: '100%' }} />
                 </React.Fragment>
               }
+              sx={{ backgroundColor: 'white' }}
             >
               <QuestionCircleIcon sx={{ fontSize: '10px', ml: '5px', verticalAlign: 'middle' }} />
             </Tooltip>
