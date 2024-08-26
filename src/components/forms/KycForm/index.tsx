@@ -7,7 +7,7 @@ import MuiSelect from '@components/forms/MuiSelect';
 import MuiPhoneInput from '@components/forms/MuiInput/MuiPhoneInput';
 import BoxContainer from '@components/BoxContainer';
 import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import QuestionCircleIcon from '@mui/icons-material/Help';
 import INE from '@assets/ine_ref.png';
 
@@ -48,6 +48,12 @@ const H5 = styled('h5')(({ theme }) => ({
   color: theme.palette.ink.i500,
   [theme.breakpoints.between('xs', 'sm')]: {
     fontSize: theme.typography.pxToRem(10),
+  },
+}));
+
+const KYCTooltip = styled(Tooltip)(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.white,
   },
 }));
 
@@ -249,16 +255,15 @@ export default function KycForm() {
 
           <Title variant="h4" sx={{ mt: 2, mb: 1 }}>
             Número de Identificación
-            <Tooltip
+            <KYCTooltip
               title={
                 <React.Fragment>
                   <img src={INE} alt="INE" style={{ width: '100%' }} />
                 </React.Fragment>
               }
-              sx={{ backgroundColor: 'white' }}
             >
               <QuestionCircleIcon sx={{ fontSize: '17px', ml: '5px', verticalAlign: 'middle' }} />
-            </Tooltip>
+            </KYCTooltip>
           </Title>
           <Grid container spacing={1} sx={{ m: 0, width: '100%' }}>
             <Grid md={4} xs={12}>
