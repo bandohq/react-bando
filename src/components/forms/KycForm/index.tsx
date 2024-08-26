@@ -1,4 +1,5 @@
 import Grid from '@mui/material/Unstable_Grid2';
+import React from 'react';
 import { styled } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import MuiInput from '@components/forms/MuiInput';
@@ -6,6 +7,9 @@ import MuiSelect from '@components/forms/MuiSelect';
 import MuiPhoneInput from '@components/forms/MuiInput/MuiPhoneInput';
 import BoxContainer from '@components/BoxContainer';
 import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
+import Tooltip from '@mui/material/Tooltip';
+import QuestionCircleIcon from '@mui/icons-material/Help';
+import INE from '@assets/ine_ref.png';
 
 import ErrorBox from '@components/forms/ErrorBox';
 import BandoButton from '@components/Button';
@@ -245,8 +249,16 @@ export default function KycForm() {
 
           <Title variant="h4" sx={{ mt: 2, mb: 1 }}>
             Número de Identificación
+            <Tooltip
+              title={
+                <React.Fragment>
+                  <img src={INE} alt="INE" style={{ width: '100%' }} />
+                </React.Fragment>
+              }
+            >
+              <QuestionCircleIcon sx={{ fontSize: '10px', ml: '5px', verticalAlign: 'middle' }} />
+            </Tooltip>
           </Title>
-
           <Grid container spacing={1} sx={{ m: 0, width: '100%' }}>
             <Grid md={4} xs={12}>
               <MuiSelect
