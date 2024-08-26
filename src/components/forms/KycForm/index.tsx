@@ -7,7 +7,7 @@ import MuiSelect from '@components/forms/MuiSelect';
 import MuiPhoneInput from '@components/forms/MuiInput/MuiPhoneInput';
 import BoxContainer from '@components/BoxContainer';
 import PlacesAutocomplete from '@components/forms/PlacesAutocomplete';
-import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import Tooltip, { tooltipClasses, TooltipProps } from '@mui/material/Tooltip';
 import QuestionCircleIcon from '@mui/icons-material/Help';
 import INE from '@assets/ine_ref.png';
 
@@ -51,9 +51,12 @@ const H5 = styled('h5')(({ theme }) => ({
   },
 }));
 
-const KYCTooltip = styled(Tooltip)(({ theme }) => ({
+const KYCTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: theme.palette.common.white,
+    boxShadow: theme.shadows[2],
   },
 }));
 
