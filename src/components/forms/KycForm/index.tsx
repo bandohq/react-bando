@@ -257,7 +257,7 @@ export default function KycForm() {
               }
               sx={{ backgroundColor: 'white' }}
             >
-              <QuestionCircleIcon sx={{ fontSize: '10px', ml: '5px', verticalAlign: 'middle' }} />
+              <QuestionCircleIcon sx={{ fontSize: '17px', ml: '5px', verticalAlign: 'middle' }} />
             </Tooltip>
           </Title>
           <Grid container spacing={1} sx={{ m: 0, width: '100%' }}>
