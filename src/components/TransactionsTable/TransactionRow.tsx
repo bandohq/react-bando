@@ -117,10 +117,10 @@ export type TransactionRowProps = {
   onRowClick: (rowId: string) => void;
 };
 
-function PaymentReference(transaction: Transaction) {
+function PaymentReference({cashinDetails}: Transaction) {
   const { t } = useTranslation('transactions');
-  if (transaction.cashinDetails?.concepto) {
-    return <RowTextDetail><span>{t('table.reference')}</span>transaction.cashinDetails?.concepto</RowTextDetail>;
+  if (cashinDetails?.concepto) {
+    return <RowTextDetail><span>{t('table.reference')}</span>{cashinDetails.concepto}</RowTextDetail>;
   }
   return (null);
 }
@@ -245,7 +245,7 @@ export default function TransactionRow({
                   </>
                 </Box>
               </RowTextDetail>
-              <PaymentReference transaction={txn}></PaymentReference>
+              <PaymentReference cashinDetails={txn.cashinDetails}></PaymentReference>
             </>
           </Box>
         </StyledTableCell>
