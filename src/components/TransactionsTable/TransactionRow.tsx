@@ -19,7 +19,12 @@ import ArrowDown from '../../assets/ArrowDown.svg';
 import CopyImg from '../../assets/CopyToClipboard.svg';
 import { StyledTableCell, StyledTableRow, RowTextDetail, TableRowDetail } from './TableComponents';
 
-import { OperationType, Transaction } from '@hooks/useTransaction/requests';
+import {
+  DepositCashinDetailsArgs,
+  OperationType,
+  Transaction,
+  WithDrawCashinDetailsArgs
+} from '@hooks/useTransaction/requests';
 import formatWalletNumber from '@helpers/formatWalletNumber';
 import translations from "@translations/index.ts";
 
@@ -112,9 +117,9 @@ export type TransactionRowProps = {
   onRowClick: (rowId: string) => void;
 };
 
-function PaymentReference({transaction: Transaction}) {
+function PaymentReference({concepto}: WithDrawCashinDetailsArgs | DepositCashinDetailsArgs) {
   const { t } = useTranslation('transactions');
-  if (transaction.cashinDetails?.concepto) {
+  if (concepto) {
     return <RowTextDetail><span>{t('table.reference')}</span>transaction.cashinDetails?.concepto</RowTextDetail>;
   }
   return (null);
@@ -240,7 +245,7 @@ export default function TransactionRow({
                   </>
                 </Box>
               </RowTextDetail>
-              <PaymentReference transaction={txn}></PaymentReference>
+              <PaymentReference concepto={txn.cashinDetails?.concepto}></PaymentReference>
             </>
           </Box>
         </StyledTableCell>
