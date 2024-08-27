@@ -231,10 +231,12 @@ export default function TransactionRow({
                   </>
                 </Box>
               </RowTextDetail>
-              <RowTextDetail>
-                <span>{t('table.reference')}</span>
-                {row.payment_reference}
-              </RowTextDetail>
+              if ({row.payment_reference}) {
+                <RowTextDetail>
+                  <span>{t('table.reference')}</span>
+                  {row.payment_reference}
+                </RowTextDetail>
+              }
             </>
           </Box>
         </StyledTableCell>
