@@ -44,16 +44,16 @@ const mapToken = (token: Record<string, unknown>) => ({
 export const getTokens: GetTokensRequest = (endpoint) => {
   const bnd = localStorage.getItem('bnd') || 'not_set';
   return axios
-      .get(endpoint, {
-        headers: {Authorization: '', Bnd: bnd},
-      })
-      .then(({data}) => {
-        const tokenArr = (data.length ? data : data.results) ?? [];
-        return {
-          count: data?.count,
-          next: data?.next,
-          previous: data?.previous,
-          tokens: tokenArr.map((token: Record<string, unknown>) => mapToken(token)),
-        };
-      });
-}
+    .get(endpoint, {
+      headers: { Authorization: '', Bnd: bnd },
+    })
+    .then(({ data }) => {
+      const tokenArr = (data.length ? data : data.results) ?? [];
+      return {
+        count: data?.count,
+        next: data?.next,
+        previous: data?.previous,
+        tokens: tokenArr.map((token: Record<string, unknown>) => mapToken(token)),
+      };
+    });
+};
