@@ -20,13 +20,10 @@ import CopyImg from '../../assets/CopyToClipboard.svg';
 import { StyledTableCell, StyledTableRow, RowTextDetail, TableRowDetail } from './TableComponents';
 
 import {
-  DepositCashinDetailsArgs,
   OperationType,
-  Transaction,
-  WithDrawCashinDetailsArgs
+  Transaction
 } from '@hooks/useTransaction/requests';
 import formatWalletNumber from '@helpers/formatWalletNumber';
-import translations from "@translations/index.ts";
 
 const ArrowCircleIcon = styled(ArrowCircleIconBase)(({ theme }) => ({
   width: 36,
@@ -117,7 +114,7 @@ export type TransactionRowProps = {
   onRowClick: (rowId: string) => void;
 };
 
-function PaymentReference({cashinDetails}: Transaction) {
+function PaymentReference({cashinDetails?}: Transaction) {
   const { t } = useTranslation('transactions');
   if (cashinDetails?.concepto) {
     return <RowTextDetail><span>{t('table.reference')}</span>{cashinDetails.concepto}</RowTextDetail>;
