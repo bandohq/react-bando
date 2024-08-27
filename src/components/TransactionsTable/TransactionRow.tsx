@@ -90,6 +90,7 @@ function parseDataForRows(txn: Transaction) {
     networkIcon: txn?.networkConfig?.imageUrl,
     sent: formatAmounts(txn.baseAmount, txn.baseCurrency),
     received: formatAmounts(txn.quoteAmount, txn.quoteCurrency),
+    payment_reference: txn.cashinDetails?.concepto,
     ...(isDeposit
       ? {
           sentIcon: currencyImgPath[txn.baseCurrency as unknown as keyof typeof currencyImgPath],
@@ -232,7 +233,7 @@ export default function TransactionRow({
               </RowTextDetail>
               <RowTextDetail>
                 <span>{t('table.rate')}</span>
-                {formatNumber(row.quoteRateInverse, 2, 18)} {row.quoteCurrency}
+                {row.payment_reference}
               </RowTextDetail>
             </>
           </Box>
