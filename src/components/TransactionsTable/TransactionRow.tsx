@@ -232,7 +232,7 @@ export default function TransactionRow({
                 </Box>
               </RowTextDetail>
               <RowTextDetail>
-                <span>{t('table.rate')}</span>
+                <span>{t('table.reference')}</span>
                 {row.payment_reference}
               </RowTextDetail>
             </>
