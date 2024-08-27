@@ -45,9 +45,9 @@ export const getTokens: GetTokensRequest = (endpoint) => {
   const bnd = localStorage.getItem('bnd') || 'not_set';
   return axios
     .get(endpoint, {
-        headers: {Authorization: '', Bnd: bnd},
+      headers: { Authorization: '', Bnd: bnd },
     })
-    .then(({data}) => {
+    .then(({ data }) => {
       const tokenArr = (data.length ? data : data.results) ?? [];
       return {
         count: data?.count,
@@ -56,4 +56,4 @@ export const getTokens: GetTokensRequest = (endpoint) => {
         tokens: tokenArr.map((token: Record<string, unknown>) => mapToken(token)),
       };
     });
-}
+};
