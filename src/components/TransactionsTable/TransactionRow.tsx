@@ -21,6 +21,7 @@ import { StyledTableCell, StyledTableRow, RowTextDetail, TableRowDetail } from '
 
 import { OperationType, Transaction } from '@hooks/useTransaction/requests';
 import formatWalletNumber from '@helpers/formatWalletNumber';
+import translations from "@translations/index.ts";
 
 const ArrowCircleIcon = styled(ArrowCircleIconBase)(({ theme }) => ({
   width: 36,
@@ -110,6 +111,14 @@ export type TransactionRowProps = {
   selectedRow: string;
   onRowClick: (rowId: string) => void;
 };
+
+function PaymentReference({transaction: Transaction}) {
+  const { t } = useTranslation('transactions');
+  if (transaction.cashinDetails?.concepto) {
+    return <RowTextDetail><span>{t('table.reference')}</span>transaction.cashinDetails?.concepto</RowTextDetail>;
+  }
+  return (null);
+}
 
 export default function TransactionRow({
   txn,
@@ -231,12 +240,7 @@ export default function TransactionRow({
                   </>
                 </Box>
               </RowTextDetail>
-              if ({row.payment_reference}) {
-                <RowTextDetail>
-                  <span>{t('table.reference')}</span>
-                  {row.payment_reference}
-                </RowTextDetail>
-              }
+              <PaymentReference transaction={txn}></PaymentReference>
             </>
           </Box>
         </StyledTableCell>
