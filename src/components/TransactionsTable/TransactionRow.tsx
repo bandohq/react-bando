@@ -230,6 +230,10 @@ export default function TransactionRow({
                   </>
                 </Box>
               </RowTextDetail>
+              <RowTextDetail>
+                <span>{t('table.rate')}</span>
+                {formatNumber(row.quoteRateInverse, 2, 18)} {row.quoteCurrency}
+              </RowTextDetail>
             </>
           </Box>
         </StyledTableCell>
