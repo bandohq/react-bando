@@ -8,5 +8,6 @@ export default {
     noFee: 'N/A',
     address: 'Destination account',
     copied: 'Copied. 🫡',
+    reference: 'Payment Reference',
   },
 };

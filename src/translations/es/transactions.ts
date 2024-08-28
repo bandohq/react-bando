@@ -8,5 +8,6 @@ export default {
     noFee: 'N/A',
     address: 'Cuenta Destino',
     copied: 'Copiado. 🫡',
+    reference: 'Concepto',
   },
 };

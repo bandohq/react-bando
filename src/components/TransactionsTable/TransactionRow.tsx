@@ -19,7 +19,10 @@ import ArrowDown from '../../assets/ArrowDown.svg';
 import CopyImg from '../../assets/CopyToClipboard.svg';
 import { StyledTableCell, StyledTableRow, RowTextDetail, TableRowDetail } from './TableComponents';
 
-import { OperationType, Transaction } from '@hooks/useTransaction/requests';
+import {
+  OperationType,
+  Transaction
+} from '@hooks/useTransaction/requests';
 import formatWalletNumber from '@helpers/formatWalletNumber';
 
 const ArrowCircleIcon = styled(ArrowCircleIconBase)(({ theme }) => ({
@@ -90,6 +93,7 @@ function parseDataForRows(txn: Transaction) {
     networkIcon: txn?.networkConfig?.imageUrl,
     sent: formatAmounts(txn.baseAmount, txn.baseCurrency),
     received: formatAmounts(txn.quoteAmount, txn.quoteCurrency),
+    payment_reference: txn.cashinDetails?.concepto,
     ...(isDeposit
       ? {
           sentIcon: currencyImgPath[txn.baseCurrency as unknown as keyof typeof currencyImgPath],
@@ -109,6 +113,17 @@ export type TransactionRowProps = {
   selectedRow: string;
   onRowClick: (rowId: string) => void;
 };
+
+export type TransactionPaymentReference = {
+  txn: Transaction;
+};
+
+function PaymentReference({txn}: TransactionPaymentReference) {
+  const { t } = useTranslation('transactions');
+  const paymentReference = txn.cashinDetails?.concepto;
+
+  return !!paymentReference && (<RowTextDetail><span>{t('table.reference')}</span>{paymentReference}</RowTextDetail>);
+}
 
 export default function TransactionRow({
   txn,
@@ -230,6 +245,7 @@ export default function TransactionRow({
                   </>
                 </Box>
               </RowTextDetail>
+              <PaymentReference txn={txn}></PaymentReference>
             </>
           </Box>
         </StyledTableCell>
