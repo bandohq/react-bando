@@ -120,7 +120,9 @@ export type TransactionPaymentReference = {
 
 function PaymentReference({txn}: TransactionPaymentReference) {
   const { t } = useTranslation('transactions');
-    return {!!txn.cashinDetails?.concepto && (<RowTextDetail><span>{t('table.reference')}</span>{txn.cashinDetails?.concepto}</RowTextDetail>)}
+  const paymentReference = txn.cashinDetails?.concepto;
+
+  return !!paymentReference && (<RowTextDetail><span>{t('table.reference')}</span>{paymentReference}</RowTextDetail>);
 }
 
 export default function TransactionRow({
