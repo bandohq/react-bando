@@ -42,9 +42,11 @@ const mapToken = (token: Record<string, unknown>) => ({
 });
 
 export const getTokens: GetTokensRequest = (endpoint) => {
-  const bnd = localStorage.getItem('bnd') || 'not_set';
+  const bnd = localStorage.getItem('bnd') || '';
+  const direction = localStorage.getItem('direction') || '';
   return axios
     .get(endpoint, {
+      params: { direction: direction },
       headers: { Authorization: '', Bnd: bnd },
     })
     .then(({ data }) => {

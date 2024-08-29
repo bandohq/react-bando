@@ -22,12 +22,14 @@ type GetNetworksRequest = (
 export const getNetworks: GetNetworksRequest = (endpoint, direction = 'deposit') => {
   const dir = direction === 'deposit' ? 'ON' : 'OFF';
   const bnd = localStorage.getItem('bnd') || 'not_set';
+  localStorage.setItem('direction', dir);
   return axios
     .get(endpoint, {
       params: { direction: dir },
       headers: { Authorization: '', Bnd: bnd },
     })
     .then(({ data }) => {
+      localStorage.removeItem('direction');
       return (data ?? []).map((network: Record<string, unknown>) => ({
         name: network.name,
         key: network.key,
