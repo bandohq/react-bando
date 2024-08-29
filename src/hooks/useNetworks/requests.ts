@@ -29,7 +29,6 @@ export const getNetworks: GetNetworksRequest = (endpoint, direction = 'deposit')
       headers: { Authorization: '', Bnd: bnd },
     })
     .then(({ data }) => {
-      localStorage.removeItem('direction');
       return (data ?? []).map((network: Record<string, unknown>) => ({
         name: network.name,
         key: network.key,
