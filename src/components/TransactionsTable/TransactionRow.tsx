@@ -19,10 +19,7 @@ import ArrowDown from '../../assets/ArrowDown.svg';
 import CopyImg from '../../assets/CopyToClipboard.svg';
 import { StyledTableCell, StyledTableRow, RowTextDetail, TableRowDetail } from './TableComponents';
 
-import {
-  OperationType,
-  Transaction
-} from '@hooks/useTransaction/requests';
+import { OperationType, Transaction } from '@hooks/useTransaction/requests';
 import formatWalletNumber from '@helpers/formatWalletNumber';
 
 const ArrowCircleIcon = styled(ArrowCircleIconBase)(({ theme }) => ({
@@ -118,11 +115,18 @@ export type TransactionPaymentReference = {
   txn: Transaction;
 };
 
-function PaymentReference({txn}: TransactionPaymentReference) {
+function PaymentReference({ txn }: TransactionPaymentReference) {
   const { t } = useTranslation('transactions');
   const paymentReference = txn.cashinDetails?.concepto;
 
-  return !!paymentReference && (<RowTextDetail><span>{t('table.reference')}</span>{paymentReference}</RowTextDetail>);
+  return (
+    !!paymentReference && (
+      <RowTextDetail>
+        <span>{t('table.reference')}</span>
+        {paymentReference}
+      </RowTextDetail>
+    )
+  );
 }
 
 export default function TransactionRow({
