@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { useTheme, styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
@@ -30,11 +30,16 @@ const languageOptions = [
   },
 ];
 
+const FlagImg = styled('img')({
+  width: '24px',
+  marginRight: '8px',
+});
+
 export default function I18nSwitcher(props: i18nSwitcherProps) {
   const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
+  const theme = useTheme();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -59,8 +64,13 @@ export default function I18nSwitcher(props: i18nSwitcherProps) {
         disabled={false}
         sx={{ textTransform: 'none', fontWeight: 400, display: 'flex', gap: 1 }}
       >
-        <TranslateIcon />
-        <img src={props.isOnTop ? CaretGreen : CaretWhite} alt="Caret" />
+        <TranslateIcon
+          style={{
+            color: props.isOnTop ? theme.palette.primary.main : theme.palette.primary.contrastText,
+            fontSize: '23px',
+          }}
+        />
+        <img style={{ width: '8px' }} src={props.isOnTop ? CaretGreen : CaretWhite} alt="Caret" />
       </Button>
       <Menu
         id="i18n-menu"
@@ -77,11 +87,10 @@ export default function I18nSwitcher(props: i18nSwitcherProps) {
             key={lang.id}
             sx={{
               ...menuItemSx,
-              mt: 2,
             }}
             onClick={() => handleLanguageChange(lang.id)}
           >
-            <img src={lang.flagimg} alt={lang.name} />
+            <FlagImg src={lang.flagimg} alt={lang.name} />
             {lang.name}
           </MenuItem>
         ))}
