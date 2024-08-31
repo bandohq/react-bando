@@ -1,4 +1,6 @@
 export default {
+  buy: 'Buy',
+  sell: 'Sell',
   title: 'Welcome to crypto.',
   selectNetwork: 'Select chain and token',
   on: 'You pay',

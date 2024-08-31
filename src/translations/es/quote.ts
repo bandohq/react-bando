@@ -1,4 +1,6 @@
 export default {
+  buy: 'Compra',
+  sell: 'Vende',
   title: 'Entra al mundo cripto',
   selectNetwork: 'Selecciona una red y token',
   on: 'Envías',
