@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-
+import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import Cross from '../../../assets/Cross.svg';
@@ -31,7 +31,7 @@ export default function RampTitle({
   noArrow = false,
 }: RampTitleProps) {
   const navigate = useNavigate();
-
+  const { t } = useTranslation('ramp');
   const closeRamp = () => {
     localStorage.removeItem(env.rampDataLocalStorage);
     navigate('/');
@@ -58,7 +58,7 @@ export default function RampTitle({
             mb: 1,
           }}
         >
-          {title || (success ? 'Transacción en proceso' : 'Confirma')}
+          {title || (success ? t('inProgressTitle') : t('confirmTitle'))}
         </Typography>
         {!noArrow && (
           <CircularButton onClick={closeRamp}>

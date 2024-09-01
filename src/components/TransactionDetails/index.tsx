@@ -204,7 +204,7 @@ export default function TransactionDetail({
           )}
           {!!networkKey && (
             <GridRow xs={12} sx={{ display: 'flex !important' }}>
-              <Network variant="body2">Red:</Network>
+              <Network variant="body2">{t('chain')}:</Network>
               <Network variant="body2" sx={{ textAlign: 'right', textTransform: 'capitalize' }}>
                 {(transaction?.networkConfig?.name ?? networkObj?.name ?? '').toLowerCase()}{' '}
                 <img

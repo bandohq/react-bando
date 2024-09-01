@@ -1,9 +1,11 @@
 export default {
-  address: 'You receive at this address.',
+  address: 'Your wallet address',
   lastName: 'Last Name',
   name: 'Names',
   clabe: 'Interbank code',
   confirm: 'Confirm',
+  confirmTitle: 'Confirm your transaction',
+  inProgressTitle: 'Transaction in Progress',
   errors: {
     recipient: 'This account has been rejected by Bando. Try with another account.',
     forbidden:

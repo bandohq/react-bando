@@ -10,4 +10,5 @@ export default {
   },
   speiAlert: 'Make sure the "concepto" field is exactly as shown below. 👇',
   speiAlertTitle: 'Before you transfer:',
+  chain: 'Chain:',
 };
