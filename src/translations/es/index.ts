@@ -7,10 +7,7 @@ import ramp from './ramp';
 import transactions from './transactions';
 import form from './form';
 import quote from './quote';
-
-const footer = {
-  disclaimer: `© ${new Date().getFullYear()}  Bando. Todos los derechos reservados.`,
-};
+import footer from './footer';
 
 export default {
   footer,

@@ -1,6 +1,7 @@
 import Paper from '@mui/material/Paper';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import { CircularButton } from '@components/forms/RampForm/RampTitle';
+import { useTranslation } from 'react-i18next';
 
 import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
@@ -70,11 +71,12 @@ export type DialogDrawerProps = PropsWithChildren & {
 export default function DialogDrawer({
   children,
   titleContent,
-  title = 'Escoge tu red y token',
+  title = 'selectNetwork' as const,
   open = false,
   showBackIcon = true,
   onClose = () => {},
 }: DialogDrawerProps) {
+  const { t } = useTranslation('quote');
   return (
     <Slide direction="up" in={open} mountOnEnter unmountOnExit>
       <DialogDrawerComp>
@@ -83,7 +85,9 @@ export default function DialogDrawer({
             <CircularButton role="button" onClick={onClose} sx={{ color: 'ink.i950' }}>
               <ArrowBack />
             </CircularButton>
-            <DrawerTitle sx={{ ...(showBackIcon && { marginLeft: '-40px' }) }}>{title}</DrawerTitle>
+            <DrawerTitle sx={{ ...(showBackIcon && { marginLeft: '-40px' }) }}>
+              {t(title as any)}
+            </DrawerTitle>
           </section>
           {titleContent}
         </DrawerTitleCont>

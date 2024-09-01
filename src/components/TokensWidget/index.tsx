@@ -360,7 +360,7 @@ export default function TokensWidget({
           fullWidth
           sx={{ py: 2, mt: 2 }}
         >
-          Comenzar
+          {t('quoteButton')}
         </BandoButton>
       </Grid>
     </TokensContainer>

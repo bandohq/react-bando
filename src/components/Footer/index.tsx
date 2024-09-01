@@ -1,5 +1,6 @@
 import Box, { BoxProps } from '@mui/material/Box';
 import { Grid, Link, Typography, Container, IconButton } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { styled } from '@mui/material/styles';
 import XIcon from '@mui/icons-material/X';
 import Logo from '../../assets/logo_white.svg';
@@ -29,6 +30,7 @@ const socialMediaLinks = {
 };
 
 export default function Footer() {
+  const { t } = useTranslation('footer');
   return (
     <FooterContainer>
       <Container
@@ -51,16 +53,16 @@ export default function Footer() {
               sx={{ color: 'primary.contrastText', fontWeight: 700 }}
               gutterBottom
             >
-              PRODUCTO
+              {t('productTitle')}
             </Typography>
             <FooterLink href="/faq" display="block">
-              Preguntas Frecuentes
+              {t('productFAQ')}
             </FooterLink>
             <FooterLink href="https://academy.bando.cool" target="_blank" display="block">
-              Bando Academy
+              {t('academyLink')}
             </FooterLink>
             <FooterLink href="https://status.bando.cool" target="_blank" display="block">
-              Status
+              {t('statusLink')}
             </FooterLink>
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
@@ -69,16 +71,16 @@ export default function Footer() {
               sx={{ color: 'primary.contrastText', fontWeight: 700 }}
               gutterBottom
             >
-              NOSOTROS
+              {t('companyTitle')}
             </Typography>
             <FooterLink href="/terms" display="block">
-              Política de Privacidad
+              {t('privacy')}
             </FooterLink>
             <FooterLink href="/terms" display="block">
-              Términos y Condiciones
+              {t('terms')}
             </FooterLink>
             <FooterLink href="mailto:soporte@bando.cool" display="block">
-              Contacto
+              {t('contact')}
             </FooterLink>
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
@@ -87,7 +89,7 @@ export default function Footer() {
               sx={{ color: 'primary.contrastText', fontWeight: 700 }}
               gutterBottom
             >
-              SIGUENOS
+              {t('followUs')}
             </Typography>
             <IconButton
               aria-label="Twitter"
@@ -101,7 +103,7 @@ export default function Footer() {
           </Grid>
         </Grid>
         <Typography variant="body2" sx={{ color: 'primary.contrastText', pt: 10 }} align="center">
-          © {new Date().getFullYear()} Bando. Todos los derechos reservados.
+          {t('disclaimer')}
         </Typography>
       </Container>
     </FooterContainer>
