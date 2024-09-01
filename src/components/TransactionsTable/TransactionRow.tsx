@@ -249,7 +249,7 @@ export default function TransactionRow({
                   </>
                 </Box>
               </RowTextDetail>
-              <PaymentReference txn={txn}></PaymentReference>
+              <PaymentReference txn={txn} />
             </>
           </Box>
         </StyledTableCell>
