@@ -19,6 +19,7 @@ import useUser from '@hooks/useUser';
 import DrawerLink from './DrawerLink';
 import TransactionsIcon from '../../assets/transactions.svg';
 import LogoutIcon from '@components/Svgs/Logout';
+import I18nSwitcher from '@components/I18nSwitcher';
 
 const NavbarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
@@ -180,6 +181,7 @@ export default function Navbar({ fullWidth = false }) {
         </a>
         <div className="telegram-logo-box">
           <nav role="navigation" className="navbar-menu">
+            <I18nSwitcher isOnTop={isOnTop} />
             <BandoButton
               component="a"
               id="telegram-nav-button"

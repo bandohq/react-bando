@@ -1,5 +1,7 @@
 export default {
   address: 'Dirección de tu billetera',
+  confirmTitle: 'Confirm',
+  inProgressTitle: 'Transacción en proceso',
   lastName: 'Apellidos',
   name: 'Nombres',
   clabe: 'Clabe',

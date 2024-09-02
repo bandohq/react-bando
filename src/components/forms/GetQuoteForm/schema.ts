@@ -6,10 +6,10 @@ import networksOnRamp, {
   networksOffRamp,
 } from '@config/constants/networks';
 import { sendCurrency } from '@config/constants/currencies';
-
+import i18n from 'translations';
 import { Network } from '@hooks/useNetworks/requests';
 import { Token } from '@hooks/useTokens/requests';
-
+console.log(i18n.services.resourceStore.data);
 export type GetQuoteFormValues = {
   operationType: OperationType;
   baseAmount: number;
@@ -24,13 +24,13 @@ const schema = yup.object().shape({
   operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
   baseAmount: yup
     .number()
-    .typeError('Introduce un monto válido')
+    .typeError(i18n.t('form.validation.invalid'))
     .when(['operationType'], {
       is: 'deposit',
       then: (schema) =>
         schema
-          .min(100, 'El monto mínimo es de $100.00 MXN')
-          .max(500000, 'El monto máximo es de $500,000 MXN'),
+          .min(100, i18n.t('en.form.validation.onMinAmount'))
+          .max(500000, i18n.t('en.form.validation.onMaxAmount')),
       otherwise: (schema) =>
         schema
           .min(5, 'El monto mínimo es de $5.00 USD')
@@ -92,11 +92,11 @@ export const schemaV2 = yup.object().shape({
       is: 'deposit',
       then: (schema) =>
         schema
-          .min(100, 'El monto mínimo es de $100.00 MXN')
-          .max(500000, 'El monto máximo es de $500,000 MXN'),
+          .min(100, () => i18n.t('form.validation.onMinAmount'))
+          .max(500000, 'form.validation.onMaxAmount'),
       otherwise: (schema) =>
         schema
-          .min(5, 'El monto mínimo es de $5.00 USD')
+          .min(5, 'form.validation.offMinAmount')
           .max(10000, 'El monto máximo es de $10,000 USD'),
     })
     .required(),

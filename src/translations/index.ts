@@ -5,7 +5,7 @@ import en from './en';
 
 declare module 'i18next' {
   interface CustomTypeOptions {
-    resources: typeof es;
+    resources: typeof es | typeof en;
   }
 }
 
@@ -16,7 +16,7 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: 'es',
+  lng: 'en',
   interpolation: {
     escapeValue: false,
   },
