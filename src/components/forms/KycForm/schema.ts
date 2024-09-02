@@ -1,5 +1,6 @@
 import { rfcRegex } from '@helpers/regexValidators';
 import { isPhoneValid } from '@helpers/phoneValidation';
+import { TFunction } from 'i18next';
 
 import * as yup from 'yup';
 
@@ -25,31 +26,33 @@ export type KycFormValues = {
   };
 };
 
-const schema = yup.object().shape({
-  type: yup.string().required(),
-  firstName: yup.string().required('El nombre es requerido'),
-  lastName: yup.string().required('El apellido es requerido'),
-  acceptedNotifications: yup.boolean(),
-  phone: yup
-    .string()
-    .required('El télefono es requerido')
-    .test('phone', 'Número de teléfono inválido', (value) => isPhoneValid(value)),
-  nationalIdNumber: yup.string().required('RFC es requerido').matches(rfcRegex, 'RFC Inválido'),
-  address: yup.object().shape({
-    label: yup.string().notRequired(),
-    street: yup
-      .string()
-      .required('Tu calle, localidad, esquina, referencia, etc va en este campo.'),
-    neighborhood: yup.string().required('La colonia o municipio en donde vives va en este campo.'),
-    state: yup.string().required('El estado en donde vives va en este campo.'),
-    zip: yup.string().required('El código postal de tu domicilio va en este campo.'),
-    country: yup.string().required('El país es requerido.'),
-  }),
-  document: yup.object().shape({
+const schema = (t: TFunction<'kycForm', undefined>) =>
+  yup.object().shape({
     type: yup.string().required(),
-    number: yup.string().required('El número de documento es requerido'),
-    country: yup.string().required(),
-  }),
-});
+    firstName: yup.string().required(t('rules.name')),
+    lastName: yup.string().required(t('rules.lastName')),
+    acceptedNotifications: yup.boolean(),
+    phone: yup
+      .string()
+      .required(t('rules.phone'))
+      .test('phone', t('rules.phoneInvalid'), (value) => isPhoneValid(value)),
+    nationalIdNumber: yup
+      .string()
+      .required(t('rules.rfc'))
+      .matches(rfcRegex, t('rules.rfcInvalid')),
+    address: yup.object().shape({
+      label: yup.string().notRequired(),
+      street: yup.string().required(t('rules.street')),
+      neighborhood: yup.string().required(t('rules.neighborhood')),
+      state: yup.string().required(t('rules.state')),
+      zip: yup.string().required(t('rules.zip')),
+      country: yup.string().required(t('rules.country')),
+    }),
+    document: yup.object().shape({
+      type: yup.string().required(),
+      number: yup.string().required(t('rules.document')),
+      country: yup.string().required(),
+    }),
+  });
 
 export default schema;
