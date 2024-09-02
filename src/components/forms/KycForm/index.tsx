@@ -32,6 +32,7 @@ import { identificationOptions, Identifications } from '@config/constants/identi
 import { AcceptedCountries, countryOptions } from '@config/constants/countries';
 import { useState } from 'react';
 import getStorageQuote from '@helpers/getStorageQuote';
+import { useTranslation } from 'react-i18next';
 
 const P = styled('p')(({ theme }) => ({
   fontSize: theme.typography.pxToRem(14),
@@ -62,6 +63,7 @@ const KYCTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function KycForm() {
+  const { t } = useTranslation('kycForm');
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
@@ -70,7 +72,7 @@ export default function KycForm() {
   const { isMutating, postUserKyc } = useKyc();
   const storageQuote = getStorageQuote();
   const { register, control, formState, handleSubmit, setValue } = useForm<KycFormValues>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema(t)),
     mode: 'onBlur',
     defaultValues: {
       phone: '',
