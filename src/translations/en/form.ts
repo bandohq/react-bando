@@ -1,8 +1,11 @@
 export default {
+  errors: {
+    general: 'An error occurred. Please try again.',
+  },
   validation: {
     invalidAmount: 'Invalid',
-    onMinAmount: 'The minimum amount is $20.00 MXN',
-    offMinAmount: 'The minimum amount $2.00 USD',
+    onMinAmount: 'The minimum amount is $100.00 MXN',
+    offMinAmount: 'The minimum amount $5.00 USD',
     email: 'Invalid email',
   },
   signin: {

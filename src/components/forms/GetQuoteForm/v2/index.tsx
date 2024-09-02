@@ -16,7 +16,7 @@ import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
 import formatNumber from '@helpers/formatNumber';
 import { CircularProgress } from '@mui/material';
-
+import { useTranslation } from 'react-i18next';
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
 
@@ -42,6 +42,7 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 
 export default function GetQuoteFormV2() {
   const navigate = useNavigate();
+  const { t } = useTranslation('form');
   const { isMutating, quote: data, getQuote, resetQuote } = useQuote();
   const [formError, setFormError] = useState<string>('');
   const [notFoundMessage, setNotFoundMessage] = useState<boolean>(false);
@@ -133,7 +134,7 @@ export default function GetQuoteFormV2() {
           setNotFoundMessage(true);
           return;
         }
-        setFormError('Ha ocurrido un error.');
+        setFormError(t('errors.general'));
         return null;
       }
     },
@@ -150,7 +151,7 @@ export default function GetQuoteFormV2() {
 
         if (quote) navigateForm(quote);
       } catch {
-        setFormError('Ha ocurrido un error.');
+        setFormError(t('errors.general'));
       }
     },
     [isMutating, data, navigateForm, debouncedRequest],

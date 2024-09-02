@@ -1,4 +1,7 @@
 export default {
+  errors: {
+    general: 'Ocurrió un error',
+  },
   validation: {
     invalidAmount: 'Invalido',
     onMinAmount: 'El monto mínimo es de $20.00 MXN',
