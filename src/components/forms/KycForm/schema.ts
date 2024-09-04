@@ -26,31 +26,28 @@ export type KycFormValues = {
   };
 };
 
-const schema = (t: TFunction<'kycForm', undefined>) =>
+const schema = (t: TFunction<'form', undefined>) =>
   yup.object().shape({
     type: yup.string().required(),
-    firstName: yup.string().required(t('rules.name')),
-    lastName: yup.string().required(t('rules.lastName')),
+    firstName: yup.string().required(t('kyc.name')),
+    lastName: yup.string().required(t('kyc.lastName')),
     acceptedNotifications: yup.boolean(),
     phone: yup
       .string()
-      .required(t('rules.phone'))
-      .test('phone', t('rules.phoneInvalid'), (value) => isPhoneValid(value)),
-    nationalIdNumber: yup
-      .string()
-      .required(t('rules.rfc'))
-      .matches(rfcRegex, t('rules.rfcInvalid')),
+      .required(t('kyc.phone'))
+      .test('phone', t('kyc.phoneInvalid'), (value) => isPhoneValid(value)),
+    nationalIdNumber: yup.string().required(t('kyc.rfc')).matches(rfcRegex, t('kyc.rfcInvalid')),
     address: yup.object().shape({
       label: yup.string().notRequired(),
-      street: yup.string().required(t('rules.street')),
-      neighborhood: yup.string().required(t('rules.neighborhood')),
-      state: yup.string().required(t('rules.state')),
-      zip: yup.string().required(t('rules.zip')),
-      country: yup.string().required(t('rules.country')),
+      street: yup.string().required(t('kyc.street')),
+      neighborhood: yup.string().required(t('kyc.neighborhood')),
+      state: yup.string().required(t('kyc.state')),
+      zip: yup.string().required(t('kyc.zip')),
+      country: yup.string().required(t('kyc.country')),
     }),
     document: yup.object().shape({
       type: yup.string().required(),
-      number: yup.string().required(t('rules.document')),
+      number: yup.string().required(t('kyc.document')),
       country: yup.string().required(),
     }),
   });

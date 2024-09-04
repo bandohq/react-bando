@@ -63,7 +63,7 @@ const KYCTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function KycForm() {
-  const { t } = useTranslation('kycForm');
+  const { t } = useTranslation('form');
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
@@ -100,11 +100,11 @@ export default function KycForm() {
       if ((err as AxiosError<{ code: string; error: string }>).response?.data.code) {
         setError(
           (err as AxiosError<{ code: string; error: string }>).response?.data.error ||
-            'Unknown error',
+            t('errors.general'),
         );
         return;
       }
-      setError('Ha ocurrido un error.');
+      setError(t('errors.general'));
       return;
     }
   };
@@ -118,7 +118,7 @@ export default function KycForm() {
         <Grid container spacing={1} sx={{ m: 0 }}>
           <Grid md={6} xs={12}>
             <MuiInput
-              label="Nombres"
+              label={t('kyc.fields.name')}
               type="text"
               sx={{ mt: 2 }}
               InputLabelProps={{ shrink: true }}
@@ -129,7 +129,7 @@ export default function KycForm() {
           </Grid>
           <Grid md={6} xs={12}>
             <MuiInput
-              label="Apellidos"
+              label={t('kyc.fields.lastName')}
               type="text"
               sx={{ mt: 2 }}
               InputLabelProps={{ shrink: true }}
@@ -146,7 +146,7 @@ export default function KycForm() {
                 <MuiPhoneInput
                   sx={{ mt: 2 }}
                   defaultCountry={DEFAULT_PHONE_COUNTRY}
-                  label="Número"
+                  label={t('kyc.fields.phone')}
                   value={value}
                   onChange={onChange}
                   onBlur={onBlur}
@@ -202,7 +202,7 @@ export default function KycForm() {
             )}
             <Grid md={12} xs={12}>
               <MuiInput
-                label="Calle, número, ó localidad"
+                label={t('kyc.fields.street')}
                 type="text"
                 sx={{ mt: 2 }}
                 InputLabelProps={{ shrink: true }}
@@ -213,7 +213,7 @@ export default function KycForm() {
             </Grid>
             <Grid md={12} xs={12}>
               <MuiInput
-                label="Colonia, Municipio"
+                label={t('kyc.fields.neighborhood')}
                 type="text"
                 sx={{ mt: 2 }}
                 InputLabelProps={{ shrink: true }}
@@ -224,7 +224,7 @@ export default function KycForm() {
             </Grid>
             <Grid md={8} xs={12}>
               <MuiInput
-                label="Estado / Provincia"
+                label={t('kyc.fields.state')}
                 type="text"
                 sx={{ mt: 2 }}
                 InputLabelProps={{ shrink: true }}
@@ -235,7 +235,7 @@ export default function KycForm() {
             </Grid>
             <Grid md={4} xs={12}>
               <MuiInput
-                label="Código Postal"
+                label={t('kyc.fields.zip')}
                 type="text"
                 sx={{ mt: 2 }}
                 InputLabelProps={{ shrink: true }}
@@ -250,7 +250,7 @@ export default function KycForm() {
                 defaultValue={AcceptedCountries.MX}
                 {...register('address.country')}
                 items={countryOptions}
-                label="País"
+                label={t('kyc.fields.country')}
                 InputLabelProps={{ shrink: true }}
                 error={!!formState.errors.address?.country?.message}
                 helperText={formState.errors.address?.country?.message}
@@ -259,7 +259,7 @@ export default function KycForm() {
           </Grid>
 
           <Title variant="h4" sx={{ mt: 2, mb: 1 }}>
-            Número de Identificación
+            {t('identification.type')}
             <KYCTooltip
               title={
                 <React.Fragment>
@@ -277,14 +277,14 @@ export default function KycForm() {
                 defaultValue={Identifications.NATIONAL_IDENTITY_CARD}
                 {...register('document.type')}
                 items={identificationOptions}
-                label="Identificación"
+                label={t('identification.type')}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
             <Grid md={8} xs={12}>
               <MuiInput
                 sx={{ mt: 2, width: '100%' }}
-                label="Número de Identificación"
+                label={t('kyc.document')}
                 type="text"
                 InputLabelProps={{ shrink: true }}
                 {...register('document.number')}
@@ -304,13 +304,13 @@ export default function KycForm() {
                 <Checkbox sx={{ padding: '0' }} {...register('acceptedNotifications')} />
               </Grid>
               <Grid xs={10} sx={{ display: 'flex', alignItems: 'center' }}>
-                <P>Notifícame acerca del estado de mis transacciones</P>
+                <P>{t('optIn')}</P>
               </Grid>
             </Grid>
-            <H5>Al crear tu cuenta aceptas nuestros términos y condiciones</H5>
+            <H5>{t('acceptTerms')}</H5>
             <BandoButton type="submit" variant="contained" disabled={isMutating} fullWidth>
               {isMutating && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
-              Verificar
+              {t('verifyButton')}
             </BandoButton>
           </Grid>
         </Grid>

@@ -49,7 +49,7 @@ export default function GetQuoteFormV2() {
 
   const { user } = useUser();
   const methods = useForm<GetQuoteFormValuesV2>({
-    resolver: yupResolver(schemaV2),
+    resolver: yupResolver(schemaV2(t)),
     defaultValues: {
       baseCurrency: DEFAULT_CURRENCY,
       operationType: DEFAULT_OPERATION,
@@ -110,7 +110,7 @@ export default function GetQuoteFormV2() {
         if (tokenValue > maxValue) {
           methods.setError('baseAmount', {
             type: 'required',
-            message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
+            message: `Max ${t('quote.baseAmount')}: ${formatNumber(maxValue, 2, 18)}`,
           });
           return;
         }
@@ -118,7 +118,7 @@ export default function GetQuoteFormV2() {
         if (tokenValue < minValue) {
           methods.setError('baseAmount', {
             type: 'required',
-            message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
+            message: `Min ${t('quote.baseAmount')}: ${formatNumber(minValue, 2, 18)}`,
           });
           return;
         }
@@ -138,7 +138,7 @@ export default function GetQuoteFormV2() {
         return null;
       }
     },
-    [methods, getQuote],
+    [methods, getQuote, t],
   );
 
   const onSubmit = useCallback(
@@ -154,7 +154,7 @@ export default function GetQuoteFormV2() {
         setFormError(t('errors.general'));
       }
     },
-    [isMutating, data, navigateForm, debouncedRequest],
+    [isMutating, data, navigateForm, debouncedRequest, t],
   );
 
   const debouncedQuoteRequest = useRef(

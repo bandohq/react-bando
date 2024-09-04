@@ -9,7 +9,8 @@ import { sendCurrency } from '@config/constants/currencies';
 import i18n from 'translations';
 import { Network } from '@hooks/useNetworks/requests';
 import { Token } from '@hooks/useTokens/requests';
-console.log(i18n.services.resourceStore.data);
+import { TFunction } from 'i18next';
+
 export type GetQuoteFormValues = {
   operationType: OperationType;
   baseAmount: number;
@@ -81,27 +82,26 @@ export type GetQuoteFormValuesV2 = {
   tokenObj: Partial<Token>;
 };
 
-export const schemaV2 = yup.object().shape({
-  operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
-  networkObj: yup.object().required(),
-  tokenObj: yup.object().required(),
-  baseAmount: yup
-    .number()
-    .typeError('Introduce un monto válido')
-    .when(['operationType'], {
-      is: 'deposit',
-      then: (schema) =>
-        schema
-          .min(100, () => i18n.t('form.validation.onMinAmount'))
-          .max(500000, 'form.validation.onMaxAmount'),
-      otherwise: (schema) =>
-        schema
-          .min(5, 'form.validation.offMinAmount')
-          .max(10000, 'El monto máximo es de $10,000 USD'),
-    })
-    .required(),
-  quoteCurrency: yup.string().required(),
-  baseCurrency: yup.string().required(),
-});
+export const schemaV2 = (t: TFunction<'form', undefined>) =>
+  yup.object().shape({
+    operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
+    networkObj: yup.object().required(),
+    tokenObj: yup.object().required(),
+    baseAmount: yup
+      .number()
+      .typeError(t('validation.invalidAmount'))
+      .when(['operationType'], {
+        is: 'deposit',
+        then: (schema) =>
+          schema
+            .min(100, () => t('validation.onMinAmount'))
+            .max(500000, t('validation.onMaxAmount')),
+        otherwise: (schema) =>
+          schema.min(5, t('validation.offMinAmount')).max(10000, t('validation.offMaxAmount')),
+      })
+      .required(),
+    quoteCurrency: yup.string().required(),
+    baseCurrency: yup.string().required(),
+  });
 
 export default schema;
