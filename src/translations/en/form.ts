@@ -27,6 +27,8 @@ export default {
     driverLicense: 'Driver License',
   },
   kyc: {
+    verifyTitle: 'Validate your identity',
+    verifyAddress: 'Validate your address',
     fields: {
       phone: 'Phone number',
       name: 'First name',

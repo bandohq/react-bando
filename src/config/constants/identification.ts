@@ -1,4 +1,4 @@
-import i18n from 'translations';
+import { TFunction } from 'i18next';
 
 export enum Identifications {
   NATIONAL_IDENTITY_CARD = 'NATIONAL_IDENTITY_CARD',
@@ -6,13 +6,8 @@ export enum Identifications {
   DRIVER_LICENSE = 'DRIVER_LICENSE',
 }
 
-type IdentificationOption = {
-  value: Identifications;
-  label: string;
-};
-
-export const identificationOptions: IdentificationOption[] = [
+export const identificationOptions = (t: TFunction<'form', undefined>) => [
   { value: Identifications.NATIONAL_IDENTITY_CARD, label: 'INE' },
-  { value: Identifications.PASSPORT, label: i18n.t('form.identification.passport') },
-  { value: Identifications.DRIVER_LICENSE, label: i18n.t('form.identification.driverLicense') },
+  { value: Identifications.PASSPORT, label: t('identification.passport') },
+  { value: Identifications.DRIVER_LICENSE, label: t('identification.driverLicense') },
 ];

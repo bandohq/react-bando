@@ -113,7 +113,7 @@ export default function KycForm() {
     <BoxContainer sx={{ maxWidth: { md: '60vw' }, width: { md: '30vw' }, m: '0 auto' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Title variant="h4" sx={{ mt: 1 }}>
-          Verifica tu identidad
+          {t('kyc.verifyTitle')}
         </Title>
         <Grid container spacing={1} sx={{ m: 0 }}>
           <Grid md={6} xs={12}>
@@ -175,7 +175,7 @@ export default function KycForm() {
           </Grid>
 
           <Title variant="h4" sx={{ mt: 2 }}>
-            Verifica tu domicilio
+            {t('kyc.verifyAddress')}
           </Title>
 
           <Grid container spacing={1} sx={{ margin: 0 }}>
@@ -276,7 +276,7 @@ export default function KycForm() {
                 sx={{ mt: 2 }}
                 defaultValue={Identifications.NATIONAL_IDENTITY_CARD}
                 {...register('document.type')}
-                items={identificationOptions}
+                items={identificationOptions(t)}
                 label={t('identification.type')}
                 InputLabelProps={{ shrink: true }}
               />
