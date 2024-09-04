@@ -5,8 +5,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import TranslateIcon from '@mui/icons-material/Translate';
-
+import LanguageIcon from '@mui/icons-material/Language';
 import CaretGreen from '../../assets/CaretGreen.svg';
 import CaretWhite from '../../assets/CaretWhite.svg';
 
@@ -64,7 +63,7 @@ export default function I18nSwitcher(props: i18nSwitcherProps) {
         disabled={false}
         sx={{ textTransform: 'none', fontWeight: 400, display: 'flex', gap: 1 }}
       >
-        <TranslateIcon
+        <LanguageIcon
           style={{
             color: props.isOnTop ? theme.palette.primary.main : theme.palette.primary.contrastText,
             fontSize: '23px',
