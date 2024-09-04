@@ -99,7 +99,7 @@ export const schemaV2 = (t: TFunction<'form', undefined>) =>
         otherwise: (schema) =>
           schema.min(5, t('validation.offMinAmount')).max(10000, t('validation.offMaxAmount')),
       })
-      .required(),
+      .required(t('validation.invalidAmount')),
     quoteCurrency: yup.string().required(),
     baseCurrency: yup.string().required(),
   });
