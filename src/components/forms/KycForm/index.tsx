@@ -182,8 +182,8 @@ export default function KycForm() {
             {configs?.useGoogleAutocomplete && (
               <Grid md={12} xs={12}>
                 <PlacesAutocomplete
-                  label="Busca tu domicilio o llena los campos manualmente"
-                  noOptionsText="No se encontro el domicilio"
+                  label={t('address.search')}
+                  noOptionsText={t('address.notFound')}
                   setInputValue={(label, address) => {
                     setValue('address.label', label);
 

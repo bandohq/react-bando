@@ -26,6 +26,10 @@ export default {
     ine: 'INE',
     driverLicense: 'Licencia de conducir',
   },
+  address: {
+    search: 'Busca tu domicilio o llena los campos manualmente',
+    notFound: 'Dirección no encontrada',
+  },
   kyc: {
     verifyTitle: 'Valida tu identidad',
     verifyAddress: 'Valida tu dirección',

@@ -10,6 +10,10 @@ export default {
     offMaxAmount: 'The maximum amount is $10,000.00 USD',
     email: 'Invalid email',
   },
+  address: {
+    search: 'Search for an address',
+    notFound: 'Address not found',
+  },
   signin: {
     button: 'Sign in',
     title: 'Sign in',
