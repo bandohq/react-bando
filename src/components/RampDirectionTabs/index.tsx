@@ -1,4 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -9,6 +10,7 @@ type RampDirectionTabsProps = {
 
 export default function RampDirectionTabs({ handleChange }: RampDirectionTabsProps) {
   const [value, setValue] = useState(0);
+  const { t } = useTranslation('quote');
 
   const a11yProps = (index: number) => {
     return {
@@ -32,8 +34,8 @@ export default function RampDirectionTabs({ handleChange }: RampDirectionTabsPro
         variant="fullWidth"
         aria-label="full width tabs"
       >
-        <Tab disableRipple label="Compra" {...a11yProps(0)} />
-        <Tab disableRipple label="Vende" {...a11yProps(1)} />
+        <Tab disableRipple label={t('buy')} {...a11yProps(0)} />
+        <Tab disableRipple label={t('sell')} {...a11yProps(1)} />
       </Tabs>
     </Box>
   );

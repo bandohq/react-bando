@@ -16,7 +16,7 @@ import useQuote from '@hooks/useQuote';
 import useUser from '@hooks/useUser';
 import formatNumber from '@helpers/formatNumber';
 import { CircularProgress } from '@mui/material';
-
+import { useTranslation } from 'react-i18next';
 import { Quote } from '@hooks/useQuote/requests';
 import env from '@config/env';
 
@@ -42,13 +42,14 @@ export const CurrencyImg = styled('img')(({ theme }) => ({
 
 export default function GetQuoteFormV2() {
   const navigate = useNavigate();
+  const { t } = useTranslation('form');
   const { isMutating, quote: data, getQuote, resetQuote } = useQuote();
   const [formError, setFormError] = useState<string>('');
   const [notFoundMessage, setNotFoundMessage] = useState<boolean>(false);
 
   const { user } = useUser();
   const methods = useForm<GetQuoteFormValuesV2>({
-    resolver: yupResolver(schemaV2),
+    resolver: yupResolver(schemaV2(t)),
     defaultValues: {
       baseCurrency: DEFAULT_CURRENCY,
       operationType: DEFAULT_OPERATION,
@@ -109,7 +110,7 @@ export default function GetQuoteFormV2() {
         if (tokenValue > maxValue) {
           methods.setError('baseAmount', {
             type: 'required',
-            message: `El valor es mayor al maximo permitido de ${formatNumber(maxValue, 2, 18)}`,
+            message: `Max ${t('quote.baseAmount')}: ${formatNumber(maxValue, 2, 18)}`,
           });
           return;
         }
@@ -117,7 +118,7 @@ export default function GetQuoteFormV2() {
         if (tokenValue < minValue) {
           methods.setError('baseAmount', {
             type: 'required',
-            message: `El valor es menor al minimo permitido de ${formatNumber(minValue, 2, 18)}`,
+            message: `Min ${t('quote.baseAmount')}: ${formatNumber(minValue, 2, 18)}`,
           });
           return;
         }
@@ -133,11 +134,11 @@ export default function GetQuoteFormV2() {
           setNotFoundMessage(true);
           return;
         }
-        setFormError('Ha ocurrido un error.');
+        setFormError(t('errors.general'));
         return null;
       }
     },
-    [methods, getQuote],
+    [methods, getQuote, t],
   );
 
   const onSubmit = useCallback(
@@ -150,10 +151,10 @@ export default function GetQuoteFormV2() {
 
         if (quote) navigateForm(quote);
       } catch {
-        setFormError('Ha ocurrido un error.');
+        setFormError(t('errors.general'));
       }
     },
-    [isMutating, data, navigateForm, debouncedRequest],
+    [isMutating, data, navigateForm, debouncedRequest, t],
   );
 
   const debouncedQuoteRequest = useRef(

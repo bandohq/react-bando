@@ -123,7 +123,6 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
               <div className="div-block-2">
                 <h1 className="h3">{t('section3.title')}</h1>
                 <p className="paragraph-5">{t('section3.info')}</p>
-                <h4 style={{ color: 'var(--40b494)', fontWeight: 'bold' }}>¡Muy Pronto!</h4>
               </div>
               <div className="div-block-3">
                 <div className="frame-12738">

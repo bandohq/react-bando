@@ -1,7 +1,7 @@
 export default {
   mainTitle: 'Exchange between MXN and crypto in one SPEI',
   subtitle:
-    'With Bando enter and exit the crypto world in seconds with SPE. <separator />. You can deposit or withdraw to your wallet or exchange to Polygon, Arbitrum, Optimism, and many more.',
+    'With Bando enter and exit the crypto world in seconds with SPEI. <separator /> You can deposit or withdraw to your wallet or exchange to Polygon, Arbitrum, Optimism, and many more.',
   section1: {
     title: 'Control your cryptos and explore safely!',
     info: 'Bando is your gateway to crypto as it should be: your keys, your tokens, with low transaction costs and with the DeFi connection you are looking for!',

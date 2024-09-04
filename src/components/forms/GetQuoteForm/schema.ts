@@ -6,9 +6,10 @@ import networksOnRamp, {
   networksOffRamp,
 } from '@config/constants/networks';
 import { sendCurrency } from '@config/constants/currencies';
-
+import i18n from 'translations';
 import { Network } from '@hooks/useNetworks/requests';
 import { Token } from '@hooks/useTokens/requests';
+import { TFunction } from 'i18next';
 
 export type GetQuoteFormValues = {
   operationType: OperationType;
@@ -24,13 +25,13 @@ const schema = yup.object().shape({
   operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
   baseAmount: yup
     .number()
-    .typeError('Introduce un monto válido')
+    .typeError(i18n.t('form.validation.invalid'))
     .when(['operationType'], {
       is: 'deposit',
       then: (schema) =>
         schema
-          .min(100, 'El monto mínimo es de $100.00 MXN')
-          .max(500000, 'El monto máximo es de $500,000 MXN'),
+          .min(100, i18n.t('en.form.validation.onMinAmount'))
+          .max(500000, i18n.t('en.form.validation.onMaxAmount')),
       otherwise: (schema) =>
         schema
           .min(5, 'El monto mínimo es de $5.00 USD')
@@ -81,27 +82,26 @@ export type GetQuoteFormValuesV2 = {
   tokenObj: Partial<Token>;
 };
 
-export const schemaV2 = yup.object().shape({
-  operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
-  networkObj: yup.object().required(),
-  tokenObj: yup.object().required(),
-  baseAmount: yup
-    .number()
-    .typeError('Introduce un monto válido')
-    .when(['operationType'], {
-      is: 'deposit',
-      then: (schema) =>
-        schema
-          .min(100, 'El monto mínimo es de $100.00 MXN')
-          .max(500000, 'El monto máximo es de $500,000 MXN'),
-      otherwise: (schema) =>
-        schema
-          .min(5, 'El monto mínimo es de $5.00 USD')
-          .max(10000, 'El monto máximo es de $10,000 USD'),
-    })
-    .required(),
-  quoteCurrency: yup.string().required(),
-  baseCurrency: yup.string().required(),
-});
+export const schemaV2 = (t: TFunction<'form', undefined>) =>
+  yup.object().shape({
+    operationType: yup.string().oneOf(['deposit', 'withdraw']).required(),
+    networkObj: yup.object().required(),
+    tokenObj: yup.object().required(),
+    baseAmount: yup
+      .number()
+      .typeError(t('validation.invalidAmount'))
+      .when(['operationType'], {
+        is: 'deposit',
+        then: (schema) =>
+          schema
+            .min(100, () => t('validation.onMinAmount'))
+            .max(500000, t('validation.onMaxAmount')),
+        otherwise: (schema) =>
+          schema.min(5, t('validation.offMinAmount')).max(10000, t('validation.offMaxAmount')),
+      })
+      .required(t('validation.invalidAmount')),
+    quoteCurrency: yup.string().required(),
+    baseCurrency: yup.string().required(),
+  });
 
 export default schema;

@@ -1,5 +1,6 @@
 import EmptyLayout from '@layouts/EmptyLayout';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import MuiInput from '@components/forms/MuiInput';
 import BoxContainer from '@components/BoxContainer';
@@ -26,6 +27,7 @@ const BottomLink = styled(Link)(({ theme }) => ({
 export default function SignIn() {
   const navigate = useNavigate();
   const storageQuote = getStorageQuote();
+  const { t } = useTranslation('form');
 
   const { login, isMutating } = useMagicLinkAuth();
   const { refetchUser, fetchMagicUser } = useUser();
@@ -57,7 +59,7 @@ export default function SignIn() {
       <BoxContainer sx={{ maxWidth: { md: '60vw' }, width: { md: '30vw' }, m: '0 auto' }}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ padding: '40px 20px 40px 20px' }}>
           <PageTitle variant="h3" sx={{ textAlign: 'center' }}>
-            Verifica tu Correo
+            {t('signin.title')}
           </PageTitle>
           <MuiInput
             label="Email"
@@ -76,11 +78,11 @@ export default function SignIn() {
             sx={{ padding: '16px 8px', fontWeight: 'bold', mt: 3 }}
           >
             {isMutating && <CircularProgress size={16} sx={{ mr: 1, ml: -2, color: '#fff' }} />}
-            Verificar
+            {t('signin.button')}
           </BandoButton>
         </form>
       </BoxContainer>
-      <BottomLink to={'/signup'}>Crear cuenta</BottomLink>
+      <BottomLink to={'/signup'}>{t('signin.footer')}</BottomLink>
     </EmptyLayout>
   );
 }
