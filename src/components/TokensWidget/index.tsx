@@ -112,17 +112,13 @@ export default function TokensWidget({
 
     // When switching from on to off
     if (_reverseOperation === 'withdraw') {
-      if (!networkObj) {
-        methods.setValue('networkObj', defaultOffNetwork);
-        methods.setValue('tokenObj', defaultOffToken);
-      }
+      methods.setValue('networkObj', defaultOffNetwork);
+      methods.setValue('tokenObj', defaultOffToken);
       methods.setValue('quoteCurrency', _baseCurrency ?? 'MXN');
     } else {
       // When switching from off to on
-      if (!networkObj) {
-        methods.setValue('networkObj', defaultOnNetwork);
-        methods.setValue('tokenObj', defaultOnToken);
-      }
+      methods.setValue('networkObj', defaultOnNetwork);
+      methods.setValue('tokenObj', defaultOnToken);
       if (_baseCurrency !== 'MXN') methods.setValue('quoteCurrency', _baseCurrency);
     }
 
