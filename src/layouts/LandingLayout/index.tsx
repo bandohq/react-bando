@@ -4,7 +4,7 @@ import Navbar from '@components/Navbar';
 import { styled } from '@mui/material/styles';
 
 import Jumbotron, { GridBox } from '@components/Jumbotron';
-import MobileJumbotron from '@components/Jumbotron/mobile';
+
 import Footer from '@components/Footer';
 import { PropsWithChildren } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
@@ -35,13 +35,6 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
     <div className="App">
       <Navbar />
       <div className="landing-page">
-        <section>
-          <Grid container spacing={0}>
-            <Grid xs={12} sx={{ display: { md: 'none', lg: 'none', sm: 'block', xs: 'block' } }}>
-              <MobileJumbotron />
-            </Grid>
-          </Grid>
-        </section>
         <Container>
           <Grid container spacing={0}>
             <Grid
@@ -60,6 +53,13 @@ export default function LandingLayout({ children }: Readonly<PropsWithChildren>)
             </Grid>
           </Grid>
         </Container>
+        <section>
+          <Grid container spacing={0}>
+            <Grid xs={12} sx={{ display: { md: 'none', lg: 'none', sm: 'block', xs: 'block' } }}>
+              <Jumbotron />
+            </Grid>
+          </Grid>
+        </section>
         <section className="section">
           <Grid
             container
