@@ -159,7 +159,7 @@ export default function TokensWidget({
       methods.setValue('tokenObj', defaultOnToken);
       methods.setValue('quoteCurrency', defaultOnToken.symbol);
     }
-    if (operationType && tokens && !!tokenObj?.id) {
+    if (operationType && tokens.length > 0 && !!tokenObj?.id) {
       const currentTokenIsValid = !!tokens?.find((token) => token.address === tokenObj?.address);
       if (!currentTokenIsValid) {
         methods.setValue('tokenObj', {});
