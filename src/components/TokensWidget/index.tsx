@@ -7,6 +7,12 @@ import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { GetQuoteFormValuesV2 } from '@components/forms/GetQuoteForm/schema';
 import { currencyImgPathV2 as currencyImgPath } from '@config/constants/currencies';
+import {
+  defaultOffNetwork,
+  defaultOffToken,
+  defaultOnNetwork,
+  defaultOnToken,
+} from '@config/constants/defaults';
 
 import formatNumber from '@helpers/formatNumber';
 import { TransactionTypeIcon } from '@components/TransactionsTable/CellDetailWithIcon';
@@ -70,39 +76,6 @@ export default function TokensWidget({
 
   const isDeposit = operationType === 'deposit';
 
-  // USDC
-  const defaultToken: Token = {
-    id: 5655,
-    key: 'usdc',
-    name: 'USDC',
-    symbol: 'USDC',
-    address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-    imageUrl:
-      'https://static.debank.com/image/coin/logo_url/usdc/e87790bfe0b3f2ea855dc29069b38818.png',
-    decimals: 6,
-    isOfframpActive: false,
-    isOnrampActive: true,
-    isOfframpVerified: false,
-    isOnrampVerified: true,
-    maxAllowance: 1000000,
-    minAllowance: 5,
-  };
-
-  // Base
-  const defaultNetwork: Network = {
-    key: 'bas',
-    name: 'Base',
-    logoUrl:
-      'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/base.svg',
-    explorerUrl: 'https://basescan.org/',
-    chainId: 8453,
-    isActive: true,
-    rpcUrl: 'https://rpc.basechain.net',
-    isTestnet: false,
-    networkType: 'EVM',
-    showNetworkList: false as never,
-  };
-
   const {
     tokens,
     filterTokens,
@@ -139,9 +112,17 @@ export default function TokensWidget({
 
     // When switching from on to off
     if (_reverseOperation === 'withdraw') {
+      if (!networkObj) {
+        methods.setValue('networkObj', defaultOffNetwork);
+        methods.setValue('tokenObj', defaultOffToken);
+      }
       methods.setValue('quoteCurrency', _baseCurrency ?? 'MXN');
     } else {
       // When switching from off to on
+      if (!networkObj) {
+        methods.setValue('networkObj', defaultOnNetwork);
+        methods.setValue('tokenObj', defaultOnToken);
+      }
       if (_baseCurrency !== 'MXN') methods.setValue('quoteCurrency', _baseCurrency);
     }
 
@@ -178,8 +159,9 @@ export default function TokensWidget({
 
   useEffect(() => {
     if (!networkObj) {
-      methods.setValue('networkObj', defaultNetwork);
-      methods.setValue('tokenObj', defaultToken);
+      methods.setValue('networkObj', defaultOnNetwork);
+      methods.setValue('tokenObj', defaultOnToken);
+      methods.setValue('quoteCurrency', defaultOnToken.symbol);
     }
     if (operationType && tokens && !!tokenObj?.id) {
       const currentTokenIsValid = !!tokens?.find((token) => token.id === tokenObj?.id);
@@ -191,7 +173,7 @@ export default function TokensWidget({
         methods.setValue(resetCurrencyKey, '');
       }
     }
-  }, [operationType, tokens, tokenObj, methods, networkObj]);
+  }, [operationType, tokens, tokenObj, methods, networkObj, quoteCurrency, baseCurrency]);
 
   return (
     <TokensContainer container spacing={2} sx={openSelectDrawer ? { paddingBottom: '80px' } : {}}>
