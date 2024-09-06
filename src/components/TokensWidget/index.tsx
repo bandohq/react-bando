@@ -70,6 +70,39 @@ export default function TokensWidget({
 
   const isDeposit = operationType === 'deposit';
 
+  // USDC
+  const defaultToken: Token = {
+    id: 5655,
+    key: 'usdc',
+    name: 'USDC',
+    symbol: 'USDC',
+    address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+    imageUrl:
+      'https://static.debank.com/image/coin/logo_url/usdc/e87790bfe0b3f2ea855dc29069b38818.png',
+    decimals: 6,
+    isOfframpActive: false,
+    isOnrampActive: true,
+    isOfframpVerified: false,
+    isOnrampVerified: true,
+    maxAllowance: 1000000,
+    minAllowance: 5,
+  };
+
+  // Base
+  const defaultNetwork: Network = {
+    key: 'bas',
+    name: 'Base',
+    logoUrl:
+      'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/base.svg',
+    explorerUrl: 'https://basescan.org/',
+    chainId: 8453,
+    isActive: true,
+    rpcUrl: 'https://rpc.basechain.net',
+    isTestnet: false,
+    networkType: 'EVM',
+    showNetworkList: false as never,
+  };
+
   const {
     tokens,
     filterTokens,
@@ -144,6 +177,10 @@ export default function TokensWidget({
   );
 
   useEffect(() => {
+    if (!networkObj) {
+      methods.setValue('networkObj', defaultNetwork);
+      methods.setValue('tokenObj', defaultToken);
+    }
     if (operationType && tokens && !!tokenObj?.id) {
       const currentTokenIsValid = !!tokens?.find((token) => token.id === tokenObj?.id);
       if (!currentTokenIsValid) {
@@ -154,7 +191,7 @@ export default function TokensWidget({
         methods.setValue(resetCurrencyKey, '');
       }
     }
-  }, [operationType, tokens, tokenObj, methods]);
+  }, [operationType, tokens, tokenObj, methods, networkObj]);
 
   return (
     <TokensContainer container spacing={2} sx={openSelectDrawer ? { paddingBottom: '80px' } : {}}>
