@@ -36,7 +36,8 @@ export const defaultOnNetwork: Network = {
 export const defaultOffNetwork: Network = {
   key: 'pol',
   name: 'Polygon',
-  logoUrl: 'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/pol.svg',
+  logoUrl:
+    'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/chains/polygon.svg',
   explorerUrl: 'https://polygonscan.org/',
   chainId: 137,
   isActive: true,
