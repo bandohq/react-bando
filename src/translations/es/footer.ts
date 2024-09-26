@@ -3,7 +3,7 @@ export default {
   productTitle: 'Producto',
   companyTitle: 'Nosotros',
   followUs: 'Síguenos',
-  productFAQ: 'Pregunas Freciuentes',
+  productFAQ: 'Preguntas Frecuentes',
   academyLink: 'Bando Academy',
   statusLink: 'Status',
   terms: 'Términos y Condiciones',
