@@ -31,13 +31,14 @@ export default function useTokens({ chainKey = '', operationType }: UseTokensArg
     mutate(`${endpoints.tokens}${chainKey}${TOKEN_QUERYSTR}`);
   }, [mutate, chainKey]);
 
-  const resetTokens = () => !!data?.tokens && setTokens(data.tokens.filter((token) => !!token.key));
+  const resetTokens = () =>
+    !!data?.tokens && setTokens(data.tokens.filter((token) => !!token.symbol));
 
   const filteredTokensByOperationType = useMemo(
     () =>
       operationType == 'deposit'
-        ? data?.tokens?.filter((token) => token?.isOnrampActive && !!token.key)
-        : data?.tokens?.filter((token) => token?.isOfframpActive && !!token.key),
+        ? data?.tokens?.filter((token) => token?.isOnrampActive && !!token.symbol)
+        : data?.tokens?.filter((token) => token?.isOfframpActive && !!token.symbol),
     [data, operationType],
   );
 
