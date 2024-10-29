@@ -1,10 +1,10 @@
-import LandingLayout from '@layouts/LandingLayout';
+import CleanLayout from '@layouts/CleanLayout';
 import RampForm from '@components/forms/RampForm';
 
 export default function Ramp() {
   return (
-    <LandingLayout>
+    <CleanLayout>
       <RampForm />
-    </LandingLayout>
+    </CleanLayout>
   );
 }
