@@ -163,7 +163,7 @@ export default function GetQuoteFormV2() {
 
   return (
     <BoxContainer
-      sx={{ width: '100%', maxWidth: '600px', overflow: 'hidden', position: 'relative' }}
+      sx={{ width: '100%', maxWidth: '450px', overflow: 'hidden', position: 'relative', m: '0 auto' }}
     >
       <FormProvider {...methods}>
         <form onSubmit={isMutating ? undefined : methods.handleSubmit(onSubmit)}>

@@ -20,7 +20,6 @@ const Container = styled('div')(() => ({
   width: '100%',
   margin: '0 auto',
   height: 'auto',
-  minHeight: '100vh',
   display: 'flex',
   padding: theme.spacing(2),
   paddingTop: TOP_PADDING,
