@@ -87,6 +87,7 @@ export default function KycForm() {
   const onSubmit = async (formValues: KycFormValues) => {
     setError('');
     try {
+      console.log('here');
       await postUserKyc({ ...formValues, email: user?.email as string });
 
       if (storageQuote.quote?.baseAmount) return navigate('/ramp', { replace: true });
