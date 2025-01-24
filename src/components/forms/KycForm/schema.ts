@@ -57,11 +57,13 @@ const schema = (t: TFunction<'form', undefined>) =>
       country: yup.string().required(),
       cic: yup.string().when('type', (type, schema) => {
         const typeValue = Array.isArray(type) ? type[0] : type;
-        return typeValue === 'INE' ? schema.required(t('kyc.cic')) : schema.notRequired();
+        return typeValue === 'NATIONAL_IDENTITY_CARD'
+          ? schema.required(t('kyc.cic'))
+          : schema.notRequired();
       }),
       identificadorCiudadano: yup.string().when('type', (type, schema) => {
         const typeValue = Array.isArray(type) ? type[0] : type;
-        return typeValue === 'INE'
+        return typeValue === 'NATIONAL_IDENTITY_CARD'
           ? schema.required(t('kyc.identificadorCiudadano'))
           : schema.notRequired();
       }),
