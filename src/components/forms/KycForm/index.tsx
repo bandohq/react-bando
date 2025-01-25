@@ -241,8 +241,8 @@ export default function KycForm() {
                 sx={{ mt: 2 }}
                 InputLabelProps={{ shrink: true }}
                 {...register('address.city')}
-                error={!!formState.errors.address?.state?.message}
-                helperText={formState.errors.address?.state?.message}
+                error={!!formState.errors.address?.city?.message}
+                helperText={formState.errors.address?.city?.message}
               />
             </Grid>
             <Grid md={4} xs={12}>
