@@ -87,7 +87,6 @@ export default function KycForm() {
   const onSubmit = async (formValues: KycFormValues) => {
     setError('');
     try {
-      console.log('here');
       await postUserKyc({ ...formValues, email: user?.email as string });
 
       if (storageQuote.quote?.baseAmount) return navigate('/ramp', { replace: true });
@@ -284,7 +283,7 @@ export default function KycForm() {
             </KYCTooltip>
           </Title>
           <Grid container spacing={1} sx={{ m: 0, width: '100%' }}>
-            <Grid md={4} xs={12}>
+            <Grid md={12} xs={12}>
               <MuiSelect
                 sx={{ mt: 2 }}
                 defaultValue={Identifications.NATIONAL_IDENTITY_CARD}
@@ -294,20 +293,17 @@ export default function KycForm() {
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
-            {watch('document.type') !== Identifications.NATIONAL_IDENTITY_CARD &&
-              watch('document.type') !== Identifications.IFE && (
-                <Grid md={8} xs={12}>
-                  <MuiInput
-                    sx={{ mt: 2, width: '100%' }}
-                    label={t('kyc.document')}
-                    type="text"
-                    InputLabelProps={{ shrink: true }}
-                    {...register('document.number')}
-                    error={!!formState.errors.document?.number?.message}
-                    helperText={formState.errors.document?.number?.message}
-                  />
-                </Grid>
-              )}
+            <Grid md={12} xs={12}>
+              <MuiInput
+                sx={{ mt: 2, width: '100%' }}
+                label={t('kyc.document')}
+                type="text"
+                InputLabelProps={{ shrink: true }}
+                {...register('document.number')}
+                error={!!formState.errors.document?.number?.message}
+                helperText={formState.errors.document?.number?.message}
+              />
+            </Grid>
             {watch('document.type') === Identifications.NATIONAL_IDENTITY_CARD && (
               <>
                 <Grid md={12} xs={12}>
