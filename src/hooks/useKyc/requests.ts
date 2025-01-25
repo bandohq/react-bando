@@ -31,11 +31,21 @@ type PostUserKycRequest = (
   data: { arg: PostUserKycArgs },
 ) => Promise<AxiosResponse>;
 
+type DocumentPayload = {
+  type: string;
+  number: string;
+  issued_country_code: string;
+  cic?: string | undefined;
+  identificadorCiudadano?: string | undefined;
+  ocr?: string | undefined;
+  numeroEmision?: string | undefined;
+};
+
 export const postUserKyc: PostUserKycRequest = (endpoint, { arg }) => {
-  const documentArgs: PostUserKycArgs['document'] = {
+  const documentArgs: DocumentPayload = {
     type: arg.document.type,
     number: arg.document.number,
-    country: arg.document.country,
+    issued_country_code: arg.document.country,
   };
   if (arg.document.cic) documentArgs.cic = arg.document.cic;
   if (arg.document.identificadorCiudadano)
