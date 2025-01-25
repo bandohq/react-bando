@@ -10,6 +10,7 @@ type PostUserKycArgs = {
   address: {
     street: string;
     state: string;
+    city: string;
     zip: string;
     country: string;
   };
@@ -18,6 +19,10 @@ type PostUserKycArgs = {
     type: string;
     number: string;
     country: string;
+    cic?: string | undefined;
+    identificadorCiudadano?: string | undefined;
+    ocr?: string | undefined;
+    numeroEmision?: string | undefined;
   };
   acceptedNotifications?: boolean | undefined;
 };
@@ -26,8 +31,18 @@ type PostUserKycRequest = (
   data: { arg: PostUserKycArgs },
 ) => Promise<AxiosResponse>;
 
-export const postUserKyc: PostUserKycRequest = (endpoint, { arg }) =>
-  axios.post(endpoint, {
+export const postUserKyc: PostUserKycRequest = (endpoint, { arg }) => {
+  const documentArgs: PostUserKycArgs['document'] = {
+    type: arg.document.type,
+    number: arg.document.number,
+    country: arg.document.country,
+  };
+  if (arg.document.cic) documentArgs.cic = arg.document.cic;
+  if (arg.document.identificadorCiudadano)
+    documentArgs.identificadorCiudadano = arg.document.identificadorCiudadano;
+  if (arg.document.ocr) documentArgs.ocr = arg.document.ocr;
+  if (arg.document.numeroEmision) documentArgs.numeroEmision = arg.document.numeroEmision;
+  return axios.post(endpoint, {
     type: arg.type,
     email: arg.email,
     first_name: arg.firstName,
@@ -36,11 +51,13 @@ export const postUserKyc: PostUserKycRequest = (endpoint, { arg }) =>
     date_of_birth: arg.dateOfBirth ?? '1990-12-14',
     address: {
       street: arg.address.street,
-      city: arg.address.state,
+      state: arg.address.state,
+      city: arg.address.city,
       zip: arg.address.zip,
       country: arg.address.country,
     },
     national_id_number: arg.nationalIdNumber,
-    document: arg.document,
+    document: documentArgs,
     accepted_notifications: arg.acceptedNotifications,
   });
+};
