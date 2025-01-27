@@ -19,6 +19,9 @@ export const getUserData: GetUserDataRequest = (endpoint) =>
       currentDepositUsageUsd: Math.abs(parseFloat(data.current_deposit_usage_usd)),
       currentWithdrawalUsageUsd: Math.abs(parseFloat(data.current_withdrawal_usage_usd)),
       resetAt: data.reset_at,
+      complianceUrl: data.compliance_url,
+      active: data.active,
+      onboardindStatus: data.onboarding_status,
     }))
     .catch((error) => {
       if (error.response.data.success) return Promise.resolve({ kycLevel: 0 });
