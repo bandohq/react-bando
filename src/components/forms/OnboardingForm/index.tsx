@@ -14,17 +14,19 @@ const OnboardingForm = ({ complianceUrl }: OnboardingFormProps) => {
       <Typography variant="body1">
         Please click the button below to start the onboarding process.
       </Typography>
-      <Button
-        onClick={() => window.open(complianceUrl, 'popup', 'width=600,height=600')}
-      >
+      <Button onClick={() => window.open(complianceUrl, 'popup', 'width=600,height=600')}>
         Start Onboarding
       </Button>
       <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
         Powered by
-        <img src="/path/to/provider-logo.png" alt="Provider Logo" style={{ display: 'inline', marginLeft: '5px', verticalAlign: 'middle' }} />
+        <img
+          src="/path/to/provider-logo.png"
+          alt="Provider Logo"
+          style={{ display: 'inline', marginLeft: '5px', verticalAlign: 'middle' }}
+        />
       </Typography>
     </BoxContainer>
-  )
-}
+  );
+};
 
 export default OnboardingForm;
