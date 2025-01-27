@@ -1,5 +1,6 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
+import { useEffect } from 'react';
 import { styled } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import MuiInput from '@components/forms/MuiInput';
@@ -11,6 +12,7 @@ import Tooltip, { tooltipClasses, TooltipProps } from '@mui/material/Tooltip';
 import QuestionCircleIcon from '@mui/icons-material/Help';
 import INE from '@assets/ine_ref.png';
 
+import OnboardingForm from '@components/forms/OnboardingForm';
 import ErrorBox from '@components/forms/ErrorBox';
 import BandoButton from '@components/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -69,7 +71,7 @@ export default function KycForm() {
 
   const { configs } = useRemoteConfig();
   const { user } = useUser();
-  const { isMutating, postUserKyc } = useKyc();
+  const { isMutating, postUserKyc, data } = useKyc();
   const storageQuote = getStorageQuote();
   const { register, control, formState, handleSubmit, setValue, watch } = useForm<KycFormValues>({
     resolver: yupResolver(schema(t)),
@@ -83,6 +85,15 @@ export default function KycForm() {
       },
     },
   });
+
+  const [complianceUrl, setComplianceUrl] = useState('');
+
+  useEffect(() => {
+    if (user?.complianceUrl !== undefined) {
+      setComplianceUrl(user.complianceUrl);
+    }
+    console.log(data);
+  }, [user, data]);
 
   const onSubmit = async (formValues: KycFormValues) => {
     setError('');
@@ -108,6 +119,10 @@ export default function KycForm() {
       return;
     }
   };
+
+  if (complianceUrl !== '') {
+    return <OnboardingForm complianceUrl={complianceUrl} />;
+  }
 
   return (
     <BoxContainer sx={{ maxWidth: { md: '60vw' }, width: { md: '30vw' }, m: '0 auto' }}>
