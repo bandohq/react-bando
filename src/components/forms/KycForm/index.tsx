@@ -28,12 +28,10 @@ import { AxiosError } from 'axios';
 import useKyc from '@hooks/useKyc';
 import useUser from '@hooks/useUser';
 import useRemoteConfig from '@hooks/useRemoteConfig';
-import { useNavigate } from 'react-router-dom';
 
 import { identificationOptions, Identifications } from '@config/constants/identification';
 import { AcceptedCountries, countryOptions } from '@config/constants/countries';
 import { useState } from 'react';
-import getStorageQuote from '@helpers/getStorageQuote';
 import { useTranslation } from 'react-i18next';
 
 const P = styled('p')(({ theme }) => ({
