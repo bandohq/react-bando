@@ -16,6 +16,7 @@ type OnboardingFormProps = PropsWithChildren & {
 
 const OnboardingForm = ({ complianceUrl, onboardingStatus }: OnboardingFormProps) => {
   const { t } = useTranslation('form');
+  console.log(onboardingStatus);
   return (
     <BoxContainer sx={{ maxWidth: { md: '60vw' }, width: { md: '30vw' }, m: '0 auto' }}>
       <Title variant="h4" sx={{ textAlign: 'center', mb: 0 }}>
