@@ -68,6 +68,12 @@ export default {
     ocr: 'OCR IFE inválido',
     numeroEmision: 'Número de emisión IFE inválido',
   },
+  onboarding: {
+    title: 'Verificación de identidad',
+    description: 'Para comenzar, necesitamos algunos datos tuyos',
+    button: 'Comenzar Proceso',
+    poweredBy: 'Powered by',
+  },
   quote: {
     baseAmount: 'Monto',
     quoteCurrency: 'Moneda',

@@ -66,13 +66,13 @@ const KYCTooltip = styled(({ className, ...props }: TooltipProps) => (
 const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function KycForm() {
   const { t } = useTranslation('form');
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [error, setError] = useState('');
 
   const { configs } = useRemoteConfig();
   const { user } = useUser();
   const { isMutating, postUserKyc, data } = useKyc();
-  const storageQuote = getStorageQuote();
+  //const storageQuote = getStorageQuote();
   const { register, control, formState, handleSubmit, setValue, watch } = useForm<KycFormValues>({
     resolver: yupResolver(schema(t)),
     mode: 'onBlur',
@@ -100,9 +100,7 @@ export default function KycForm() {
     setError('');
     try {
       await postUserKyc({ ...formValues, email: user?.email as string });
-
-      if (storageQuote.quote?.baseAmount) return navigate('/ramp', { replace: true });
-      return navigate('/', { replace: true });
+      setComplianceUrl(data?.data.complianceUrl);
     } catch (err) {
       if ((err as AxiosError).response?.status === 403) {
         setError(`Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía un
@@ -122,7 +120,9 @@ export default function KycForm() {
   };
 
   if (complianceUrl !== '') {
-    return <OnboardingForm complianceUrl={complianceUrl} />;
+    return (
+      <OnboardingForm complianceUrl={complianceUrl} onboardingStatus={user?.onboardingStatus} />
+    );
   }
 
   return (

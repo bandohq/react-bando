@@ -31,7 +31,7 @@ export default {
     driverLicense: 'Driver License',
   },
   kyc: {
-    verifyTitle: 'Validate your identity',
+    verifyTitle: 'Personal Information',
     verifyAddress: 'Validate your address',
     fields: {
       phone: 'Phone number',
@@ -67,6 +67,12 @@ export default {
     identificadorCiudadano: 'Invalid Citizen Identifier',
     ocr: 'Invalid OCR',
     numeroEmision: 'Invalid IFE Issuance Number',
+  },
+  onboarding: {
+    title: 'Verify your identity',
+    description: 'The easiest way to buy and sell cryptocurrencies',
+    button: 'Start Verification',
+    poweredBy: 'Powered by',
   },
   quote: {
     baseAmount: 'Amount',
