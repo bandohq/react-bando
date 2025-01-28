@@ -74,6 +74,9 @@ export default {
     status: 'Estado de tu verificación',
     button: 'Comenzar Proceso',
     poweredBy: 'Powered by',
+    active: 'Verificado',
+    pending: 'Pendiente',
+    rejected: 'Rechazado',
   },
   quote: {
     baseAmount: 'Monto',

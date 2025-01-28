@@ -7,6 +7,7 @@ import KillBLogo from '../../../assets/killb-logo.svg';
 import { useTranslation } from 'react-i18next';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PendingIcon from '@mui/icons-material/Pending';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 type OnboardingFormProps = PropsWithChildren & {
   complianceUrl: string;
@@ -23,15 +24,28 @@ const OnboardingForm = ({ complianceUrl, onboardingStatus }: OnboardingFormProps
       <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
         {t('onboarding.status')}
         {onboardingStatus == 'ACTIVE' && (
-          <CheckCircleIcon sx={{ color: 'success.main', verticalAlign: 'middle', ml: 1 }} />
+          <Typography component="span" variant="body2" sx={{ color: 'warning.main' }}>
+            <CheckCircleIcon
+              sx={{ color: 'success.main', verticalAlign: 'middle', ml: 1, display: 'inline' }}
+            />
+            {t('onboarding.active')}
+          </Typography>
         )}
         {onboardingStatus == 'REJECTED' && (
           <Typography component="span" variant="body2" sx={{ color: 'error.main' }}>
-            {onboardingStatus}
+            <CancelIcon
+              sx={{ color: 'error.main', verticalAlign: 'middle', ml: 1, display: 'inline' }}
+            />
+            {t('onboarding.rejected')}
           </Typography>
         )}
         {(onboardingStatus == 'PENDING' || onboardingStatus === undefined) && (
-          <PendingIcon sx={{ color: 'warning.main', verticalAlign: 'middle', ml: 1 }} />
+          <Typography component="span" variant="body2" sx={{ color: 'warning.main' }}>
+            <PendingIcon
+              sx={{ color: 'warning.main', verticalAlign: 'middle', ml: 1, display: 'inline' }}
+            />
+            {t('onboarding.pending')}
+          </Typography>
         )}
       </Typography>
       <BandoButton

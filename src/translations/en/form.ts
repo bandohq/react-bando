@@ -74,6 +74,9 @@ export default {
     button: 'Start Verification',
     poweredBy: 'Powered by',
     status: 'Verification status',
+    active: 'Verified',
+    pending: 'Pending',
+    rejected: 'Rejected',
   },
   quote: {
     baseAmount: 'Amount',
