@@ -20,11 +20,8 @@ const OnboardingForm = ({ complianceUrl, onboardingStatus }: OnboardingFormProps
       <Title variant="h4" sx={{ textAlign: 'center', mb: 0 }}>
         {t('onboarding.title')}
       </Title>
-      <Typography variant="body1" sx={{ textAlign: 'center' }}>
-        {t('onboarding.description')}
-      </Typography>
       <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
-        Status:
+        {t('onboarding.status')}
         {onboardingStatus == 'ACTIVE' && (
           <CheckCircleIcon sx={{ color: 'success.main', verticalAlign: 'middle', ml: 1 }} />
         )}
@@ -33,7 +30,7 @@ const OnboardingForm = ({ complianceUrl, onboardingStatus }: OnboardingFormProps
             {onboardingStatus}
           </Typography>
         )}
-        {onboardingStatus == 'PENDING' && (
+        {(onboardingStatus == 'PENDING' || onboardingStatus === undefined) && (
           <PendingIcon sx={{ color: 'warning.main', verticalAlign: 'middle', ml: 1 }} />
         )}
       </Typography>
@@ -53,7 +50,7 @@ const OnboardingForm = ({ complianceUrl, onboardingStatus }: OnboardingFormProps
             display: 'inline',
             marginLeft: '5px',
             verticalAlign: 'middle',
-            maxWidth: '35px',
+            maxWidth: '40px',
           }}
         />
       </Typography>

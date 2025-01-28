@@ -73,6 +73,7 @@ export default {
     description: 'The easiest way to buy and sell cryptocurrencies',
     button: 'Start Verification',
     poweredBy: 'Powered by',
+    status: 'Verification status',
   },
   quote: {
     baseAmount: 'Amount',

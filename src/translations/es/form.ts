@@ -71,6 +71,7 @@ export default {
   onboarding: {
     title: 'Verificación de identidad',
     description: 'Para comenzar, necesitamos algunos datos tuyos',
+    status: 'Estado de tu verificación',
     button: 'Comenzar Proceso',
     poweredBy: 'Powered by',
   },
