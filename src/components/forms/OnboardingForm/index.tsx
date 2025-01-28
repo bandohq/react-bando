@@ -1,7 +1,9 @@
 import { PropsWithChildren } from 'react';
-import Button from '@components/Button';
+import BandoButton from '@components/Button';
 import BoxContainer from '@components/BoxContainer';
 import { Typography } from '@mui/material';
+import Title from '@components/PageTitle';
+import KillBLogo from '../../../assets/killb-logo.svg'
 
 type OnboardingFormProps = PropsWithChildren & {
   complianceUrl: string;
@@ -9,19 +11,22 @@ type OnboardingFormProps = PropsWithChildren & {
 
 const OnboardingForm = ({ complianceUrl }: OnboardingFormProps) => {
   return (
-    <BoxContainer>
-      <Typography variant="h4">Onboarding Form</Typography>
-      <Typography variant="body1">
+    <BoxContainer sx={{ maxWidth: { md: '60vw' }, width: { md: '30vw' }, m: '0 auto' }}>
+      <Title variant="h4" sx={{ textAlign: 'center' }}>Onboarding Form</Title>
+      <Typography variant="body1" sx={{ textAlign: 'center' }}>
         Please click the button below to start the onboarding process.
       </Typography>
-      <Button onClick={() => window.open(complianceUrl, 'popup', 'width=600,height=600')}>
+      <BandoButton
+        variant="contained"
+        onClick={() => window.open(complianceUrl, 'popup', 'width=600,height=800')}
+      >
         Start Onboarding
-      </Button>
+      </BandoButton>
       <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
         Powered by
         <img
-          src="/path/to/provider-logo.png"
-          alt="Provider Logo"
+          src={KillBLogo}
+          alt="KillB Logo"
           style={{ display: 'inline', marginLeft: '5px', verticalAlign: 'middle' }}
         />
       </Typography>
