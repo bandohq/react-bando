@@ -87,11 +87,9 @@ export default function KycForm() {
   const [complianceUrl, setComplianceUrl] = useState('');
 
   useEffect(() => {
-    console.log(user);
     if (user?.complianceUrl !== undefined) {
       setComplianceUrl(user.complianceUrl);
     }
-    console.log(data);
   }, [user, data]);
 
   const onSubmit = async (formValues: KycFormValues) => {
