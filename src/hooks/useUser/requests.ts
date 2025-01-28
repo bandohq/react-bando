@@ -21,7 +21,7 @@ export const getUserData: GetUserDataRequest = (endpoint) =>
       resetAt: data.reset_at,
       complianceUrl: data.compliance_url,
       active: data.active,
-      onboardindStatus: data.onboarding_status,
+      onboardindStatus: data.status,
     }))
     .catch((error) => {
       if (error.response.data.success) return Promise.resolve({ kycLevel: 0 });
