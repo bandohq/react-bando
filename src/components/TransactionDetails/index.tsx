@@ -234,7 +234,7 @@ export default function TransactionDetail({
               <BandoAlert text={t('speiAlert')} title={t('speiAlertTitle')} severity="info" />
             )}
             <BorderContainer container spacing={2}>
-              {!transaction?.cashinDetails?.CLABE ? (
+              {!transaction?.cashinDetails?.clabe ? (
                 <GridRow xs={12} sx={{ gap: 1 }} className="sm-column">
                   <TransactionCopyText
                     variant="body2"
@@ -252,7 +252,7 @@ export default function TransactionDetail({
                     <TransactionCopyText
                       variant="body2"
                       sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails?.Bank}
+                      text={transaction?.cashinDetails?.bank}
                     />
                   </GridRow>
                   <GridRow xs={12}>
@@ -262,7 +262,7 @@ export default function TransactionDetail({
                     <TransactionCopyText
                       variant="body2"
                       sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails?.Beneficiary}
+                      text={transaction?.cashinDetails?.beneficiary}
                     />
                   </GridRow>
                   <GridRow xs={12}>
@@ -272,7 +272,7 @@ export default function TransactionDetail({
                     <TransactionCopyText
                       variant="body2"
                       sx={{ textAlign: 'right' }}
-                      text={transaction?.cashinDetails?.CLABE}
+                      text={transaction?.cashinDetails?.clabe}
                     />
                   </GridRow>
                   <GridRow xs={12}>
