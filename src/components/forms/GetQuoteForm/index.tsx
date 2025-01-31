@@ -95,6 +95,7 @@ export default function GetQuoteForm() {
 
   useEffect(() => {
     setUserStatus(user?.onboardingStatus ?? '');
+    console.log('userStatus', userStatus);
   }, [user]);
 
   const navigateForm = useCallback(
