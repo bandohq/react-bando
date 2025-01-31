@@ -1,4 +1,5 @@
 import Grid from '@mui/material/Unstable_Grid2';
+import Typography from '@mui/material/Typography';
 import BoxContainer from '@components/BoxContainer';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
@@ -180,6 +181,11 @@ export default function GetQuoteForm() {
 
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
+      { user?.onboardingStatus === 'PENDING' && (
+        <Typography variant="body2" sx={{ textAlign: 'center', color: 'warning.main' }}>
+          Pending
+        </Typography>
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2} sx={{ margin: 0 }}>
           <Grid xs={12}>
