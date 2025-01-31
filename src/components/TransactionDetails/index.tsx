@@ -113,7 +113,7 @@ export default function TransactionDetail({
   const isDeposit = (transaction?.operationType ?? operationType) === 'deposit';
   const DetailContainer = noContainer ? Box : BoxContainer;
   const networkKey = networkObj?.key || transaction?.networkConfig?.key;
-  const depositTitle = transaction?.cashinDetails?.CLABE
+  const depositTitle = transaction?.cashinDetails?.clabe
     ? `Envía ${transaction.baseCurrency} a la cuenta:`
     : `Envía tu ${transaction?.baseCurrency} a esta dirección en
   ${transaction?.cashinDetails?.network}:`;
