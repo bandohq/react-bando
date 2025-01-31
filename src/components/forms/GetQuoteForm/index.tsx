@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, useCallback, useMemo, useRef } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import debounce from 'lodash/debounce';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -48,6 +48,7 @@ export default function GetQuoteForm() {
   const navigate = useNavigate();
   const { isMutating, data, getQuote } = useQuote();
   const { user } = useUser();
+  const [userStatus, setUserStatus] = useState('');
   const { register, handleSubmit, setValue, watch, formState, getValues, ...methods } =
     useForm<GetQuoteFormValues>({
       resolver: yupResolver(schema),
@@ -91,6 +92,10 @@ export default function GetQuoteForm() {
       }).catch(() => null),
     [getQuote],
   );
+
+  useEffect(() => {
+    setUserStatus(user?.onboardingStatus ?? '');
+  }, [user]);
 
   const navigateForm = useCallback(
     (quote?: Quote) => {
@@ -181,7 +186,7 @@ export default function GetQuoteForm() {
 
   return (
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
-      { user?.onboardingStatus === 'PENDING' && (
+      { userStatus === 'PENDING' && (
         <Typography variant="body2" sx={{ textAlign: 'center', color: 'warning.main' }}>
           Pending2
         </Typography>
