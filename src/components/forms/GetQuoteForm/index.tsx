@@ -183,7 +183,7 @@ export default function GetQuoteForm() {
     <BoxContainer sx={{ width: '100%', maxWidth: '600px' }}>
       { user?.onboardingStatus === 'PENDING' && (
         <Typography variant="body2" sx={{ textAlign: 'center', color: 'warning.main' }}>
-          Pending
+          Pending2
         </Typography>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
