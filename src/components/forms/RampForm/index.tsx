@@ -25,7 +25,6 @@ import { tapfiliateConversion } from '@config/tapfiliate';
 import { checkNumberLength, allowOnlyNumbers } from '@helpers/inputs';
 import { Quote } from '@hooks/useQuote/requests';
 import { Transaction } from '@hooks/useTransaction/requests';
-import BoxContainer from '@components/BoxContainer';
 
 type RampFormProps = {
   noContainer?: boolean;
