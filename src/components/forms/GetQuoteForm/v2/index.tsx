@@ -2,7 +2,6 @@ import BoxContainer from '@components/BoxContainer';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
-import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useCallback, useRef, useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
@@ -171,11 +170,6 @@ export default function GetQuoteFormV2() {
     <BoxContainer
       sx={{ width: '100%', maxWidth: '450px', overflow: 'hidden', position: 'relative', m: '0 auto' }}
     >
-      { userStatus === 'PENDING' && (
-        <Typography variant="body2" sx={{ textAlign: 'center', color: 'warning.main' }}>
-          Pending
-        </Typography>
-      )}
       <FormProvider {...methods}>
         <form onSubmit={isMutating ? undefined : methods.handleSubmit(onSubmit)}>
           <TokensWidget
