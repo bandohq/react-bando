@@ -71,6 +71,7 @@ export default function UserMenu(props: UserMenuProps) {
           <LimitUsage
             usage={user.currentDepositUsageUsd}
             kycLevel={user.kycLevel as LimitUsageProps['kycLevel']}
+            onboardingStatus={user.onboardingStatus as LimitUsageProps['onboardingStatus']}
           />
           <MenuItem onClick={logoutUser} sx={{ ...menuItemSx, mb: 2 }}>
             {t('signout')}
