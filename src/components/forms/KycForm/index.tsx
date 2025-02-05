@@ -1,5 +1,6 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
+import { useEffect } from 'react';
 import { styled } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import MuiInput from '@components/forms/MuiInput';
@@ -11,6 +12,7 @@ import Tooltip, { tooltipClasses, TooltipProps } from '@mui/material/Tooltip';
 import QuestionCircleIcon from '@mui/icons-material/Help';
 import INE from '@assets/ine_ref.png';
 
+import OnboardingForm from '@components/forms/OnboardingForm';
 import ErrorBox from '@components/forms/ErrorBox';
 import BandoButton from '@components/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -26,12 +28,10 @@ import { AxiosError } from 'axios';
 import useKyc from '@hooks/useKyc';
 import useUser from '@hooks/useUser';
 import useRemoteConfig from '@hooks/useRemoteConfig';
-import { useNavigate } from 'react-router-dom';
 
 import { identificationOptions, Identifications } from '@config/constants/identification';
 import { AcceptedCountries, countryOptions } from '@config/constants/countries';
 import { useState } from 'react';
-import getStorageQuote from '@helpers/getStorageQuote';
 import { useTranslation } from 'react-i18next';
 
 const P = styled('p')(({ theme }) => ({
@@ -64,14 +64,14 @@ const KYCTooltip = styled(({ className, ...props }: TooltipProps) => (
 const DEFAULT_PHONE_COUNTRY = 'mx';
 export default function KycForm() {
   const { t } = useTranslation('form');
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [error, setError] = useState('');
 
   const { configs } = useRemoteConfig();
   const { user } = useUser();
-  const { isMutating, postUserKyc } = useKyc();
-  const storageQuote = getStorageQuote();
-  const { register, control, formState, handleSubmit, setValue } = useForm<KycFormValues>({
+  const { isMutating, postUserKyc, data } = useKyc();
+  //const storageQuote = getStorageQuote();
+  const { register, control, formState, handleSubmit, setValue, watch } = useForm<KycFormValues>({
     resolver: yupResolver(schema(t)),
     mode: 'onBlur',
     defaultValues: {
@@ -84,13 +84,19 @@ export default function KycForm() {
     },
   });
 
+  const [complianceUrl, setComplianceUrl] = useState('');
+
+  useEffect(() => {
+    if (user?.complianceUrl !== undefined) {
+      setComplianceUrl(user.complianceUrl);
+    }
+  }, [user, data]);
+
   const onSubmit = async (formValues: KycFormValues) => {
     setError('');
     try {
       await postUserKyc({ ...formValues, email: user?.email as string });
-
-      if (storageQuote.quote?.baseAmount) return navigate('/ramp', { replace: true });
-      return navigate('/', { replace: true });
+      setComplianceUrl(data?.data.complianceUrl);
     } catch (err) {
       if ((err as AxiosError).response?.status === 403) {
         setError(`Bando está en beta privado. Para poder ser de nuestros primeros usuarios envía un
@@ -108,6 +114,12 @@ export default function KycForm() {
       return;
     }
   };
+
+  if (complianceUrl !== '') {
+    return (
+      <OnboardingForm complianceUrl={complianceUrl} onboardingStatus={user?.onboardingStatus} />
+    );
+  }
 
   return (
     <BoxContainer sx={{ maxWidth: { md: '60vw' }, width: { md: '30vw' }, m: '0 auto' }}>
@@ -189,6 +201,7 @@ export default function KycForm() {
 
                     if (address) {
                       setValue('address.street', address.street ?? '');
+                      setValue('address.city', address.city ?? '');
                       setValue('address.state', address.state ?? '');
                       setValue('address.zip', address.zip ?? '');
                       setValue('address.country', address.country ?? '');
@@ -233,6 +246,17 @@ export default function KycForm() {
                 helperText={formState.errors.address?.state?.message}
               />
             </Grid>
+            <Grid md={8} xs={12}>
+              <MuiInput
+                label={t('kyc.fields.city')}
+                type="text"
+                sx={{ mt: 2 }}
+                InputLabelProps={{ shrink: true }}
+                {...register('address.city')}
+                error={!!formState.errors.address?.city?.message}
+                helperText={formState.errors.address?.city?.message}
+              />
+            </Grid>
             <Grid md={4} xs={12}>
               <MuiInput
                 label={t('kyc.fields.zip')}
@@ -271,7 +295,7 @@ export default function KycForm() {
             </KYCTooltip>
           </Title>
           <Grid container spacing={1} sx={{ m: 0, width: '100%' }}>
-            <Grid md={4} xs={12}>
+            <Grid md={12} xs={12}>
               <MuiSelect
                 sx={{ mt: 2 }}
                 defaultValue={Identifications.NATIONAL_IDENTITY_CARD}
@@ -281,7 +305,7 @@ export default function KycForm() {
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
-            <Grid md={8} xs={12}>
+            <Grid md={12} xs={12}>
               <MuiInput
                 sx={{ mt: 2, width: '100%' }}
                 label={t('kyc.document')}
@@ -292,6 +316,58 @@ export default function KycForm() {
                 helperText={formState.errors.document?.number?.message}
               />
             </Grid>
+            {watch('document.type') === Identifications.NATIONAL_IDENTITY_CARD && (
+              <>
+                <Grid md={12} xs={12}>
+                  <MuiInput
+                    sx={{ mt: 2, width: '100%' }}
+                    label={t('kyc.fields.cic')}
+                    type="text"
+                    InputLabelProps={{ shrink: true }}
+                    {...register('document.cic')}
+                    error={!!formState.errors.document?.cic?.message}
+                    helperText={formState.errors.document?.cic?.message}
+                  />
+                </Grid>
+                <Grid md={12} xs={12}>
+                  <MuiInput
+                    sx={{ mt: 2, width: '100%' }}
+                    label={t('kyc.fields.identificadorCiudadano')}
+                    type="text"
+                    InputLabelProps={{ shrink: true }}
+                    {...register('document.identificadorCiudadano')}
+                    error={!!formState.errors.document?.identificadorCiudadano?.message}
+                    helperText={formState.errors.document?.identificadorCiudadano?.message}
+                  />
+                </Grid>
+              </>
+            )}
+            {watch('document.type') === Identifications.IFE && (
+              <>
+                <Grid md={12} xs={12}>
+                  <MuiInput
+                    sx={{ mt: 2, width: '100%' }}
+                    label={t('kyc.fields.ocr')}
+                    type="text"
+                    InputLabelProps={{ shrink: true }}
+                    {...register('document.ocr')}
+                    error={!!formState.errors.document?.ocr?.message}
+                    helperText={formState.errors.document?.ocr?.message}
+                  />
+                </Grid>
+                <Grid md={12} xs={12}>
+                  <MuiInput
+                    sx={{ mt: 2, width: '100%' }}
+                    label={t('kyc.fields.numeroEmision')}
+                    type="text"
+                    InputLabelProps={{ shrink: true }}
+                    {...register('document.numeroEmision')}
+                    error={!!formState.errors.document?.numeroEmision?.message}
+                    helperText={formState.errors.document?.numeroEmision?.message}
+                  />
+                </Grid>
+              </>
+            )}
           </Grid>
           {!!error && (
             <Grid md={12} sm={12} xs={12} sx={{ mt: 2 }}>

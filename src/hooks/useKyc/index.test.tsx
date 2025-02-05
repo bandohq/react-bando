@@ -55,6 +55,7 @@ describe('useKyc', () => {
       address: {
         street: 'street',
         state: 'state',
+        city: 'city',
         zip: 'zip',
         country: 'country',
       },
