@@ -119,123 +119,122 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
 
   if (user && quote) {
     return (
-      <BoxContainer sx={{ width: '100%', maxWidth: '600px', m: '0 auto' }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TransactionDetail
-            transaction={data ?? (quote as unknown as Transaction)}
-            noContainer={noContainer}
-            quoteRateInverse={quote?.quoteRateInverse}
-            quoteRate={quote?.quoteRate}
-            networkObj={networkObj}
-            tokenObj={tokenObj}
-            success={false}
-            operationType={operationType}
-          >
-            <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
-              {operationType === 'deposit' ? (
-                <Grid xs={12}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TransactionDetail
+          transaction={data ?? (quote as unknown as Transaction)}
+          sx={{ m: '0 auto' }}
+          noContainer={noContainer}
+          quoteRateInverse={quote?.quoteRateInverse}
+          quoteRate={quote?.quoteRate}
+          networkObj={networkObj}
+          tokenObj={tokenObj}
+          success={false}
+          operationType={operationType}
+        >
+          <Grid container spacing={2} sx={{ mx: 0, my: 1 }}>
+            {operationType === 'deposit' ? (
+              <Grid xs={12}>
+                <Input
+                  label={t('address')}
+                  type="text"
+                  {...register('address')}
+                  error={!!formState.errors.address?.message}
+                  helpText={formState.errors.address?.message ?? undefined}
+                />
+              </Grid>
+            ) : (
+              <>
+                <Grid md={6}>
                   <Input
-                    label={t('address')}
+                    label={t('name')}
                     type="text"
-                    {...register('address')}
-                    error={!!formState.errors.address?.message}
-                    helpText={formState.errors.address?.message ?? undefined}
+                    {...register('firstName')}
+                    error={!!formState.errors.firstName?.message}
                   />
                 </Grid>
-              ) : (
-                <>
-                  <Grid md={6}>
-                    <Input
-                      label={t('name')}
-                      type="text"
-                      {...register('firstName')}
-                      error={!!formState.errors.firstName?.message}
-                    />
-                  </Grid>
-                  <Grid md={6}>
-                    <Input
-                      label={t('lastName')}
-                      type="text"
-                      {...register('lastName')}
-                      error={!!formState.errors.lastName?.message}
-                    />
-                  </Grid>
-                  <Grid xs={12}>
-                    <Input
-                      label={t('clabe')}
-                      type="text"
-                      {...register('clabe', {
-                        onChange: (e) => {
-                          allowOnlyNumbers(e);
-                          checkNumberLength(e, 18);
-                        },
-                      })}
-                      error={!!formState.errors.clabe?.message}
-                    />
-                  </Grid>
-                </>
-              )}
-              {!!formError && (
-                <Grid xs={12}>
-                  <ErrorBox>{formError}</ErrorBox>
+                <Grid md={6}>
+                  <Input
+                    label={t('lastName')}
+                    type="text"
+                    {...register('lastName')}
+                    error={!!formState.errors.lastName?.message}
+                  />
                 </Grid>
-              )}
-              {!!limitAlert && (
                 <Grid xs={12}>
-                  <ErrorBox mode="alert" align="left">
-                    <Trans
-                      t={t}
-                      i18nKey="errors.limit"
-                      components={{
-                        strong: <strong />,
-                        p: <p />,
-                        h4: <h4 />,
-                        h5: <h5 />,
-                        ol: <ol />,
-                        li: <li />,
-                        h6: <h6 />,
-                        br: <br />,
-                      }}
-                    />
-                  </ErrorBox>
+                  <Input
+                    label={t('clabe')}
+                    type="text"
+                    {...register('clabe', {
+                      onChange: (e) => {
+                        allowOnlyNumbers(e);
+                        checkNumberLength(e, 18);
+                      },
+                    })}
+                    error={!!formState.errors.clabe?.message}
+                  />
                 </Grid>
-              )}
-              {user?.onboardingStatus !== 'ACTIVE' && (
-                <Grid xs={12}>
-                  <Alert
-                    severity="warning"
-                    action={
-                      <Button color="inherit" size="small" onClick={() => navigate('/start')}>
-                        {t('userMenu:limitUsage.revalidateLink')}
-                      </Button>
-                    }
-                  >
-                    {t('userMenu:limitUsage.pendingMessage')}
-                  </Alert>
-                </Grid>
-              )}
+              </>
+            )}
+            {!!formError && (
               <Grid xs={12}>
-                <BandoButton
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  disabled={isLoading || user?.onboardingStatus !== 'ACTIVE'}
-                  sx={{ padding: '16px 8px', fontWeight: 'bold' }}
-                >
-                  {isLoading && (
-                    <CircularProgress
-                      size={16}
-                      sx={{ mr: 1, ml: -2, color: '#fff' }}
-                      aria-label="submitting"
-                    />
-                  )}
-                  {t('confirm')}
-                </BandoButton>
+                <ErrorBox>{formError}</ErrorBox>
               </Grid>
+            )}
+            {!!limitAlert && (
+              <Grid xs={12}>
+                <ErrorBox mode="alert" align="left">
+                  <Trans
+                    t={t}
+                    i18nKey="errors.limit"
+                    components={{
+                      strong: <strong />,
+                      p: <p />,
+                      h4: <h4 />,
+                      h5: <h5 />,
+                      ol: <ol />,
+                      li: <li />,
+                      h6: <h6 />,
+                      br: <br />,
+                    }}
+                  />
+                </ErrorBox>
+              </Grid>
+            )}
+            {user?.onboardingStatus !== 'ACTIVE' && (
+              <Grid xs={12}>
+                <Alert
+                  severity="warning"
+                  action={
+                    <Button color="inherit" size="small" onClick={() => navigate('/start')}>
+                      {t('userMenu:limitUsage.revalidateLink')}
+                    </Button>
+                  }
+                >
+                  {t('userMenu:limitUsage.pendingMessage')}
+                </Alert>
+              </Grid>
+            )}
+            <Grid xs={12}>
+              <BandoButton
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={isLoading || user?.onboardingStatus !== 'ACTIVE'}
+                sx={{ padding: '16px 8px', fontWeight: 'bold' }}
+              >
+                {isLoading && (
+                  <CircularProgress
+                    size={16}
+                    sx={{ mr: 1, ml: -2, color: '#fff' }}
+                    aria-label="submitting"
+                  />
+                )}
+                {t('confirm')}
+              </BandoButton>
             </Grid>
-          </TransactionDetail>
-        </form>
-      </BoxContainer>
+          </Grid>
+        </TransactionDetail>
+      </form>
     );
   }
   return null;
