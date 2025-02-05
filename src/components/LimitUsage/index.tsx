@@ -1,7 +1,6 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 
 import ProgressBar from '@components/ProgressBar';
@@ -31,11 +30,8 @@ export default function LimitUsage({
 }: LimitUsageProps) {
   const limit = limitByLevel[kycLevel];
   const { t } = useTranslation('userMenu');
-  const navigate = useNavigate();
   const isCompressed = variant === 'compressed';
-  const handleKYCClick = () => {
-    navigate('/start');
-  };
+
   return (
     <Box sx={isCompressed ? { width: '100%', py: 2 } : { width: '100%', minWidth: 328, p: 2 }}>
       <Typography
