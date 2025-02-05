@@ -7,5 +7,7 @@ export default {
   limitUsage: {
     title: 'Uso actual',
     total: '<span>${{usage}}</span> de <span>${{limit}} USD</span>',
+    revalidateLink: 'Verifica tu identidad',
+    pendingMessage: 'Verificación de identidad pendiente',
   },
 };
