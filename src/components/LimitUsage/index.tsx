@@ -1,14 +1,18 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 
 import ProgressBar from '@components/ProgressBar';
 import formatNumber from '@helpers/formatNumber';
 import { useTranslation, Trans } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 export type LimitUsageProps = {
   usage?: number;
   variant?: 'default' | 'compressed';
   kycLevel?: 1 | 2 | 3;
+  onboardingStatus: 'ACTIVE' | 'REJECTED' | 'PENDING';
 };
 
 const limitByLevel = {
@@ -22,11 +26,15 @@ export default function LimitUsage({
   usage = 75,
   kycLevel = 1,
   variant = 'default',
+  onboardingStatus = 'PENDING',
 }: LimitUsageProps) {
   const limit = limitByLevel[kycLevel];
   const { t } = useTranslation('userMenu');
+  const navigate = useNavigate();
   const isCompressed = variant === 'compressed';
-
+  const handleKYCClick = () => {
+    navigate('/start');
+  };
   return (
     <Box sx={isCompressed ? { width: '100%', py: 2 } : { width: '100%', minWidth: 328, p: 2 }}>
       <Typography
@@ -39,6 +47,19 @@ export default function LimitUsage({
       >
         {t('limitUsage.title')}
       </Typography>
+      {onboardingStatus !== 'ACTIVE' && (
+        <Alert
+          severity="warning"
+          sx={{ mb: 2 }}
+          action={
+            <Button color="inherit" size="small" onClick={() => handleKYCClick()}>
+              {t('limitUsage.revalidateLink')}
+            </Button>
+          }
+        >
+          {t('limitUsage.pendingMessage')}
+        </Alert>
+      )}
       <Typography
         variant="body2"
         sx={(theme) => ({
