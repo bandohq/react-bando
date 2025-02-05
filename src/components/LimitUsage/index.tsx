@@ -45,7 +45,14 @@ export default function LimitUsage({
       </Typography>
       {onboardingStatus !== 'ACTIVE' && (
         <Alert severity="warning" sx={{ mb: 2 }}>
-          <Link href="start" sx={{ fontSize: '0.8rem' }}>
+          <Link
+            href="start"
+            sx={{
+              fontSize: '0.8rem',
+              color: 'inherit',
+              textDecoration: 'underline !important',
+            }}
+          >
             {t('limitUsage.pendingMessage')}
           </Link>
         </Alert>
