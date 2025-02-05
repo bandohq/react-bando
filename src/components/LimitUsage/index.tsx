@@ -6,7 +6,6 @@ import Link from '@mui/material/Link';
 import ProgressBar from '@components/ProgressBar';
 import formatNumber from '@helpers/formatNumber';
 import { useTranslation, Trans } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 export type LimitUsageProps = {
   usage?: number;
@@ -45,11 +44,10 @@ export default function LimitUsage({
         {t('limitUsage.title')}
       </Typography>
       {onboardingStatus !== 'ACTIVE' && (
-        <Alert
-          severity="warning"
-          sx={{ mb: 2 }}
-        >
-          <Link href='start' sx={{ fontSize: '0.8rem' }}>{t('limitUsage.pendingMessage')}</Link>
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          <Link href="start" sx={{ fontSize: '0.8rem' }}>
+            {t('limitUsage.pendingMessage')}
+          </Link>
         </Alert>
       )}
       <Typography

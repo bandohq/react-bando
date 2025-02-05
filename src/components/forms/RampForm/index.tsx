@@ -203,7 +203,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
               {user?.onboardingStatus !== 'ACTIVE' && (
                 <Grid xs={12}>
                   <Alert
-                    severity='warning'
+                    severity="warning"
                     action={
                       <Button color="inherit" size="small" onClick={() => navigate('/start')}>
                         {t('userMenu:limitUsage.revalidateLink')}
