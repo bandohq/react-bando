@@ -87,7 +87,7 @@ export default function KycForm() {
   const [complianceUrl, setComplianceUrl] = useState('');
 
   useEffect(() => {
-    if (user?.complianceUrl !== undefined) {
+    if (user?.complianceUrl) {
       setComplianceUrl(user.complianceUrl);
     }
   }, [user, data]);
@@ -115,7 +115,7 @@ export default function KycForm() {
     }
   };
 
-  if (complianceUrl !== '') {
+  if (complianceUrl !== '' || user?.onboardingStatus === 'ACTIVE') {
     return (
       <OnboardingForm complianceUrl={complianceUrl} onboardingStatus={user?.onboardingStatus} />
     );

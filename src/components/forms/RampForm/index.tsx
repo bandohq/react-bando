@@ -7,6 +7,8 @@ import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import Grid from '@mui/material/Unstable_Grid2';
+import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import BandoButton from '@components/Button';
@@ -29,7 +31,7 @@ type RampFormProps = {
 };
 
 export default function RampForm({ noContainer = false }: Readonly<RampFormProps>) {
-  const { t } = useTranslation('ramp');
+  const { t } = useTranslation(['ramp', 'userMenu']);
   const { quote, operationType: opType, networkObj, tokenObj } = getStorageQuote();
 
   const [formError, setFormError] = useState<string>('');
@@ -186,6 +188,7 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                       strong: <strong />,
                       p: <p />,
                       h4: <h4 />,
+                      h5: <h5 />,
                       ol: <ol />,
                       li: <li />,
                       h6: <h6 />,
@@ -195,12 +198,26 @@ export default function RampForm({ noContainer = false }: Readonly<RampFormProps
                 </ErrorBox>
               </Grid>
             )}
+            {user?.onboardingStatus !== 'ACTIVE' && (
+              <Grid xs={12}>
+                <Alert
+                  severity='warning'
+                  action={
+                    <Button color="inherit" size="small" onClick={() => navigate('/start')}>
+                      {t('userMenu:limitUsage.revalidateLink')}
+                    </Button>
+                  }
+                >
+                  {t('userMenu:limitUsage.pendingMessage')}
+                </Alert>
+              </Grid>
+            )}
             <Grid xs={12}>
               <BandoButton
                 type="submit"
                 variant="contained"
                 fullWidth
-                disabled={isLoading}
+                disabled={isLoading || user?.onboardingStatus !== 'ACTIVE'}
                 sx={{ padding: '16px 8px', fontWeight: 'bold' }}
               >
                 {isLoading && (

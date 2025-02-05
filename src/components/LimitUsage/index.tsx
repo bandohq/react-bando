@@ -2,6 +2,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 
 import ProgressBar from '@components/ProgressBar';
 import formatNumber from '@helpers/formatNumber';
@@ -51,13 +52,8 @@ export default function LimitUsage({
         <Alert
           severity="warning"
           sx={{ mb: 2 }}
-          action={
-            <Button color="inherit" size="small" onClick={() => handleKYCClick()}>
-              {t('limitUsage.revalidateLink')}
-            </Button>
-          }
         >
-          {t('limitUsage.pendingMessage')}
+          <Link href='start' sx={{ fontSize: '0.8rem' }}>{t('limitUsage.pendingMessage')}</Link>
         </Alert>
       )}
       <Typography
