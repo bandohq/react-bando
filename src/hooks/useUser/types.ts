@@ -13,6 +13,9 @@ export type User = {
   currentDepositUsageUsd: number;
   currentWithdrawalUsageUsd: number;
   resetAt: string;
+  complianceUrl: string;
+  onboardingStatus: string;
+  active: boolean;
 };
 
 export type UserContextType = {

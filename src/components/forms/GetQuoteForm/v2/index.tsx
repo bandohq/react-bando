@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
 import { styled } from '@mui/material/styles';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -45,6 +45,7 @@ export default function GetQuoteFormV2() {
   const { t } = useTranslation('form');
   const { isMutating, quote: data, getQuote, resetQuote } = useQuote();
   const [formError, setFormError] = useState<string>('');
+  const [userStatus, setUserStatus] = useState<string>('');
   const [notFoundMessage, setNotFoundMessage] = useState<boolean>(false);
 
   const { user } = useUser();
@@ -66,6 +67,10 @@ export default function GetQuoteFormV2() {
       ? `1 ${quoteCurrency} ≈ ${formatNumber(data?.quoteRateInverse) ?? 0} ${baseCurrency}`
       : `1 ${baseCurrency} ≈ ${formatNumber(data?.quoteRate) ?? 0} ${quoteCurrency}`;
 
+  useEffect(() => {
+    setUserStatus(user?.onboardingStatus ?? '');
+    console.log('userStatus', userStatus);
+  }, [user]);
   const navigateForm = useCallback(
     (quote?: Quote) => {
       const formValues = methods.getValues();
