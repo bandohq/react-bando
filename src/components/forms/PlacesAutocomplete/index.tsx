@@ -42,6 +42,7 @@ interface PlaceType {
 type AddressParts = {
   street: string;
   state: string;
+  city: string;
   zip: string;
   country: string;
   neighborhood: string;
@@ -147,6 +148,7 @@ export default function PlacesAutocomplete({
               neighborhood,
               street,
               state,
+              city,
               zip,
               country,
             });

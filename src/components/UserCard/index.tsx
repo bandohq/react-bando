@@ -28,6 +28,7 @@ function UserCard(props: UserCardProps) {
         usage={props.user?.currentDepositUsageUsd}
         kycLevel={props.user?.kycLevel as LimitUsageProps['kycLevel']}
         variant="compressed"
+        onboardingStatus={props.user?.onboardingStatus as LimitUsageProps['onboardingStatus']}
       />
     </UserCardBox>
   );
