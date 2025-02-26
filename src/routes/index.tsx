@@ -11,6 +11,7 @@ import TransactionHistory from '@pages/Transactions/History';
 import TransactionKycDetail from '@pages/Transactions/KycDetail';
 import TransactionDetail from '@pages/Transactions/Detail';
 import Terms from '@pages/Terms';
+import PrivacyNotice from '@pages/PrivacyNotice';
 import Faq from '@pages/FAQ';
 
 import ExposedWrapper from './ExposedWrapper';
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
         <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="terms" element={<Terms />} />
+        <Route path="privacy-notice" element={<PrivacyNotice />} />
         <Route path="faq" element={<Faq />} />
       </Route>
     </>,

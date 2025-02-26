@@ -3,40 +3,40 @@ import MarkDownContainer from '@components/MarkDownContainer';
 
 export default function Terms() {
   const markdown = `
-**Términos y Condiciones de Uso de Bando**
+**Terms and Conditions of Use for Bando**
 
-**Aceptación**
-Al registrarse y utilizar los servicios de Bando, usted acepta estos términos y condiciones, los cuales rigen nuestra relación con usted en relación a esta plataforma. Usted reconoce los riesgos asociados con las transacciones de criptoactivos y acepta que Bando actúa como un intermediario facilitando sus operaciones.
+**Acceptance**
+By registering and using Bando's services, you accept these terms and conditions, which govern our relationship with you in relation to this platform. You acknowledge the risks associated with crypto asset transactions and accept that Bando acts as an intermediary facilitating your operations.
 
-**Responsabilidades del Usuario**
-Es su responsabilidad asegurarse de que los criptoactivos adquiridos a través de nuestra plataforma cumplan con la legislación aplicable. Bando no se responsabiliza por verificar la legalidad o legitimidad de los criptoactivos transaccionados.
+**User Responsibilities**
+It is your responsibility to ensure that crypto assets acquired through our platform comply with applicable legislation. Bando is not responsible for verifying the legality or legitimacy of the crypto assets transacted.
 
-**Cambios en los Términos**
-Nos reservamos el derecho de modificar estos términos. Es su responsabilidad revisar periódicamente los cambios, que serán comunicados a través de nuestra plataforma y por correo electrónico.
+**Changes to Terms**
+We reserve the right to modify these terms. It is your responsibility to periodically review the changes, which will be communicated through our platform and by email.
 
-**Registro y Uso de la Plataforma**
-Para utilizar Bando, debe completar el proceso de registro y cumplir con nuestra política de KYC (Conozca a Su Cliente). Usted es responsable de mantener la seguridad de su cuenta y de todas las actividades que ocurran bajo su acceso.
+**Registration and Platform Use**
+To use Bando, you must complete the registration process and comply with our KYC (Know Your Customer) policy. You are responsible for maintaining the security of your account and for all activities that occur under your access.
 
-**Funcionamiento de la Plataforma**
-Bando se reserva el derecho de modificar, actualizar o discontinuar la plataforma según sea necesario. En caso de discontinuación, se notificará a los usuarios con anticipación.
+**Platform Operation**
+Bando reserves the right to modify, update, or discontinue the platform as necessary. In case of discontinuation, users will be notified in advance.
 
-**Servicios**
-La plataforma permite la compra y venta de criptoactivos, y usted es responsable de la veracidad de las informaciones suministradas para las transacciones. Las operaciones no son reversibles una vez confirmadas.
+**Services**
+The platform allows the purchase and sale of crypto assets, and you are responsible for the accuracy of the information provided for transactions. Operations are not reversible once confirmed.
 
-**Soporte**
-El soporte técnico está disponible para ayudar con el uso de la plataforma. No asumimos responsabilidad por problemas técnicos del usuario o por ataques cibernéticos que el usuario pueda sufrir.
+**Support**
+Technical support is available to help with the use of the platform. We do not assume responsibility for technical problems of the user or for cyber attacks that the user may suffer.
 
-**Propiedad Intelectual**
-Los servicios de Bando están protegidos por derechos de propiedad intelectual y son de uso exclusivo de nuestros clientes de acuerdo con estos términos.
+**Intellectual Property**
+Bando's services are protected by intellectual property rights and are for the exclusive use of our customers in accordance with these terms.
 
-**Limitación de Responsabilidad**
-Bando no será responsable por pérdidas derivadas del uso de la plataforma, por acciones del usuario que contravengan estos términos o por eventos fuera de nuestro control.
+**Limitation of Liability**
+Bando will not be responsible for losses derived from the use of the platform, for user actions that contravene these terms, or for events beyond our control.
 
-**Consideraciones Finales**
-Puede cancelar su cuenta en cualquier momento. Algunos datos pueden ser retenidos según lo exija la ley. La relación entre las partes se rige por la ley de Islas Cayman, y cualquier disputa será resuelta en los tribunales de George Town.
+**Final Considerations**
+You may cancel your account at any time. Some data may be retained as required by law. The relationship between the parties is governed by the law of the Cayman Islands, and any dispute will be resolved in the courts of George Town.
 
-**Consentimiento**
-Al utilizar Bando, usted da su consentimiento a estos términos y a nuestras políticas de privacidad y KYC.`;
+**Consent**
+By using Bando, you give your consent to these terms and to our privacy and KYC policies.`;
   return (
     <CleanLayout>
       <MarkDownContainer
