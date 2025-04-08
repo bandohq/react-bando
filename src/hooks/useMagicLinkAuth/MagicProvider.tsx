@@ -16,12 +16,7 @@ const MagicProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     console.log('env.magicLink.secret', env.magicLink.secret);
     if (env.magicLink.secret) {
-      const magic = new Magic(env.magicLink.secret, {
-        network: {
-          rpcUrl: env.magicLink.rpcUrl,
-          chainId: env.magicLink.chainID,
-        },
-      });
+      const magic = new Magic(env.magicLink.secret);
 
       setMagic(magic);
     }
